@@ -1,0 +1,9 @@
+FROM golang AS build-env
+WORKDIR /go/src/github.com/rusik69/govnocloud
+COPY . ./
+RUN make
+FROM alpine:latest
+WORKDIR /app
+COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud /app/
+ENTRYPOINT ["/app/govnocloud", "node"]
+EXPOSE 6969
