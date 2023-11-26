@@ -1,6 +1,9 @@
 package vm
 
-import "github.com/rusik69/govnocloud/pkg/node/volume"
+import (
+	"github.com/rusik69/govnocloud/pkg/node/volume"
+	"libvirt.org/go/libvirt"
+)
 
 // VM represents a virtual machine.
 type VM struct {
@@ -15,3 +18,6 @@ type VM struct {
 	// Volumes is the volumes of the virtual machine.
 	Volumes []volume.Volume `json:"volumes"`
 }
+
+// LibvirtConnection is the singleton instance of libvirt.Connection.
+var LibvirtConnection *libvirt.Connect

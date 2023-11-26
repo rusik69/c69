@@ -5,6 +5,8 @@ package cmd
 
 import (
 	"github.com/rusik69/govnocloud/pkg/node/env"
+	"github.com/rusik69/govnocloud/pkg/node/server"
+	"github.com/rusik69/govnocloud/pkg/node/vm"
 	"github.com/spf13/cobra"
 )
 
@@ -19,6 +21,11 @@ var nodeCmd = &cobra.Command{
 			panic(err)
 		}
 		env.NodeEnvInstance = envInstance
+		vm.LibvirtConnection, err = vm.Connect()
+		if err != nil {
+			panic(err)
+		}
+		server.Serve()
 	},
 }
 
