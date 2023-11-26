@@ -4,8 +4,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/rusik69/govnocloud/pkg/node/env"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +14,11 @@ var nodeCmd = &cobra.Command{
 	Short: "Start govnocloud node",
 	Long:  `Start govnocloud node.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("node called")
+		envInstance, err := env.Parse()
+		if err != nil {
+			panic(err)
+		}
+		env.NodeEnvInstance = envInstance
 	},
 }
 
