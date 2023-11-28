@@ -42,12 +42,40 @@ type Flavor struct {
 	Disk int `json:"disk"`
 }
 
-var Flavors = []Flavor{
-	Flavor{
+var Flavors = map[string]Flavor{
+	"tiny": Flavor{
 		ID:    "0",
 		Name:  "tiny",
 		VCPUs: 1,
 		RAM:   512,
-		Disk:  1,
+		Disk:  2,
+	},
+	"small": Flavor{
+		ID:    "1",
+		Name:  "small",
+		VCPUs: 1,
+		RAM:   1024,
+		Disk:  10,
+	},
+	"medium": Flavor{
+		ID:    "2",
+		Name:  "medium",
+		VCPUs: 2,
+		RAM:   2048,
+		Disk:  20,
+	},
+	"large": Flavor{
+		ID:    "3",
+		Name:  "large",
+		VCPUs: 4,
+		RAM:   4096,
+		Disk:  40,
+	},
+	"xlarge": Flavor{
+		ID:    "4",
+		Name:  "xlarge",
+		VCPUs: 8,
+		RAM:   8192,
+		Disk:  80,
 	},
 }
