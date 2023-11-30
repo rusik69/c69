@@ -18,5 +18,6 @@ docker:
 	docker system prune -a -f
 	#docker buildx create --name multiarch --use || true
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f Dockerfile-node --push .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) -f Dockerfile-web --push .
 
 default: tidy build
