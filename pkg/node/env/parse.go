@@ -15,9 +15,9 @@ func Parse() (*NodeEnv, error) {
 	if id == "" {
 		return nil, errors.New("NODE_ID is not set")
 	}
-	libvirtSocket := os.Getenv("NODE_LIBVIRT_SOCKET")
-	if libvirtSocket == "" {
-		libvirtSocket = "qemu:///system"
+	libvirtURI := os.Getenv("NODE_LIBVIRT_SOCKET")
+	if libvirtURI == "" {
+		libvirtURI = "qemu:///system"
 	}
 	ip := os.Getenv("NODE_IP")
 	if ip == "" {
@@ -28,11 +28,11 @@ func Parse() (*NodeEnv, error) {
 		port = "6969"
 	}
 	NodeEnvInstance = &NodeEnv{
-		ID:            id,
-		Name:          name,
-		IP:            ip,
-		Port:          port,
-		LibVirtSocket: libvirtSocket,
+		ID:         id,
+		Name:       name,
+		IP:         ip,
+		Port:       port,
+		LibVirtURI: libvirtURI,
 	}
 	return NodeEnvInstance, nil
 }

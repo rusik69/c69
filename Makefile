@@ -13,13 +13,12 @@ tidy:
 build:
 	CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-linux-amd64 main.go
 	CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-linux-arm64 main.go
-	CGO_ENABLED=0 GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-darwin-arm64 main.go
 	chmod +x bin/*
 
 docker:
 	docker system prune -a -f
 	#docker buildx create --name multiarch --use || true
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG) -f Dockerfile --push .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f Dockerfile-node --push .
 
 default:
 	tidy build

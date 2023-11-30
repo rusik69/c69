@@ -8,8 +8,8 @@ type NodeEnv struct {
 	// IP is the IP address of the node.
 	IP string `json:"ip"`
 	// Port is the port of the node.
-	Port          string `json:"port"`
-	LibVirtSocket string `json:"libvirt_socket"`
+	Port       string `json:"port"`
+	LibVirtURI string `json:"libvirt_socket"`
 }
 
 // NodeEnvInstance is the singleton instance of NodeEnv.

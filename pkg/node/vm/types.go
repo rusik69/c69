@@ -16,7 +16,7 @@ type VM struct {
 	// Host is the host of the virtual machine.
 	Host string `json:"host"`
 	// Status is the status of the virtual machine.
-	Status string `json:"status"`
+	Status int `json:"status"`
 	// Image is the image of the virtual machine.
 	Image string `json:"image"`
 	// Flavor is the flavor of the virtual machine.
