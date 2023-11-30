@@ -4,7 +4,7 @@ COPY . ./
 RUN apk add --no-cache libvirt-dev make bash gcc git musl-dev
 RUN make
 FROM alpine:latest
-WORKDIR /app
-COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud /app/
-ENTRYPOINT ["/app/govnocloud", "node"]
+WORKDIR /
+COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud-linux-amd64 /
+ENTRYPOINT ["/govnocloud", "node"]
 EXPOSE 6969
