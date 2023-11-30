@@ -20,5 +20,4 @@ docker:
 	#docker buildx create --name multiarch --use || true
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f Dockerfile-node --push .
 
-default:
-	tidy build
+default: tidy build
