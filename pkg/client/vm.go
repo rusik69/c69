@@ -42,6 +42,6 @@ func CreateVM(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	_, err = http.Post(url, bytes.NewBuffer(body))
+	_, err = http.Post(url, "application/json", bytes.NewBuffer(body))
 	return err
 }
