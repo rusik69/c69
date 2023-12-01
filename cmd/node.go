@@ -25,6 +25,7 @@ var nodeCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
+		defer vm.LibvirtConnection.Close()
 		server.Serve()
 	},
 }

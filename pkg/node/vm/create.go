@@ -37,7 +37,7 @@ func (vm VM) Create() error {
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
-							File: vm.Image,
+							File: Images[vm.Image].Img,
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{

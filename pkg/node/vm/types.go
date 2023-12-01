@@ -79,3 +79,25 @@ var Flavors = map[string]Flavor{
 		Disk:  80,
 	},
 }
+
+type Image struct {
+	// ID is the ID of the image.
+	ID string `json:"id"`
+	// Name is the name of the image.
+	Img string `json:"img"`
+	// URL is the URL of the image.
+	URL string `json:"url"`
+}
+
+var Images = map[string]Image{
+	"ubuntu22.04": Image{
+		ID:  "0",
+		Img: "ubuntu-22.04-server-cloudimg-amd64.img",
+		URL: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-disk-kvm.img",
+	},
+	"ubuntu20.04": Image{
+		ID:  "1",
+		Img: "ubuntu-20.04-server-cloudimg-amd64.img",
+		URL: "https://cloud-images.ubuntu.com/releases/20.04/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
+	},
+}

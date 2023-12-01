@@ -27,12 +27,17 @@ func Parse() (*NodeEnv, error) {
 	if port == "" {
 		port = "6969"
 	}
+	libvirtImageDir := os.Getenv("NODE_LIBVIRT_IMAGE_DIR")
+	if libvirtImageDir == "" {
+		libvirtImageDir = "/var/lib/libvirt/images"
+	}
 	NodeEnvInstance = &NodeEnv{
-		ID:         id,
-		Name:       name,
-		IP:         ip,
-		Port:       port,
-		LibVirtURI: libvirtURI,
+		ID:              id,
+		Name:            name,
+		IP:              ip,
+		Port:            port,
+		LibVirtURI:      libvirtURI,
+		LibVirtImageDir: libvirtImageDir,
 	}
 	return NodeEnvInstance, nil
 }
