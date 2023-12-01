@@ -1,10 +1,11 @@
 package client
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
+	"net/http"
 
-	"github.com/rusik69/govnocloud/pkg/client"
 	"github.com/rusik69/govnocloud/pkg/node/vm"
 	"github.com/spf13/cobra"
 )
@@ -41,6 +42,6 @@ func CreateVM(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	_, err = client.Post(url, body)
+	_, err = http.Post(url, bytes.NewBuffer(body))
 	return err
 }
