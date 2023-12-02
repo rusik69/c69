@@ -36,7 +36,10 @@ var vmCreateCmd = &cobra.Command{
 	Short: "create vm",
 	Long:  `create vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		client.CreateVM(cmd)
+		err := client.CreateVM(cmd)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 
@@ -46,7 +49,10 @@ var vmDeleteCmd = &cobra.Command{
 	Short: "delete vm",
 	Long:  `delete vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("vm delete called")
+		err := client.DeleteVM(cmd)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 
@@ -56,12 +62,20 @@ var vmListCmd = &cobra.Command{
 	Short: "list vm",
 	Long:  `list vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("vm list called")
+		vms, err := client.ListVMs(cmd)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-10s |\n", "ID", "NAME", "IP", "Host", "Status", "Image", "Flavor", "Volumes")
+		fmt.Println("------------------------------------------------------------------------------------------------------------------------")
+		for _, vm := range vms {
+			fmt.Println("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-10s |\n", vm.ID, vm.Name, vm.IP, vm.Host, vm.Status, vm.Image, vm.Flavor, vm.Volumes)
+		}
 	},
 }
 
 func init() {
-	
+
 	rootCmd.AddCommand(clientCmd)
 	clientCmd.AddCommand(vmCmd)
 	vmCmd.AddCommand(vmCreateCmd)
