@@ -3,7 +3,7 @@ package vm
 import "fmt"
 
 // Delete deletes the vm.
-func (vm VM) Delete() error {
+func (vm *VM) Delete() error {
 	domain, err := LibvirtConnection.LookupDomainByName(vm.Name)
 	if err != nil {
 		return fmt.Errorf("failed to lookup domain: %w", err)

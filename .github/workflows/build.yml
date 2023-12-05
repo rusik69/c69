@@ -11,6 +11,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: build and push
-      run: make docker
+    - name: build
+      run: make
     timeout-minutes: 60

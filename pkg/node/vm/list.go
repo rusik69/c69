@@ -31,8 +31,8 @@ func List() ([]VM, error) {
 		}
 
 		vm := VM{
-			Name:   name,
-			Status: int(state),
+			Name:  name,
+			State: int(state),
 		}
 		vms = append(vms, vm)
 	}

@@ -1,10 +1,17 @@
 package vm
 
-import "libvirt.org/go/libvirtxml"
+import (
+	"errors"
+
+	"libvirt.org/go/libvirtxml"
+)
 
 // Create creates the vm.
-func (vm VM) Create() error {
-	flavor := Flavors[vm.Flavor]
+func (vm *VM) Create() error {
+	flavor, ok := Flavors[vm.Flavor]
+	if !ok {
+		return errors.New("flavor not found")
+	}
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
 		Name: vm.Name,

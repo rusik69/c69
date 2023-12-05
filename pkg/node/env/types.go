@@ -1,8 +1,6 @@
 package env
 
 type NodeEnv struct {
-	// ID is the ID of the node.
-	ID string `json:"id"`
 	// Name is the name of the node.
 	Name string `json:"name"`
 	// IP is the IP address of the node.

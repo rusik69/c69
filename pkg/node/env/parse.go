@@ -11,10 +11,6 @@ func Parse() (*NodeEnv, error) {
 	if name == "" {
 		return nil, errors.New("NODE_NAME is not set")
 	}
-	id := os.Getenv("NODE_ID")
-	if id == "" {
-		return nil, errors.New("NODE_ID is not set")
-	}
 	libvirtURI := os.Getenv("NODE_LIBVIRT_SOCKET")
 	if libvirtURI == "" {
 		libvirtURI = "qemu:///system"
@@ -32,7 +28,6 @@ func Parse() (*NodeEnv, error) {
 		libvirtImageDir = "/var/lib/libvirt/images"
 	}
 	NodeEnvInstance = &NodeEnv{
-		ID:              id,
 		Name:            name,
 		IP:              ip,
 		Port:            port,

@@ -1,6 +1,8 @@
 package server
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/node/vm"
 )
@@ -32,8 +34,13 @@ func DeleteVMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "id is empty"})
 		return
 	}
-	tempVM := vm.VM{ID: id}
-	err := tempVM.Delete()
+	intID, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	tempVM := vm.VM{ID: intID}
+	err = tempVM.Delete()
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
@@ -48,4 +55,20 @@ func ListVMHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, vms)
+}
+
+// GetVmHandler handles the get request.
+func InfoVMHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	tempVM := vm.VM{ID: id}
+	err := tempVM.Get()
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, tempVM)
 }

@@ -6,13 +6,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Serve serves the node.
+// Serve starts the server.
 func Serve() {
 	r := gin.New()
+	r.GET("/api/v1/vm/:id", GetVMHandler)
 	r.POST("/api/v1/vm/create", CreateVMHandler)
-	r.GET("/api/v1/vm/:id", InfoVMHandler)
-	r.DELETE("/api/v1/vm/delete/:id", DeleteVMHandler)
+	r.DELETE("/api/v1/vm/:id", DeleteVMHandler)
 	r.GET("/api/v1/vm/list", ListVMHandler)
-	logrus.Println("Node is listening on port " + string(env.NodeEnvInstance.Port))
-	r.Run(":" + string(env.NodeEnvInstance.Port))
+	logrus.Println("Master is listening on port " + string(env.NodeEnvInstance.Port))
 }

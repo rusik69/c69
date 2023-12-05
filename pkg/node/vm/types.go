@@ -8,21 +8,23 @@ import (
 // VM represents a virtual machine.
 type VM struct {
 	// ID is the ID of the virtual machine.
-	ID string `json:"id"`
+	ID int `json:"id"`
 	// Name is the name of the virtual machine.
 	Name string `json:"name"`
 	// IP is the IP address of the virtual machine.
 	IP string `json:"ip"`
 	// Host is the host of the virtual machine.
 	Host string `json:"host"`
-	// Status is the status of the virtual machine.
-	Status int `json:"status"`
+	// State is the status of the virtual machine.
+	State string `json:"status"`
 	// Image is the image of the virtual machine.
 	Image string `json:"image"`
 	// Flavor is the flavor of the virtual machine.
 	Flavor string `json:"flavor"`
 	// Volumes is the volumes of the virtual machine.
 	Volumes []volume.Volume `json:"volumes"`
+	// Committed is the committed status of the virtual machine.
+	Committed bool `json:"committed"`
 }
 
 // LibvirtConnection is the singleton instance of libvirt.Connection.
