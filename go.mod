@@ -1,6 +1,6 @@
 module github.com/rusik69/govnocloud
 
-go 1.20.11
+go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.9.1
