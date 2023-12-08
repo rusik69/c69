@@ -32,7 +32,7 @@ func List() ([]VM, error) {
 
 		vm := VM{
 			Name:  name,
-			State: int(state),
+			State: ParseState(state),
 		}
 		vms = append(vms, vm)
 	}

@@ -57,15 +57,20 @@ func ListVMHandler(c *gin.Context) {
 	c.JSON(200, vms)
 }
 
-// GetVmHandler handles the get request.
-func InfoVMHandler(c *gin.Context) {
+// VMInfoHandler handles the get request.
+func VMInfoHandler(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(400, gin.H{"error": "id is empty"})
 		return
 	}
-	tempVM := vm.VM{ID: id}
-	err := tempVM.Get()
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	tempVM := vm.VM{ID: idInt}
+	err = tempVM.Get()
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return

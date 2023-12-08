@@ -3,6 +3,7 @@ package env
 import (
 	"errors"
 	"os"
+	"strings"
 )
 
 // Parse parses the master environment.
@@ -40,9 +41,10 @@ func Parse() (*MasterEnv, error) {
 		port := s[2]
 		nodes = append(nodes, Node{
 			Name: name,
-			IP:   host,
+			Host: host,
 			Port: port,
 		})
+	}
 	return &MasterEnv{
 		ETCDHost:   etcdhost,
 		ETCDPort:   etcdport,

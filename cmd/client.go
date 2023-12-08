@@ -36,10 +36,31 @@ var vmCreateCmd = &cobra.Command{
 	Short: "create vm",
 	Long:  `create vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := client.CreateVM(cmd)
+		vmName := cmd.PersistentFlags().Lookup("name").Value.String()
+		if vmName == "" {
+			panic("vm name is required")
+		}
+		vmImage := cmd.PersistentFlags().Lookup("image").Value.String()
+		if vmImage == "" {
+			panic("vm image is required")
+		}
+		vmFlavor := cmd.PersistentFlags().Lookup("flavor").Value.String()
+		if vmFlavor == "" {
+			panic("vm flavor is required")
+		}
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		id, err := client.CreateVM(host, port, vmName, vmImage, vmFlavor)
 		if err != nil {
 			panic(err)
 		}
+		fmt.Println("VM created with id " + string(id))
 	},
 }
 

@@ -20,8 +20,8 @@ type MasterEnv struct {
 type Node struct {
 	// Name is the name of the node.
 	Name string `json:"name"`
-	// IP is the IP address of the node.
-	IP string `json:"ip"`
+	// Host is the Host address of the node.
+	Host string `json:"ip"`
 	// Port is the port of the node.
 	Port string `json:"port"`
 }
