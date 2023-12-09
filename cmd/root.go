@@ -6,6 +6,8 @@ package cmd
 import (
 	"os"
 
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -29,6 +31,9 @@ func Execute() {
 }
 
 func init() {
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+	gin.DefaultWriter = logrus.StandardLogger().Writer()
+	gin.DefaultErrorWriter = logrus.StandardLogger().Writer()
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
