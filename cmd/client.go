@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/rusik69/govnocloud/pkg/client"
 	"github.com/spf13/cobra"
@@ -77,13 +78,58 @@ var vmDeleteCmd = &cobra.Command{
 	},
 }
 
+var vmGetCmd = &cobra.Command{
+	Use:   "get",
+	Short: "get vm",
+	Long:  `get vm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		idString := cmd.PersistentFlags().Lookup("id").Value.String()
+		if idString == "" {
+			panic("id is required")
+		}
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			panic(err)
+		}
+		vm, err := client.GetVM(id, host, port)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(
+			"ID: " + string(vm.ID) + "\n" +
+				"Name: " + vm.Name + "\n" +
+				"IP: " + vm.IP + "\n" +
+				"Host: " + vm.Host + "\n" +
+				"State: " + vm.State + "\n" +
+				"Image: " + vm.Image + "\n" +
+				"Flavor: " + vm.Flavor + "\n",
+		)
+	},
+}
+
 // vmListCmd represents the vm list command
 var vmListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "list vm",
 	Long:  `list vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		vms, err := client.ListVMs(cmd)
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		vms, err := client.ListVMs(host, port)
 		if err != nil {
 			panic(err)
 		}
@@ -96,7 +142,6 @@ var vmListCmd = &cobra.Command{
 }
 
 func init() {
-
 	rootCmd.AddCommand(clientCmd)
 	clientCmd.AddCommand(vmCmd)
 	vmCmd.AddCommand(vmCreateCmd)

@@ -25,7 +25,7 @@ var masterCmd = &cobra.Command{
 			panic(err)
 		}
 		defer etcd.Client.Close()
-		
+
 	},
 }
 

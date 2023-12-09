@@ -1,4 +1,4 @@
-package node
+package client
 
 import (
 	"bytes"
@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/rusik69/govnocloud/pkg/node/vm"
-	"github.com/spf13/cobra"
 )
 
 // CreateVM creates a vm.
@@ -59,15 +58,7 @@ func DeleteVM(id int, host, port string) error {
 }
 
 // ListVMs creates a vm.
-func ListVMs(cmd *cobra.Command) ([]vm.VM, error) {
-	host := cmd.PersistentFlags().Lookup("host").Value.String()
-	if host == "" {
-		return nil, errors.New("host is required")
-	}
-	port := cmd.PersistentFlags().Lookup("port").Value.String()
-	if port == "" {
-		return nil, errors.New("port is required")
-	}
+func ListVMs(host, port string) ([]vm.VM, error) {
 	url := "http://" + host + ":" + port + "/api/v1/vm/list"
 	resp, err := http.Get(url)
 	if err != nil {
@@ -77,4 +68,20 @@ func ListVMs(cmd *cobra.Command) ([]vm.VM, error) {
 	var vms []vm.VM
 	err = json.NewDecoder(resp.Body).Decode(&vms)
 	return vms, err
+}
+
+// GetVM gets a vm.
+func GetVM(id int, host, port string) (vm.VM, error) {
+	vm := vm.VM{
+		ID: id,
+	}
+	idString := strconv.Itoa(id)
+	url := "http://" + host + ":" + port + "/api/v1/vm/" + idString
+	resp, err := http.Get(url)
+	if err != nil {
+		return vm, err
+	}
+	defer resp.Body.Close()
+	err = json.NewDecoder(resp.Body).Decode(&vm)
+	return vm, err
 }
