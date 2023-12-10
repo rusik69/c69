@@ -71,7 +71,23 @@ var vmDeleteCmd = &cobra.Command{
 	Short: "delete vm",
 	Long:  `delete vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := client.DeleteVM(cmd)
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		idString := cmd.PersistentFlags().Lookup("id").Value.String()
+		if idString == "" {
+			panic("id is required")
+		}
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			panic(err)
+		}
+		err = client.DeleteVM(host, port, id)
 		if err != nil {
 			panic(err)
 		}

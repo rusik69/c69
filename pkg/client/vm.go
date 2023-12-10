@@ -43,7 +43,7 @@ func CreateVM(host, port, name, image, flavor string) (int, error) {
 }
 
 // DeleteVM creates a vm.
-func DeleteVM(id int, host, port string) error {
+func DeleteVM(host, port string, id int) error {
 	vm := vm.VM{
 		ID: id,
 	}

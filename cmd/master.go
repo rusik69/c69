@@ -5,7 +5,7 @@ package cmd
 
 import (
 	"github.com/rusik69/govnocloud/pkg/master/env"
-	"github.com/rusik69/govnocloud/pkg/master/etcd"
+	"github.com/rusik69/govnocloud/pkg/master/server"
 	"github.com/spf13/cobra"
 )
 
@@ -20,11 +20,11 @@ var masterCmd = &cobra.Command{
 			panic(err)
 		}
 		env.MasterEnvInstance = envInstance
-		etcd.Client, err = etcd.Connect(env.MasterEnvInstance.ETCDHost, env.MasterEnvInstance.ETCDPort, env.MasterEnvInstance.ETCDUser, env.MasterEnvInstance.ETCDPass)
+		server.ETCDClient, err = server.ETCDConnect(env.MasterEnvInstance.ETCDHost, env.MasterEnvInstance.ETCDPort, env.MasterEnvInstance.ETCDUser, env.MasterEnvInstance.ETCDPass)
 		if err != nil {
 			panic(err)
 		}
-		defer etcd.Client.Close()
+		defer server.ETCDClient.Close()
 
 	},
 }
