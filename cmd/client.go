@@ -87,7 +87,7 @@ var vmDeleteCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		err = client.DeleteVM(host, port, id)
+		err = client.DeleteVM(id, host, port)
 		if err != nil {
 			panic(err)
 		}
