@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/rusik69/govnocloud/pkg/master/env"
-	"go.etcd.io/etcd/clientv3"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // ETCDConnect connects to the database.
