@@ -1,12 +1,11 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/rusik69/govnocloud/pkg/web/env"
+	"github.com/rusik69/govnocloud/pkg/web/server"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +20,12 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("web called")
+		webEnvInstance, err := env.Parse()
+		if err != nil {
+			panic(err)
+		}
+		env.WEBEnvInstance = webEnvInstance
+		server.Serve()
 	},
 }
 

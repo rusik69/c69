@@ -26,7 +26,7 @@ func Parse() (*MasterEnv, error) {
 	}
 	listenport := os.Getenv("LISTEN_PORT")
 	if listenport == "" {
-		listenport = "6969"
+		listenport = "7070"
 	}
 	nodesString := os.Getenv("NODES")
 	if nodesString == "" {
