@@ -56,7 +56,7 @@ func ETCDPut(key, value string) error {
 // ETCEList lists the keys.
 func ETCDList(key string) ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	resp, err := ETCDClient.List(ctx, key, clientv3.WithPrefix())
+	resp, err := ETCDClient.Get(ctx, key, clientv3.WithPrefix())
 	cancel()
 	if err != nil {
 		return nil, err
