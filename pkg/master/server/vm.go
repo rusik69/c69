@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/gin-gonic/gin"
-	nodeClient "github.com/rusik69/govnocloud/pkg/client/node"
+	"github.com/rusik69/govnocloud/pkg/client"
 	"github.com/rusik69/govnocloud/pkg/master/env"
-	"github.com/rusik69/govnocloud/pkg/master/etcd"
 	"github.com/rusik69/govnocloud/pkg/node/vm"
 	"github.com/sirupsen/logrus"
 )
@@ -41,7 +40,7 @@ func CreateVMHandler(c *gin.Context) {
 	created := false
 	var newVM vm.VM
 	for _, node := range env.MasterEnvInstance.Nodes {
-		newVMID, err = nodeClient.CreateVM(node.Host, node.Port, tempVM.Name, tempVM.Image, tempVM.Flavor)
+		newVMID, err = client.CreateVM(node.Host, node.Port, tempVM.Name, tempVM.Image, tempVM.Flavor)
 		if err != nil {
 			logrus.Error(err.Error())
 			continue
@@ -62,7 +61,7 @@ func CreateVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	err = etcd.Put("/vms/"+newVM.Name, string(newVmstring))
+	err = ETCDPut("/vms/"+newVM.Name, string(newVmstring))
 	if err != nil {
 
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -107,7 +106,7 @@ func DeleteVMHandler(c *gin.Context) {
 	}
 	for _, node := range env.MasterEnvInstance.Nodes {
 		if node.Host == vmInfo.Host {
-			err = nodeClient.DeleteVM(tempVM.ID, node.Host, node.Port)
+			err = client.DeleteVM(tempVM.ID, node.Host, node.Port)
 			if err != nil {
 				logrus.Error(err.Error())
 				c.JSON(500, gin.H{"error": err.Error()})
@@ -115,7 +114,7 @@ func DeleteVMHandler(c *gin.Context) {
 			}
 		}
 	}
-	err = etcd.Delete("/vms/" + string(tempVM.ID))
+	err = ETCDDelete("/vms/" + string(tempVM.ID))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
