@@ -21,13 +21,52 @@ var clientCmd = &cobra.Command{
 	},
 }
 
-// vm represents the vm commands
+// vmCmd represents the vm commands
 var vmCmd = &cobra.Command{
 	Use:   "vm",
 	Short: "vm commands",
 	Long:  `vm commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("usage: vm [create|delete|list]")
+		fmt.Println("usage: vm [create|delete|list|get]")
+	},
+}
+
+// nodeCmd represents the node commands
+var nodeClientCmd = &cobra.Command{
+	Use:   "node",
+	Short: "node commands",
+	Long:  `node commands`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("usage: node [add|delete|list|get]")
+	},
+}
+
+// nodeAddCmd represents the node add command
+var nodeAddCmd = &cobra.Command{
+	Use:   "add",
+	Short: "add node",
+	Long:  `add node`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		nodehost := cmd.PersistentFlags().Lookup("nodehost").Value.String()
+		if host == "" {
+			panic("nodehost is required")
+		}
+		nodeport := cmd.PersistentFlags().Lookup("nodeport").Value.String()
+		if port == "" {
+			panic("nodeport is required")
+		}
+		err := client.AddNode(nodehost, nodeport, host, port)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 
@@ -160,9 +199,15 @@ var vmListCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(clientCmd)
 	clientCmd.AddCommand(vmCmd)
+	clientCmd.AddCommand(nodeClientCmd)
+	vmCmd.AddCommand(vmGetCmd)
 	vmCmd.AddCommand(vmCreateCmd)
 	vmCmd.AddCommand(vmDeleteCmd)
 	vmCmd.AddCommand(vmListCmd)
+	nodeClientCmd.AddCommand(nodeAddCmd)
+	nodeClientCmd.AddCommand(nodeDeleteCmd)
+	nodeClientCmd.AddCommand(nodeListCmd)
+	nodeClientCmd.AddCommand(nodeGetCmd)
 
 	// Here you will define your flags and configuration settings.
 
