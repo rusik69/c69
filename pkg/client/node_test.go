@@ -3,7 +3,7 @@ package client_test
 import (
 	"testing"
 
-	"github.com/rusik69/ds0/pkg/client"
+	"github.com/rusik69/govnocloud/pkg/client"
 )
 
 // TestAddNode tests the AddNode function.
