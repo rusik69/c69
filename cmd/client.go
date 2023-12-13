@@ -63,10 +63,95 @@ var nodeAddCmd = &cobra.Command{
 		if port == "" {
 			panic("nodeport is required")
 		}
-		err := client.AddNode(nodehost, nodeport, host, port)
+		name := cmd.PersistentFlags().Lookup("name").Value.String()
+		if name == "" {
+			panic("name is required")
+		}
+		err := client.AddNode(nodehost, nodeport, host, port, name)
 		if err != nil {
 			panic(err)
 		}
+	},
+}
+
+// nodeDeleteCmd represents the node delete command
+var nodeDeleteCmd = &cobra.Command{
+	Use:   "delete",
+	Short: "delete node",
+	Long:  `delete node`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		name := cmd.PersistentFlags().Lookup("name").Value.String()
+		if name == "" {
+			panic("name is required")
+		}
+		err := client.DeleteNode(host, port, name)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// nodeListCmd represents the node list command
+var nodeListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "list nodes",
+	Long:  `list nodes`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		nodes, err := client.ListNodes(host, port)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("| %-10s | %-10s | %-10s |\n", "NAME", "HOST", "PORT")
+		fmt.Println("------------------------------------------------")
+		for _, node := range nodes {
+			fmt.Println("| %-10s | %-10s | %-10s |\n", node.Name, node.Host, node.Port)
+		}
+	},
+}
+
+// nodeGetCmd represents the node get command
+var nodeGetCmd = &cobra.Command{
+	Use:   "get",
+	Short: "get node",
+	Long:  `get node`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		name := cmd.PersistentFlags().Lookup("name").Value.String()
+		if name == "" {
+			panic("name is required")
+		}
+		node, err := client.GetNode(host, port, name)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(
+			"Name: " + node.Name + "\n" +
+				"Host: " + node.Host + "\n" +
+				"Port: " + node.Port + "\n",
+		)
 	},
 }
 
