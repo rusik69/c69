@@ -106,7 +106,7 @@ func DeleteVMHandler(c *gin.Context) {
 	}
 	for _, node := range env.MasterEnvInstance.Nodes {
 		if node.Host == vmInfo.Host {
-			err = client.DeleteVM(tempVM.ID, node.Host, node.Port)
+			err = client.DeleteVM(node.Host, node.Port, tempVM.ID)
 			if err != nil {
 				logrus.Error(err.Error())
 				c.JSON(500, gin.H{"error": err.Error()})

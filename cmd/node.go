@@ -7,6 +7,7 @@ import (
 	"github.com/rusik69/govnocloud/pkg/node/env"
 	"github.com/rusik69/govnocloud/pkg/node/server"
 	"github.com/rusik69/govnocloud/pkg/node/vm"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -18,14 +19,21 @@ var nodeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		envInstance, err := env.Parse()
 		if err != nil {
+			logrus.Error(err.Error())
 			panic(err)
 		}
 		env.NodeEnvInstance = envInstance
 		vm.LibvirtConnection, err = vm.Connect()
 		if err != nil {
+			logrus.Error(err.Error())
 			panic(err)
 		}
 		defer vm.LibvirtConnection.Close()
+		err = vm.DownloadImages()
+		if err != nil {
+			logrus.Error(err.Error())
+			panic(err)
+		}
 		server.Serve()
 	},
 }

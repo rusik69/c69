@@ -43,7 +43,7 @@ func CreateVM(host, port, name, image, flavor string) (int, error) {
 }
 
 // DeleteVM creates a vm.
-func DeleteVM(id int, host, port string) error {
+func DeleteVM(host, port string, id int) error {
 	vm := vm.VM{
 		ID: id,
 	}
@@ -71,7 +71,7 @@ func ListVMs(host, port string) ([]vm.VM, error) {
 }
 
 // GetVM gets a vm.
-func GetVM(id int, host, port string) (vm.VM, error) {
+func GetVM(host, port string, id int) (vm.VM, error) {
 	vm := vm.VM{
 		ID: id,
 	}
