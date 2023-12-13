@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/rusik69/govnocloud/pkg/node/env"
+	"github.com/sirupsen/logrus"
 	"libvirt.org/go/libvirt"
 )
 
@@ -66,6 +67,7 @@ func DownloadImages() error {
 	for _, image := range Images {
 		_, err := os.Stat(filepath.Join(env.NodeEnvInstance.LibVirtImageDir, path.Base(image.URL)))
 		if err != nil && os.IsNotExist(err) {
+			logrus.Println("Downloading image", image.URL)
 			err := Download(image.URL, env.NodeEnvInstance.LibVirtImageDir)
 			if err != nil {
 				return err
