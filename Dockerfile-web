@@ -6,6 +6,6 @@ RUN make
 FROM alpine:latest
 WORKDIR /app
 COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud-linux-amd64 /app/
-COPY --from=build-env /go/src/github.com/rusik69/govnocloud/web/server/html /app/html
+COPY --from=build-env /go/src/github.com/rusik69/govnocloud/pkg/web/server/html /app/html
 ENTRYPOINT ["/app/govnocloud-linux-amd64", "web"]
 EXPOSE 8080
