@@ -24,7 +24,6 @@ func List() ([]VM, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to get domain name: %w", err)
 		}
-
 		state, _, err := domain.GetState()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get domain state: %w", err)

@@ -6,17 +6,17 @@ import (
 
 // Parse parses the environment variables.
 func Parse() (*WEBEnv, error) {
-	port := os.Getenv("WEB_PORT")
+	port := os.Getenv("LISTEN_PORT")
 	if port == "" {
 		port = "8080"
 	}
-	masterHost := os.Getenv("WEB_MASTER_HOST")
+	masterHost := os.Getenv("MASTER_HOST")
 	if masterHost == "" {
 		masterHost = "localhost"
 	}
-	masterPort := os.Getenv("WEB_MASTER_PORT")
+	masterPort := os.Getenv("MASTER_PORT")
 	if masterPort == "" {
-		masterPort = "6969"
+		masterPort = "7070"
 	}
 	WEBEnvInstance = &WEBEnv{
 		Port:       port,

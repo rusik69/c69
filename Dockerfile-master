@@ -6,5 +6,5 @@ RUN make
 FROM alpine:latest
 WORKDIR /
 COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud-linux-amd64 /
-ENTRYPOINT ["/govnocloud-linux-amd64", "node"]
-EXPOSE 6969
+ENTRYPOINT ["/govnocloud-linux-amd64", "master"]
+EXPOSE 7070
