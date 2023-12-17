@@ -16,9 +16,11 @@ build:
 
 docker:
 	docker system prune -a -f
-	#docker buildx create --name multiarch --use || true
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) -f Dockerfile-master --push .
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) -f Dockerfile-web --push .
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f Dockerfile-client --push .
+
+compose:
+	docker-compose up -d
 
 default: tidy build
