@@ -14,6 +14,9 @@ func TestCreateVM(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	if VMID == 0 {
+		t.Error("expected not 0, got ", VMID)
+	}
 }
 
 // TestGETVM tests the GetVM function.

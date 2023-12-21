@@ -4,8 +4,8 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/rusik69/govnocloud/pkg/master/env"
-	"github.com/rusik69/govnocloud/pkg/master/server"
+	"github.com/rusik69/govnocloud/pkg/master"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/spf13/cobra"
 )
 
@@ -15,17 +15,19 @@ var masterCmd = &cobra.Command{
 	Short: "Start govnocloud master",
 	Long:  `Start govnocloud master.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		envInstance, err := env.Parse()
+		envInstance, err := master.ParseEnv()
 		if err != nil {
 			panic(err)
 		}
-		env.MasterEnvInstance = envInstance
-		server.ETCDClient, err = server.ETCDConnect(env.MasterEnvInstance.ETCDHost, env.MasterEnvInstance.ETCDPort, env.MasterEnvInstance.ETCDUser, env.MasterEnvInstance.ETCDPass)
+		types.MasterEnvInstance = envInstance
+		master.ETCDClient, err = master.ETCDConnect(types.MasterEnvInstance.ETCDHost,
+			types.MasterEnvInstance.ETCDPort, types.MasterEnvInstance.ETCDUser,
+			types.MasterEnvInstance.ETCDPass)
 		if err != nil {
 			panic(err)
 		}
-		defer server.ETCDClient.Close()
-		server.Serve()
+		defer master.ETCDClient.Close()
+		master.Serve()
 	},
 }
 

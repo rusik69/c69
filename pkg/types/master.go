@@ -1,4 +1,4 @@
-package env
+package types
 
 // MasterEnv represents the master environment.
 type MasterEnv struct {

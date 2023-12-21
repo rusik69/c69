@@ -1,4 +1,4 @@
-package env
+package types
 
 // WEBEnv is the environment of the web server.
 type WEBEnv struct {

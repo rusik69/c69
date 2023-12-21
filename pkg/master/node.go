@@ -1,10 +1,10 @@
-package server
+package master
 
 import (
 	"encoding/json"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rusik69/govnocloud/pkg/master/env"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 
@@ -12,7 +12,7 @@ import (
 func AddNodeHandler(c *gin.Context) {
 	body := c.Request.Body
 	defer body.Close()
-	var tempNode env.Node
+	var tempNode types.Node
 	if err := c.ShouldBindJSON(&tempNode); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())

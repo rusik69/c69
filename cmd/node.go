@@ -4,9 +4,8 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/rusik69/govnocloud/pkg/node/env"
-	"github.com/rusik69/govnocloud/pkg/node/server"
-	"github.com/rusik69/govnocloud/pkg/node/vm"
+	"github.com/rusik69/govnocloud/pkg/node"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -17,24 +16,24 @@ var nodeCmd = &cobra.Command{
 	Short: "Start govnocloud node",
 	Long:  `Start govnocloud node.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		envInstance, err := env.Parse()
+		envInstance, err := node.ParseEnv()
 		if err != nil {
 			logrus.Error(err.Error())
 			panic(err)
 		}
-		env.NodeEnvInstance = envInstance
-		vm.LibvirtConnection, err = vm.Connect()
+		types.NodeEnvInstance = envInstance
+		node.LibvirtConnection, err = node.VMConnect()
 		if err != nil {
 			logrus.Error(err.Error())
 			panic(err)
 		}
-		defer vm.LibvirtConnection.Close()
-		err = vm.DownloadImages()
+		defer node.LibvirtConnection.Close()
+		err = node.DownloadVMImages()
 		if err != nil {
 			logrus.Error(err.Error())
 			panic(err)
 		}
-		server.Serve()
+		node.Serve()
 	},
 }
 

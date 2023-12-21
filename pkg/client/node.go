@@ -7,12 +7,12 @@ import (
 	"io"
 	"net/http"
 
-	masterEnv "github.com/rusik69/govnocloud/pkg/master/env"
+	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 // AddNode adds a host.
 func AddNode(host, port, name, nodeHost, nodePort string) error {
-	node := masterEnv.Node{
+	node := types.Node{
 		Name: name,
 		Host: nodeHost,
 		Port: nodePort,
@@ -57,14 +57,14 @@ func DeleteNode(host, port, name string) error {
 }
 
 // ListNodes lists nodes.
-func ListNodes(host, port string) ([]masterEnv.Node, error) {
+func ListNodes(host, port string) ([]types.Node, error) {
 	url := "http://" + host + ":" + port + "/api/v1/node/list"
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	var nodes []masterEnv.Node
+	var nodes []types.Node
 	err = json.NewDecoder(resp.Body).Decode(&nodes)
 	if err != nil {
 		return nil, err
@@ -73,17 +73,17 @@ func ListNodes(host, port string) ([]masterEnv.Node, error) {
 }
 
 // GetNode gets a node.
-func GetNode(host, port, name string) (masterEnv.Node, error) {
+func GetNode(host, port, name string) (types.Node, error) {
 	url := "http://" + host + ":" + port + "/api/v1/node/" + name
 	resp, err := http.Get(url)
 	if err != nil {
-		return masterEnv.Node{}, err
+		return types.Node{}, err
 	}
 	defer resp.Body.Close()
-	var node masterEnv.Node
+	var node types.Node
 	err = json.NewDecoder(resp.Body).Decode(&node)
 	if err != nil {
-		return masterEnv.Node{}, err
+		return types.Node{}, err
 	}
 	return node, nil
 }

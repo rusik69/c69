@@ -8,12 +8,12 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/rusik69/govnocloud/pkg/node/vm"
+	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 // CreateVM creates a vm.
 func CreateVM(host, port, name, image, flavor string) (int, error) {
-	vm := vm.VM{
+	vm := types.VM{
 		Name:   name,
 		Image:  image,
 		Flavor: flavor,
@@ -44,7 +44,7 @@ func CreateVM(host, port, name, image, flavor string) (int, error) {
 
 // DeleteVM creates a vm.
 func DeleteVM(host, port string, id int) error {
-	vm := vm.VM{
+	vm := types.VM{
 		ID: id,
 	}
 	idString := strconv.Itoa(id)
@@ -58,21 +58,21 @@ func DeleteVM(host, port string, id int) error {
 }
 
 // ListVMs creates a vm.
-func ListVMs(host, port string) ([]vm.VM, error) {
+func ListVMs(host, port string) ([]types.VM, error) {
 	url := "http://" + host + ":" + port + "/api/v1/vm/list"
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	var vms []vm.VM
+	var vms []types.VM
 	err = json.NewDecoder(resp.Body).Decode(&vms)
 	return vms, err
 }
 
 // GetVM gets a vm.
-func GetVM(host, port string, id int) (vm.VM, error) {
-	vm := vm.VM{
+func GetVM(host, port string, id int) (types.VM, error) {
+	vm := types.VM{
 		ID: id,
 	}
 	idString := strconv.Itoa(id)

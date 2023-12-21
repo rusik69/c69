@@ -1,17 +1,17 @@
-package server
+package master
 
 import (
 	"context"
 	"time"
 
-	"github.com/rusik69/govnocloud/pkg/master/env"
+	"github.com/rusik69/govnocloud/pkg/types"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // ETCDConnect connects to the database.
 func ETCDConnect(host, port, user, pass string) (*clientv3.Client, error) {
 	var conf clientv3.Config
-	if env.MasterEnvInstance.ETCDUser != "" {
+	if types.MasterEnvInstance.ETCDUser != "" {
 		conf = clientv3.Config{
 			Endpoints:   []string{"http://" + host + ":" + port},
 			DialTimeout: 10 * time.Second,

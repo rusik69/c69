@@ -5,6 +5,8 @@ RUN apk add --no-cache libvirt-dev make bash gcc git musl-dev
 RUN make
 FROM alpine:latest
 WORKDIR /
-RUN apk add --no-cache libvirt
+RUN apk add --no-cache libvirt ca-certificates
+RUN 
 COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud-linux-amd64 /
-ENTRYPOINT ["/govnocloud-linux-amd64", "client"]
+ENTRYPOINT ["/govnocloud-linux-amd64", "node"]
+EXPOSE 6969

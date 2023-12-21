@@ -15,12 +15,21 @@ build:
 	chmod +x bin/*
 
 docker:
-	docker system prune -a -f
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) -f Dockerfile-master --push .
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) -f Dockerfile-web --push .
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f Dockerfile-client --push .
+	set -x
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) -f Dockerfile-master .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) -f Dockerfile-web .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f Dockerfile-client .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f Dockerfile-node .
+	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
+	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-web:latest
+	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
+	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-node:latest
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG)
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG)
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG)
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG)
 
 compose:
-	docker-compose up -d
+	docker-compose up
 
 default: tidy build

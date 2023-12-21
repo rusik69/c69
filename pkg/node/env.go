@@ -1,12 +1,14 @@
-package env
+package node
 
 import (
 	"errors"
 	"os"
+
+	"github.com/rusik69/govnocloud/pkg/types"
 )
 
-// Parse parses the node environment.
-func Parse() (*NodeEnv, error) {
+// ParseEnv parses the node environment.
+func ParseEnv() (*types.NodeEnv, error) {
 	name := os.Getenv("NODE_NAME")
 	if name == "" {
 		return nil, errors.New("NODE_NAME is not set")
@@ -27,7 +29,7 @@ func Parse() (*NodeEnv, error) {
 	if libvirtImageDir == "" {
 		libvirtImageDir = "/var/lib/libvirt/images"
 	}
-	NodeEnvInstance = &NodeEnv{
+	NodeEnvInstance := &types.NodeEnv{
 		Name:            name,
 		IP:              ip,
 		Port:            port,

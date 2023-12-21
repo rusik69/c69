@@ -1,12 +1,12 @@
-package server
+package master
 
 import (
 	"encoding/json"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
-	"github.com/rusik69/govnocloud/pkg/master/env"
-	"github.com/rusik69/govnocloud/pkg/node/vm"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 
@@ -14,7 +14,7 @@ import (
 func CreateVMHandler(c *gin.Context) {
 	body := c.Request.Body
 	defer body.Close()
-	var tempVM vm.VM
+	var tempVM types.VM
 	if err := c.ShouldBindJSON(&tempVM); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -25,6 +25,7 @@ func CreateVMHandler(c *gin.Context) {
 		logrus.Error("name, image or flavor is empty")
 		return
 	}
+	logrus.Println("Creating VM", tempVM)
 	vmInfoString, err := ETCDGet("/vms/" + tempVM.Name)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -38,8 +39,8 @@ func CreateVMHandler(c *gin.Context) {
 	}
 	newVMID := 0
 	created := false
-	var newVM vm.VM
-	for _, node := range env.MasterEnvInstance.Nodes {
+	var newVM types.VM
+	for _, node := range types.MasterEnvInstance.Nodes {
 		newVMID, err = client.CreateVM(node.Host, node.Port, tempVM.Name, tempVM.Image, tempVM.Flavor)
 		if err != nil {
 			logrus.Error(err.Error())
@@ -75,7 +76,7 @@ func CreateVMHandler(c *gin.Context) {
 func DeleteVMHandler(c *gin.Context) {
 	body := c.Request.Body
 	defer body.Close()
-	var tempVM vm.VM
+	var tempVM types.VM
 	if err := c.ShouldBindJSON(&tempVM); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -86,7 +87,9 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error("id is empty")
 		return
 	}
-	vmInfoString, err := ETCDGet("/vms/" + string(tempVM.ID))
+	logrus.Printf("Deleting VM %d\n", tempVM.ID)
+	tempVMIDString := strconv.Itoa(tempVM.ID)
+	vmInfoString, err := ETCDGet("/vms/" + tempVMIDString)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -97,14 +100,14 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error("vm with this id does not exist")
 		return
 	}
-	var vmInfo vm.VM
+	var vmInfo types.VM
 	err = json.Unmarshal([]byte(vmInfoString), &vmInfo)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
-	for _, node := range env.MasterEnvInstance.Nodes {
+	for _, node := range types.MasterEnvInstance.Nodes {
 		if node.Host == vmInfo.Host {
 			err = client.DeleteVM(node.Host, node.Port, tempVM.ID)
 			if err != nil {
@@ -114,7 +117,7 @@ func DeleteVMHandler(c *gin.Context) {
 			}
 		}
 	}
-	err = ETCDDelete("/vms/" + string(tempVM.ID))
+	err = ETCDDelete("/vms/" + tempVMIDString)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -128,7 +131,7 @@ func DeleteVMHandler(c *gin.Context) {
 func GetVMHandler(c *gin.Context) {
 	body := c.Request.Body
 	defer body.Close()
-	var tempVM vm.VM
+	var tempVM types.VM
 	if err := c.ShouldBindJSON(&tempVM); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -139,7 +142,9 @@ func GetVMHandler(c *gin.Context) {
 		logrus.Error("id is empty")
 		return
 	}
-	vmInfoString, err := ETCDGet("/vms/" + string(tempVM.ID))
+	logrus.Printf("Getting VM %d\n", tempVM.ID)
+	vmIDString := strconv.Itoa(tempVM.ID)
+	vmInfoString, err := ETCDGet("/vms/" + vmIDString)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -150,7 +155,7 @@ func GetVMHandler(c *gin.Context) {
 		logrus.Error("vm with this id does not exist")
 		return
 	}
-	var vmInfo vm.VM
+	var vmInfo types.VM
 	err = json.Unmarshal([]byte(vmInfoString), &vmInfo)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -163,6 +168,7 @@ func GetVMHandler(c *gin.Context) {
 
 // ListVMHandler handles the list vm request.
 func ListVMHandler(c *gin.Context) {
+	logrus.Println("Listing VMs")
 	vms, err := ETCDList("/vms/")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})

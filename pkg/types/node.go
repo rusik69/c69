@@ -1,9 +1,4 @@
-package vm
-
-import (
-	"github.com/rusik69/govnocloud/pkg/node/volume"
-	"libvirt.org/go/libvirt"
-)
+package types
 
 // VM represents a virtual machine.
 type VM struct {
@@ -22,16 +17,13 @@ type VM struct {
 	// Flavor is the flavor of the virtual machine.
 	Flavor string `json:"flavor"`
 	// Volumes is the volumes of the virtual machine.
-	Volumes []volume.Volume `json:"volumes"`
+	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the virtual machine.
 	Committed bool `json:"committed"`
 }
 
-// LibvirtConnection is the singleton instance of libvirt.Connection.
-var LibvirtConnection *libvirt.Connect
-
-// Flavor represents a flavor.
-type Flavor struct {
+// Flavor represents a vm flavor.
+type VMFlavor struct {
 	// ID is the ID of the flavor.
 	ID string `json:"id"`
 	// Name is the name of the flavor.
@@ -44,36 +36,36 @@ type Flavor struct {
 	Disk int `json:"disk"`
 }
 
-var Flavors = map[string]Flavor{
-	"tiny": Flavor{
+var VMFlavors = map[string]VMFlavor{
+	"tiny": VMFlavor{
 		ID:    "0",
 		Name:  "tiny",
 		VCPUs: 1,
 		RAM:   512,
 		Disk:  2,
 	},
-	"small": Flavor{
+	"small": VMFlavor{
 		ID:    "1",
 		Name:  "small",
 		VCPUs: 1,
 		RAM:   1024,
 		Disk:  10,
 	},
-	"medium": Flavor{
+	"medium": VMFlavor{
 		ID:    "2",
 		Name:  "medium",
 		VCPUs: 2,
 		RAM:   2048,
 		Disk:  20,
 	},
-	"large": Flavor{
+	"large": VMFlavor{
 		ID:    "3",
 		Name:  "large",
 		VCPUs: 4,
 		RAM:   4096,
 		Disk:  40,
 	},
-	"xlarge": Flavor{
+	"xlarge": VMFlavor{
 		ID:    "4",
 		Name:  "xlarge",
 		VCPUs: 8,
@@ -82,7 +74,7 @@ var Flavors = map[string]Flavor{
 	},
 }
 
-type Image struct {
+type VMImage struct {
 	// ID is the ID of the image.
 	ID string `json:"id"`
 	// Name is the name of the image.
@@ -91,15 +83,46 @@ type Image struct {
 	URL string `json:"url"`
 }
 
-var Images = map[string]Image{
-	"ubuntu22.04": Image{
+var VMImages = map[string]VMImage{
+	"ubuntu22.04": VMImage{
 		ID:  "0",
 		Img: "ubuntu-22.04-server-cloudimg-amd64.img",
 		URL: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-disk-kvm.img",
 	},
-	"ubuntu20.04": Image{
+	"ubuntu20.04": VMImage{
 		ID:  "1",
 		Img: "ubuntu-20.04-server-cloudimg-amd64.img",
 		URL: "https://cloud-images.ubuntu.com/releases/20.04/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
 	},
+}
+
+type NodeEnv struct {
+	// Name is the name of the node.
+	Name string `json:"name"`
+	// IP is the IP address of the node.
+	IP string `json:"ip"`
+	// Port is the port of the node.
+	Port            string `json:"port"`
+	LibVirtURI      string `json:"libvirt_socket"`
+	LibVirtImageDir string `json:"libvirt_image_dir"`
+}
+
+// NodeEnvInstance is the singleton instance of NodeEnv.
+var NodeEnvInstance *NodeEnv
+
+// Stats represents the stats.
+type Stats struct {
+	CPUs int   `json:"cpus"`
+	MEM  int64 `json:"mem"`
+	DISK int64 `json:"disk"`
+}
+
+// Volume represents a volume.
+type Volume struct {
+	// ID is the ID of the volume.
+	ID string `json:"id"`
+	// Path is the path of the volume.
+	Path string `json:"path"`
+	// Size is the size of the volume.
+	Size int64 `json:"size"`
 }
