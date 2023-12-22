@@ -20,11 +20,11 @@ func ParseEnv() (*types.MasterEnv, error) {
 	}
 	etcduser := os.Getenv("MASTER_ETCD_USER")
 	if etcduser == "" {
-		etcduser = "root"
+		etcduser = ""
 	}
 	etcdpass := os.Getenv("MASTER_ETCD_PASS")
 	if etcdpass == "" {
-		etcdpass = "password"
+		etcdpass = ""
 	}
 	listenport := os.Getenv("MASTER_LISTEN_PORT")
 	if listenport == "" {
