@@ -31,3 +31,11 @@ services:
       - "8080:8080"
     environment:
       "WEB_MASTER_HOST": "master"
+  test:
+    image: loqutus/govnocloud-test
+    environment:
+      "TEST_MASTER_HOST": "master"
+      "TEST_MASTER_PORT": "7070"
+      "TEST_NODE_NAME": "node"
+      "TEST_NODE_IP": "node"
+      "TEST_NODE_PORT": "6969"

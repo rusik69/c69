@@ -14,19 +14,25 @@ build:
 	CGO_ENABLED=1 GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-linux-amd64 main.go
 	chmod +x bin/*
 
+test:
+	go test -v ./...
+
 docker:
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) -f Dockerfile-master .
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) -f Dockerfile-web .
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f Dockerfile-client .
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f Dockerfile-node .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f Dockerfile-test .
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-web:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-node:latest
+	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG)
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
 
 compose:
 	docker-compose up
