@@ -6,7 +6,9 @@ import (
 	"github.com/rusik69/govnocloud/pkg/client"
 )
 
-var VMID int
+var (
+	VMID int
+)
 
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
