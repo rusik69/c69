@@ -14,14 +14,14 @@ func ETCDConnect(host, port, user, pass string) (*clientv3.Client, error) {
 	if types.MasterEnvInstance.ETCDUser != "" {
 		conf = clientv3.Config{
 			Endpoints:   []string{"http://" + host + ":" + port},
-			DialTimeout: 10 * time.Second,
+			DialTimeout: 60 * time.Second,
 			Username:    user,
 			Password:    pass,
 		}
 	} else {
 		conf = clientv3.Config{
 			Endpoints:   []string{"http://" + host + ":" + port},
-			DialTimeout: 10 * time.Second,
+			DialTimeout: 60 * time.Second,
 		}
 	}
 	cli, err := clientv3.New(conf)

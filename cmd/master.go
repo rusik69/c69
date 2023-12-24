@@ -6,6 +6,7 @@ package cmd
 import (
 	"github.com/rusik69/govnocloud/pkg/master"
 	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,6 +21,16 @@ var masterCmd = &cobra.Command{
 			panic(err)
 		}
 		types.MasterEnvInstance = envInstance
+		logrus.Println("Master environment is parsed")
+		logrus.Println("ETCD host is " + types.MasterEnvInstance.ETCDHost)
+		logrus.Println("ETCD port is " + types.MasterEnvInstance.ETCDPort)
+		logrus.Println("ETCD user is " + types.MasterEnvInstance.ETCDUser)
+		logrus.Println("ETCD pass is " + types.MasterEnvInstance.ETCDPass)
+		logrus.Println("Listen port is " + types.MasterEnvInstance.ListenPort)
+		logrus.Println("Nodes are:")
+		for _, node := range types.MasterEnvInstance.Nodes {
+			logrus.Println(node.Name + " " + node.Host + " " + node.Port)
+		}
 		master.ETCDClient, err = master.ETCDConnect(types.MasterEnvInstance.ETCDHost,
 			types.MasterEnvInstance.ETCDPort, types.MasterEnvInstance.ETCDUser,
 			types.MasterEnvInstance.ETCDPass)
@@ -27,6 +38,7 @@ var masterCmd = &cobra.Command{
 			panic(err)
 		}
 		defer master.ETCDClient.Close()
+		logrus.Println("ETCD is connected at " + types.MasterEnvInstance.ETCDHost + ":" + types.MasterEnvInstance.ETCDPort)
 		master.Serve()
 	},
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 
@@ -17,6 +18,7 @@ func Serve() {
 	})
 	router.Static("/static", "/app/html/static")
 	router.GET("/", rootHandler)
+	router.Run(":" + types.WEBEnvInstance.Port)
 }
 
 // rootHandler handles the root request.

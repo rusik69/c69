@@ -22,4 +22,5 @@ func Serve() {
 	r.GET("/api/v1/node/:id", GetNodeHandler)
 	r.DELETE("/api/v1/node/:id", DeleteNodeHandler)
 	logrus.Println("Master is listening on port " + string(types.MasterEnvInstance.ListenPort))
+	r.Run(":" + types.MasterEnvInstance.ListenPort)
 }
