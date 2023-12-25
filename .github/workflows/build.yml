@@ -10,6 +10,8 @@ jobs:
       run: make
     - name: docker
       run: make docker
+    - name: compose
+      run: make compose
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
@@ -30,4 +32,4 @@ jobs:
     #     asset_path: ./bin/govnocloud-linux-amd64
     #     asset_name: govnocloud-linux-amd64
     #     asset_content_type: application/octet-stream
-    timeout-minutes: 60
+    timeout-minutes: 10
