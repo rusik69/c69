@@ -18,11 +18,11 @@ test:
 	go test -v ./...
 
 docker:
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) -f Dockerfile-master .
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) -f Dockerfile-web .
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f Dockerfile-client .
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f Dockerfile-node .
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f Dockerfile-test .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) -f build/Dockerfile-master .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) -f build/Dockerfile-web .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f build/Dockerfile-client .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f build/Dockerfile-node .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f build/Dockerfile-test .
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-web:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-web:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
@@ -35,6 +35,6 @@ docker:
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
 
 compose:
-	docker-compose up
+	docker-compose -f deployments/docker-compose.yml up
 
 default: tidy build

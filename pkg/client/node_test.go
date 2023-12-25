@@ -58,7 +58,7 @@ func TestMain(m *testing.M) {
 
 // TestAddNode tests the AddNode function.
 func TestAddNode(t *testing.T) {
-	err := client.AddNode("localhost", "7070", "localhost", "localhost", "6969")
+	err := client.AddNode(masterHost, masterPort, nodeName, nodeHost, nodePort)
 	if err != nil {
 		t.Error(err)
 	}
@@ -66,7 +66,7 @@ func TestAddNode(t *testing.T) {
 
 // TestListNodes tests the ListNodes function.
 func TestListNodes(t *testing.T) {
-	nodes, err := client.ListNodes("localhost", "7070")
+	nodes, err := client.ListNodes(masterHost, masterPort)
 	if err != nil {
 		t.Error(err)
 	}
@@ -77,7 +77,7 @@ func TestListNodes(t *testing.T) {
 
 // TestGetNode tests the GetNode function.
 func TestGetNode(t *testing.T) {
-	node, err := client.GetNode("localhost", "7070", "localhost")
+	node, err := client.GetNode(masterHost, masterPort, nodeName)
 	if err != nil {
 		t.Error(err)
 	}
@@ -88,7 +88,7 @@ func TestGetNode(t *testing.T) {
 
 // TestDeleteNode tests the DeleteNode function.
 func TestDeleteNode(t *testing.T) {
-	err := client.DeleteNode("localhost", "7070", "localhost")
+	err := client.DeleteNode(masterHost, masterPort, nodeName)
 	if err != nil {
 		t.Error(err)
 	}

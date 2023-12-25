@@ -12,7 +12,7 @@ var (
 
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
-	VMID, err := client.CreateVM("localhost", "7070", "test", "ubuntu22.04", "tiny")
+	VMID, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "tiny")
 	if err != nil {
 		t.Error(err)
 	}
@@ -23,7 +23,7 @@ func TestCreateVM(t *testing.T) {
 
 // TestGETVM tests the GetVM function.
 func TestGetVM(t *testing.T) {
-	vm, err := client.GetVM("localhost", "7070", VMID)
+	vm, err := client.GetVM(masterHost, masterPort, VMID)
 	if err != nil {
 		t.Error(err)
 	}
@@ -34,7 +34,7 @@ func TestGetVM(t *testing.T) {
 
 // TestListVMs tests the ListVMs function.
 func TestListVMs(t *testing.T) {
-	vms, err := client.ListVMs("localhost", "7070")
+	vms, err := client.ListVMs(masterHost, masterPort)
 	if err != nil {
 		t.Error(err)
 	}
@@ -45,7 +45,7 @@ func TestListVMs(t *testing.T) {
 
 // TestDeleteVM tests the DeleteVM function.
 func TestDeleteVM(t *testing.T) {
-	err := client.DeleteVM("localhost", "7070", VMID)
+	err := client.DeleteVM(masterHost, masterPort, VMID)
 	if err != nil {
 		t.Error(err)
 	}
