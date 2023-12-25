@@ -34,4 +34,4 @@ jobs:
     #     asset_path: ./bin/govnocloud-linux-amd64
     #     asset_name: govnocloud-linux-amd64
     #     asset_content_type: application/octet-stream
-    timeout-minutes: 10
+    timeout-minutes: 20
