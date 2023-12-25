@@ -6,6 +6,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: prune
+      run: make prune
     - name: build
       run: make
     - name: docker
