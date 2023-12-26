@@ -18,6 +18,8 @@ func Serve() {
 	r.GET("/api/v1/vm/:id", VMInfoHandler)
 	r.DELETE("/api/v1/vm/delete/:id", DeleteVMHandler)
 	r.GET("/api/v1/vm/list", ListVMHandler)
+	r.GET("api/v1/vm/start/:id", StartVMHandler)
+	r.GET("api/v1/vm/stop/:id", StopVMHandler)
 	r.GET("/api/v1/node/stats", StatsHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
@@ -63,15 +65,18 @@ func CreateVMHandler(c *gin.Context) {
 	defer body.Close()
 	var tempVM types.VM
 	if err := c.ShouldBindJSON(&tempVM); err != nil {
+		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 	if tempVM.Name == "" || tempVM.Image == "" || tempVM.Flavor == "" {
+		logrus.Error("name, image or flavor is empty")
 		c.JSON(400, gin.H{"error": "name, image or flavor is empty"})
 		return
 	}
 	err := CreateVM(tempVM)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -81,17 +86,20 @@ func CreateVMHandler(c *gin.Context) {
 func DeleteVMHandler(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
+		logrus.Error("id is empty")
 		c.JSON(400, gin.H{"error": "id is empty"})
 		return
 	}
 	intID, err := strconv.Atoi(id)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 	tempVM := types.VM{ID: intID}
 	err = DeleteVM(tempVM)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -101,6 +109,7 @@ func DeleteVMHandler(c *gin.Context) {
 func ListVMHandler(c *gin.Context) {
 	vms, err := ListVMs()
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -111,19 +120,68 @@ func ListVMHandler(c *gin.Context) {
 func VMInfoHandler(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
+		logrus.Error("id is empty")
 		c.JSON(400, gin.H{"error": "id is empty"})
 		return
 	}
 	idInt, err := strconv.Atoi(id)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 	tempVM := types.VM{ID: idInt}
 	err = GetVM(tempVM)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(200, tempVM)
+}
+
+// StopVMHandler handles the stop vm request.
+func StopVMHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	tempVM := types.VM{ID: idInt}
+	err = StopVM(tempVM)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+}
+
+// StartVMHandler handles the start vm request.
+func StartVMHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	tempVM := types.VM{ID: idInt}
+	err = StartVM(tempVM)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
 }

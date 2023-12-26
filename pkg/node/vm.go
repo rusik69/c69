@@ -94,6 +94,7 @@ func CreateVM(vm types.VM) error {
 	}
 	domain, err := LibvirtConnection.DomainDefineXML(xml)
 	if err != nil {
+		logrus.Error(err.Error())
 		return err
 	}
 	defer domain.Free()
@@ -130,6 +131,8 @@ func DeleteVM(vm types.VM) error {
 	}
 	return nil
 }
+
+// G
 
 // GetVM gets the vm.
 func GetVM(vm types.VM) error {
