@@ -1,5 +1,25 @@
 package types
 
+// Container represents a container.
+type Container struct {
+	// ID is the ID of the container.
+	ID string `json:"id"`
+	// Name is the name of the container.
+	Name string `json:"name"`
+	// Image is the image of the container.
+	Image string `json:"image"`
+	// State is the state of the container.
+	State string `json:"state"`
+	// IP is the IP address of the container.
+	IP string `json:"ip"`
+	// Host is the host of the container.
+	Host string `json:"host"`
+	// Volumes is the volumes of the container.
+	Volumes []Volume `json:"volumes"`
+	// Committed is the committed status of the container.
+	Committed bool `json:"committed"`
+}
+
 // VM represents a virtual machine.
 type VM struct {
 	// ID is the ID of the virtual machine.
