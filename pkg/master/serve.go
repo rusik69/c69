@@ -13,6 +13,8 @@ func Serve() {
 	r.POST("/api/v1/vm/create", CreateVMHandler)
 	r.DELETE("/api/v1/vm/:id", DeleteVMHandler)
 	r.GET("/api/v1/vm/list", ListVMHandler)
+	r.GET("/api/v1/vm/start/:id", StartVMHandler)
+	r.GET("/api/v1/vm/stop/:id", StopVMHandler)
 	r.GET("/api/v1/container/:id", GetContainerHandler)
 	r.POST("/api/v1/container/create", CreateContainerHandler)
 	r.DELETE("/api/v1/container/:id", DeleteContainerHandler)

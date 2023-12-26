@@ -178,3 +178,101 @@ func ListVMHandler(c *gin.Context) {
 	c.JSON(200, vms)
 	return
 }
+
+// StartVMHandler handles the start vm request.
+func StartVMHandler(c *gin.Context) {
+	body := c.Request.Body
+	defer body.Close()
+	var tempVM types.VM
+	if err := c.ShouldBindJSON(&tempVM); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	if tempVM.ID == 0 {
+		c.JSON(400, gin.H{"error": "id is empty"})
+		logrus.Error("id is empty")
+		return
+	}
+	logrus.Printf("Starting VM %d\n", tempVM.ID)
+	vmIDString := strconv.Itoa(tempVM.ID)
+	vmInfoString, err := ETCDGet("/vms/" + vmIDString)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	if vmInfoString == "" {
+		c.JSON(400, gin.H{"error": "vm with this id does not exist"})
+		logrus.Error("vm with this id does not exist")
+		return
+	}
+	var vmInfo types.VM
+	err = json.Unmarshal([]byte(vmInfoString), &vmInfo)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range types.MasterEnvInstance.Nodes {
+		if node.Host == vmInfo.Host {
+			err = client.StartVM(node.Host, node.Port, tempVM.ID)
+			if err != nil {
+				logrus.Error(err.Error())
+				c.JSON(500, gin.H{"error": err.Error()})
+				break
+			}
+		}
+	}
+	c.JSON(200, gin.H{"status": "ok"})
+	return
+}
+
+// StopVMHandler handles the stop vm request.
+func StopVMHandler(c *gin.Context) {
+	body := c.Request.Body
+	defer body.Close()
+	var tempVM types.VM
+	if err := c.ShouldBindJSON(&tempVM); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	if tempVM.ID == 0 {
+		c.JSON(400, gin.H{"error": "id is empty"})
+		logrus.Error("id is empty")
+		return
+	}
+	logrus.Printf("Stopping VM %d\n", tempVM.ID)
+	vmIDString := strconv.Itoa(tempVM.ID)
+	vmInfoString, err := ETCDGet("/vms/" + vmIDString)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	if vmInfoString == "" {
+		c.JSON(400, gin.H{"error": "vm with this id does not exist"})
+		logrus.Error("vm with this id does not exist")
+		return
+	}
+	var vmInfo types.VM
+	err = json.Unmarshal([]byte(vmInfoString), &vmInfo)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range types.MasterEnvInstance.Nodes {
+		if node.Host == vmInfo.Host {
+			err = client.StopVM(node.Host, node.Port, tempVM.ID)
+			if err != nil {
+				logrus.Error(err.Error())
+				c.JSON(500, gin.H{"error": err.Error()})
+				break
+			}
+		}
+	}
+	c.JSON(200, gin.H{"status": "ok"})
+	return
+}

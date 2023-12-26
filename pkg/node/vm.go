@@ -132,7 +132,33 @@ func DeleteVM(vm types.VM) error {
 	return nil
 }
 
-// G
+// StopVM stops the vm.
+func StopVM(vm types.VM) error {
+	domain, err := LibvirtConnection.LookupDomainByName(vm.Name)
+	if err != nil {
+		return err
+	}
+	defer domain.Free()
+	err = domain.Destroy()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// StartVM starts the vm.
+func StartVM(vm types.VM) error {
+	domain, err := LibvirtConnection.LookupDomainByName(vm.Name)
+	if err != nil {
+		return err
+	}
+	defer domain.Free()
+	err = domain.Create()
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 // GetVM gets the vm.
 func GetVM(vm types.VM) error {
