@@ -44,16 +44,24 @@ func CreateVM(host, port, name, image, flavor string) (int, error) {
 
 // DeleteVM deletes a vm.
 func DeleteVM(host, port string, id int) error {
-	vm := types.VM{
-		ID: id,
-	}
 	idString := strconv.Itoa(id)
 	url := "http://" + host + ":" + port + "/api/v1/vm/" + idString
-	body, err := json.Marshal(vm)
+	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
 	}
-	_, err = http.Post(url, "application/json", bytes.NewBuffer(body))
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		bodyText, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return errors.New(string(bodyText))
+	}
 	return err
 }
 
@@ -80,9 +88,18 @@ func StartVM(host, port string, id int) error {
 func StopVM(host, port string, id int) error {
 	idString := strconv.Itoa(id)
 	url := "http://" + host + ":" + port + "/api/v1/vm/stop/" + idString
-	body, err = http.Get(url)
+	resp, err := http.Get(url)
 	if err != nil {
-		
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		bodyText, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return errors.New(string(bodyText))
+	}
 	return err
 }
 

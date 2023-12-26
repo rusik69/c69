@@ -69,24 +69,24 @@ func CreateVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	return
 }
 
 // DeleteVMHandler handles the delete request.
 func DeleteVMHandler(c *gin.Context) {
 	body := c.Request.Body
 	defer body.Close()
-	var tempVM types.VM
-	if err := c.ShouldBindJSON(&tempVM); err != nil {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
-	if tempVM.ID == 0 {
+	if id == 0 {
 		c.JSON(400, gin.H{"error": "id is empty"})
 		logrus.Error("id is empty")
 		return
 	}
+	tempVM := types.VM{ID: id}
 	logrus.Printf("Deleting VM %d\n", tempVM.ID)
 	tempVMIDString := strconv.Itoa(tempVM.ID)
 	vmInfoString, err := ETCDGet("/vms/" + tempVMIDString)
@@ -124,7 +124,6 @@ func DeleteVMHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{"status": "ok"})
-	return
 }
 
 // GetVMHandler handles the get vm info request.
@@ -163,7 +162,6 @@ func GetVMHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, vmInfo)
-	return
 }
 
 // ListVMHandler handles the list vm request.

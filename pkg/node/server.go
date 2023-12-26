@@ -16,7 +16,7 @@ func Serve() {
 	r := gin.New()
 	r.POST("/api/v1/vm/create", CreateVMHandler)
 	r.GET("/api/v1/vm/:id", VMInfoHandler)
-	r.DELETE("/api/v1/vm/delete/:id", DeleteVMHandler)
+	r.DELETE("/api/v1/vm/:id", DeleteVMHandler)
 	r.GET("/api/v1/vm/list", ListVMHandler)
 	r.GET("api/v1/vm/start/:id", StartVMHandler)
 	r.GET("api/v1/vm/stop/:id", StopVMHandler)
