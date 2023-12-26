@@ -1,14 +1,18 @@
 package node
 
 import (
+	"context"
+
+	dockertypes "github.com/docker/docker/api/types"
 	dockerclient "github.com/docker/docker/client"
+	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 var DockerConnection *dockerclient.Client
 
 // ContainerConnect connects to the container daemon.
 func ContainerConnect() {
-	cli, err := dockerclient.NewEnvClient()
+	cli, err := dockerclient.NewClientWithOpts(dockerclient.FromEnv)
 	if err != nil {
 		panic(err)
 	}
@@ -16,10 +20,16 @@ func ContainerConnect() {
 }
 
 // CreateContainer creates a container.
-func CreateContainer(name string) error {
-	_, err := DockerConnection.ContainerCreate(nil, nil, nil, nil, name)
+func CreateContainer(c types.Container) (types.Container, error) {
+	ctx := context.Background()
+	dockerContainer := dockertypes.Container{
+		Image: c.Image,
+		Names : []string{c.Name},
+	}
+	resp, err := DockerConnection.ContainerCreate(ctx, dockerContainer, nil, nil, name)
 	if err != nil {
 		return err
 	}
+	_, 
 	return nil
 }
