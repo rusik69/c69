@@ -41,6 +41,6 @@ prune:
 	docker system prune -a -f
 
 compose:
-	docker-compose -f deployments/docker-compose.yml up
+	docker-compose -f deployments/docker-compose.yml up --abort-on-container-exit --exit-code-from test
 
 default: get build
