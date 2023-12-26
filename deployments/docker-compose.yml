@@ -27,12 +27,17 @@ services:
     environment:
       "MASTER_ETCD_HOST": "etcd"
       "MASTER_NODES": "node:node:6969"
+    depends_on:
+      - etcd
+      - node
   web:
     image: loqutus/govnocloud-web
     ports:
       - "8080:8080"
     environment:
       "WEB_MASTER_HOST": "master"
+    depends_on:
+      - master
   test:
     image: loqutus/govnocloud-test
     environment:
@@ -41,3 +46,6 @@ services:
       "TEST_NODE_NAME": "node"
       "TEST_NODE_IP": "node"
       "TEST_NODE_PORT": "6969"
+    depends_on:
+      - master
+      - node

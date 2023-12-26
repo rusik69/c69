@@ -86,12 +86,12 @@ type VMImage struct {
 var VMImages = map[string]VMImage{
 	"ubuntu22.04": VMImage{
 		ID:  "0",
-		Img: "ubuntu-22.04-server-cloudimg-amd64.img",
+		Img: "ubuntu-22.04-server-cloudimg-amd64-disk-kvm.img",
 		URL: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-disk-kvm.img",
 	},
 	"ubuntu20.04": VMImage{
 		ID:  "1",
-		Img: "ubuntu-20.04-server-cloudimg-amd64.img",
+		Img: "ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
 		URL: "https://cloud-images.ubuntu.com/releases/20.04/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
 	},
 }
