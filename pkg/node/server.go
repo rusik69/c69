@@ -74,12 +74,13 @@ func CreateVMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name, image or flavor is empty"})
 		return
 	}
-	err := CreateVM(tempVM)
+	vm, err := CreateVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	c.JSON(200, vm)
 }
 
 // DeleteHandler handles the delete request.
@@ -131,13 +132,13 @@ func VMInfoHandler(c *gin.Context) {
 		return
 	}
 	tempVM := types.VM{ID: idInt}
-	err = GetVM(tempVM)
+	vm, err := GetVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, tempVM)
+	c.JSON(200, vm)
 }
 
 // StopVMHandler handles the stop vm request.

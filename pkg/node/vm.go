@@ -28,10 +28,10 @@ func VMConnect() (*libvirt.Connect, error) {
 }
 
 // CreateVM creates the vm.
-func CreateVM(vm types.VM) error {
+func CreateVM(vm types.VM) (types.VM, error) {
 	flavor, ok := types.VMFlavors[vm.Flavor]
 	if !ok {
-		return errors.New("flavor not found")
+		return types.VM{}, errors.New("flavor not found")
 	}
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
@@ -90,19 +90,24 @@ func CreateVM(vm types.VM) error {
 	}
 	xml, err := domainXML.Marshal()
 	if err != nil {
-		return err
+		return types.VM{}, err
 	}
 	domain, err := LibvirtConnection.DomainDefineXML(xml)
 	if err != nil {
 		logrus.Error(err.Error())
-		return err
+		return types.VM{}, err
 	}
 	defer domain.Free()
 	err = domain.Create()
 	if err != nil {
-		return err
+		return types.VM{}, err
 	}
-	return nil
+	id, err := domain.GetID()
+	if err != nil {
+		return types.VM{}, err
+	}
+	vm.ID = int(id)
+	return vm, nil
 }
 
 // DeleteVM deletes the vm.
@@ -161,21 +166,21 @@ func StartVM(vm types.VM) error {
 }
 
 // GetVM gets the vm.
-func GetVM(vm types.VM) error {
+func GetVM(vm types.VM) (types.VM, error) {
 	domain, err := LibvirtConnection.LookupDomainById(uint32(vm.ID))
 	if err != nil {
-		return err
+		return types.VM{}, err
 	}
 	vm.Name, err = domain.GetName()
 	if err != nil {
-		return err
+		return types.VM{}, err
 	}
 	state, _, err := domain.GetState()
 	if err != nil {
-		return err
+		return types.VM{}, err
 	}
 	vm.State = ParseState(state)
-	return nil
+	return types.VM{}, nil
 }
 
 // ListVMs lists the vms.
