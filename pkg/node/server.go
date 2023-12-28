@@ -20,6 +20,10 @@ func Serve() {
 	r.GET("/api/v1/vm/list", ListVMHandler)
 	r.GET("api/v1/vm/start/:id", StartVMHandler)
 	r.GET("api/v1/vm/stop/:id", StopVMHandler)
+	r.GET("/api/v1/container/:id", GetContainerHandler)
+	r.POST("/api/v1/container/create", CreateContainerHandler)
+	r.DELETE("/api/v1/container/:id", DeleteContainerHandler)
+	r.GET("/api/v1/container/list", ListContainersHandler)
 	r.GET("/api/v1/node/stats", StatsHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
@@ -185,4 +189,80 @@ func StartVMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+}
+
+// CreateContainerHandler handles the create container request.
+func CreateContainerHandler(c *gin.Context) {
+	body := c.Request.Body
+	defer body.Close()
+	var tempContainer types.Container
+	if err := c.ShouldBindJSON(&tempContainer); err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	if tempContainer.Name == "" || tempContainer.Image == "" {
+		logrus.Error("name or image is empty")
+		c.JSON(400, gin.H{"error": "name or image is empty"})
+		return
+	}
+	container, err := CreateContainer(tempContainer)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, container)
+}
+
+// DeleteContainerHandler handles the delete container request.
+func DeleteContainerHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	tempContainer := types.Container{ID: id}
+	err := DeleteContainer(tempContainer)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+}
+
+// GetContainerHandler handles the get container request.
+func GetContainerHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	tempContainer := types.Container{ID: idInt}
+	container, err := GetContainer(tempContainer)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, container)
+}
+
+// ListContainersHandler handles the list container request.
+func ListContainersHandler(c *gin.Context) {
+	containers, err := ListContainers()
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, containers)
 }

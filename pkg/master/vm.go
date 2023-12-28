@@ -28,7 +28,7 @@ func CreateVMHandler(c *gin.Context) {
 	logrus.Println("Creating VM", tempVM)
 	vmInfoString, err := ETCDGet("/vms/" + tempVM.Name)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
