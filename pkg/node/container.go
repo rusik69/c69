@@ -4,9 +4,9 @@ import (
 	"context"
 
 	dockertypes "github.com/docker/docker/api/types"
+	dockercontainer "github.com/docker/docker/api/types/container"
 	dockerclient "github.com/docker/docker/client"
 	"github.com/rusik69/govnocloud/pkg/types"
-	dockercontainer "github.com/rusik69/govnocloud/pkg/types/container"
 )
 
 var DockerConnection *dockerclient.Client
