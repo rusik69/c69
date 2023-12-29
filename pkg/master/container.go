@@ -1,7 +1,7 @@
 package master
 
 import (
-	"strconv"
+	"encoding/json"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -45,7 +45,7 @@ func CreateContainerHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			continue
 		}
-		newContainer.ID = strconv.Itoa(newContainerID)
+		newContainer.ID = newContainerID
 		newContainer.Host = node.Host
 		created = true
 		break
@@ -55,7 +55,14 @@ func CreateContainerHandler(c *gin.Context) {
 		logrus.Error("can't create container")
 		return
 	}
-	err = ETCDPut("/containers/"+tempContainer.Name, newContainer)
+	newContainer.Committed = true
+	newContainerString, err := json.Marshal(newContainer)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = ETCDPut("/containers/"+tempContainer.Name, string(newContainerString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
