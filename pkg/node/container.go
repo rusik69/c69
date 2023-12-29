@@ -2,6 +2,7 @@ package node
 
 import (
 	"context"
+	"strconv"
 
 	dockertypes "github.com/docker/docker/api/types"
 	dockercontainer "github.com/docker/docker/api/types/container"
@@ -24,21 +25,26 @@ func ContainerConnect() {
 func CreateContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
 	dockerContainer := dockercontainer.Config{
-		Image: c.Image,
-		Names: []string{c.Name},
+		Image:  c.Image,
+		Labels: map[string]string{"Name": c.Name},
 	}
-	resp, err := DockerConnection.ContainerCreate(ctx, dockerContainer, nil, nil, nil, c.Name)
+	resp, err := DockerConnection.ContainerCreate(ctx, &dockerContainer, nil, nil, nil, c.Name)
 	if err != nil {
 		return types.Container{}, err
 	}
-	c.ID = resp.ID
+	IDstring, err := strconv.Atoi(resp.ID)
+	if err != nil {
+		return types.Container{}, err
+	}
+	c.ID = IDstring
 	return c, nil
 }
 
 // DeleteContainer deletes a container.
 func DeleteContainer(c types.Container) error {
 	ctx := context.Background()
-	err := DockerConnection.ContainerRemove(ctx, c.ID, dockertypes.ContainerRemoveOptions{})
+	idString := strconv.Itoa(c.ID)
+	err := DockerConnection.ContainerRemove(ctx, idString, dockertypes.ContainerRemoveOptions{})
 	if err != nil {
 		return err
 	}
@@ -48,7 +54,8 @@ func DeleteContainer(c types.Container) error {
 // StartContainer starts a container.
 func StartContainer(c types.Container) error {
 	ctx := context.Background()
-	err := DockerConnection.ContainerStart(ctx, c.ID, dockertypes.ContainerStartOptions{})
+	idString := strconv.Itoa(c.ID)
+	err := DockerConnection.ContainerStart(ctx, idString, dockertypes.ContainerStartOptions{})
 	if err != nil {
 		return err
 	}
@@ -58,7 +65,8 @@ func StartContainer(c types.Container) error {
 // StopContainer stops a container.
 func StopContainer(c types.Container) error {
 	ctx := context.Background()
-	err := DockerConnection.ContainerStop(ctx, c.ID, dockercontainer.StopOptions{})
+	idString := strconv.Itoa(c.ID)
+	err := DockerConnection.ContainerStop(ctx, idString, dockercontainer.StopOptions{})
 	if err != nil {
 		return err
 	}
@@ -68,7 +76,8 @@ func StopContainer(c types.Container) error {
 // GetContainer gets a container.
 func GetContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
-	container, err := DockerConnection.ContainerInspect(ctx, c.ID)
+	idString := strconv.Itoa(c.ID)
+	container, err := DockerConnection.ContainerInspect(ctx, idString)
 	if err != nil {
 		return types.Container{}, err
 	}
@@ -86,9 +95,13 @@ func ListContainers() ([]types.Container, error) {
 	}
 	var cs []types.Container
 	for _, container := range containers {
+		idInt, err := strconv.Atoi(container.ID)
+		if err != nil {
+			return nil, err
+		}
 		c := types.Container{
-			ID:   container.ID,
-			Name: container.Names[0],
+			ID:   idInt,
+			Name: container.Labels["Name"],
 		}
 		cs = append(cs, c)
 	}

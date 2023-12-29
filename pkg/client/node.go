@@ -45,6 +45,9 @@ func DeleteNode(host, port, name string) error {
 		return err
 	}
 	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
 	defer resp.Body.Close()
 	bodyText, err := io.ReadAll(resp.Body)
 	if err != nil {

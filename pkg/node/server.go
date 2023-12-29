@@ -223,8 +223,14 @@ func DeleteContainerHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "id is empty"})
 		return
 	}
-	tempContainer := types.Container{ID: id}
-	err := DeleteContainer(tempContainer)
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	tempContainer := types.Container{ID: idInt}
+	err = DeleteContainer(tempContainer)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})

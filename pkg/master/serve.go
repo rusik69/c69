@@ -19,6 +19,8 @@ func Serve() {
 	r.POST("/api/v1/container/create", CreateContainerHandler)
 	r.DELETE("/api/v1/container/:id", DeleteContainerHandler)
 	r.GET("/api/v1/container/list", ListContainerHandler)
+	r.GET("/api/v1/container/start/:id", StartContainerHandler)
+	r.GET("/api/v1/container/stop/:id", StopContainerHandler)
 	r.POST("/api/v1/node/add", AddNodeHandler)
 	r.GET("/api/v1/node/list", ListNodesHandler)
 	r.GET("/api/v1/node/:id", GetNodeHandler)

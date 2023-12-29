@@ -38,11 +38,7 @@ func CreateContainer(host, port, name, image string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	idInt, err := strconv.Atoi(container.ID)
-	if err != nil {
-		return 0, err
-	}
-	return idInt, nil
+	return container.ID, nil
 }
 
 // StartContainer starts a container.
@@ -108,10 +104,10 @@ func ListContainers(host, port string) ([]types.Container, error) {
 
 // GetContainer gets a container.
 func GetContainer(host, port string, id int) (types.Container, error) {
-	idString := strconv.Itoa(id)
 	container := types.Container{
-		ID: idString,
+		ID: id,
 	}
+	idString := strconv.Itoa(id)
 	url := "http://" + host + ":" + port + "/api/v1/container/" + idString
 	resp, err := http.Get(url)
 	if err != nil {

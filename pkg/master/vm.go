@@ -109,6 +109,7 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
+	deleted := false
 	for _, node := range types.MasterEnvInstance.Nodes {
 		if node.Host == vmInfo.Host {
 			err = client.DeleteVM(node.Host, node.Port, tempVM.ID)
@@ -117,7 +118,13 @@ func DeleteVMHandler(c *gin.Context) {
 				c.JSON(500, gin.H{"error": err.Error()})
 				break
 			}
+			deleted = true
 		}
+	}
+	if !deleted {
+		c.JSON(500, gin.H{"error": "vm was not deleted"})
+		logrus.Error("vm was not deleted")
+		return
 	}
 	err = ETCDDelete("/vms/" + tempVMIDString)
 	if err != nil {
