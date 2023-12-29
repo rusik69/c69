@@ -45,29 +45,6 @@ func CreateContainer(host, port, name, image string) (int, error) {
 	return idInt, nil
 }
 
-// DeleteContainer deletes a container.
-func DeleteContainer(host, port string, id int) error {
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/container/" + idString
-	req, err := http.NewRequest("DELETE", url, nil)
-	if err != nil {
-		return err
-	}
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		bodyText, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		return errors.New(string(bodyText))
-	}
-	return nil
-}
-
 // StartContainer starts a container.
 func StartContainer(host, port string, id int) error {
 	idString := strconv.Itoa(id)
@@ -153,4 +130,27 @@ func GetContainer(host, port string, id int) (types.Container, error) {
 		return container, err
 	}
 	return container, nil
+}
+
+// DeleteContainer deletes a container.
+func DeleteContainer(host, port string, id int) error {
+	idString := strconv.Itoa(id)
+	url := "http://" + host + ":" + port + "/api/v1/container/" + idString
+	req, err := http.NewRequest("DELETE", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		bodyText, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return errors.New(string(bodyText))
+	}
+	return nil
 }

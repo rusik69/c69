@@ -43,6 +43,22 @@ func TestListVMs(t *testing.T) {
 	}
 }
 
+// TestStopVM tests the StopVM function.
+func TestStopVM(t *testing.T) {
+	err := client.StopVM(masterHost, masterPort, VMID)
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+// TestStartVM tests the StartVM function.
+func TestStartVM(t *testing.T) {
+	err := client.StartVM(masterHost, masterPort, VMID)
+	if err != nil {
+		t.Error(err)
+	}
+}
+
 // TestDeleteVM tests the DeleteVM function.
 func TestDeleteVM(t *testing.T) {
 	err := client.DeleteVM(masterHost, masterPort, VMID)
