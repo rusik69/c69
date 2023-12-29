@@ -8,8 +8,6 @@ jobs:
       uses: actions/checkout@v2
     - name: prune
       run: make prune
-    - name: build
-      run: make
     - name: docker
       run: make docker
     - name: compose
