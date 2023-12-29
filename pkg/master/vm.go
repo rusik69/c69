@@ -49,6 +49,7 @@ func CreateVMHandler(c *gin.Context) {
 		newVM.ID = newVMID
 		newVM.Host = node.Host
 		created = true
+		break
 	}
 	if !created {
 		c.JSON(500, gin.H{"error": "vm was not created"})
@@ -58,17 +59,17 @@ func CreateVMHandler(c *gin.Context) {
 	newVM.Committed = true
 	newVmstring, err := json.Marshal(newVM)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
 	err = ETCDPut("/vms/"+newVM.Name, string(newVmstring))
 	if err != nil {
-
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
+	c.JSON(200, newVM)
 }
 
 // DeleteVMHandler handles the delete request.

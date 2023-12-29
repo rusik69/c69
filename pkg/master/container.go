@@ -1,7 +1,10 @@
 package master
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
+	"github.com/rusik69/govnocloud/pkg/client"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
@@ -37,7 +40,28 @@ func CreateContainerHandler(c *gin.Context) {
 	created := false
 	var newContainer types.Container
 	for _, node := range types.MasterEnvInstance.Nodes {
-		
+		newContainerID, err = client.CreateContainer(node.Host, node.Port, tempContainer.Name, tempContainer.Image)
+		if err != nil {
+			logrus.Error(err.Error())
+			continue
+		}
+		newContainer.ID = strconv.Itoa(newContainerID)
+		newContainer.Host = node.Host
+		created = true
+		break
+	}
+	if !created {
+		c.JSON(500, gin.H{"error": "can't create container"})
+		logrus.Error("can't create container")
+		return
+	}
+	err = ETCDPut("/containers/"+tempContainer.Name, newContainer)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	c.JSON(200, newContainer)
 }
 
 // DeleteContainerHandler handles the delete container request.
