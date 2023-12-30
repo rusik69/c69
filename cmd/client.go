@@ -120,7 +120,7 @@ var nodeListCmd = &cobra.Command{
 		fmt.Printf("| %-10s | %-10s | %-10s |\n", "NAME", "HOST", "PORT")
 		fmt.Println("------------------------------------------------")
 		for _, node := range nodes {
-			fmt.Println("| %-10s | %-10s | %-10s |\n", node.Name, node.Host, node.Port)
+			fmt.Printf("| %-10s | %-10s | %-10s |\n", node.Name, node.Host, node.Port)
 		}
 	},
 }
@@ -185,7 +185,7 @@ var vmCreateCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("VM created with id " + string(id))
+		fmt.Println("VM created with id " + fmt.Sprint(id))
 	},
 }
 
@@ -244,7 +244,7 @@ var vmGetCmd = &cobra.Command{
 			panic(err)
 		}
 		fmt.Println(
-			"ID: " + string(vm.ID) + "\n" +
+			"ID: " + fmt.Sprint(vm.ID) + "\n" +
 				"Name: " + vm.Name + "\n" +
 				"IP: " + vm.IP + "\n" +
 				"Host: " + vm.Host + "\n" +
@@ -276,7 +276,7 @@ var vmListCmd = &cobra.Command{
 		fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-10s |\n", "ID", "NAME", "IP", "Host", "Status", "Image", "Flavor", "Volumes")
 		fmt.Println("------------------------------------------------------------------------------------------------------------------------")
 		for _, vm := range vms {
-			fmt.Println("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-10s |\n", vm.ID, vm.Name, vm.IP, vm.Host, vm.State, vm.Image, vm.Flavor, vm.Volumes)
+			fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-10s |\n", vm.ID, vm.Name, vm.IP, vm.Host, vm.State, vm.Image, vm.Flavor, vm.Volumes)
 		}
 	},
 }

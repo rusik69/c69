@@ -12,7 +12,7 @@ var (
 
 // TestCreateContainer tests the CreateContainer function.
 func TestCreateContainer(t *testing.T) {
-	ContainerID, err := client.CreateContainer(masterHost, masterPort, "test", "ubuntu22.04")
+	ContainerID, err := client.CreateContainer(masterHost, masterPort, "test", "alpine")
 	if err != nil {
 		t.Error(err)
 	}
