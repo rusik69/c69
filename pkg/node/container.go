@@ -24,6 +24,11 @@ func ContainerConnect() (*dockerclient.Client, error) {
 // CreateContainer creates a container.
 func CreateContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
+	pullOptions := dockertypes.ImagePullOptions{}
+	_, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
+	if err != nil {
+		return types.Container{}, err
+	}
 	dockerContainer := dockercontainer.Config{
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},
