@@ -11,6 +11,7 @@ services:
     volumes:
       - /run/libvirt:/run/libvirt/
       - /var/run/libvirt:/var/run/libvirt
+      - /var/run/docker.sock:/var/run/docker.sock
   etcd:
     image: quay.io/coreos/etcd:v3.2.4
     ports:
