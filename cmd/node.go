@@ -34,6 +34,11 @@ var nodeCmd = &cobra.Command{
 			panic(err)
 		}
 		defer node.LibvirtConnection.Close()
+		node.DockerConnection, err = node.ContainerConnect()
+		if err != nil {
+			logrus.Error(err.Error())
+			panic(err)
+		}
 		err = node.DownloadVMImages()
 		if err != nil {
 			logrus.Error(err.Error())

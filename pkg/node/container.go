@@ -13,12 +13,12 @@ import (
 var DockerConnection *dockerclient.Client
 
 // ContainerConnect connects to the container daemon.
-func ContainerConnect() {
+func ContainerConnect() (*dockerclient.Client, error) {
 	cli, err := dockerclient.NewClientWithOpts(dockerclient.FromEnv)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	DockerConnection = cli
+	return cli, nil
 }
 
 // CreateContainer creates a container.
