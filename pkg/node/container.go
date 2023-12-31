@@ -7,6 +7,7 @@ import (
 	dockercontainer "github.com/docker/docker/api/types/container"
 	dockerclient "github.com/docker/docker/client"
 	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/sirupsen/logrus"
 )
 
 var DockerConnection *dockerclient.Client
@@ -22,6 +23,7 @@ func ContainerConnect() (*dockerclient.Client, error) {
 
 // CreateContainer creates a container.
 func CreateContainer(c types.Container) (types.Container, error) {
+	logrus.Println("Creating container", c.Name, "with image", c.Image)
 	ctx := context.Background()
 	pullOptions := dockertypes.ImagePullOptions{}
 	_, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
@@ -42,6 +44,7 @@ func CreateContainer(c types.Container) (types.Container, error) {
 
 // DeleteContainer deletes a container.
 func DeleteContainer(c types.Container) error {
+	logrus.Println("Deleting container", c.Name)
 	ctx := context.Background()
 	err := DockerConnection.ContainerRemove(ctx, c.ID, dockertypes.ContainerRemoveOptions{})
 	if err != nil {
@@ -52,6 +55,7 @@ func DeleteContainer(c types.Container) error {
 
 // StartContainer starts a container.
 func StartContainer(c types.Container) error {
+	logrus.Println("Starting container", c.Name)
 	ctx := context.Background()
 	err := DockerConnection.ContainerStart(ctx, c.ID, dockertypes.ContainerStartOptions{})
 	if err != nil {
@@ -62,6 +66,7 @@ func StartContainer(c types.Container) error {
 
 // StopContainer stops a container.
 func StopContainer(c types.Container) error {
+	logrus.Println("Stopping container", c.Name)
 	ctx := context.Background()
 	err := DockerConnection.ContainerStop(ctx, c.ID, dockercontainer.StopOptions{})
 	if err != nil {
@@ -72,6 +77,7 @@ func StopContainer(c types.Container) error {
 
 // GetContainer gets a container.
 func GetContainer(c types.Container) (types.Container, error) {
+	logrus.Println("Getting container", c.Name)
 	ctx := context.Background()
 	container, err := DockerConnection.ContainerInspect(ctx, c.ID)
 	if err != nil {
@@ -84,6 +90,7 @@ func GetContainer(c types.Container) (types.Container, error) {
 
 // ListContainers lists containers.
 func ListContainers() ([]types.Container, error) {
+	logrus.Println("Listing containers")
 	ctx := context.Background()
 	containers, err := DockerConnection.ContainerList(ctx, dockertypes.ContainerListOptions{})
 	if err != nil {
