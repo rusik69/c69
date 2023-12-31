@@ -36,7 +36,7 @@ func CreateContainerHandler(c *gin.Context) {
 		logrus.Error("container with this id already exists")
 		return
 	}
-	newContainerID := 0
+	var newContainerID string
 	created := false
 	var newContainer types.Container
 	for _, node := range types.MasterEnvInstance.Nodes {
