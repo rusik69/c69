@@ -2,7 +2,6 @@ package node
 
 import (
 	"context"
-	"strconv"
 
 	dockertypes "github.com/docker/docker/api/types"
 	dockercontainer "github.com/docker/docker/api/types/container"
@@ -37,19 +36,14 @@ func CreateContainer(c types.Container) (types.Container, error) {
 	if err != nil {
 		return types.Container{}, err
 	}
-	IDstring, err := strconv.Atoi(resp.ID)
-	if err != nil {
-		return types.Container{}, err
-	}
-	c.ID = IDstring
+	c.ID = resp.ID
 	return c, nil
 }
 
 // DeleteContainer deletes a container.
 func DeleteContainer(c types.Container) error {
 	ctx := context.Background()
-	idString := strconv.Itoa(c.ID)
-	err := DockerConnection.ContainerRemove(ctx, idString, dockertypes.ContainerRemoveOptions{})
+	err := DockerConnection.ContainerRemove(ctx, c.ID, dockertypes.ContainerRemoveOptions{})
 	if err != nil {
 		return err
 	}
@@ -59,8 +53,7 @@ func DeleteContainer(c types.Container) error {
 // StartContainer starts a container.
 func StartContainer(c types.Container) error {
 	ctx := context.Background()
-	idString := strconv.Itoa(c.ID)
-	err := DockerConnection.ContainerStart(ctx, idString, dockertypes.ContainerStartOptions{})
+	err := DockerConnection.ContainerStart(ctx, c.ID, dockertypes.ContainerStartOptions{})
 	if err != nil {
 		return err
 	}
@@ -70,8 +63,7 @@ func StartContainer(c types.Container) error {
 // StopContainer stops a container.
 func StopContainer(c types.Container) error {
 	ctx := context.Background()
-	idString := strconv.Itoa(c.ID)
-	err := DockerConnection.ContainerStop(ctx, idString, dockercontainer.StopOptions{})
+	err := DockerConnection.ContainerStop(ctx, c.ID, dockercontainer.StopOptions{})
 	if err != nil {
 		return err
 	}
@@ -81,8 +73,7 @@ func StopContainer(c types.Container) error {
 // GetContainer gets a container.
 func GetContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
-	idString := strconv.Itoa(c.ID)
-	container, err := DockerConnection.ContainerInspect(ctx, idString)
+	container, err := DockerConnection.ContainerInspect(ctx, c.ID)
 	if err != nil {
 		return types.Container{}, err
 	}
@@ -100,12 +91,8 @@ func ListContainers() ([]types.Container, error) {
 	}
 	var cs []types.Container
 	for _, container := range containers {
-		idInt, err := strconv.Atoi(container.ID)
-		if err != nil {
-			return nil, err
-		}
 		c := types.Container{
-			ID:   idInt,
+			ID:   container.ID,
 			Name: container.Labels["Name"],
 		}
 		cs = append(cs, c)

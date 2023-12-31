@@ -6,13 +6,12 @@ import (
 	"errors"
 	"io"
 	"net/http"
-	"strconv"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 // CreateContainer creates a container.
-func CreateContainer(host, port, name, image string) (int, error) {
+func CreateContainer(host, port, name, image string) (string, error) {
 	container := types.Container{
 		Name:  name,
 		Image: image,
@@ -20,31 +19,30 @@ func CreateContainer(host, port, name, image string) (int, error) {
 	url := "http://" + host + ":" + port + "/api/v1/container/create"
 	body, err := json.Marshal(container)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	defer resp.Body.Close()
 	bodyText, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	if resp.StatusCode != 200 {
-		return 0, errors.New(string(bodyText))
+		return "", errors.New(string(bodyText))
 	}
 	err = json.Unmarshal(bodyText, &container)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	return container.ID, nil
 }
 
 // StartContainer starts a container.
-func StartContainer(host, port string, id int) error {
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/container/start/" + idString
+func StartContainer(host, port, id string) error {
+	url := "http://" + host + ":" + port + "/api/v1/container/start/" + id
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -61,9 +59,8 @@ func StartContainer(host, port string, id int) error {
 }
 
 // StopContainer stops a container.
-func StopContainer(host, port string, id int) error {
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/container/stop/" + idString
+func StopContainer(host, port, id string) error {
+	url := "http://" + host + ":" + port + "/api/v1/container/stop/" + id
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -103,12 +100,11 @@ func ListContainers(host, port string) ([]types.Container, error) {
 }
 
 // GetContainer gets a container.
-func GetContainer(host, port string, id int) (types.Container, error) {
+func GetContainer(host, port, id string) (types.Container, error) {
 	container := types.Container{
 		ID: id,
 	}
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/container/" + idString
+	url := "http://" + host + ":" + port + "/api/v1/container/" + id
 	resp, err := http.Get(url)
 	if err != nil {
 		return container, err
@@ -129,9 +125,8 @@ func GetContainer(host, port string, id int) (types.Container, error) {
 }
 
 // DeleteContainer deletes a container.
-func DeleteContainer(host, port string, id int) error {
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/container/" + idString
+func DeleteContainer(host, port, id string) error {
+	url := "http://" + host + ":" + port + "/api/v1/container/" + id
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err

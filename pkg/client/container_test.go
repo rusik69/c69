@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	ContainerID int
+	ContainerID string
 )
 
 // TestCreateContainer tests the CreateContainer function.
@@ -16,7 +16,7 @@ func TestCreateContainer(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if ContainerID == 0 {
+	if ContainerID == "" {
 		t.Error("expected not 0, got ", ContainerID)
 	}
 }

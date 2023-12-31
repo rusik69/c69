@@ -223,14 +223,8 @@ func DeleteContainerHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "id is empty"})
 		return
 	}
-	idInt, err := strconv.Atoi(id)
-	if err != nil {
-		logrus.Error(err.Error())
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-	tempContainer := types.Container{ID: idInt}
-	err = DeleteContainer(tempContainer)
+	tempContainer := types.Container{ID: id}
+	err := DeleteContainer(tempContainer)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -246,13 +240,7 @@ func GetContainerHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "id is empty"})
 		return
 	}
-	idInt, err := strconv.Atoi(id)
-	if err != nil {
-		logrus.Error(err.Error())
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-	tempContainer := types.Container{ID: idInt}
+	tempContainer := types.Container{ID: id}
 	container, err := GetContainer(tempContainer)
 	if err != nil {
 		logrus.Error(err.Error())

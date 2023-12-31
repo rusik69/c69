@@ -3,7 +3,7 @@ package types
 // Container represents a container.
 type Container struct {
 	// ID is the ID of the container.
-	ID int `json:"id"`
+	ID string `json:"id"`
 	// Name is the name of the container.
 	Name string `json:"name"`
 	// Image is the image of the container.
