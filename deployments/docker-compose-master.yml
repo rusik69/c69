@@ -1,17 +1,5 @@
 version: '3'
 services:
-  node:
-    image: loqutus/govnocloud-node
-    ports:
-      - "6969:6969"
-    environment:
-      "NODE_LIBVIRT_SOCKET" : "qemu+unix:///system?socket=/run/libvirt/libvirt-sock"
-      "NODE_NAME": "node"
-      "NODE_IP": "node"
-    volumes:
-      - /run/libvirt:/run/libvirt/
-      - /var/run/libvirt:/var/run/libvirt
-      - /var/run/docker.sock:/var/run/docker.sock
   etcd:
     image: quay.io/coreos/etcd:v3.2.4
     ports:
@@ -39,14 +27,4 @@ services:
       "WEB_MASTER_HOST": "master"
     depends_on:
       - master
-  test:
-    image: loqutus/govnocloud-test
-    environment:
-      "TEST_MASTER_HOST": "master"
-      "TEST_MASTER_PORT": "7070"
-      "TEST_NODE_NAME": "node"
-      "TEST_NODE_IP": "node"
-      "TEST_NODE_PORT": "6969"
-    depends_on:
-      - master
-      - node
+  
