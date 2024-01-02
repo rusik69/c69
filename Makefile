@@ -52,9 +52,9 @@ prune:
 	docker system prune -a -f
 
 installdocker:
-    ssh master "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
-    ssh node0 "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
-    ssh node1 "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
+	ssh master "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
+	ssh node0 "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
+	ssh node1 "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
 
 compose:
 	docker compose -f deployments/docker-compose.yml up --abort-on-container-exit --exit-code-from test
