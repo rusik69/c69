@@ -52,7 +52,7 @@ prune:
 	docker system prune -a -f
 
 ansible:
-	ansible-playbook -i deployments/ansible/hosts deployments/ansible/playbook.yml
+	ansible-playbook -i deployments/ansible/hosts deployments/ansible/docker.yml
 
 compose:
 	docker compose -f deployments/docker-compose.yml up --abort-on-container-exit --exit-code-from test
