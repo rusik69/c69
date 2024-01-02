@@ -1,0 +1,4 @@
+[all]
+master ansible_ssh_user=root
+node0 ansible_ssh_user=root
+node1 ansible_ssh_user=root
