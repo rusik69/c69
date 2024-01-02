@@ -1,6 +1,6 @@
 ---
 - name: Install Docker on Fedora master and nodes
-  hosts: master,nodes
+  hosts: all
   become: yes
   tasks:
     - name: Remove old Docker versions
