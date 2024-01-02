@@ -51,7 +51,7 @@ deploy:
 prune:
 	docker system prune -a -f
 
-install-docker:
+installdocker:
     ssh master "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
     ssh node0 "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
     ssh node1 "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
