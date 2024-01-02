@@ -21,6 +21,12 @@
         name: docker-ce,docker-ce-cli,containerd.io
         state: present
 
+    - name: Add rusik to docker group
+      ansible.builtin.user:
+        name: rusik
+        groups: docker
+        append: yes
+
     - name: Start Docker
       ansible.builtin.systemd:
         name: docker
