@@ -18,7 +18,7 @@
 
     - name: Install Docker
       ansible.builtin.dnf:
-        name: docker-ce,docker-ce-cli,containerd.io
+        name: docker-ce,docker-ce-cli,containerd.io,docker-compose-plugin
         state: present
 
     - name: Add rusik to docker group
