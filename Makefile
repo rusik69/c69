@@ -38,18 +38,19 @@ docker:
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
 
 deploy:
-	ssh master "docker system prune -a -f"
-	ssh node0 "docker system prune -a -f"
-	ssh node1 "docker system prune -a -f"
-	scp deployments/docker-compose-master.yml master:~/
 	ssh master "docker-compose down -f docker-compose-master.yml -d"
+	ssh master "docker system prune -a -f"
+	scp deployments/docker-compose-master.yml master:~/
 	ssh master "docker-compose up -f docker-compose-master.yml -d"
 	scp deployments/docker-compose-node.yml node0:~/
 	ssh node0 "docker-compose down -f docker-compose-node.yml -d"
+	ssh node0 "docker system prune -a -f"
 	ssh node0 "docker-compose up -f docker-compose-node.yml -d"
 	scp deployments/docker-compose-node.yml node1:~/
-	ssh node1 "docker-compose up -f docker-compose-node.yml -d"
 	ssh node1 "docker-compose down -f docker-compose-node.yml -d"
+	ssh node1 "docker system prune -a -f"
+	ssh node1 "docker-compose up -f docker-compose-node.yml -d"
+	sleep 10
 
 prune:
 	docker system prune -a -f
