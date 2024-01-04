@@ -38,7 +38,7 @@ docker:
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
 
 deploy:
-	ssh master "docker-compose down -f docker-compose-master.yml -d"
+	ssh master "docker-compose -f docker-compose-master.yml down"
 	ssh master "docker system prune -a -f"
 	scp deployments/docker-compose-master.yml master:~/
 	ssh master "docker-compose -f docker-compose-master.yml up -d"
