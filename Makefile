@@ -41,15 +41,15 @@ deploy:
 	ssh master "docker-compose down -f docker-compose-master.yml -d"
 	ssh master "docker system prune -a -f"
 	scp deployments/docker-compose-master.yml master:~/
-	ssh master "docker-compose up -f docker-compose-master.yml -d"
+	ssh master "docker-compose -f docker-compose-master.yml up -d"
 	scp deployments/docker-compose-node.yml node0:~/
-	ssh node0 "docker-compose down -f docker-compose-node.yml -d"
+	ssh node0 "docker-compose -f docker-compose-node.yml down"
 	ssh node0 "docker system prune -a -f"
-	ssh node0 "docker-compose up -f docker-compose-node.yml -d"
+	ssh node0 "docker-compose -f docker-compose-node.yml up -d"
 	scp deployments/docker-compose-node.yml node1:~/
-	ssh node1 "docker-compose down -f docker-compose-node.yml -d"
+	ssh node1 "docker-compose -f docker-compose-node.yml down"
 	ssh node1 "docker system prune -a -f"
-	ssh node1 "docker-compose up -f docker-compose-node.yml -d"
+	ssh node1 "docker-compose -f docker-compose-node.yml up -d"
 	sleep 10
 
 prune:
