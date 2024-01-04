@@ -12,10 +12,10 @@ jobs:
       run: make ansible
     - name: docker
       run: make docker
-    #- name: compose
-    #  run: make compose
     - name: deploy
       run: make deploy
+    - name: composetest
+      run: make composetest
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
