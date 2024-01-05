@@ -36,6 +36,11 @@ docker:
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-web:latest
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-node:latest
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
 
 deploy:
 	ssh master "docker compose -f docker-compose-master.yml down"
