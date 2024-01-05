@@ -14,7 +14,7 @@ get:
 	go get -v ./...
 
 build:
-	CGO_ENABLED=1 GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-linux-amd64 main.go
+	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-linux-amd64 main.go
 	chmod +x bin/*
 
 test:

@@ -26,4 +26,3 @@ services:
       "WEB_MASTER_HOST": "master"
     depends_on:
       - master
-  
