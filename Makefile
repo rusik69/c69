@@ -67,4 +67,9 @@ ansible:
 composetest:
 	docker compose -f deployments/docker-compose-test.yml up --abort-on-container-exit --exit-code-from test
 
+logs:
+	ssh master "docker compose -f docker-compose-master.yml logs"
+	ssh node0 "docker compose -f docker-compose-node.yml logs"
+	ssh node1 "docker compose -f docker-compose-node.yml logs"
+
 default: get build
