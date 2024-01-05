@@ -41,6 +41,7 @@ deploy:
 	ssh master "docker compose -f docker-compose-master.yml down"
 	ssh master "docker system prune -a -f"
 	scp deployments/docker-compose-master.yml master:~/
+	ssh master "docker pull $(ORG_PREFIX)/$(BINARY_NAME)-master"
 	ssh master "docker compose -f docker-compose-master.yml up -d"
 	scp deployments/docker-compose-node.yml node0:~/
 	ssh node0 "docker compose -f docker-compose-node.yml down"
