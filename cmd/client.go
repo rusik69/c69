@@ -276,7 +276,7 @@ var vmListCmd = &cobra.Command{
 		fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-10s |\n", "ID", "NAME", "IP", "Host", "Status", "Image", "Flavor", "Volumes")
 		fmt.Println("------------------------------------------------------------------------------------------------------------------------")
 		for _, vm := range vms {
-			fmt.Printf("| %-10d | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-10s |\n", vm.ID, vm.Name, vm.IP, vm.Host, vm.State, vm.Image, vm.Flavor, vm.Volumes)
+			fmt.Printf("| %-10d | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-20v |\n", vm.ID, vm.Name, vm.IP, vm.Host, vm.State, vm.Image, vm.Flavor, vm.Volumes)
 		}
 	},
 }
