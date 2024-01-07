@@ -20,8 +20,6 @@ jobs:
     - name: composelogs
       run: make composelogs
       continue-on-error: true
-    - name: Get exit code
-      run: echo "Exit code: ${{ jobs.test.steps.composetest.outputs.exit_code }}"
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
