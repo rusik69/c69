@@ -1,0 +1,10 @@
+---
+- name: Install libvirt
+  ansible.builtin.dnf:
+    name: libvirt
+    state: present
+- name: Start libvirtd
+  ansible.builtin.systemd:
+    name: libvirtd
+    state: started
+    enabled: yes
