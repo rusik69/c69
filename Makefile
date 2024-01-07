@@ -51,11 +51,11 @@ deploy:
 	scp deployments/docker-compose-node.yml node0:~/
 	ssh node0 "docker compose -f docker-compose-node.yml down"
 	ssh node0 "docker system prune -a -f"
-	ssh node0 "docker compose -f docker-compose-node.yml up -d"
+	ssh node0 "NODE_NAME=$(hostname) NODE_IP=$(ip a sh dev enp1s0 | grep 192.168 | awk '{print $2}' | awk -F/ '{print$1}') docker compose -f docker-compose-node.yml up -d"
 	scp deployments/docker-compose-node.yml node1:~/
 	ssh node1 "docker compose -f docker-compose-node.yml down"
 	ssh node1 "docker system prune -a -f"
-	ssh node1 "docker compose -f docker-compose-node.yml up -d"
+	ssh node1 "NODE_NAME=$(hostname) NODE_IP=$(ip a sh dev enp1s0 | grep 192.168 | awk '{print $2}' | awk -F/ '{print$1}') docker compose -f docker-compose-node.yml up -d"
 	sleep 10
 
 prune:
