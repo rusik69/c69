@@ -4,6 +4,6 @@
   roles:
     - common
 - name: Run node role on node hosts
-  hosts: node
+  hosts: nodes
   roles:
     - node
