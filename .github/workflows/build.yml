@@ -16,10 +16,9 @@ jobs:
       run: make deploy
     - name: composetest
       run: make composetest
-      continue-on-error: true
     - name: composelogs
       run: make composelogs
-      continue-on-error: true
+      if: always()
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
