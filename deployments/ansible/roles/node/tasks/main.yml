@@ -1,7 +1,7 @@
 ---
 - name: Install libvirt
   ansible.builtin.dnf:
-    name: libvirt
+    name: libvirt,qemu-kvm
     state: present
 - name: Start libvirtd
   ansible.builtin.systemd:
