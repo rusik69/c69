@@ -2,8 +2,8 @@
 - name: Run common role on all hosts
   hosts: all
   roles:
-    - common
+  - common
 - name: Run node role on node hosts
   hosts: nodes
   roles:
-    - node
+  - node
