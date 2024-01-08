@@ -1,0 +1,14 @@
+version: '3'
+services:
+  node:
+    image: loqutus/govnocloud-node
+    ports:
+      - "6969:6969"
+    environment:
+      "NODE_LIBVIRT_SOCKET" : "qemu+unix:///system?socket=/run/libvirt/libvirt-sock"
+      "NODE_NAME": "node0"
+      "NODE_IP": "192.168.122.209"
+    volumes:
+      - /run/libvirt:/run/libvirt/
+      - /var/run/libvirt:/var/run/libvirt
+      - /var/run/docker.sock:/var/run/docker.sock
