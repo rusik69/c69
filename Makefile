@@ -48,14 +48,14 @@ deploy:
 	scp deployments/docker-compose-master.yml master:~/
 	ssh master "docker pull $(ORG_PREFIX)/$(BINARY_NAME)-master"
 	ssh master "docker compose -f docker-compose-master.yml up -d"
-	scp deployments/docker-compose-node.yml node0:~/
-	ssh node0 "docker compose -f docker-compose-node.yml down"
+	scp deployments/docker-compose-node0.yml node0:~/
+	ssh node0 "docker compose -f docker-compose-node0.yml down"
 	ssh node0 "docker system prune -a -f"
-	ssh node0 "NODE_NAME=$(hostname) NODE_IP=$(ip a sh dev enp1s0 | grep 192.168 | awk '{print $2}' | awk -F/ '{print$1}') docker compose -f docker-compose-node.yml up -d"
-	scp deployments/docker-compose-node.yml node1:~/
-	ssh node1 "docker compose -f docker-compose-node.yml down"
+	ssh node0 "docker compose -f docker-compose-node0.yml up -d"
+	scp deployments/docker-compose-node1.yml node1:~/
+	ssh node1 "docker compose -f docker-compose-node1.yml down"
 	ssh node1 "docker system prune -a -f"
-	ssh node1 "NODE_NAME=$(hostname) NODE_IP=$(ip a sh dev enp1s0 | grep 192.168 | awk '{print $2}' | awk -F/ '{print$1}') docker compose -f docker-compose-node.yml up -d"
+	ssh node1 "docker compose -f docker-compose-node1.yml up -d"
 	sleep 10
 
 prune:
