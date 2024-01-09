@@ -23,9 +23,9 @@ func ContainerConnect() (*dockerclient.Client, error) {
 
 // CreateContainer creates a container.
 func CreateContainer(c types.Container) (types.Container, error) {
-	logrus.Println("Creating container", c.Name, "with image", c.Image)
 	ctx := context.Background()
 	pullOptions := dockertypes.ImagePullOptions{}
+	logrus.Println("Pulling image", c.Image)
 	_, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
 	if err != nil {
 		return types.Container{}, err
@@ -34,6 +34,7 @@ func CreateContainer(c types.Container) (types.Container, error) {
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},
 	}
+	logrus.Println("Creating container", c.Name, "with image", c.Image)
 	resp, err := DockerConnection.ContainerCreate(ctx, &dockerContainer, nil, nil, nil, c.Name)
 	if err != nil {
 		return types.Container{}, err
