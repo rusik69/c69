@@ -26,5 +26,15 @@ type Node struct {
 	Port string `json:"port"`
 }
 
+// File represents a file.
+type File struct {
+	// Name is the name of the file.
+	Name string `json:"name"`
+	// Size is the size of the file.
+	Size int64 `json:"size"`
+	// Node is the node of the file.
+	Node string `json:"node"`
+}
+
 // MasterEnvInstance is the singleton instance of MasterEnv.
 var MasterEnvInstance *MasterEnv

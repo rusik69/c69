@@ -6,11 +6,82 @@ import (
 	dockertypes "github.com/docker/docker/api/types"
 	dockercontainer "github.com/docker/docker/api/types/container"
 	dockerclient "github.com/docker/docker/client"
+	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 
 var DockerConnection *dockerclient.Client
+
+// CreateContainerHandler handles the create container request.
+func CreateContainerHandler(c *gin.Context) {
+	body := c.Request.Body
+	defer body.Close()
+	var tempContainer types.Container
+	if err := c.ShouldBindJSON(&tempContainer); err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	if tempContainer.Name == "" || tempContainer.Image == "" {
+		logrus.Error("name or image is empty")
+		c.JSON(400, gin.H{"error": "name or image is empty"})
+		return
+	}
+	container, err := CreateContainer(tempContainer)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, container)
+}
+
+// DeleteContainerHandler handles the delete container request.
+func DeleteContainerHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	tempContainer := types.Container{ID: id}
+	err := DeleteContainer(tempContainer)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+}
+
+// GetContainerHandler handles the get container request.
+func GetContainerHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	tempContainer := types.Container{ID: id}
+	container, err := GetContainer(tempContainer)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, container)
+}
+
+// ListContainersHandler handles the list container request.
+func ListContainersHandler(c *gin.Context) {
+	containers, err := ListContainers()
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, containers)
+}
 
 // ContainerConnect connects to the container daemon.
 func ContainerConnect() (*dockerclient.Client, error) {
