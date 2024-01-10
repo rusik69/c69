@@ -14,16 +14,20 @@ import (
 // Serve serves the node.
 func Serve() {
 	r := gin.New()
-	r.POST("/api/v1/vm/create", CreateVMHandler)
+	r.POST("/api/v1/vms", CreateVMHandler)
 	r.GET("/api/v1/vm/:id", VMInfoHandler)
 	r.DELETE("/api/v1/vm/:id", DeleteVMHandler)
-	r.GET("/api/v1/vm/list", ListVMHandler)
+	r.GET("/api/v1/vms", ListVMHandler)
 	r.GET("api/v1/vm/start/:id", StartVMHandler)
 	r.GET("api/v1/vm/stop/:id", StopVMHandler)
 	r.GET("/api/v1/container/:id", GetContainerHandler)
 	r.POST("/api/v1/container/create", CreateContainerHandler)
 	r.DELETE("/api/v1/container/:id", DeleteContainerHandler)
-	r.GET("/api/v1/container/list", ListContainersHandler)
+	r.GET("/api/v1/containers", ListContainersHandler)
+	r.POST("/api/v1/files", UploadFileHandler)
+	r.DELETE("/api/v1/file/:id", FileDeleteHandler)
+	r.GET("/api/v1/files", FileListHandler)
+	r.GET("/api/v1/file/:id", FileGetHandler)
 	r.GET("/api/v1/node/stats", StatsHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
@@ -259,4 +263,15 @@ func ListContainersHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, containers)
+}
+
+// UploadFileHandler handles the create file request.
+func UploadFileHandler(c *gin.Context) {
+	fileName := c.Query("name")
+	if fileName == "" {
+		logrus.Error("name is empty")
+		c.JSON(400, gin.H{"error": "name is empty"})
+		return
+	}
+	
 }

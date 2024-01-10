@@ -125,6 +125,7 @@ type NodeEnv struct {
 	Port            string `json:"port"`
 	LibVirtURI      string `json:"libvirt_socket"`
 	LibVirtImageDir string `json:"libvirt_image_dir"`
+	FilesDir        string `json:"files_dir"`
 }
 
 // NodeEnvInstance is the singleton instance of NodeEnv.

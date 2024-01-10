@@ -29,12 +29,17 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if libvirtImageDir == "" {
 		libvirtImageDir = "/var/lib/libvirt/images"
 	}
+	filesDir := os.Getenv("NODE_FILES_DIR")
+	if filesDir == "" {
+		filesDir = "/mnt"
+	}
 	NodeEnvInstance := &types.NodeEnv{
 		Name:            name,
 		IP:              ip,
 		Port:            port,
 		LibVirtURI:      libvirtURI,
 		LibVirtImageDir: libvirtImageDir,
+		FilesDir:        filesDir,
 	}
 	return NodeEnvInstance, nil
 }

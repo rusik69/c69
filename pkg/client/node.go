@@ -17,7 +17,7 @@ func AddNode(host, port, name, nodeHost, nodePort string) error {
 		Host: nodeHost,
 		Port: nodePort,
 	}
-	url := "http://" + host + ":" + port + "/api/v1/node/add"
+	url := "http://" + host + ":" + port + "/api/v1/nodes"
 	body, err := json.Marshal(node)
 	if err != nil {
 		return err

@@ -183,7 +183,6 @@ func ListVMHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, vms)
-	return
 }
 
 // StartVMHandler handles the start vm request.
@@ -232,7 +231,6 @@ func StartVMHandler(c *gin.Context) {
 		}
 	}
 	c.JSON(200, gin.H{"status": "ok"})
-	return
 }
 
 // StopVMHandler handles the stop vm request.
@@ -281,5 +279,4 @@ func StopVMHandler(c *gin.Context) {
 		}
 	}
 	c.JSON(200, gin.H{"status": "ok"})
-	return
 }
