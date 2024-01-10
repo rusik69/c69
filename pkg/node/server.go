@@ -45,22 +45,24 @@ func StatsHandler(c *gin.Context) {
 }
 
 // Get gets the stats.
-func GetStats() (types.Stats, error) {
+func GetStats() (types.NodeStats, error) {
 	numCPUs, err := cpu.Counts(true)
 	if err != nil {
-		return types.Stats{}, err
+		return types.NodeStats{}, err
 	}
 	mem, err := mem.VirtualMemory()
 	if err != nil {
-		return types.Stats{}, err
+		return types.NodeStats{}, err
 	}
 	disk, err := disk.Usage("/")
 	if err != nil {
-		return types.Stats{}, err
+		return types.NodeStats{}, err
 	}
-	return types.Stats{
-		CPUs: numCPUs,
-		MEM:  int64(mem.Total),
-		DISK: int64(disk.Total),
+	return types.NodeStats{
+		CPUs:      numCPUs,
+		FreeMEM:   int64(mem.Free),
+		TotalMEM:  int64(mem.Total),
+		FreeDISK:  int64(disk.Free),
+		TotalDISK: int64(disk.Total),
 	}, nil
 }

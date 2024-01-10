@@ -117,11 +117,8 @@ var VMImages = map[string]VMImage{
 }
 
 type NodeEnv struct {
-	// Name is the name of the node.
-	Name string `json:"name"`
-	// IP is the IP address of the node.
-	IP string `json:"ip"`
-	// Port is the port of the node.
+	Name            string `json:"name"`
+	IP              string `json:"ip"`
 	Port            string `json:"port"`
 	LibVirtURI      string `json:"libvirt_socket"`
 	LibVirtImageDir string `json:"libvirt_image_dir"`
@@ -131,11 +128,13 @@ type NodeEnv struct {
 // NodeEnvInstance is the singleton instance of NodeEnv.
 var NodeEnvInstance *NodeEnv
 
-// Stats represents the stats.
-type Stats struct {
-	CPUs int   `json:"cpus"`
-	MEM  int64 `json:"mem"`
-	DISK int64 `json:"disk"`
+// NodeStats represents the stats.
+type NodeStats struct {
+	CPUs      int   `json:"cpus"`
+	TotalMEM  int64 `json:"total_mem"`
+	FreeMEM   int64 `json:"mem"`
+	TotalDISK int64 `json:"total_disk"`
+	FreeDISK  int64 `json:"disk"`
 }
 
 // Volume represents a volume.
