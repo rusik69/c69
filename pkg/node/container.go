@@ -26,10 +26,12 @@ func CreateContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
 	pullOptions := dockertypes.ImagePullOptions{}
 	logrus.Println("Pulling image", c.Image)
-	_, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
+	out, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
 	if err != nil {
 		return types.Container{}, err
 	}
+	defer out.Close()
+	logrus.Println("Pull result:", out)
 	dockerContainer := dockercontainer.Config{
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},
