@@ -25,6 +25,10 @@ func Serve() {
 	r.GET("/api/v1/nodes", ListNodesHandler)
 	r.GET("/api/v1/node/:id", GetNodeHandler)
 	r.DELETE("/api/v1/node/:id", DeleteNodeHandler)
+	r.POST("/api/v1/files", PostFileHandler)
+	r.DELETE("/api/v1/file/:name", DeleteFileHandler)
+	r.GET("/api/v1/files", ListFilesHandler)
+	r.GET("/api/v1/file/:name", GetFileHandler)
 	logrus.Println("Master is listening on port " + string(types.MasterEnvInstance.ListenPort))
 	r.Run(":" + types.MasterEnvInstance.ListenPort)
 }

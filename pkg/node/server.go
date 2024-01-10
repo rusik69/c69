@@ -1,6 +1,7 @@
 package node
 
 import (
+	"path/filepath"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -24,10 +25,10 @@ func Serve() {
 	r.POST("/api/v1/container/create", CreateContainerHandler)
 	r.DELETE("/api/v1/container/:id", DeleteContainerHandler)
 	r.GET("/api/v1/containers", ListContainersHandler)
-	r.POST("/api/v1/files", UploadFileHandler)
-	r.DELETE("/api/v1/file/:id", FileDeleteHandler)
-	r.GET("/api/v1/files", FileListHandler)
-	r.GET("/api/v1/file/:id", FileGetHandler)
+	r.POST("/api/v1/files", PostFileHandler)
+	r.DELETE("/api/v1/file/:name", DeleteFileHandler)
+	r.GET("/api/v1/files", ListFilesHandler)
+	r.GET("/api/v1/file/:name", GetFileHandler)
 	r.GET("/api/v1/node/stats", StatsHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
@@ -265,13 +266,60 @@ func ListContainersHandler(c *gin.Context) {
 	c.JSON(200, containers)
 }
 
-// UploadFileHandler handles the create file request.
-func UploadFileHandler(c *gin.Context) {
+// PostFileHandler handles the create file request.
+func PostFileHandler(c *gin.Context) {
 	fileName := c.Query("name")
 	if fileName == "" {
 		logrus.Error("name is empty")
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
+	file := c.Request.Body
+	defer file.Close()
+	err := SaveFile(fileName, file)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"status": "ok"})
+}
 
+// GetFileHandler handles the download file request.
+func GetFileHandler(c *gin.Context) {
+	name := c.Query("name")
+	if name == "" {
+		logrus.Error("name is empty")
+		c.JSON(400, gin.H{"error": "name is empty"})
+		return
+	}
+	fileName := filepath.Join(types.NodeEnvInstance.FilesDir, name)
+	c.File(fileName)
+}
+
+// DeleteFileHandler handles the delete file request.
+func DeleteFileHandler(c *gin.Context) {
+	name := c.Param("name")
+	if name == "" {
+		logrus.Error("name is empty")
+		c.JSON(400, gin.H{"error": "name is empty"})
+		return
+	}
+	err := DeleteFile(name)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+}
+
+// ListFilesHandler handles the list files request.
+func ListFilesHandler(c *gin.Context) {
+	files, err := ListFiles()
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, files)
 }
