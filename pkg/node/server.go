@@ -273,5 +273,5 @@ func UploadFileHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	
+
 }
