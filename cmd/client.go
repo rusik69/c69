@@ -21,8 +21,8 @@ var clientCmd = &cobra.Command{
 	},
 }
 
-// vmCmd represents the vm commands
-var vmCmd = &cobra.Command{
+// vmClientCmd represents the vm commands
+var vmClientCmd = &cobra.Command{
 	Use:   "vm",
 	Short: "vm commands",
 	Long:  `vm commands`,
@@ -38,6 +38,16 @@ var nodeClientCmd = &cobra.Command{
 	Long:  `node commands`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("usage: node [add|delete|list|get]")
+	},
+}
+
+// containerClientCmd represents the container commands
+var containerClientCmd = &cobra.Command{
+	Use:   "container",
+	Short: "container commands",
+	Long:  `container commands`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("usage: container [create|delete|list|get]")
 	},
 }
 
@@ -281,14 +291,247 @@ var vmListCmd = &cobra.Command{
 	},
 }
 
+// vmStopCmd represents the vm stop command
+var vmStopCmd = &cobra.Command{
+	Use:   "stop",
+	Short: "stop vm",
+	Long:  `stop vm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		idString := cmd.PersistentFlags().Lookup("id").Value.String()
+		if idString == "" {
+			panic("id is required")
+		}
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			panic(err)
+		}
+		err = client.StopVM(host, port, id)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// vmStartCmd represents the vm start command
+var vmStartCmd = &cobra.Command{
+	Use:   "start",
+	Short: "start vm",
+	Long:  `start vm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		idString := cmd.PersistentFlags().Lookup("id").Value.String()
+		if idString == "" {
+			panic("id is required")
+		}
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			panic(err)
+		}
+		err = client.StartVM(host, port, id)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// containerCreateCmd represents the container create command
+var containerCreateCmd = &cobra.Command{
+	Use:   "create",
+	Short: "create container",
+	Long:  `create container`,
+	Run: func(cmd *cobra.Command, args []string) {
+		containerName := cmd.PersistentFlags().Lookup("name").Value.String()
+		if containerName == "" {
+			panic("container name is required")
+		}
+		containerImage := cmd.PersistentFlags().Lookup("image").Value.String()
+		if containerImage == "" {
+			panic("container image is required")
+		}
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		id, err := client.CreateContainer(host, port, containerName, containerImage)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Container created with id " + fmt.Sprint(id))
+	},
+}
+
+// containerDeleteCmd represents the container delete command
+var containerDeleteCmd = &cobra.Command{
+	Use:   "delete",
+	Short: "delete container",
+	Long:  `delete container`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		id := cmd.PersistentFlags().Lookup("id").Value.String()
+		if id == "" {
+			panic("id is required")
+		}
+		err := client.DeleteContainer(host, port, id)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// containerGetCmd represents the container get command
+var containerGetCmd = &cobra.Command{
+	Use:   "get",
+	Short: "get container",
+	Long:  `get container`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		id := cmd.PersistentFlags().Lookup("id").Value.String()
+		if id == "" {
+			panic("id is required")
+		}
+		container, err := client.GetContainer(host, port, id)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(
+			"ID: " + fmt.Sprint(container.ID) + "\n" +
+				"Name: " + container.Name + "\n" +
+				"IP: " + container.IP + "\n" +
+				"Host: " + container.Host + "\n" +
+				"State: " + container.State + "\n" +
+				"Image: " + container.Image + "\n",
+		)
+	},
+}
+
+// containerListCmd represents the container list command
+var containerListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "list container",
+	Long:  `list container`,
+	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		containers, err := client.ListContainers(host, port)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s |\n", "ID", "NAME", "IP", "Host", "Status", "Image")
+		fmt.Println("------------------------------------------------------------------------------------------------------------------------")
+		for _, container := range containers {
+			fmt.Printf("| %-10d | %-10s | %-16s | %-5s | %-7s | %-20s |\n", container.ID, container.Name, container.IP, container.Host, container.State, container.Image)
+		}
+	},
+}
+
+// containerStopCmd represents the container stop command
+var containerStopCmd = &cobra.Command{
+	Use:   "stop",
+	Short: "stop container",
+	Long:  `stop container`,
+	Run: func(cmd *cobra.Command, args []string) {
+		containerID := cmd.PersistentFlags().Lookup("id").Value.String()
+		if containerID == "" {
+			panic("container id is required")
+		}
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+
+		err := client.StopContainer(host, port, containerID)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// containerStartCmd represents the container start command
+var containerStartCmd = &cobra.Command{
+	Use:   "start",
+	Short: "start container",
+	Long:  `start container`,
+	Run: func(cmd *cobra.Command, args []string) {
+		containerID := cmd.PersistentFlags().Lookup("id").Value.String()
+		if containerID == "" {
+			panic("container id is required")
+		}
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+
+		err := client.StartContainer(host, port, containerID)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(clientCmd)
-	clientCmd.AddCommand(vmCmd)
+	clientCmd.AddCommand(vmClientCmd)
 	clientCmd.AddCommand(nodeClientCmd)
-	vmCmd.AddCommand(vmGetCmd)
-	vmCmd.AddCommand(vmCreateCmd)
-	vmCmd.AddCommand(vmDeleteCmd)
-	vmCmd.AddCommand(vmListCmd)
+	clientCmd.AddCommand(containerClientCmd)
+	vmClientCmd.AddCommand(vmGetCmd)
+	vmClientCmd.AddCommand(vmCreateCmd)
+	vmClientCmd.AddCommand(vmDeleteCmd)
+	vmClientCmd.AddCommand(vmListCmd)
+	vmClientCmd.AddCommand(vmStopCmd)
+	vmClientCmd.AddCommand(vmStartCmd)
+	containerClientCmd.AddCommand(containerCreateCmd)
+	containerClientCmd.AddCommand(containerDeleteCmd)
+	containerClientCmd.AddCommand(containerListCmd)
+	containerClientCmd.AddCommand(containerGetCmd)
+	containerClientCmd.AddCommand(containerStopCmd)
+	containerClientCmd.AddCommand(containerStartCmd)
 	nodeClientCmd.AddCommand(nodeAddCmd)
 	nodeClientCmd.AddCommand(nodeDeleteCmd)
 	nodeClientCmd.AddCommand(nodeListCmd)
@@ -300,9 +543,9 @@ func init() {
 	// and all subcommands, e.g.:
 	clientCmd.PersistentFlags().String("host", "localhost", "host to connect to")
 	clientCmd.PersistentFlags().String("port", "6969", "port to connect to")
-	vmCmd.PersistentFlags().String("name", "", "name of the vm")
-	vmCmd.PersistentFlags().String("image", "", "image of the vm")
-	vmCmd.PersistentFlags().String("flavor", "", "flavor of the vm")
+	vmClientCmd.PersistentFlags().String("name", "", "name of the vm")
+	vmClientCmd.PersistentFlags().String("image", "", "image of the vm")
+	vmClientCmd.PersistentFlags().String("flavor", "", "flavor of the vm")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

@@ -1,6 +1,7 @@
 package master
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/gin-gonic/gin"
@@ -38,10 +39,133 @@ func PostFileHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			return
 		}
-		tempFile.Host = node.Host
+		c.JSON(200, node)
+	} else {
+		c.JSON(400, gin.H{"error": "file already exists"})
+		logrus.Error("file already exists")
+		return
 	}
 }
 
+// CommitFileHandler handles the commit file request.
+func CommitFileHandler(c *gin.Context) {
+	name := c.Query("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
+		logrus.Error("name is empty")
+		return
+	}
+	fileInfoString, err := ETCDGet("/files/" + name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	if fileInfoString == "" {
+		c.JSON(400, gin.H{"error": "file not found"})
+		logrus.Error("file not found")
+		return
+	}
+	var fileInfo types.File
+	err = json.Unmarshal([]byte(fileInfoString), &fileInfo)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	fileInfo.Committed = true
+	fileInfoString, err = json.Marshal(fileInfo)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = ETCDPut("/files/"+name, string(fileInfoString))
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	c.JSON(200, gin.H{"status": "OK"})
+}
+
+// DeleteFileHandler handles the delete file request.
+func DeleteFileHandler(c *gin.Context) {
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
+		logrus.Error("name is empty")
+		return
+	}
+	fileInfoString := ETCDGet("/files/" + name)
+	if fileInfoString == "" {
+		c.JSON(400, gin.H{"error": "file not found"})
+		logrus.Error("file not found")
+		return
+	}
+	var fileInfo types.File
+	err := json.Unmarshal([]byte(fileInfoString), &fileInfo)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = client.DeleteFile(fileInfo.Node, name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err := ETCDDelete("/files/" + name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	c.JSON(200, gin.H{"status": "OK"})
+}
+
+// ListFilesHandler handles the list files request.
+func ListFilesHandler(c *gin.Context) {
+	files, err := ETCDList("/files")
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	c.JSON(200, gin.H{"files": files})
+}
+
+// GetFileHandler handles the get file request.
+func GetFileHandler(c *gin.Context) {
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
+		logrus.Error("name is empty")
+		return
+	}
+	fileInfoString, err := ETCDGet("/files/" + name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	if fileInfoString == "" {
+		c.JSON(400, gin.H{"error": "file not found"})
+		logrus.Error("file not found")
+		return
+	}
+	var fileInfo types.File
+	err = json.Unmarshal([]byte(fileInfoString), &fileInfo)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	c.JSON(200, fileInfo)
+}
+
+// chooseNodeForFile chooses the node for file.
 func chooseNodeForFile(file types.File) (types.Node, error) {
 	found := false
 	var foundNode types.Node

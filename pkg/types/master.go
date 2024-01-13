@@ -34,6 +34,10 @@ type File struct {
 	Size int64 `json:"size"`
 	// Node is the node of the file.
 	Node string `json:"node"`
+	// Committed is the committed status of the file.
+	Committed bool `json:"committed"`
+	// Timestamp is the timestamp of the file.
+	Timestamp int64 `json:"timestamp"`
 }
 
 // MasterEnvInstance is the singleton instance of MasterEnv.

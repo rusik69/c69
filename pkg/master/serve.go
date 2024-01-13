@@ -26,6 +26,7 @@ func Serve() {
 	r.GET("/api/v1/node/:id", GetNodeHandler)
 	r.DELETE("/api/v1/node/:id", DeleteNodeHandler)
 	r.POST("/api/v1/files", PostFileHandler)
+	r.GET("/api/v1/files_commit", CommitFileHandler)
 	r.DELETE("/api/v1/file/:name", DeleteFileHandler)
 	r.GET("/api/v1/files", ListFilesHandler)
 	r.GET("/api/v1/file/:name", GetFileHandler)
