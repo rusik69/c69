@@ -31,6 +31,16 @@ var vmClientCmd = &cobra.Command{
 	},
 }
 
+// fileClientCmd represents the file commands
+var fileClientCmd = &cobra.Command{
+	Use:   "file",
+	Short: "file commands",
+	Long:  `file commands`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("usage: file [upload|download|delete|list]")
+	},
+}
+
 // nodeCmd represents the node commands
 var nodeClientCmd = &cobra.Command{
 	Use:   "node",
@@ -515,11 +525,126 @@ var containerStartCmd = &cobra.Command{
 	},
 }
 
+// fileUploadCmd represents the file upload command
+var fileUploadCmd = &cobra.Command{
+	Use:   "upload",
+	Short: "upload file",
+	Long:  `upload file`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fileSource := cmd.PersistentFlags().Lookup("src").Value.String()
+		if fileSource == "" {
+			panic("file source is required")
+		}
+		fileDestination := cmd.PersistentFlags().Lookup("dest").Value.String()
+		if fileDestination == "" {
+			panic("file destination is required")
+		}
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		err := client.UploadFile(host, port, fileSource, fileDestination)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// fileDownloadCmd represents the file download command
+var fileDownloadCmd = &cobra.Command{
+	Use:   "download",
+	Short: "download file",
+	Long:  `download file`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fileSource := cmd.PersistentFlags().Lookup("source").Value.String()
+		if fileSource == "" {
+			panic("file source is required")
+		}
+		fileDestination := cmd.PersistentFlags().Lookup("destination").Value.String()
+		if fileDestination == "" {
+			panic("file destination is required")
+		}
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		err := client.DownloadFile(host, port, fileSource, fileDestination)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// fileDeleteCmd represents the file delete command
+var fileDeleteCmd = &cobra.Command{
+	Use:   "delete",
+	Short: "delete file",
+	Long:  `delete file`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fileName := cmd.PersistentFlags().Lookup("name").Value.String()
+		if fileName == "" {
+			panic("name is required")
+		}
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+
+		err := client.DeleteFile(host, port, fileName)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// fileListCmd represents the file list command
+var fileListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "list files",
+	Long:  `list files`,
+	Run: func(cmd *cobra.Command, args []string) {
+		name := cmd.PersistentFlags().Lookup("name").Value.String()
+		if name == "" {
+			panic("file name is required")
+		}
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
+		files, err := client.ListFiles(host, port, name)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("| %-10s | %-10s | %-10s | %-10s |\n", "NAME", "SIZE", "NODE")
+		fmt.Println("------------------------------------------------")
+		for _, file := range files {
+			fmt.Printf("| %-10s | %-10d | %-10s |\n", file.Name, file.Size, file.Node)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(clientCmd)
 	clientCmd.AddCommand(vmClientCmd)
 	clientCmd.AddCommand(nodeClientCmd)
 	clientCmd.AddCommand(containerClientCmd)
+	clientCmd.AddCommand(fileClientCmd)
 	vmClientCmd.AddCommand(vmGetCmd)
 	vmClientCmd.AddCommand(vmCreateCmd)
 	vmClientCmd.AddCommand(vmDeleteCmd)
@@ -536,6 +661,10 @@ func init() {
 	nodeClientCmd.AddCommand(nodeDeleteCmd)
 	nodeClientCmd.AddCommand(nodeListCmd)
 	nodeClientCmd.AddCommand(nodeGetCmd)
+	fileClientCmd.AddCommand(fileUploadCmd)
+	fileClientCmd.AddCommand(fileDownloadCmd)
+	fileClientCmd.AddCommand(fileDeleteCmd)
+	fileClientCmd.AddCommand(fileListCmd)
 
 	// Here you will define your flags and configuration settings.
 
@@ -543,9 +672,6 @@ func init() {
 	// and all subcommands, e.g.:
 	clientCmd.PersistentFlags().String("host", "localhost", "host to connect to")
 	clientCmd.PersistentFlags().String("port", "6969", "port to connect to")
-	vmClientCmd.PersistentFlags().String("name", "", "name of the vm")
-	vmClientCmd.PersistentFlags().String("image", "", "image of the vm")
-	vmClientCmd.PersistentFlags().String("flavor", "", "flavor of the vm")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

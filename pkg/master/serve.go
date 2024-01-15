@@ -9,7 +9,7 @@ import (
 // Serve starts the server.
 func Serve() {
 	r := gin.New()
-	r.GET("/api/v1/vm/:id", GetVMHandler)
+	r.GET("/api/v1/vm/:name", GetVMHandler)
 	r.POST("/api/v1/vms", CreateVMHandler)
 	r.DELETE("/api/v1/vm/:id", DeleteVMHandler)
 	r.GET("/api/v1/vms", ListVMHandler)
@@ -26,7 +26,6 @@ func Serve() {
 	r.GET("/api/v1/node/:id", GetNodeHandler)
 	r.DELETE("/api/v1/node/:id", DeleteNodeHandler)
 	r.POST("/api/v1/files", PostFileHandler)
-	r.GET("/api/v1/files_commit", CommitFileHandler)
 	r.DELETE("/api/v1/file/:name", DeleteFileHandler)
 	r.GET("/api/v1/files", ListFilesHandler)
 	r.GET("/api/v1/file/:name", GetFileHandler)

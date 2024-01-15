@@ -74,13 +74,13 @@ func CommitFileHandler(c *gin.Context) {
 		return
 	}
 	fileInfo.Committed = true
-	fileInfoString, err = json.Marshal(fileInfo)
+	newFileInfoString, err := json.Marshal(fileInfo)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
-	err = ETCDPut("/files/"+name, string(fileInfoString))
+	err = ETCDPut("/files/"+name, string(newFileInfoString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -97,14 +97,19 @@ func DeleteFileHandler(c *gin.Context) {
 		logrus.Error("name is empty")
 		return
 	}
-	fileInfoString := ETCDGet("/files/" + name)
+	fileInfoString, err := ETCDGet("/files/" + name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
 	if fileInfoString == "" {
 		c.JSON(400, gin.H{"error": "file not found"})
 		logrus.Error("file not found")
 		return
 	}
 	var fileInfo types.File
-	err := json.Unmarshal([]byte(fileInfoString), &fileInfo)
+	err = json.Unmarshal([]byte(fileInfoString), &fileInfo)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -116,7 +121,7 @@ func DeleteFileHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	err := ETCDDelete("/files/" + name)
+	err = ETCDDelete("/files/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
