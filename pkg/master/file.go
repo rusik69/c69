@@ -10,8 +10,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// PostFileHandler handles the post file request.
-func PostFileHandler(c *gin.Context) {
+// UploadFileHandler handles the post file request.
+func UploadFileHandler(c *gin.Context) {
 	var tempFile types.File
 	body := c.Request.Body
 	defer body.Close()
@@ -49,7 +49,7 @@ func PostFileHandler(c *gin.Context) {
 
 // CommitFileHandler handles the commit file request.
 func CommitFileHandler(c *gin.Context) {
-	name := c.Query("name")
+	name := c.Param("name")
 	if name == "" {
 		c.JSON(400, gin.H{"error": "name is empty"})
 		logrus.Error("name is empty")
