@@ -73,21 +73,21 @@ func CreateContainerHandler(c *gin.Context) {
 
 // DeleteContainerHandler handles the delete container request.
 func DeleteContainerHandler(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(400, gin.H{"error": "id is empty"})
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	logrus.Printf("Deleting container with id %s\n", id)
-	vmInfoString, err := ETCDGet("/containers/" + id)
+	logrus.Printf("Deleting container with name %s\n", name)
+	vmInfoString, err := ETCDGet("/containers/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
 	if vmInfoString == "" {
-		c.JSON(400, gin.H{"error": "container with this id doesn't exist"})
-		logrus.Error("container with this id doesn't exist")
+		c.JSON(400, gin.H{"error": "container with this name doesn't exist"})
+		logrus.Error("container with this name doesn't exist")
 		return
 	}
 	var tempContainer types.Container
@@ -113,7 +113,7 @@ func DeleteContainerHandler(c *gin.Context) {
 		logrus.Error("can't delete container")
 		return
 	}
-	err = ETCDDelete("/containers/" + id)
+	err = ETCDDelete("/containers/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -141,21 +141,21 @@ func ListContainerHandler(c *gin.Context) {
 
 // GetContainerHandler handles the get container request.
 func GetContainerHandler(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(400, gin.H{"error": "id is empty"})
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	logrus.Printf("Getting container with id %s\n", id)
-	containerInfoString, err := ETCDGet("/containers/" + id)
+	logrus.Printf("Getting container with name %s\n", name)
+	containerInfoString, err := ETCDGet("/containers/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
 	if containerInfoString == "" {
-		c.JSON(400, gin.H{"error": "container with this id doesn't exist"})
-		logrus.Error("container with this id doesn't exist")
+		c.JSON(400, gin.H{"error": "container with this name doesn't exist"})
+		logrus.Error("container with this name doesn't exist")
 		return
 	}
 	var container types.Container
@@ -170,21 +170,21 @@ func GetContainerHandler(c *gin.Context) {
 
 // StartContainerHandler handles the start container request.
 func StartContainerHandler(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(400, gin.H{"error": "id is empty"})
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	logrus.Printf("Starting container with id %s\n", id)
-	containerInfoString, err := ETCDGet("/containers/" + id)
+	logrus.Printf("Starting container with name %s\n", name)
+	containerInfoString, err := ETCDGet("/containers/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
 	if containerInfoString == "" {
-		c.JSON(400, gin.H{"error": "container with this id doesn't exist"})
-		logrus.Error("container with this id doesn't exist")
+		c.JSON(400, gin.H{"error": "container with this name doesn't exist"})
+		logrus.Error("container with this name doesn't exist")
 		return
 	}
 	var container types.Container
@@ -217,7 +217,7 @@ func StartContainerHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	err = ETCDPut("/containers/"+id, string(containerString))
+	err = ETCDPut("/containers/"+name, string(containerString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -228,21 +228,21 @@ func StartContainerHandler(c *gin.Context) {
 
 // StopContainerHandler handles the stop container request.
 func StopContainerHandler(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(400, gin.H{"error": "id is empty"})
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	logrus.Printf("Stopping container with id %s\n", id)
-	containerInfoString, err := ETCDGet("/containers/" + id)
+	logrus.Printf("Stopping container with name %s\n", name)
+	containerInfoString, err := ETCDGet("/containers/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
 	if containerInfoString == "" {
-		c.JSON(400, gin.H{"error": "container with this id doesn't exist"})
-		logrus.Error("container with this id doesn't exist")
+		c.JSON(400, gin.H{"error": "container with this name doesn't exist"})
+		logrus.Error("container with this name doesn't exist")
 		return
 	}
 	var container types.Container
@@ -275,7 +275,7 @@ func StopContainerHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	err = ETCDPut("/containers/"+id, string(containerString))
+	err = ETCDPut("/containers/"+name, string(containerString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
