@@ -1,7 +1,10 @@
 package client
 
 import (
+	"encoding/json"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
@@ -17,5 +20,12 @@ func UploadFile(masterHost, masterPort, name, path string) error {
 	var tempFile types.File
 	tempFile.Name = name
 	tempFile.Size = file.Stat().Size()
-	
+	tempFile.Timestamp = time.Now().Unix()
+	tempFileBody, err := json.Marshal(tempFile)
+	if err != nil {
+		return err
+	}
+	if err := http.Post(url); err != nil {
+		return err
+	}
 }
