@@ -547,7 +547,7 @@ var fileUploadCmd = &cobra.Command{
 		if port == "" {
 			panic("port is required")
 		}
-		err := client.UploadFile(host, port, fileSource, fileDestination)
+		err := client.UploadFile(host, port, fileSource)
 		if err != nil {
 			panic(err)
 		}
@@ -576,7 +576,7 @@ var fileDownloadCmd = &cobra.Command{
 		if port == "" {
 			panic("port is required")
 		}
-		err := client.DownloadFile(host, port, fileSource, fileDestination)
+		err := client.DownloadFile(host, port, fileSource)
 		if err != nil {
 			panic(err)
 		}
@@ -627,7 +627,7 @@ var fileListCmd = &cobra.Command{
 		if port == "" {
 			panic("port is required")
 		}
-		files, err := client.ListFiles(host, port, name)
+		files, err := client.ListFiles(host, port)
 		if err != nil {
 			panic(err)
 		}
