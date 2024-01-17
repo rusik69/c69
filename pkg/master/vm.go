@@ -142,7 +142,7 @@ func GetVMHandler(c *gin.Context) {
 		logrus.Error("name is empty")
 		return
 	}
-	logrus.Printf("Getting VM %d\n", name)
+	logrus.Printf("Getting VM %s\n", name)
 	vmInfoString, err := ETCDGet("/vms/" + name)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
