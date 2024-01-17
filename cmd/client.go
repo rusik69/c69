@@ -468,7 +468,7 @@ var containerListCmd = &cobra.Command{
 		fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s |\n", "ID", "NAME", "IP", "Host", "Status", "Image")
 		fmt.Println("------------------------------------------------------------------------------------------------------------------------")
 		for _, container := range containers {
-			fmt.Printf("| %-10d | %-10s | %-16s | %-5s | %-7s | %-20s |\n", container.ID, container.Name, container.IP, container.Host, container.State, container.Image)
+			fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s |\n", container.ID, container.Name, container.IP, container.Host, container.State, container.Image)
 		}
 	},
 }
@@ -631,7 +631,7 @@ var fileListCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("| %-10s | %-10s | %-10s | %-10s |\n", "NAME", "SIZE", "NODE")
+		fmt.Printf("| %-10s | %-10s | %-10s |\n", "NAME", "SIZE", "NODE")
 		fmt.Println("------------------------------------------------")
 		for _, file := range files {
 			fmt.Printf("| %-10s | %-10d | %-10s |\n", file.Name, file.Size, file.Node)
