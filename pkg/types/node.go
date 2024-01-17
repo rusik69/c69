@@ -1,5 +1,7 @@
 package types
 
+import "errors"
+
 // Container represents a container.
 type Container struct {
 	// ID is the ID of the container.
@@ -145,4 +147,14 @@ type Volume struct {
 	Path string `json:"path"`
 	// Size is the size of the volume.
 	Size int64 `json:"size"`
+}
+
+// findNodeByName finds a node by name.
+func FindNodeByName(name string) (Node, error) {
+	for _, node := range MasterEnvInstance.Nodes {
+		if node.Name == name {
+			return node, nil
+		}
+	}
+	return Node{}, errors.New("node not found")
 }

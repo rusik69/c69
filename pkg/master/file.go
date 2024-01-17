@@ -115,7 +115,13 @@ func DeleteFileHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	err = client.DeleteFile(fileInfo.Node, name)
+	fileNode, err := types.FindNodeByName(fileInfo.Node)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = client.DeleteFile(fileNode.Host, fileNode.Port, name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
