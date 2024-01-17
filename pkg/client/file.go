@@ -91,8 +91,8 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 }
 
 // DownloadFile downloads a file.
-func DownloadFile(masterHost, masterPort, name, path string) error {
-	url := "http://" + masterHost + ":" + masterPort + "/api/v1/files/" + name
+func DownloadFile(masterHost, masterPort, fileName string) error {
+	url := "http://" + masterHost + ":" + masterPort + "/api/v1/files/" + fileName
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -107,13 +107,13 @@ func DownloadFile(masterHost, masterPort, name, path string) error {
 	if err != nil {
 		return err
 	}
-	url = "http://" + node.Host + ":" + node.Port + "/api/v1/files/" + name
+	url = "http://" + node.Host + ":" + node.Port + "/api/v1/files/" + fileName
 	resp, err = http.Get(url)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
-	file, err := os.Create(path)
+	file, err := os.Create(fileName)
 	if err != nil {
 		return err
 	}
