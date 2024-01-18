@@ -28,6 +28,7 @@ func CreateContainerHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name or image is empty"})
 		return
 	}
+	logrus.Println("Creating container", tempContainer.Name, tempContainer.Image)
 	container, err := CreateContainer(tempContainer)
 	if err != nil {
 		logrus.Error(err.Error())
@@ -46,6 +47,7 @@ func DeleteContainerHandler(c *gin.Context) {
 		return
 	}
 	tempContainer := types.Container{ID: id}
+	logrus.Println("Deleting container", tempContainer.ID)
 	err := DeleteContainer(tempContainer)
 	if err != nil {
 		logrus.Error(err.Error())
@@ -96,7 +98,6 @@ func ContainerConnect() (*dockerclient.Client, error) {
 func CreateContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
 	pullOptions := dockertypes.ImagePullOptions{}
-	logrus.Println("Pulling image", c.Image)
 	out, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
 	if err != nil {
 		return types.Container{}, err
@@ -107,7 +108,6 @@ func CreateContainer(c types.Container) (types.Container, error) {
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},
 	}
-	logrus.Println("Creating container", c.Name, "with image", c.Image)
 	resp, err := DockerConnection.ContainerCreate(ctx, &dockerContainer, nil, nil, nil, c.Name)
 	if err != nil {
 		return types.Container{}, err
@@ -118,7 +118,6 @@ func CreateContainer(c types.Container) (types.Container, error) {
 
 // DeleteContainer deletes a container.
 func DeleteContainer(c types.Container) error {
-	logrus.Println("Deleting container", c.Name)
 	ctx := context.Background()
 	err := DockerConnection.ContainerRemove(ctx, c.ID, dockertypes.ContainerRemoveOptions{})
 	if err != nil {
@@ -129,7 +128,6 @@ func DeleteContainer(c types.Container) error {
 
 // StartContainer starts a container.
 func StartContainer(c types.Container) error {
-	logrus.Println("Starting container", c.Name)
 	ctx := context.Background()
 	err := DockerConnection.ContainerStart(ctx, c.ID, dockertypes.ContainerStartOptions{})
 	if err != nil {
@@ -140,7 +138,6 @@ func StartContainer(c types.Container) error {
 
 // StopContainer stops a container.
 func StopContainer(c types.Container) error {
-	logrus.Println("Stopping container", c.Name)
 	ctx := context.Background()
 	err := DockerConnection.ContainerStop(ctx, c.ID, dockercontainer.StopOptions{})
 	if err != nil {
@@ -151,7 +148,6 @@ func StopContainer(c types.Container) error {
 
 // GetContainer gets a container.
 func GetContainer(c types.Container) (types.Container, error) {
-	logrus.Println("Getting container", c.Name)
 	ctx := context.Background()
 	container, err := DockerConnection.ContainerInspect(ctx, c.ID)
 	if err != nil {
@@ -164,7 +160,6 @@ func GetContainer(c types.Container) (types.Container, error) {
 
 // ListContainers lists containers.
 func ListContainers() ([]types.Container, error) {
-	logrus.Println("Listing containers")
 	ctx := context.Background()
 	containers, err := DockerConnection.ContainerList(ctx, dockertypes.ContainerListOptions{})
 	if err != nil {

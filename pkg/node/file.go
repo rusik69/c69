@@ -71,7 +71,6 @@ func ListFilesHandler(c *gin.Context) {
 // SaveFile saves a file.
 func SaveFile(name string, file io.Reader) error {
 	fileName := filepath.Join(types.NodeEnvInstance.FilesDir, name)
-	logrus.Println("SaveFile: ", fileName)
 	out, err := os.Create(fileName)
 	if err != nil {
 		return err
@@ -87,7 +86,6 @@ func SaveFile(name string, file io.Reader) error {
 // DeleteFile deletes a file.
 func DeleteFile(name string) error {
 	fileName := filepath.Join(types.NodeEnvInstance.FilesDir, name)
-	logrus.Println("DeleteFile: ", fileName)
 	err := os.Remove(fileName)
 	if err != nil {
 		return err

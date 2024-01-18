@@ -45,6 +45,7 @@ func CreateVMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name, image or flavor is empty"})
 		return
 	}
+	logrus.Println("Creating VM", tempVM.Name, tempVM.Image, tempVM.Flavor)
 	vm, err := CreateVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
@@ -69,6 +70,7 @@ func DeleteVMHandler(c *gin.Context) {
 		return
 	}
 	tempVM := types.VM{ID: intID}
+	logrus.Println("Deleting VM", tempVM)
 	err = DeleteVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
@@ -79,6 +81,7 @@ func DeleteVMHandler(c *gin.Context) {
 
 // ListHandler handles the list request.
 func ListVMHandler(c *gin.Context) {
+	logrus.Println("Listing VMs")
 	vms, err := ListVMs()
 	if err != nil {
 		logrus.Error(err.Error())
@@ -88,8 +91,8 @@ func ListVMHandler(c *gin.Context) {
 	c.JSON(200, vms)
 }
 
-// VMInfoHandler handles the get request.
-func VMInfoHandler(c *gin.Context) {
+// GetVMHandler handles the get request.
+func GetVMHandler(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		logrus.Error("id is empty")
@@ -102,6 +105,7 @@ func VMInfoHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Println("Getting VM", idInt)
 	tempVM := types.VM{ID: idInt}
 	vm, err := GetVM(tempVM)
 	if err != nil {
@@ -127,6 +131,7 @@ func StopVMHandler(c *gin.Context) {
 		return
 	}
 	tempVM := types.VM{ID: idInt}
+	logrus.Println("Stopping VM", tempVM.ID)
 	err = StopVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
@@ -150,6 +155,7 @@ func StartVMHandler(c *gin.Context) {
 		return
 	}
 	tempVM := types.VM{ID: idInt}
+	logrus.Println("Starting VM", tempVM.ID)
 	err = StartVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
