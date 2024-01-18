@@ -22,6 +22,7 @@ var LibvirtConnection *libvirt.Connect
 
 // VMConnect connects to the libvirt daemon.
 func VMConnect() (*libvirt.Connect, error) {
+	logrus.Println("Connecting to libvirt daemon at", types.NodeEnvInstance.LibVirtURI)
 	conn, err := libvirt.NewConnect(types.NodeEnvInstance.LibVirtURI)
 	if err != nil {
 		return nil, err
