@@ -18,7 +18,7 @@ func CreateVM(host, port, name, image, flavor string) (int, error) {
 		Image:  image,
 		Flavor: flavor,
 	}
-	url := "http://" + host + ":" + port + "/api/v1/vm/create"
+	url := "http://" + host + ":" + port + "/api/v1/vms"
 	body, err := json.Marshal(vm)
 	if err != nil {
 		return 0, err
