@@ -5,7 +5,7 @@ services:
     ports:
       - "6969:6969"
     environment:
-      "NODE_LIBVIRT_SOCKET" : "qemu+unix:///system?socket=/run/libvirt/libvirt-sock"
+      "NODE_LIBVIRT_SOCKET" : "qemu:///system"
       "NODE_NAME": "node1"
       "NODE_IP": "192.168.122.144"
     volumes:
