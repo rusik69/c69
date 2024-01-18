@@ -42,7 +42,7 @@ func CreateContainerHandler(c *gin.Context) {
 	for _, node := range types.MasterEnvInstance.Nodes {
 		newContainerID, err = client.CreateContainer(node.Host, node.Port, tempContainer.Name, tempContainer.Image)
 		if err != nil {
-			logrus.Error(err.Error())
+			logrus.Error(node.Host, node.Port, err.Error())
 			continue
 		}
 		newContainer.ID = newContainerID

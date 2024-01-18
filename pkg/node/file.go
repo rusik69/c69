@@ -12,15 +12,15 @@ import (
 
 // PostFileHandler handles the create file request.
 func PostFileHandler(c *gin.Context) {
-	fileName := c.Query("name")
-	if fileName == "" {
+	name := c.Param("name")
+	if name == "" {
 		logrus.Error("name is empty")
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
 	file := c.Request.Body
 	defer file.Close()
-	err := SaveFile(fileName, file)
+	err := SaveFile(name, file)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -31,7 +31,7 @@ func PostFileHandler(c *gin.Context) {
 
 // GetFileHandler handles the download file request.
 func GetFileHandler(c *gin.Context) {
-	name := c.Query("name")
+	name := c.Param("name")
 	if name == "" {
 		logrus.Error("name is empty")
 		c.JSON(400, gin.H{"error": "name is empty"})
