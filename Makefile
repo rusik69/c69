@@ -69,7 +69,7 @@ composetest:
 
 composelogs:
 	ssh master "docker compose -f docker-compose-master.yml logs"
-	ssh node0 "docker compose -f docker-compose-node.yml logs"
-	ssh node1 "docker compose -f docker-compose-node.yml logs"
+	ssh node0 "docker compose -f docker-compose-node0.yml logs"
+	ssh node1 "docker compose -f docker-compose-node1.yml logs"
 
 default: get build
