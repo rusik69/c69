@@ -52,7 +52,7 @@ func CreateContainerHandler(c *gin.Context) {
 	}
 	if !created {
 		c.JSON(500, gin.H{"error": "can't create container"})
-		logrus.Error("can't create container")
+		logrus.Error("can't create container", tempContainer.Name, tempContainer.Image)
 		return
 	}
 	newContainer.Committed = true

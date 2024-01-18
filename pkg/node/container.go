@@ -74,6 +74,42 @@ func GetContainerHandler(c *gin.Context) {
 	c.JSON(200, container)
 }
 
+// StartContainerHandler handles the start container request.
+func StartContainerHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	tempContainer := types.Container{ID: id}
+	logrus.Println("Starting container", tempContainer.ID)
+	err := StartContainer(tempContainer)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+}
+
+// StopContainerHandler handles the stop container request.
+func StopContainerHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "id is empty"})
+		return
+	}
+	tempContainer := types.Container{ID: id}
+	logrus.Println("Stopping container", tempContainer.ID)
+	err := StopContainer(tempContainer)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+}
+
 // ListContainersHandler handles the list container request.
 func ListContainersHandler(c *gin.Context) {
 	containers, err := ListContainers()

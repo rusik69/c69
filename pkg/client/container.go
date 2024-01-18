@@ -42,7 +42,7 @@ func CreateContainer(host, port, name, image string) (string, error) {
 
 // StartContainer starts a container.
 func StartContainer(host, port, id string) error {
-	url := "http://" + host + ":" + port + "/api/v1/container/start/" + id
+	url := "http://" + host + ":" + port + "/api/v1/containerstart/" + id
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -60,7 +60,7 @@ func StartContainer(host, port, id string) error {
 
 // StopContainer stops a container.
 func StopContainer(host, port, id string) error {
-	url := "http://" + host + ":" + port + "/api/v1/container/stop/" + id
+	url := "http://" + host + ":" + port + "/api/v1/containerstop/" + id
 	resp, err := http.Get(url)
 	if err != nil {
 		return err

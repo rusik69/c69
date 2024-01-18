@@ -68,7 +68,7 @@ func DeleteVM(host, port string, id int) error {
 // StartVM starts a vm.
 func StartVM(host, port string, id int) error {
 	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/vm/start/" + idString
+	url := "http://" + host + ":" + port + "/api/v1/vmstart/" + idString
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func StartVM(host, port string, id int) error {
 // StopVM stops a vm.
 func StopVM(host, port string, id int) error {
 	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/vm/stop/" + idString
+	url := "http://" + host + ":" + port + "/api/v1/vmstop/" + idString
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
