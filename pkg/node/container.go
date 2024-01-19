@@ -134,14 +134,10 @@ func ContainerConnect() (*dockerclient.Client, error) {
 func CreateContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
 	pullOptions := dockertypes.ImagePullOptions{}
-	out, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
+	_, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
 	if err != nil {
 		return types.Container{}, err
 	}
-	defer out.Close()
-	pullRes := make([]byte, 1000)
-	out.Read(pullRes)
-	logrus.Println("Pull result:", string(pullRes))
 	dockerContainer := dockercontainer.Config{
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},
