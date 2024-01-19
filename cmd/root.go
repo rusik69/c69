@@ -4,7 +4,10 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
 	"os"
+	"runtime"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -31,7 +34,12 @@ func Execute() {
 }
 
 func init() {
-	logrus.SetFormatter(&logrus.JSONFormatter{})
+	logrus.SetFormatter(&logrus.JSONFormatter{
+		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
+			filename := strings.Split(f.File, "/")
+			return fmt.Sprintf("%s:%d", filename[len(filename)-1], f.Line), ""
+		},
+	})
 	gin.DefaultWriter = logrus.StandardLogger().Writer()
 	gin.DefaultErrorWriter = logrus.StandardLogger().Writer()
 	// Here you will define your flags and configuration settings.
