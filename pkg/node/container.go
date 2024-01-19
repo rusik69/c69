@@ -141,7 +141,7 @@ func CreateContainer(c types.Container) (types.Container, error) {
 	defer out.Close()
 	pullRes := make([]byte, 1000)
 	out.Read(pullRes)
-	logrus.Println("Pull result:", pullRes)
+	logrus.Println("Pull result:", string(pullRes))
 	dockerContainer := dockercontainer.Config{
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},
