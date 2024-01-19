@@ -51,12 +51,12 @@ deploy:
 	scp deployments/docker-compose-node0.yml node0:~/
 	ssh node0 "docker compose -f docker-compose-node0.yml down"
 	ssh node0 "docker system prune -a -f"
-	ssh node0 "virsh destroy test; virsh undefine test"
+	ssh root@node0 "virsh destroy test; virsh undefine test"
 	ssh node0 "docker compose -f docker-compose-node0.yml up -d"
 	scp deployments/docker-compose-node1.yml node1:~/
 	ssh node1 "docker compose -f docker-compose-node1.yml down"
 	ssh node1 "docker system prune -a -f"
-	ssh node1 "virsh destroy test; virsh undefine test"
+	ssh root@node1 "virsh destroy test; virsh undefine test"
 	ssh node1 "docker compose -f docker-compose-node1.yml up -d"
 	sleep 10
 
