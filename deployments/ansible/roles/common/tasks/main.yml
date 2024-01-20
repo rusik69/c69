@@ -9,10 +9,10 @@
     state: present
 - name: Add Docker's official repository
   ansible.builtin.shell: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-- name: Install Docker
+- name: Remove Docker
   ansible.builtin.dnf:
     name: docker-ce,docker-ce-cli,containerd.io,docker-compose-plugin,docker-compose
-    state: present
+    state: absent
 - name: Add rusik to docker group
   ansible.builtin.user:
     name: rusik
@@ -21,5 +21,10 @@
 - name: Start Docker
   ansible.builtin.systemd:
     name: docker
+    state: stopped
+    enabled: no
+- name: Start Podman
+  ansible.builtin.systemd:
+    name: podman
     state: started
     enabled: yes
