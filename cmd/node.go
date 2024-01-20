@@ -34,8 +34,8 @@ var nodeCmd = &cobra.Command{
 			panic(err)
 		}
 		defer node.LibvirtConnection.Close()
-		node.DockerConnection, err = node.ContainerConnect()
-		defer node.DockerConnection.Close()
+		node.PodmanCtx, err = node.ContainerConnect()
+		defer node.PodmanCtx.Close()
 		if err != nil {
 			logrus.Error(err.Error())
 			panic(err)

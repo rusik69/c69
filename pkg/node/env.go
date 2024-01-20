@@ -25,6 +25,10 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if port == "" {
 		port = "6969"
 	}
+	podmanSocket := os.Getenv("NODE_PODMAN_SOCKET")
+	if podmanSocket == "" {
+		podmanSocket = "unix:/run/podman/podman.sock"
+	}
 	libvirtImageDir := os.Getenv("NODE_LIBVIRT_IMAGE_DIR")
 	if libvirtImageDir == "" {
 		libvirtImageDir = "/var/lib/libvirt/images"
@@ -40,6 +44,7 @@ func ParseEnv() (*types.NodeEnv, error) {
 		LibVirtURI:      libvirtURI,
 		LibVirtImageDir: libvirtImageDir,
 		FilesDir:        filesDir,
+		PodmanSocket:    podmanSocket,
 	}
 	return NodeEnvInstance, nil
 }
