@@ -10,5 +10,5 @@ services:
       "NODE_IP": "192.168.122.209"
     volumes:
       - /run/libvirt:/run/libvirt/
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/podman/podman.sock:/run/podman/podman.sock
       - /var/lib/libvirt/images:/var/lib/libvirt/images
