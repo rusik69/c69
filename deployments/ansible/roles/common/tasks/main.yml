@@ -17,11 +17,6 @@
   ansible.builtin.dnf:
     name: docker-ce,docker-ce-cli,containerd.io,docker-compose-plugin,docker-compose
     state: absent
-- name: Stop Docker
-  ansible.builtin.systemd:
-    name: docker
-    state: stopped
-    enabled: no
 - name: Start Podman
   ansible.builtin.systemd:
     name: podman
