@@ -146,7 +146,10 @@ func CreateContainer(c types.Container) (types.Container, error) {
 	if err != nil {
 		return types.Container{}, err
 	}
-	StartContainer(types.Container{ID: resp.ID})
+	err = StartContainer(types.Container{ID: resp.ID})
+	if err != nil {
+		return types.Container{}, err
+	}
 	c.ID = resp.ID
 	return c, nil
 }
