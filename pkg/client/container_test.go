@@ -45,7 +45,7 @@ func TestListContainers(t *testing.T) {
 
 // TestStopContainer tests the StopContainer function.
 func TestStopContainer(t *testing.T) {
-	err := client.StopContainer(masterHost, masterPort, ContainerID)
+	err := client.StopContainer(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}
@@ -53,7 +53,7 @@ func TestStopContainer(t *testing.T) {
 
 // TestStartContainer tests the StartContainer function.
 func TestStartContainer(t *testing.T) {
-	err := client.StartContainer(masterHost, masterPort, ContainerID)
+	err := client.StartContainer(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}

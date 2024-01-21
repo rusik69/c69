@@ -16,7 +16,7 @@ func CreateContainer(host, port, name, image string) (string, error) {
 		Name:  name,
 		Image: image,
 	}
-	url := "http://" + host + ":" + port + "/api/v1/containers"
+	url := "http://" + host + ":" + port + "/api/v1/container/" + name
 	body, err := json.Marshal(container)
 	if err != nil {
 		return "", err
@@ -41,8 +41,8 @@ func CreateContainer(host, port, name, image string) (string, error) {
 }
 
 // StartContainer starts a container.
-func StartContainer(host, port, id string) error {
-	url := "http://" + host + ":" + port + "/api/v1/containerstart/" + id
+func StartContainer(host, port, name string) error {
+	url := "http://" + host + ":" + port + "/api/v1/containerstart/" + name
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -59,8 +59,8 @@ func StartContainer(host, port, id string) error {
 }
 
 // StopContainer stops a container.
-func StopContainer(host, port, id string) error {
-	url := "http://" + host + ":" + port + "/api/v1/containerstop/" + id
+func StopContainer(host, port, name string) error {
+	url := "http://" + host + ":" + port + "/api/v1/containerstop/" + name
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
