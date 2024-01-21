@@ -12,7 +12,7 @@ var (
 
 // TestCreateContainer tests the CreateContainer function.
 func TestCreateContainer(t *testing.T) {
-	ContainerID, err := client.CreateContainer(masterHost, masterPort, "test", "docker.io/library/alpine:latest")
+	ContainerID, err := client.CreateContainer(masterHost, masterPort, "test", "docker.io/library/alpine")
 	if err != nil {
 		t.Error(err)
 	}
