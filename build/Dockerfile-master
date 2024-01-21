@@ -1,7 +1,7 @@
 FROM golang:1.21-alpine AS build-env
 WORKDIR /go/src/github.com/rusik69/govnocloud
 COPY . ./
-RUN apk add --no-cache libvirt-dev make bash gcc git musl-dev linux-headers gpgme-dev btrfs-dev
+RUN apk add --no-cache libvirt-dev make bash gcc git musl-dev linux-headers gpgme-dev
 RUN make get
 RUN make build
 FROM alpine:latest
