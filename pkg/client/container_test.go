@@ -23,7 +23,7 @@ func TestCreateContainer(t *testing.T) {
 
 // TestGETContainer tests the GetContainer function.
 func TestGetContainer(t *testing.T) {
-	container, err := client.GetContainer(masterHost, masterPort, ContainerID)
+	container, err := client.GetContainer(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}
@@ -61,7 +61,7 @@ func TestStartContainer(t *testing.T) {
 
 // TestDeleteContainer tests the DeleteContainer function.
 func TestDeleteContainer(t *testing.T) {
-	err := client.DeleteContainer(masterHost, masterPort, ContainerID)
+	err := client.DeleteContainer(masterHost, masterPort, test)
 	if err != nil {
 		t.Error(err)
 	}

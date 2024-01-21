@@ -16,7 +16,7 @@ func CreateContainer(host, port, name, image string) (string, error) {
 		Name:  name,
 		Image: image,
 	}
-	url := "http://" + host + ":" + port + "/api/v1/container/" + name
+	url := "http://" + host + ":" + port + "/api/v1/containers"
 	body, err := json.Marshal(container)
 	if err != nil {
 		return "", err
@@ -100,11 +100,11 @@ func ListContainers(host, port string) ([]types.Container, error) {
 }
 
 // GetContainer gets a container.
-func GetContainer(host, port, id string) (types.Container, error) {
+func GetContainer(host, port, name string) (types.Container, error) {
 	container := types.Container{
-		ID: id,
+		ID: name,
 	}
-	url := "http://" + host + ":" + port + "/api/v1/container/" + id
+	url := "http://" + host + ":" + port + "/api/v1/container/" + name
 	resp, err := http.Get(url)
 	if err != nil {
 		return container, err
@@ -125,8 +125,8 @@ func GetContainer(host, port, id string) (types.Container, error) {
 }
 
 // DeleteContainer deletes a container.
-func DeleteContainer(host, port, id string) error {
-	url := "http://" + host + ":" + port + "/api/v1/container/" + id
+func DeleteContainer(host, port, name string) error {
+	url := "http://" + host + ":" + port + "/api/v1/container/" + name
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
