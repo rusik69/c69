@@ -2,6 +2,7 @@ package node
 
 import (
 	"context"
+	"io"
 
 	dockertypes "github.com/docker/docker/api/types"
 	dockercontainer "github.com/docker/docker/api/types/container"
@@ -134,10 +135,12 @@ func ContainerConnect() (*dockerclient.Client, error) {
 func CreateContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
 	pullOptions := dockertypes.ImagePullOptions{}
-	_, err := DockerConnection.ImagePull(ctx, "docker.io/library/"+c.Image, pullOptions)
+	reader, err := DockerConnection.ImagePull(ctx, "docker.io/library/"+c.Image, pullOptions)
 	if err != nil {
 		return types.Container{}, err
 	}
+	defer reader.Close()
+	io.Copy(io.Discard, reader)
 	dockerContainer := dockercontainer.Config{
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},
@@ -149,6 +152,14 @@ func CreateContainer(c types.Container) (types.Container, error) {
 	err = StartContainer(types.Container{ID: resp.ID})
 	if err != nil {
 		return types.Container{}, err
+	}
+	statusCh, errCh := DockerConnection.ContainerWait(ctx, resp.ID, dockercontainer.WaitConditionNotRunning)
+	select {
+	case err := <-errCh:
+		if err != nil {
+			return types.Container{}, err
+		}
+	case <-statusCh:
 	}
 	c.ID = resp.ID
 	return c, nil
