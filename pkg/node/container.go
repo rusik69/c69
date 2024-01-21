@@ -3,16 +3,15 @@ package node
 import (
 	"context"
 
-	"github.com/containers/podman/v3/pkg/bindings"
-	"github.com/containers/podman/v3/pkg/bindings/containers"
-	"github.com/containers/podman/v3/pkg/bindings/images"
-	"github.com/containers/podman/v3/pkg/specgen"
+	dockertypes "github.com/docker/docker/api/types"
+	dockercontainer "github.com/docker/docker/api/types/container"
+	dockerclient "github.com/docker/docker/client"
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 
-var PodmanCtx context.Context
+var DockerConnection *dockerclient.Client
 
 // CreateContainerHandler handles the create container request.
 func CreateContainerHandler(c *gin.Context) {
@@ -123,37 +122,39 @@ func ListContainersHandler(c *gin.Context) {
 }
 
 // ContainerConnect connects to the container daemon.
-func ContainerConnect() (context.Context, error) {
-	connText, err := bindings.NewConnection(context.Background(), types.NodeEnvInstance.PodmanSocket)
+func ContainerConnect() (*dockerclient.Client, error) {
+	cli, err := dockerclient.NewClientWithOpts(dockerclient.FromEnv)
 	if err != nil {
 		return nil, err
 	}
-	return connText, nil
+	return cli, nil
 }
 
 // CreateContainer creates a container.
 func CreateContainer(c types.Container) (types.Container, error) {
-	_, err := images.Pull(PodmanCtx, c.Image, &images.PullOptions{})
+	ctx := context.Background()
+	pullOptions := dockertypes.ImagePullOptions{}
+	_, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
 	if err != nil {
 		return types.Container{}, err
 	}
-	s := specgen.NewSpecGenerator(c.Image, false)
-	r, err := containers.CreateWithSpec(PodmanCtx, s, &containers.CreateOptions{})
+	dockerContainer := dockercontainer.Config{
+		Image:  c.Image,
+		Labels: map[string]string{"Name": c.Name},
+	}
+	resp, err := DockerConnection.ContainerCreate(ctx, &dockerContainer, nil, nil, nil, c.Name)
 	if err != nil {
 		return types.Container{}, err
 	}
-	err = containers.Start(PodmanCtx, r.ID, nil)
-	if err != nil {
-		return types.Container{}, err
-	}
-	c.ID = r.ID
+	StartContainer(types.Container{ID: resp.ID})
+	c.ID = resp.ID
 	return c, nil
 }
 
 // DeleteContainer deletes a container.
 func DeleteContainer(c types.Container) error {
-	containers.Stop(PodmanCtx, c.ID, &containers.StopOptions{})
-	err := containers.Remove(PodmanCtx, c.ID, &containers.RemoveOptions{})
+	ctx := context.Background()
+	err := DockerConnection.ContainerRemove(ctx, c.ID, dockertypes.ContainerRemoveOptions{})
 	if err != nil {
 		return err
 	}
@@ -162,7 +163,8 @@ func DeleteContainer(c types.Container) error {
 
 // StartContainer starts a container.
 func StartContainer(c types.Container) error {
-	err := containers.Start(PodmanCtx, c.ID, &containers.StartOptions{})
+	ctx := context.Background()
+	err := DockerConnection.ContainerStart(ctx, c.ID, dockertypes.ContainerStartOptions{})
 	if err != nil {
 		return err
 	}
@@ -171,7 +173,8 @@ func StartContainer(c types.Container) error {
 
 // StopContainer stops a container.
 func StopContainer(c types.Container) error {
-	err := containers.Stop(PodmanCtx, c.ID, &containers.StopOptions{})
+	ctx := context.Background()
+	err := DockerConnection.ContainerStop(ctx, c.ID, dockercontainer.StopOptions{})
 	if err != nil {
 		return err
 	}
@@ -180,7 +183,8 @@ func StopContainer(c types.Container) error {
 
 // GetContainer gets a container.
 func GetContainer(c types.Container) (types.Container, error) {
-	container, err := containers.Inspect(PodmanCtx, c.ID, &containers.InspectOptions{})
+	ctx := context.Background()
+	container, err := DockerConnection.ContainerInspect(ctx, c.ID)
 	if err != nil {
 		return types.Container{}, err
 	}
@@ -191,7 +195,8 @@ func GetContainer(c types.Container) (types.Container, error) {
 
 // ListContainers lists containers.
 func ListContainers() ([]types.Container, error) {
-	containers, err := containers.List(PodmanCtx, &containers.ListOptions{})
+	ctx := context.Background()
+	containers, err := DockerConnection.ContainerList(ctx, dockertypes.ContainerListOptions{})
 	if err != nil {
 		return nil, err
 	}
