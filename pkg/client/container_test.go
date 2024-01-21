@@ -61,7 +61,7 @@ func TestStartContainer(t *testing.T) {
 
 // TestDeleteContainer tests the DeleteContainer function.
 func TestDeleteContainer(t *testing.T) {
-	err := client.DeleteContainer(masterHost, masterPort, test)
+	err := client.DeleteContainer(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}
