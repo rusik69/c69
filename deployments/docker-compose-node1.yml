@@ -11,5 +11,5 @@ services:
     volumes:
       - /run/libvirt:/run/libvirt/
       - /var/run/libvirt:/var/run/libvirt
-      - /run/podman/podman.sock:/run/podman/podman.sock
+      - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/libvirt/images:/var/lib/libvirt/images
