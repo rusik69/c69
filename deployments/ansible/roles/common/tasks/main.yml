@@ -12,7 +12,7 @@
 - name: Remove Docker
   ansible.builtin.dnf:
     name: docker-ce,docker-ce-cli,containerd.io,docker-compose-plugin,docker-compose
-    state: absent
+    state: present
 - name: Add rusik to docker group
   ansible.builtin.user:
     name: rusik
@@ -21,10 +21,5 @@
 - name: Start Docker
   ansible.builtin.systemd:
     name: docker
-    state: stopped
-    enabled: no
-- name: Start Podman
-  ansible.builtin.systemd:
-    name: podman
     state: started
     enabled: yes
