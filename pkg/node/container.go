@@ -134,7 +134,7 @@ func ContainerConnect() (*dockerclient.Client, error) {
 func CreateContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
 	pullOptions := dockertypes.ImagePullOptions{}
-	_, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
+	_, err := DockerConnection.ImagePull(ctx, "docker.io/library/"+c.Image, pullOptions)
 	if err != nil {
 		return types.Container{}, err
 	}
