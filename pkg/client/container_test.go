@@ -28,7 +28,7 @@ func TestGetContainer(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Printf("t: %v\n", t)
+	fmt.Printf("t: %v\n", container)
 	if container.Name != "test" {
 		t.Error("expected test, got ", container.Name)
 	}
