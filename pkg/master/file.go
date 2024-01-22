@@ -25,7 +25,7 @@ func UploadFileHandler(c *gin.Context) {
 		logrus.Error("name or size is empty")
 		return
 	}
-	logrus.Println("Creating file", tempFile)
+	logrus.Println("Uploading file", tempFile)
 	fileInfoString, err := ETCDGet("/files/" + tempFile.Name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
