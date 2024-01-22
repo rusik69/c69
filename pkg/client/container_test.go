@@ -1,6 +1,7 @@
 package client_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -27,6 +28,7 @@ func TestGetContainer(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	fmt.Printf("t: %v\n", t)
 	if container.Name != "test" {
 		t.Error("expected test, got ", container.Name)
 	}
