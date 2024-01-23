@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -35,6 +36,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(string(tempFileBody))
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(tempFileBody))
 	if err != nil {
 		return err
