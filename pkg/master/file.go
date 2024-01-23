@@ -20,6 +20,7 @@ func UploadFileHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
+	logrus.Println(tempFile)
 	if tempFile.Name == "" || tempFile.Size == 0 {
 		c.JSON(400, gin.H{"error": "name or size is empty"})
 		logrus.Error("name or size is empty")
