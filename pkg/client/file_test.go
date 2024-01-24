@@ -38,7 +38,7 @@ func TestFileList(t *testing.T) {
 		t.Error(err)
 	}
 	if len(files) != 1 {
-		t.Error("expected 1 files, got ", len(files))
+		t.Error("expected 1 file, got ", len(files))
 	}
 }
 
