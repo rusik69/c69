@@ -39,6 +39,19 @@ func UploadFileHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			return
 		}
+		tempFile.Node = node.Name
+		fileInfoBytes, err := json.Marshal(tempFile)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		err = ETCDPut("/files/"+tempFile.Name, string(fileInfoBytes))
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
 		c.JSON(200, node)
 	} else {
 		c.JSON(400, gin.H{"error": "file already exists"})
