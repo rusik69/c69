@@ -137,11 +137,7 @@ var nodeListCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("| %-10s | %-10s | %-10s |\n", "NAME", "HOST", "PORT")
-		fmt.Println("------------------------------------------------")
-		for _, node := range nodes {
-			fmt.Printf("| %-10s | %-10s | %-10s |\n", node.Name, node.Host, node.Port)
-		}
+		fmt.Println(nodes)
 	},
 }
 
@@ -293,11 +289,7 @@ var vmListCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-10s |\n", "ID", "NAME", "IP", "Host", "Status", "Image", "Flavor", "Volumes")
-		fmt.Println("------------------------------------------------------------------------------------------------------------------------")
-		for _, vm := range vms {
-			fmt.Printf("| %-10d | %-10s | %-16s | %-5s | %-7s | %-20s | %-5s | %-20v |\n", vm.ID, vm.Name, vm.IP, vm.Host, vm.State, vm.Image, vm.Flavor, vm.Volumes)
-		}
+		fmt.Println(vms)
 	},
 }
 
@@ -631,11 +623,7 @@ var fileListCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("| %-10s | %-10s | %-10s |\n", "NAME", "SIZE", "NODE")
-		fmt.Println("------------------------------------------------")
-		for _, file := range files {
-			fmt.Printf("| %-10s | %-10d | %-10s |\n", file.Name, file.Size, file.NodeHost)
-		}
+		fmt.Println(files)
 	},
 }
 
