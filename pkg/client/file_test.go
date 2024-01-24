@@ -16,6 +16,7 @@ func TestFileUpload(t *testing.T) {
 		t.Error(err)
 	}
 	defer os.Remove(tempFile.Name())
+	tempFile.WriteString("test")
 	tempFileName = tempFile.Name()
 	err = client.UploadFile(masterHost, masterPort, tempFileName)
 	if err != nil {
