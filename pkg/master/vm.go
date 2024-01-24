@@ -57,7 +57,6 @@ func CreateVMHandler(c *gin.Context) {
 		return
 	}
 	newVM.Committed = true
-	newVM.ID = newVMID
 	newVmstring, err := json.Marshal(newVM)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})

@@ -634,7 +634,7 @@ var fileListCmd = &cobra.Command{
 		fmt.Printf("| %-10s | %-10s | %-10s |\n", "NAME", "SIZE", "NODE")
 		fmt.Println("------------------------------------------------")
 		for _, file := range files {
-			fmt.Printf("| %-10s | %-10d | %-10s |\n", file.Name, file.Size, file.Node)
+			fmt.Printf("| %-10s | %-10d | %-10s |\n", file.Name, file.Size, file.NodeHost)
 		}
 	},
 }

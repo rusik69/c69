@@ -32,8 +32,10 @@ type File struct {
 	Name string `json:"name"`
 	// Size is the size of the file.
 	Size int64 `json:"size"`
-	// Node is the node of the file.
-	Node string `json:"node"`
+	// NodeHost is the node of the file.
+	NodeHost string `json:"nodehost"`
+	// NodePort is the node of the file.
+	NodePort string `json:"nodeport"`
 	// Committed is the committed status of the file.
 	Committed bool `json:"committed"`
 	// Timestamp is the timestamp of the file.

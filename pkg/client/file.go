@@ -98,27 +98,27 @@ func DownloadFile(masterHost, masterPort, fileName string) error {
 		return err
 	}
 	defer resp.Body.Close()
-	var node types.Node
+	var file types.File
 	bodyText, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
-	err = json.Unmarshal(bodyText, &node)
+	err = json.Unmarshal(bodyText, &file)
 	if err != nil {
 		return err
 	}
-	url = "http://" + node.Host + ":" + node.Port + "/api/v1/file/" + fileName
+	url = "http://" + file.NodeHost + ":" + file.NodePort + "/api/v1/file/" + fileName
 	resp, err = http.Get(url)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
-	file, err := os.Create(fileName)
+	outFile, err := os.Create(fileName)
 	if err != nil {
 		return err
 	}
-	defer file.Close()
-	_, err = io.Copy(file, resp.Body)
+	defer outFile.Close()
+	_, err = io.Copy(outFile, resp.Body)
 	if err != nil {
 		return err
 	}

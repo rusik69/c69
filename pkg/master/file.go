@@ -39,7 +39,8 @@ func UploadFileHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			return
 		}
-		tempFile.Node = node.Name
+		tempFile.NodeHost = node.Host
+		tempFile.NodePort = node.Port
 		fileInfoBytes, err := json.Marshal(tempFile)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
@@ -128,7 +129,7 @@ func DeleteFileHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	fileNode, err := types.FindNodeByName(fileInfo.Node)
+	fileNode, err := types.FindNodeByName(fileInfo.NodeHost)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
