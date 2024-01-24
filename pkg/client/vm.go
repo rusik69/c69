@@ -104,14 +104,14 @@ func StopVM(host, port string, id int) error {
 }
 
 // ListVMs lists vms.
-func ListVMs(host, port string) ([]types.VM, error) {
+func ListVMs(host, port string) ([]string, error) {
 	url := "http://" + host + ":" + port + "/api/v1/vm/list"
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	var vms []types.VM
+	var vms []string
 	err = json.NewDecoder(resp.Body).Decode(&vms)
 	return vms, err
 }
