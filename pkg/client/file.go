@@ -56,7 +56,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	if err != nil {
 		return err
 	}
-	url = "http://" + node.Host + ":" + node.Port + "/api/v1/files/" + fileName
+	url = "http://" + node.Host + ":" + node.Port + "/api/v1/file/" + fileName
 	req, err := http.NewRequest("POST", url, file)
 	if err != nil {
 		return err
@@ -74,7 +74,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 		}
 		return errors.New(string(bodyText))
 	}
-	url = "http://" + masterHost + ":" + masterPort + "/api/v1/files/commit/" + fileName
+	url = "http://" + masterHost + ":" + masterPort + "/api/v1/filecommit/" + fileName
 	resp, err = http.Get(url)
 	if err != nil {
 		return err
@@ -92,7 +92,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 
 // DownloadFile downloads a file.
 func DownloadFile(masterHost, masterPort, fileName string) error {
-	url := "http://" + masterHost + ":" + masterPort + "/api/v1/files/" + fileName
+	url := "http://" + masterHost + ":" + masterPort + "/api/v1/file/" + fileName
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -107,7 +107,7 @@ func DownloadFile(masterHost, masterPort, fileName string) error {
 	if err != nil {
 		return err
 	}
-	url = "http://" + node.Host + ":" + node.Port + "/api/v1/files/" + fileName
+	url = "http://" + node.Host + ":" + node.Port + "/api/v1/file/" + fileName
 	resp, err = http.Get(url)
 	if err != nil {
 		return err
@@ -127,7 +127,7 @@ func DownloadFile(masterHost, masterPort, fileName string) error {
 
 // DeleteFile deletes a file.
 func DeleteFile(masterHost, masterPort, name string) error {
-	url := "http://" + masterHost + ":" + masterPort + "/api/v1/files/" + name
+	url := "http://" + masterHost + ":" + masterPort + "/api/v1/file/" + name
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
