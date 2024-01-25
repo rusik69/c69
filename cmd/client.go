@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/rusik69/govnocloud/pkg/client"
 	"github.com/spf13/cobra"
@@ -219,15 +218,11 @@ var vmDeleteCmd = &cobra.Command{
 		if port == "" {
 			panic("port is required")
 		}
-		idString := cmd.PersistentFlags().Lookup("id").Value.String()
-		if idString == "" {
-			panic("id is required")
+		name := cmd.PersistentFlags().Lookup("name").Value.String()
+		if name == "" {
+			panic("name is required")
 		}
-		id, err := strconv.Atoi(idString)
-		if err != nil {
-			panic(err)
-		}
-		err = client.DeleteVM(host, port, id)
+		err := client.DeleteVM(host, port, name)
 		if err != nil {
 			panic(err)
 		}
@@ -247,15 +242,11 @@ var vmGetCmd = &cobra.Command{
 		if port == "" {
 			panic("port is required")
 		}
-		idString := cmd.PersistentFlags().Lookup("id").Value.String()
-		if idString == "" {
-			panic("id is required")
+		name := cmd.PersistentFlags().Lookup("name").Value.String()
+		if name == "" {
+			panic("name is required")
 		}
-		id, err := strconv.Atoi(idString)
-		if err != nil {
-			panic(err)
-		}
-		vm, err := client.GetVM(host, port, id)
+		vm, err := client.GetVM(host, port, name)
 		if err != nil {
 			panic(err)
 		}
@@ -307,15 +298,11 @@ var vmStopCmd = &cobra.Command{
 		if port == "" {
 			panic("port is required")
 		}
-		idString := cmd.PersistentFlags().Lookup("id").Value.String()
-		if idString == "" {
-			panic("id is required")
+		name := cmd.PersistentFlags().Lookup("name").Value.String()
+		if name == "" {
+			panic("name is required")
 		}
-		id, err := strconv.Atoi(idString)
-		if err != nil {
-			panic(err)
-		}
-		err = client.StopVM(host, port, id)
+		err := client.StopVM(host, port, name)
 		if err != nil {
 			panic(err)
 		}
@@ -336,15 +323,11 @@ var vmStartCmd = &cobra.Command{
 		if port == "" {
 			panic("port is required")
 		}
-		idString := cmd.PersistentFlags().Lookup("id").Value.String()
-		if idString == "" {
-			panic("id is required")
+		name := cmd.PersistentFlags().Lookup("name").Value.String()
+		if name == "" {
+			panic("name is required")
 		}
-		id, err := strconv.Atoi(idString)
-		if err != nil {
-			panic(err)
-		}
-		err = client.StartVM(host, port, id)
+		err := client.StartVM(host, port, name)
 		if err != nil {
 			panic(err)
 		}
