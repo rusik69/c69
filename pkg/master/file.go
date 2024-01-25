@@ -158,7 +158,7 @@ func ListFilesHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	c.JSON(200, gin.H{"files": files})
+	c.JSON(200, files)
 }
 
 // GetFileHandler handles the get file request.

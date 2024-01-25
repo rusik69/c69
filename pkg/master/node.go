@@ -46,7 +46,7 @@ func ListNodesHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	c.JSON(200, gin.H{"nodes": nodes})
+	c.JSON(200, nodes)
 }
 
 // GetNodeHandler handles the get node request.
