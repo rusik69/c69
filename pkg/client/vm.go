@@ -66,9 +66,8 @@ func DeleteVM(host, port string, id int) error {
 }
 
 // StartVM starts a vm.
-func StartVM(host, port string, id int) error {
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/vmstart/" + idString
+func StartVM(host, port, name string) error {
+	url := "http://" + host + ":" + port + "/api/v1/vmstart/" + name
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -85,9 +84,8 @@ func StartVM(host, port string, id int) error {
 }
 
 // StopVM stops a vm.
-func StopVM(host, port string, id int) error {
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/vmstop/" + idString
+func StopVM(host, port, name string) error {
+	url := "http://" + host + ":" + port + "/api/v1/vmstop/" + name
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -117,12 +115,11 @@ func ListVMs(host, port string) ([]string, error) {
 }
 
 // GetVM gets a vm.
-func GetVM(host, port string, id int) (types.VM, error) {
+func GetVM(host, port, name string) (types.VM, error) {
 	vm := types.VM{
 		ID: id,
 	}
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/vm/" + idString
+	url := "http://" + host + ":" + port + "/api/v1/vm/" + name
 	resp, err := http.Get(url)
 	if err != nil {
 		return vm, err
