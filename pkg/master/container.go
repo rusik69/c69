@@ -43,108 +43,61 @@ func CreateContainerHandler(c *gin.Context) {
 		newContainerID, err = client.CreateContainer(node.Host, node.Port, tempContainer.Name, tempContainer.Image)
 		if err != nil {
 			logrus.Error(node.Host, node.Port, err.Error())
-			package master
+			continue
+		}
+		newContainer.ID = newContainerID
+		newContainer.Host = node.Host
+		created = true
+		break
+	}
+	if !created {
+		c.JSON(500, gin.H{"error": "can't create container"})
+		logrus.Error("can't create container", tempContainer.Name, tempContainer.Image)
+		return
+	}
+	newContainer.Committed = true
+	newContainer.Image = tempContainer.Image
+	newContainer.Name = tempContainer.Name
+	newContainerString, err := json.Marshal(newContainer)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = ETCDPut("/containers/"+tempContainer.Name, string(newContainerString))
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	c.JSON(200, newContainer)
+}
 
-			import (
-				"encoding/json"
-
-				"github.com/gin-gonic/gin"
-				"github.com/rusik69/govnocloud/pkg/client"
-				"github.com/rusik69/govnocloud/pkg/types"
-				"github.com/sirupsen/logrus"
-			)
-
-			// CreateContainerHandler handles the create container request.
-			func CreateContainerHandler(c *gin.Context) {
-				body := c.Request.Body
-				defer body.Close()
-				var tempContainer types.Container
-				if err := c.ShouldBindJSON(&tempContainer); err != nil {
-					c.JSON(400, gin.H{"error": err.Error()})
-					logrus.Error(err.Error())
-					return
-				}
-				if tempContainer.Name == "" || tempContainer.Image == "" {
-					c.JSON(400, gin.H{"error": "name or image is empty"})
-					logrus.Error("name or image is empty")
-					return
-				}
-				logrus.Println("Creating container", tempContainer)
-				containerInfoString, err := ETCDGet("/containers/" + tempContainer.Name)
-				if err != nil {
-					c.JSON(500, gin.H{"error": err.Error()})
-					logrus.Error(err.Error())
-					return
-				}
-				if containerInfoString != "" {
-					c.JSON(400, gin.H{"error": "container with this id already exists"})
-					logrus.Error("container with this id already exists")
-					return
-				}
-				var newContainerID string
-				created := false
-				var newContainer types.Container
-				for _, node := range types.MasterEnvInstance.Nodes {
-					newContainerID, err = client.CreateContainer(node.Host, node.Port, tempContainer.Name, tempContainer.Image)
-					if err != nil {
-						logrus.Error(node.Host, node.Port, err.Error())
-						continue
-					}
-					newContainer.ID = newContainerID
-					newContainer.Host = node.Host
-					created = true
-					break
-				}
-				if !created {
-					c.JSON(500, gin.H{"error": "can't create container"})
-					logrus.Error("can't create container", tempContainer.Name, tempContainer.Image)
-					return
-				}
-				newContainer.Committed = true
-				newContainer.Image = tempContainer.Image
-				newContainer.Name = tempContainer.Name
-				newContainerString, err := json.Marshal(newContainer)
-				if err != nil {
-					c.JSON(500, gin.H{"error": err.Error()})
-					logrus.Error(err.Error())
-					return
-				}
-				err = ETCDPut("/containers/"+tempContainer.Name, string(newContainerString))
-				if err != nil {
-					c.JSON(500, gin.H{"error": err.Error()})
-					logrus.Error(err.Error())
-					return
-				}
-				c.JSON(200, newContainer)
-			}
-
-			// DeleteContainerHandler handles the delete container request.
-			func DeleteContainerHandler(c *gin.Context) {
-				name := c.Param("name")
-				if name == "" {
-					c.JSON(400, gin.H{"error": "name is empty"})
-					return
-				}
-				logrus.Printf("Deleting container with name %s\n", name)
-				vmInfoString, err := ETCDGet("/containers/" + name)
-				if err != nil {
-					c.JSON(500, gin.H{"error": err.Error()})
-					logrus.Error(err.Error())
-					return
-				}
-				if vmInfoString == "" {
-					c.JSON(400, gin.H{"error": "container with this name doesn't exist"})
-					logrus.Error("container with this name doesn't exist")
-					return
-				}
-				var tempContainer types.Container
-				err = json.Unmarshal([]byte(vmInfoString), &tempContainer)
-				if err != nil {
-					c.JSON(500, gin.H{"error": err.Error()})
-					logrus.Error(err.Error())
-					return
-				}
-				// END: be15d9bcejpp
+// DeleteContainerHandler handles the delete container request.
+func DeleteContainerHandler(c *gin.Context) {
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
+		return
+	}
+	logrus.Printf("Deleting container with name %s\n", name)
+	vmInfoString, err := ETCDGet("/containers/" + name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	if vmInfoString == "" {
+		c.JSON(400, gin.H{"error": "container with this name doesn't exist"})
+		logrus.Error("container with this name doesn't exist")
+		return
+	}
+	var tempContainer types.Container
+	err = json.Unmarshal([]byte(vmInfoString), &tempContainer)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
 	}
 	deleted := false
 	for _, node := range types.MasterEnvInstance.Nodes {
