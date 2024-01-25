@@ -40,7 +40,7 @@ func AddNodeHandler(c *gin.Context) {
 
 // ListNodesHandler handles the list nodes request.
 func ListNodesHandler(c *gin.Context) {
-	nodes, err := ETCDList("/nodes")
+	nodes, err := ETCDList("/nodes/")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())

@@ -156,5 +156,5 @@ func FindNodeByName(name string) (Node, error) {
 			return node, nil
 		}
 	}
-	return Node{}, errors.New("node not found")
+	return Node{}, errors.New("node " + name + " not found")
 }
