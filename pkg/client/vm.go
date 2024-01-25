@@ -6,7 +6,6 @@ import (
 	"errors"
 	"io"
 	"net/http"
-	"strconv"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
@@ -43,9 +42,8 @@ func CreateVM(host, port, name, image, flavor string) (int, error) {
 }
 
 // DeleteVM deletes a vm.
-func DeleteVM(host, port string, id int) error {
-	idString := strconv.Itoa(id)
-	url := "http://" + host + ":" + port + "/api/v1/vm/" + idString
+func DeleteVM(host, port, name string) error {
+	url := "http://" + host + ":" + port + "/api/v1/vm/" + name
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
@@ -116,9 +114,7 @@ func ListVMs(host, port string) ([]string, error) {
 
 // GetVM gets a vm.
 func GetVM(host, port, name string) (types.VM, error) {
-	vm := types.VM{
-		ID: id,
-	}
+	vm := types.VM{}
 	url := "http://" + host + ":" + port + "/api/v1/vm/" + name
 	resp, err := http.Get(url)
 	if err != nil {

@@ -6,10 +6,6 @@ import (
 	"github.com/rusik69/govnocloud/pkg/client"
 )
 
-var (
-	VMID int
-)
-
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
 	VMID, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "tiny")
@@ -23,7 +19,7 @@ func TestCreateVM(t *testing.T) {
 
 // TestGETVM tests the GetVM function.
 func TestGetVM(t *testing.T) {
-	vm, err := client.GetVM(masterHost, masterPort, VMID)
+	vm, err := client.GetVM(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}
@@ -45,7 +41,7 @@ func TestListVMs(t *testing.T) {
 
 // TestStopVM tests the StopVM function.
 func TestStopVM(t *testing.T) {
-	err := client.StopVM(masterHost, masterPort, VMID)
+	err := client.StopVM(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}
@@ -53,7 +49,7 @@ func TestStopVM(t *testing.T) {
 
 // TestStartVM tests the StartVM function.
 func TestStartVM(t *testing.T) {
-	err := client.StartVM(masterHost, masterPort, VMID)
+	err := client.StartVM(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}
@@ -61,7 +57,7 @@ func TestStartVM(t *testing.T) {
 
 // TestDeleteVM tests the DeleteVM function.
 func TestDeleteVM(t *testing.T) {
-	err := client.DeleteVM(masterHost, masterPort, VMID)
+	err := client.DeleteVM(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}
