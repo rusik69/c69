@@ -2,7 +2,6 @@ package master
 
 import (
 	"encoding/json"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -74,28 +73,22 @@ func CreateVMHandler(c *gin.Context) {
 
 // DeleteVMHandler handles the delete request.
 func DeleteVMHandler(c *gin.Context) {
-	id := c.Param("id")
+	name := c.Param("name")
 	if id == "" {
-		c.JSON(400, gin.H{"error": "id is empty"})
-		logrus.Error("id is empty")
+		c.JSON(400, gin.H{"error": "name is empty"})
+		logrus.Error("name is empty")
 		return
 	}
-	idInt, err := strconv.Atoi(id)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		logrus.Error(err.Error())
-		return
-	}
-	logrus.Printf("Deleting VM %d\n", idInt)
-	vmInfoString, err := ETCDGet("/vms/" + id)
+	logrus.Printf("Deleting VM %d\n", name)
+	vmInfoString, err := ETCDGet("/vms/" + name)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
 	if vmInfoString == "" {
-		c.JSON(400, gin.H{"error": "vm with this id does not exist"})
-		logrus.Error("vm with this id does not exist")
+		c.JSON(400, gin.H{"error": "vm with this name does not exist"})
+		logrus.Error("vm with this name does not exist")
 		return
 	}
 	var vmInfo types.VM
@@ -108,7 +101,7 @@ func DeleteVMHandler(c *gin.Context) {
 	deleted := false
 	for _, node := range types.MasterEnvInstance.Nodes {
 		if node.Host == vmInfo.Host {
-			err = client.DeleteVM(node.Host, node.Port, idInt)
+			err = client.DeleteVM(node.Host, node.Port, string(vmInfo.ID))
 			if err != nil {
 				logrus.Error(err.Error())
 				c.JSON(500, gin.H{"error": err.Error()})
@@ -122,7 +115,7 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error("vm was not deleted")
 		return
 	}
-	err = ETCDDelete("/vms/" + id)
+	err = ETCDDelete("/vms/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
