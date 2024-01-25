@@ -152,7 +152,7 @@ func DeleteFileHandler(c *gin.Context) {
 
 // ListFilesHandler handles the list files request.
 func ListFilesHandler(c *gin.Context) {
-	files, err := ETCDList("/files")
+	files, err := ETCDList("/files/")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
