@@ -101,7 +101,7 @@ func StopVM(host, port, name string) error {
 
 // ListVMs lists vms.
 func ListVMs(host, port string) ([]string, error) {
-	url := "http://" + host + ":" + port + "/api/v1/vm/list"
+	url := "http://" + host + ":" + port + "/api/v1/vms"
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
