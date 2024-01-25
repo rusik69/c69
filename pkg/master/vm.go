@@ -48,6 +48,9 @@ func CreateVMHandler(c *gin.Context) {
 		}
 		newVM.ID = newVMID
 		newVM.Host = node.Host
+		newVM.Name = tempVM.Name
+		newVM.Image = tempVM.Image
+		newVM.Flavor = tempVM.Flavor
 		created = true
 		break
 	}
@@ -225,8 +228,8 @@ func StopVMHandler(c *gin.Context) {
 		return
 	}
 	if vmInfoString == "" {
-		c.JSON(400, gin.H{"error": "vm with this id does not exist"})
-		logrus.Error("vm with this id does not exist")
+		c.JSON(400, gin.H{"error": "vm with this name does not exist"})
+		logrus.Error("vm with this name does not exist")
 		return
 	}
 	var vmInfo types.VM
