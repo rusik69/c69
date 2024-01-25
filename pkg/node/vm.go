@@ -52,6 +52,7 @@ func CreateVMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Println("Created VM with id", vm.ID)
 	c.JSON(200, vm)
 }
 

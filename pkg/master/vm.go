@@ -37,11 +37,10 @@ func CreateVMHandler(c *gin.Context) {
 		logrus.Error("vm with this name already exists")
 		return
 	}
-	newVMID := 0
 	created := false
 	var newVM types.VM
 	for _, node := range types.MasterEnvInstance.Nodes {
-		newVMID, err = client.CreateVM(node.Host, node.Port, tempVM.Name, tempVM.Image, tempVM.Flavor)
+		newVMID, err := client.CreateVM(node.Host, node.Port, tempVM.Name, tempVM.Image, tempVM.Flavor)
 		if err != nil {
 			logrus.Error(err.Error())
 			continue
