@@ -126,8 +126,8 @@ func DownloadFile(masterHost, masterPort, fileName string) error {
 }
 
 // DeleteFile deletes a file.
-func DeleteFile(masterHost, masterPort, name string) error {
-	url := "http://" + masterHost + ":" + masterPort + "/api/v1/file/" + name
+func DeleteFile(host, port, name string) error {
+	url := "http://" + host + ":" + port + "/api/v1/file/" + name
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err

@@ -36,6 +36,8 @@ type File struct {
 	NodeHost string `json:"nodehost"`
 	// NodePort is the node of the file.
 	NodePort string `json:"nodeport"`
+	// NodeName is the node of the file.
+	NodeName string `json:"nodename"`
 	// Committed is the committed status of the file.
 	Committed bool `json:"committed"`
 	// Timestamp is the timestamp of the file.
