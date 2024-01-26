@@ -43,21 +43,19 @@ docker:
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
 
 deploy:
-	ssh master "docker compose -f docker-compose-master.yml down"
-	ssh master "docker system prune -a -f"
-	scp deployments/docker-compose-master.yml master:~/
-	ssh master "docker pull $(ORG_PREFIX)/$(BINARY_NAME)-master"
-	ssh master "docker compose -f docker-compose-master.yml up -d"
-	scp deployments/docker-compose-node0.yml node0:~/
-	ssh node0 "docker compose -f docker-compose-node0.yml down"
-	ssh node0 "docker system prune -a -f"
-	ssh root@node0 "virsh destroy test; virsh undefine test" || true
-	ssh node0 "docker compose -f docker-compose-node0.yml up -d"
-	scp deployments/docker-compose-node1.yml node1:~/
-	ssh node1 "docker compose -f docker-compose-node1.yml down"
-	ssh node1 "docker system prune -a -f"
-	ssh root@node1 "virsh destroy test; virsh undefine test" || true
-	ssh node1 "docker compose -f docker-compose-node1.yml up -d"
+	docker compose -f docker-compose-master.yml down
+	docker system prune -a -f
+	docker compose -f docker-compose-master.yml up -d
+	scp deployments/docker-compose-node0.yml x220.rusik69.lol:~/
+	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml down"
+	ssh x220.rusik69.lol "docker system prune -a -f"
+	ssh x220.rusik69.lol "virsh destroy test; virsh undefine test" || true
+	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml up -d"
+	scp deployments/docker-compose-x230.yml x230.rusik69.lol:~/
+	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml down"
+	ssh x230.rusik69.lol "docker system prune -a -f"
+	ssh x230.rusik69.lol "virsh destroy test; virsh undefine test" || true
+	ssh x230.rusik69.lol "docker compose -f docker-compose-node1.yml up -d"
 	sleep 10
 
 prune:
