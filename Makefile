@@ -66,7 +66,7 @@ ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
 composetest:
-	docker compose -f deployments/docker-compose-test.yml up --abort-on-container-exit --exit-code-from test
+	docker compose -f deployments/docker-compose-test.yml up --abort-on-container-exit --exit-code-from test --quiet-pull
 
 composelogs:
 	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml logs"
