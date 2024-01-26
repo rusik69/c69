@@ -43,9 +43,10 @@ docker:
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
 
 deploy:
-	docker compose -f docker-compose-master.yml down
-	docker system prune -a -f
-	docker compose -f deployents/docker-compose-master.yml up -d
+	scp deployments/docker-compose-master.yml govnocloud-master.rusik69.lol:~/
+	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml down"
+	ssh govnocloud-master.rusik69.lol "docker system prune -a -f"
+	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml up -d"
 	scp deployments/docker-compose-node0.yml x220.rusik69.lol:~/
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml down"
 	ssh x220.rusik69.lol "docker system prune -a -f"
