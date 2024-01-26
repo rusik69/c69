@@ -3,6 +3,10 @@
   hosts: all
   roles:
     - common
+- name: Run master role on master hosts
+  hosts: masters
+  roles:
+    - master
 - name: Run node role on node hosts
   hosts: nodes
   roles:
