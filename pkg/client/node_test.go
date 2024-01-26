@@ -43,7 +43,7 @@ func TestMain(m *testing.M) {
 	}
 	nodeName = os.Getenv("TEST_NODE_NAME")
 	if nodeName == "" {
-		nodeName = "localhost"
+		nodeName = "node0"
 	}
 	nodeHost = os.Getenv("TEST_NODE_HOST")
 	if nodeHost == "" {
@@ -81,8 +81,8 @@ func TestGetNode(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if node.Name != "localhost" {
-		t.Error("expected localhost, got ", node.Name)
+	if node.Name != "node0" {
+		t.Error("expected node0, got ", node.Name)
 	}
 }
 
