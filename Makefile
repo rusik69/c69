@@ -46,17 +46,17 @@ deploy:
 	scp deployments/docker-compose-master.yml govnocloud-master.rusik69.lol:~/
 	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml down"
 	ssh govnocloud-master.rusik69.lol "docker system prune -a -f"
-	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml up -d"
+	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml up -d --quiet-pull"
 	scp deployments/docker-compose-x220.yml x220.rusik69.lol:~/
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml down"
 	ssh x220.rusik69.lol "docker system prune -a -f"
 	ssh x220.rusik69.lol "virsh destroy test; virsh undefine test" || true
-	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml up -d"
+	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml up -d --quiet-pull"
 	scp deployments/docker-compose-x230.yml x230.rusik69.lol:~/
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml down"
 	ssh x230.rusik69.lol "docker system prune -a -f"
 	ssh x230.rusik69.lol "virsh destroy test; virsh undefine test" || true
-	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml up -d"
+	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml up -d --quiet-pull"
 	sleep 10
 
 prune:
