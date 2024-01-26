@@ -70,7 +70,7 @@ composetest:
 
 composelogs:
 	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml logs"
-	ssh x220.rusik69.lol "docker compose -f docker-compose-node0.yml logs"
-	ssh x230.rusik69.lol "docker compose -f docker-compose-node1.yml logs"
+	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml logs"
+	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml logs"
 
 default: get build
