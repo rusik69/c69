@@ -1,8 +1,8 @@
 [all]
-master ansible_ssh_user=root
-node0 ansible_ssh_user=root
-node1 ansible_ssh_user=root
+govnocloud-master.rusik69.lol ansible_become=true
+x220.rusik69.lol ansible_become=true
+x230.rusik69.lol ansible_become=true
 
 [nodes]
-node0 ansible_ssh_user=root
-node1 ansible_ssh_user=root
+x220.rusik69.lol ansible_become=true
+x230.rusik69.lol ansible_become=true
