@@ -15,7 +15,7 @@ services:
       - "7070:7070"
     environment:
       "MASTER_ETCD_HOST": "etcd"
-      "MASTER_NODES": "node0:192.168.122.209:6969,node1:192.168.122.144:6969"
+      "MASTER_NODES": "x220:x220.rusik69.log:6969,x230:x230.rusik69.lol:6969"
     depends_on:
       - etcd
   web:

@@ -6,8 +6,8 @@ services:
       - "6969:6969"
     environment:
       "NODE_LIBVIRT_SOCKET" : "qemu:///system"
-      "NODE_NAME": "node1"
-      "NODE_IP": "192.168.122.144"
+      "NODE_NAME": "x230"
+      "NODE_IP": "100.126.141.49"
     volumes:
       - /run/libvirt:/run/libvirt/
       - /var/run/libvirt:/var/run/libvirt
