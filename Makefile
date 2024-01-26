@@ -47,7 +47,7 @@ deploy:
 	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml down"
 	ssh govnocloud-master.rusik69.lol "docker system prune -a -f"
 	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml up -d"
-	scp deployments/docker-compose-node0.yml x220.rusik69.lol:~/
+	scp deployments/docker-compose-x220.yml x220.rusik69.lol:~/
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml down"
 	ssh x220.rusik69.lol "docker system prune -a -f"
 	ssh x220.rusik69.lol "virsh destroy test; virsh undefine test" || true
@@ -56,7 +56,7 @@ deploy:
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml down"
 	ssh x230.rusik69.lol "docker system prune -a -f"
 	ssh x230.rusik69.lol "virsh destroy test; virsh undefine test" || true
-	ssh x230.rusik69.lol "docker compose -f docker-compose-node1.yml up -d"
+	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml up -d"
 	sleep 10
 
 prune:
