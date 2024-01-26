@@ -45,7 +45,7 @@ docker:
 deploy:
 	docker compose -f docker-compose-master.yml down
 	docker system prune -a -f
-	docker compose -f docker-compose-master.yml up -d
+	docker compose -f deployents/docker-compose-master.yml up -d
 	scp deployments/docker-compose-node0.yml x220.rusik69.lol:~/
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml down"
 	ssh x220.rusik69.lol "docker system prune -a -f"
