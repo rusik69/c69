@@ -81,8 +81,8 @@ func TestGetNode(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if node.Name != "node0" {
-		t.Error("expected node0, got ", node.Name)
+	if node.Name != "x220" {
+		t.Error("expected x220, got ", node.Name)
 	}
 }
 
