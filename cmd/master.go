@@ -39,6 +39,10 @@ var masterCmd = &cobra.Command{
 		}
 		defer master.ETCDClient.Close()
 		logrus.Println("ETCD is connected at " + types.MasterEnvInstance.ETCDHost + ":" + types.MasterEnvInstance.ETCDPort)
+		err = master.AddEnvNodesToETCD()
+		if err != nil {
+			panic(err)
+		}
 		master.Serve()
 	},
 }

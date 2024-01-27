@@ -87,3 +87,33 @@ func DeleteNodeHandler(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"status": "OK"})
 }
+
+// AddEnvNodesToETCD adds nodes from env to etcd.
+func AddEnvNodesToETCD() error {
+	nodesList, err := ETCDList("/nodes/")
+	if err != nil {
+		logrus.Error(err.Error())
+		return err
+	}
+	nodesMap := map[string]bool{}
+	for _, node := range nodesList {
+		nodesMap[node] = true
+	}
+	for _, node := range types.MasterEnvInstance.Nodes {
+		if nodesMap[node.Name] {
+			logrus.Printf("Node %s already exists in etcd\n", node.Name)
+			continue
+		}
+		nodeString, err := json.Marshal(node)
+		if err != nil {
+			logrus.Error(err.Error())
+			return err
+		}
+		err = ETCDPut("/nodes/"+node.Name, string(nodeString))
+		if err != nil {
+			logrus.Error(err.Error())
+			return err
+		}
+	}
+	return nil
+}
