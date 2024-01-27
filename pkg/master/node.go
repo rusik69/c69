@@ -94,6 +94,7 @@ func DeleteNodeHandler(c *gin.Context) {
 
 // AddEnvNodesToETCD adds nodes from env to etcd.
 func AddEnvNodesToETCD() error {
+	logrus.Println("Adding nodes from env to etcd")
 	nodesList, err := ETCDList("/nodes/")
 	if err != nil {
 		logrus.Error(err.Error())
