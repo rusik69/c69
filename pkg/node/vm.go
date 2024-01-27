@@ -58,21 +58,15 @@ func CreateVMHandler(c *gin.Context) {
 
 // DeleteHandler handles the delete request.
 func DeleteVMHandler(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		logrus.Error("id is empty")
-		c.JSON(400, gin.H{"error": "id is empty"})
+	name := c.Param("name")
+	if name == "" {
+		logrus.Error("name is empty")
+		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	intID, err := strconv.Atoi(id)
-	if err != nil {
-		logrus.Error(err.Error())
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-	tempVM := types.VM{ID: intID}
+	tempVM := types.VM{Name: name}
 	logrus.Println("Deleting VM", tempVM)
-	err = DeleteVM(tempVM)
+	err := DeleteVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -119,21 +113,15 @@ func GetVMHandler(c *gin.Context) {
 
 // StopVMHandler handles the stop vm request.
 func StopVMHandler(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		logrus.Error("id is empty")
-		c.JSON(400, gin.H{"error": "id is empty"})
+	name := c.Param("name")
+	if name == "" {
+		logrus.Error("name is empty")
+		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	idInt, err := strconv.Atoi(id)
-	if err != nil {
-		logrus.Error(err.Error())
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-	tempVM := types.VM{ID: idInt}
+	tempVM := types.VM{Name: name}
 	logrus.Println("Stopping VM", tempVM.ID)
-	err = StopVM(tempVM)
+	err := StopVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -143,21 +131,15 @@ func StopVMHandler(c *gin.Context) {
 
 // StartVMHandler handles the start vm request.
 func StartVMHandler(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		logrus.Error("id is empty")
-		c.JSON(400, gin.H{"error": "id is empty"})
+	name := c.Param("name")
+	if name == "" {
+		logrus.Error("name is empty")
+		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	idInt, err := strconv.Atoi(id)
-	if err != nil {
-		logrus.Error(err.Error())
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-	tempVM := types.VM{ID: idInt}
+	tempVM := types.VM{Name: name}
 	logrus.Println("Starting VM", tempVM.ID)
-	err = StartVM(tempVM)
+	err := StartVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
