@@ -68,7 +68,7 @@ func GetNodeHandler(c *gin.Context) {
 		logrus.Error("node not found")
 		return
 	}
-	c.JSON(200, gin.H{"node": nodeString})
+	c.JSON(200, nodeString)
 }
 
 // DeleteNodeHandler handles the delete node request.
