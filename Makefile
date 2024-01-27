@@ -59,9 +59,6 @@ deploy:
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml up -d --quiet-pull"
 	sleep 10
 
-prune:
-	docker system prune -a -f
-
 ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 

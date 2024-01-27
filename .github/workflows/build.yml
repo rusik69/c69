@@ -8,8 +8,6 @@ jobs:
       uses: actions/checkout@v4
     - name: ansible
       run: make ansible
-    - name: prune
-      run: make prune
     - name: docker
       run: make docker
     - name: deploy
