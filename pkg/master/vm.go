@@ -2,7 +2,6 @@ package master
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -104,7 +103,7 @@ func DeleteVMHandler(c *gin.Context) {
 	deleted := false
 	for _, node := range types.MasterEnvInstance.Nodes {
 		if node.Host == vmInfo.Host {
-			err = client.DeleteVM(node.Host, node.Port, fmt.Sprintf("%d", vmInfo.ID))
+			err = client.DeleteVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {
 				logrus.Error(err.Error())
 				c.JSON(500, gin.H{"error": err.Error()})
