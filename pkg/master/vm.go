@@ -200,7 +200,7 @@ func StartVMHandler(c *gin.Context) {
 	}
 	for _, node := range types.MasterEnvInstance.Nodes {
 		if node.Host == vmInfo.Host {
-			err = client.StartVM(node.Host, node.Port, fmt.Sprintf("%d", vmInfo.ID))
+			err = client.StartVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {
 				logrus.Error(err.Error())
 				c.JSON(500, gin.H{"error": err.Error()})
@@ -240,7 +240,7 @@ func StopVMHandler(c *gin.Context) {
 	}
 	for _, node := range types.MasterEnvInstance.Nodes {
 		if node.Host == vmInfo.Host {
-			err = client.StopVM(node.Host, node.Port, fmt.Sprintf("%d", vmInfo.ID))
+			err = client.StopVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {
 				logrus.Error(err.Error())
 				c.JSON(500, gin.H{"error": err.Error()})
