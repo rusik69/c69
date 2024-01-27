@@ -23,13 +23,14 @@ func AddNodeHandler(c *gin.Context) {
 		logrus.Error("name, host and port are required")
 		return
 	}
-	tempNodeString, err := json.Marshal(tempNode)
+	logrus.Println("Adding node", tempNode)
+	tempNodeBody, err := json.Marshal(tempNode)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
-	err = ETCDPut("/nodes/"+tempNode.Name, string(tempNodeString))
+	err = ETCDPut("/nodes/"+tempNode.Name, string(tempNodeBody))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -40,6 +41,7 @@ func AddNodeHandler(c *gin.Context) {
 
 // ListNodesHandler handles the list nodes request.
 func ListNodesHandler(c *gin.Context) {
+	logrus.Println("Listing nodes")
 	nodes, err := ETCDList("/nodes/")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -57,6 +59,7 @@ func GetNodeHandler(c *gin.Context) {
 		logrus.Error("node name is required")
 		return
 	}
+	logrus.Println("Getting node", nodeName)
 	nodeString, err := ETCDGet("/nodes/" + nodeName)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -79,6 +82,7 @@ func DeleteNodeHandler(c *gin.Context) {
 		logrus.Error("node name is required")
 		return
 	}
+	logrus.Println("Deleting node", nodeName)
 	err := ETCDDelete("/nodes/" + nodeName)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
