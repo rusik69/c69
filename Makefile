@@ -55,7 +55,7 @@ deploy:
 	scp deployments/docker-compose-x230.yml x230.rusik69.lol:~/
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml down"
 	ssh x230.rusik69.lol "docker system prune -a -f"
-	ssh root@x230.rusik69.lol "sudo virsh destroy test; sudo virsh undefine test" || true
+	ssh x230.rusik69.lol "sudo virsh destroy test; sudo virsh undefine test" || true
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml up -d --quiet-pull"
 	sleep 10
 
