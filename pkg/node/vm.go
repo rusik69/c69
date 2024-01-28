@@ -325,10 +325,14 @@ func ListVMs() ([]types.VM, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to get domain state: %w", err)
 		}
-
+		id, err := domain.GetID()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get domain id: %w", err)
+		}
 		vm := types.VM{
 			Name:  name,
 			State: ParseState(state),
+			ID:    int(id),
 		}
 		vms = append(vms, vm)
 	}

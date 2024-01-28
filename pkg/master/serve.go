@@ -1,6 +1,7 @@
 package master
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
@@ -9,6 +10,7 @@ import (
 // Serve starts the server.
 func Serve() {
 	r := gin.New()
+	r.Use(cors.Default())
 	r.POST("/api/v1/vms", CreateVMHandler)
 	r.DELETE("/api/v1/vm/:name", DeleteVMHandler)
 	r.GET("/api/v1/vms", ListVMHandler)

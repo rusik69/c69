@@ -1,15 +1,33 @@
 <template>
   <div class="about">
-    <h1></h1>
+    <h1>Files</h1>
+    <ul>
+      <li v-for="file in files">{{ file }}</li>
+    </ul>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+<script>
+export default {
+  data() {
+    return {
+      nodes: []
+    };
+  },
+  created() {
+    this.fetchFiles();
+  },
+  methods: {
+    fetchFiles() {
+      fetch('http://govnocloud-master.rusik69.lol:7070/api/v1/files')
+        .then(response => response.json())
+        .then(data => {
+          this.files = data;
+        })
+        .catch(error => {
+          console.error('Error fetching files:', error);
+        });
+    }
   }
 }
-</style>
+</script>

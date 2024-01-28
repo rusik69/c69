@@ -13,10 +13,7 @@ import (
 // Serve serves the node.
 func Serve() {
 	r := gin.New()
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
-	r.Use(cors.New(config))
+	r.Use(cors.Default())
 	r.POST("/api/v1/vms", CreateVMHandler)
 	r.GET("/api/v1/vm/:id", GetVMHandler)
 	r.DELETE("/api/v1/vm/:name", DeleteVMHandler)

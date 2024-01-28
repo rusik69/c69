@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rusik69/govnocloud/pkg/client"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
@@ -42,13 +43,36 @@ func AddNodeHandler(c *gin.Context) {
 // ListNodesHandler handles the list nodes request.
 func ListNodesHandler(c *gin.Context) {
 	logrus.Println("Listing nodes")
-	nodes, err := ETCDList("/nodes/")
+	nodesList, err := ETCDList("/nodes/")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
-	c.JSON(200, nodes)
+	res := map[string]types.NodeStats{}
+	for _, nodeName := range nodesList {
+		nodeString, err := ETCDGet(nodeName)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		var node types.Node
+		err = json.Unmarshal([]byte(nodeString), &node)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		nodeStats, err := client.GetNodeStats(node.Host, node.Port)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		res[nodeName] = nodeStats
+	}
+	c.JSON(200, res)
 }
 
 // GetNodeHandler handles the get node request.

@@ -76,6 +76,7 @@ func CommitFileHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
+	logrus.Println("Committing file", name)
 	if fileInfoString == "" {
 		c.JSON(400, gin.H{"error": "file " + name + " not found"})
 		logrus.Error("file " + name + " not found")
@@ -101,7 +102,7 @@ func CommitFileHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	c.JSON(200, gin.H{"status": "OK"})
+	c.JSON(200, gin.H{"status": "ok"})
 }
 
 // DeleteFileHandler handles the delete file request.
@@ -112,6 +113,7 @@ func DeleteFileHandler(c *gin.Context) {
 		logrus.Error("name is empty")
 		return
 	}
+	logrus.Println("Deleting file", name)
 	fileInfoString, err := ETCDGet("/files/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -148,7 +150,7 @@ func DeleteFileHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	c.JSON(200, gin.H{"status": "OK"})
+	c.JSON(200, gin.H{"status": "ok"})
 }
 
 // ListFilesHandler handles the list files request.

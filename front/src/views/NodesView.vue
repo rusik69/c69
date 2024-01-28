@@ -1,21 +1,11 @@
 <template>
-  <div class="about">
+  <div class="nodes">
     <h1>Nodes</h1>
     <ul>
       <li v-for="node in nodes">{{ node }}</li>
     </ul>
   </div>
 </template>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
 
 <script>
 export default {
