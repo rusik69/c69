@@ -60,14 +60,14 @@ func DeleteNode(host, port, name string) error {
 }
 
 // ListNodes lists nodes.
-func ListNodes(host, port string) ([]string, error) {
+func ListNodes(host, port string) (map[string]types.NodeStats, error) {
 	url := "http://" + host + ":" + port + "/api/v1/nodes"
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	var nodes []string
+	var nodes map[string]types.NodeStats
 	err = json.NewDecoder(resp.Body).Decode(&nodes)
 	if err != nil {
 		return nil, err
