@@ -1,6 +1,7 @@
 package node
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/shirou/gopsutil/cpu"
@@ -12,6 +13,10 @@ import (
 // Serve serves the node.
 func Serve() {
 	r := gin.New()
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
+	r.Use(cors.New(config))
 	r.POST("/api/v1/vms", CreateVMHandler)
 	r.GET("/api/v1/vm/:id", GetVMHandler)
 	r.DELETE("/api/v1/vm/:name", DeleteVMHandler)

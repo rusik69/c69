@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     fetchNodes() {
-      fetch('http://govnocloud-master.rusik69.lol:7070/api/v1/nodes', { mode: 'no-cors' })
+      fetch('http://govnocloud-master.rusik69.lol:7070/api/v1/nodes')
         .then(response => response.json())
         .then(data => {
           this.nodes = data;

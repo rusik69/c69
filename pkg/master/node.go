@@ -71,7 +71,6 @@ func GetNodeHandler(c *gin.Context) {
 		logrus.Error("node not found")
 		return
 	}
-	logrus.Println(nodeString)
 	var node types.Node
 	err = json.Unmarshal([]byte(nodeString), &node)
 	if err != nil {
