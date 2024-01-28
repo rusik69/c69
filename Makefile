@@ -70,4 +70,9 @@ composelogs:
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml logs"
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml logs"
 
+remotetest:
+	rsync -avz . govnocloud-master.rusik69.lol:~/govnocloud
+	ssh govnocloud-master.rusik69.lol "cd govnocloud; make docker; make deploy; make composetest; make composelogs"
+
 default: get build
+
