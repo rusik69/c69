@@ -1,6 +1,7 @@
 package client_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -64,5 +65,16 @@ func TestDeleteContainer(t *testing.T) {
 	err := client.DeleteContainer(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
+	}
+}
+
+// RunContainers runs containers.
+func RunContainers() {
+	for i := 0; i < 10; i++ {
+		containerName := "test" + fmt.Sprintf("%d", i)
+		_, err := client.CreateContainer(masterHost, masterPort, containerName, "nginx")
+		if err != nil {
+			panic(err)
+		}
 	}
 }

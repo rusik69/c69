@@ -54,6 +54,10 @@ func TestMain(m *testing.M) {
 		nodePort = "6969"
 	}
 	m.Run()
+	RunContainers()
+	UploadFiles()
+	AddNodes()
+	RunVMs()
 }
 
 // TestAddNode tests the AddNode function.
@@ -92,4 +96,8 @@ func TestDeleteNode(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+func AddNodes() {
+	client.AddNode(masterHost, masterPort, "x220", "x220.rusik69.lol", "6969")
 }

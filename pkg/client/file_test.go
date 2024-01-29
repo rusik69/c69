@@ -49,3 +49,14 @@ func TestFileDelete(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+// UploadFiles uploads files.
+func UploadFiles() {
+	for i := 0; i < 10; i++ {
+		tempFile, _ := os.CreateTemp("", "testfile-*.txt")
+		defer os.Remove(tempFile.Name())
+		tempFile.WriteString("test")
+		tempFileName = tempFile.Name()
+		client.UploadFile(masterHost, masterPort, tempFileName)
+	}
+}
