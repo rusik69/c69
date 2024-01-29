@@ -211,14 +211,7 @@ func ListVMHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			return
 		}
-		for _, vmString := range nodeVMs {
-			var nodeVM types.VM
-			err := json.Unmarshal([]byte(vmString), &nodeVM)
-			if err != nil {
-				c.JSON(500, gin.H{"error": err.Error()})
-				logrus.Error(err.Error())
-				return
-			}
+		for _, nodeVM := range nodeVMs {
 			var resVM types.VM
 			resVM.Name = nodeVM.Name
 			resVM.Image = vmsMap[nodeVM.Name].Image
