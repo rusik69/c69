@@ -173,7 +173,7 @@ func ListVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	vmsMap := map[string]types.VM{}
+	res := []types.VM{}
 	for _, vmName := range vms {
 		vmString, err := ETCDGet(vmName)
 		if err != nil {
@@ -188,40 +188,7 @@ func ListVMHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			return
 		}
-		vmsMap[vm.Name] = vm
-	}
-	logrus.Println("VMs map:", vmsMap)
-	res := []types.VM{}
-	for _, nodeName := range nodesList {
-		nodeString, err := ETCDGet(nodeName)
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			logrus.Error(err.Error())
-			return
-		}
-		var node types.Node
-		err = json.Unmarshal([]byte(nodeString), &node)
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			logrus.Error(err.Error())
-			return
-		}
-		nodeVMs, err := client.ListVMs(node.Host, node.Port)
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			logrus.Error(err.Error())
-			return
-		}
-		for _, nodeVM := range nodeVMs {
-			var resVM types.VM
-			resVM.Name = nodeVM.Name
-			resVM.Image = vmsMap[nodeVM.Name].Image
-			resVM.Flavor = vmsMap[nodeVM.Name].Flavor
-			resVM.ID = nodeVM.ID
-			resVM.Host = vmsMap[nodeVM.Name].Host
-			resVM.State = nodeVM.State
-			res = append(res, resVM)
-		}
+		res = append(res, vm)
 	}
 	logrus.Println("VMs:", res)
 	c.JSON(200, res)
