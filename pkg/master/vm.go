@@ -161,12 +161,6 @@ func GetVMHandler(c *gin.Context) {
 // ListVMHandler handles the list vm request.
 func ListVMHandler(c *gin.Context) {
 	logrus.Println("Listing VMs")
-	nodesList, err := ETCDList("/nodes/")
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		logrus.Error(err.Error())
-		return
-	}
 	vms, err := ETCDList("/vms/")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
