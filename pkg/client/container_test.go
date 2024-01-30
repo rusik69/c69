@@ -69,12 +69,12 @@ func TestDeleteContainer(t *testing.T) {
 }
 
 // RunContainers runs containers.
-func RunContainers() {
+func TestRunContainers(t *testing.T) {
 	for i := 1; i < 10; i++ {
 		containerName := "test" + fmt.Sprintf("%d", i)
 		_, err := client.CreateContainer(masterHost, masterPort, containerName, "nginx")
 		if err != nil {
-			panic(err)
+			t.Error(err)
 		}
 	}
 }

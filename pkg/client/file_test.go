@@ -51,7 +51,7 @@ func TestFileDelete(t *testing.T) {
 }
 
 // UploadFiles uploads files.
-func UploadFiles() {
+func TestUploadFiles(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		tempFile, _ := os.CreateTemp("", "testfile-*.txt")
 		defer os.Remove(tempFile.Name())

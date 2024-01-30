@@ -63,7 +63,7 @@ func TestDeleteVM(t *testing.T) {
 	}
 }
 
-func RunVMs() {
+func TestRunVMs(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "tiny")
 	}

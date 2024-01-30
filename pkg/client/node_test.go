@@ -98,6 +98,6 @@ func TestDeleteNode(t *testing.T) {
 	}
 }
 
-func AddNodes() {
+func TestAddNodes(t *testing.T) {
 	client.AddNode(masterHost, masterPort, "x220", "x220.rusik69.lol", "6969")
 }
