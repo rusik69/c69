@@ -45,7 +45,7 @@ func CreateVMHandler(c *gin.Context) {
 			continue
 		}
 		newVM.ID = newVMID
-		newVM.Host = node.Name
+		newVM.Node = node.Name
 		newVM.Name = tempVM.Name
 		newVM.Image = tempVM.Image
 		newVM.Flavor = tempVM.Flavor
@@ -102,12 +102,12 @@ func DeleteVMHandler(c *gin.Context) {
 	}
 	deleted := false
 	for _, node := range types.MasterEnvInstance.Nodes {
-		if node.Host == vmInfo.Host {
+		if node.Name == vmInfo.Node {
 			err = client.DeleteVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {
 				logrus.Error(err.Error())
 				c.JSON(500, gin.H{"error": err.Error()})
-				break
+				return
 			}
 			deleted = true
 		}
@@ -216,7 +216,7 @@ func StartVMHandler(c *gin.Context) {
 		return
 	}
 	for _, node := range types.MasterEnvInstance.Nodes {
-		if node.Host == vmInfo.Host {
+		if node.Host == vmInfo.Node {
 			err = client.StartVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {
 				logrus.Error(err.Error())
@@ -256,7 +256,7 @@ func StopVMHandler(c *gin.Context) {
 		return
 	}
 	for _, node := range types.MasterEnvInstance.Nodes {
-		if node.Host == vmInfo.Host {
+		if node.Host == vmInfo.Node {
 			err = client.StopVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {
 				logrus.Error(err.Error())

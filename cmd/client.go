@@ -254,7 +254,7 @@ var vmGetCmd = &cobra.Command{
 			"ID: " + fmt.Sprint(vm.ID) + "\n" +
 				"Name: " + vm.Name + "\n" +
 				"IP: " + vm.IP + "\n" +
-				"Host: " + vm.Host + "\n" +
+				"Host: " + vm.Node + "\n" +
 				"State: " + vm.State + "\n" +
 				"Image: " + vm.Image + "\n" +
 				"Flavor: " + vm.Flavor + "\n",

@@ -30,8 +30,8 @@ type VM struct {
 	Name string `json:"name"`
 	// IP is the IP address of the virtual machine.
 	IP string `json:"ip"`
-	// Host is the host of the virtual machine.
-	Host string `json:"host"`
+	// Node is the host of the virtual machine.
+	Node string `json:"host"`
 	// State is the status of the virtual machine.
 	State string `json:"status"`
 	// Image is the image of the virtual machine.
