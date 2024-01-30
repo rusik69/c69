@@ -190,6 +190,7 @@ func ListVMHandler(c *gin.Context) {
 		}
 		vmsMap[vm.Name] = vm
 	}
+	logrus.Println("VMs map:", vmsMap)
 	res := []types.VM{}
 	for _, nodeName := range nodesList {
 		nodeString, err := ETCDGet(nodeName)
