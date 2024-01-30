@@ -70,7 +70,7 @@ func TestDeleteContainer(t *testing.T) {
 
 // RunContainers runs containers.
 func RunContainers() {
-	for i := 0; i < 10; i++ {
+	for i := 1; i < 10; i++ {
 		containerName := "test" + fmt.Sprintf("%d", i)
 		_, err := client.CreateContainer(masterHost, masterPort, containerName, "nginx")
 		if err != nil {

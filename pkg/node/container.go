@@ -153,14 +153,6 @@ func CreateContainer(c types.Container) (types.Container, error) {
 	if err != nil {
 		return types.Container{}, err
 	}
-	statusCh, errCh := DockerConnection.ContainerWait(ctx, resp.ID, dockercontainer.WaitConditionNotRunning)
-	select {
-	case err := <-errCh:
-		if err != nil {
-			return types.Container{}, err
-		}
-	case <-statusCh:
-	}
 	c.ID = resp.ID
 	return c, nil
 }

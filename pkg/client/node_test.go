@@ -54,10 +54,10 @@ func TestMain(m *testing.M) {
 		nodePort = "6969"
 	}
 	m.Run()
-	RunContainers()
-	UploadFiles()
-	AddNodes()
-	RunVMs()
+	// RunContainers()
+	// UploadFiles()
+	// AddNodes()
+	// RunVMs()
 }
 
 // TestAddNode tests the AddNode function.
