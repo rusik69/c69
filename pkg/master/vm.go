@@ -45,7 +45,7 @@ func CreateVMHandler(c *gin.Context) {
 			continue
 		}
 		newVM.ID = newVMID
-		newVM.Host = node.Host
+		newVM.Host = node.Name
 		newVM.Name = tempVM.Name
 		newVM.Image = tempVM.Image
 		newVM.Flavor = tempVM.Flavor
