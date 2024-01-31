@@ -44,23 +44,35 @@ docker:
 
 deploy:
 	scp deployments/docker-compose-master.yml govnocloud-master.rusik69.lol:~/
-	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml down"
-	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml up -d --quiet-pull"
+	ssh govnocloud-master.rusik69.lol <<EOF
+	docker compose -f docker-compose-master.yml down
+	docker compose -f docker-compose-master.yml up -d --quiet-pull
+	EOF
 	scp deployments/docker-compose-x220.yml x220.rusik69.lol:~/
-	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml down"
-	ssh x220.rusik69.lol "docker system prune -a -f"
-	ssh x220.rusik69.lol "sudo virsh destroy test; sudo virsh undefine test" || true
-	ssh x220.rusik69.lol 'for i in `seq 0 10`; do sudo virsh destroy test\$i ; sudo virsh undefine test$i; done'	
-	ssh x220.rusik69.lol "docker ps -aq | xargs docker stop | xargs docker rm" || true
-	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml up -d --quiet-pull"
-	scp deployments/docker-compose-x230.yml x230.rusik69.lol:~/
-	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml down"
-	ssh x230.rusik69.lol "docker system prune -a -f"
-	ssh x230.rusik69.lol "sudo virsh destroy test; sudo virsh undefine test" || true
-	ssh x230.rusik69.lol 'for i in `seq 0 10`; do sudo virsh destroy test\$i ; sudo virsh undefine test$i; done'	
-	ssh x230.rusik69.lol "docker ps -aq | xargs docker stop | xargs docker rm" || true
-	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml up -d --quiet-pull"
-	sleep 10
+	ssh x220.rusik69.lol << EOF
+	docker compose -f docker-compose-x220.yml down
+	docker system prune -a -f"
+	sudo virsh destroy test; sudo virsh undefine test || true
+	for i in {0..10}
+	do
+		sudo virsh destroy test$i
+		sudo virsh undefine test$i
+	done
+	docker ps -aq | xargs docker stop | xargs docker rm" || true
+	docker compose -f docker-compose-x220.yml up -d --quiet-pull
+	EOF
+	ssh x230.rusik69.lol << EOF
+	docker compose -f docker-compose-x230.yml down
+	docker system prune -a -f"
+	sudo virsh destroy test; sudo virsh undefine test || true
+	for i in {0..10}
+	do
+		sudo virsh destroy test$i
+		sudo virsh undefine test$i
+	done
+	docker ps -aq | xargs docker stop | xargs docker rm" || true
+	docker compose -f docker-compose-x230.yml up -d --quiet-pull
+	EOF
 
 ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
