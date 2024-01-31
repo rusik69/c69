@@ -50,13 +50,13 @@ deploy:
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml down"
 	ssh x220.rusik69.lol "docker system prune -a -f"
 	ssh x220.rusik69.lol "sudo virsh destroy test; sudo virsh undefine test" || true
-	ssh x220.rusik69.lol "docker ps -aq | xargs docker stop | xargs docker rm"
+	ssh x220.rusik69.lol "docker ps -aq | xargs docker stop | xargs docker rm" || true
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml up -d --quiet-pull"
 	scp deployments/docker-compose-x230.yml x230.rusik69.lol:~/
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml down"
 	ssh x230.rusik69.lol "docker system prune -a -f"
 	ssh x230.rusik69.lol "sudo virsh destroy test; sudo virsh undefine test" || true
-	ssh x230.rusik69.lol "docker ps -aq | xargs docker stop | xargs docker rm"
+	ssh x230.rusik69.lol "docker ps -aq | xargs docker stop | xargs docker rm" || true
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml up -d --quiet-pull"
 	sleep 10
 
