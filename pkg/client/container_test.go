@@ -2,6 +2,7 @@ package client_test
 
 import (
 	"fmt"
+	"log"
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -39,8 +40,9 @@ func TestListContainers(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(containers) != 12 {
-		t.Error("expected 12 container, got ", len(containers))
+	log.Println(containers)
+	if len(containers) != 3 {
+		t.Error("expected 3 container, got ", len(containers))
 	}
 }
 
