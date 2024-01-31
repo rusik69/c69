@@ -1,9 +1,30 @@
 <template>
   <div class="nodes">
     <h1>Nodes</h1>
-    <ul>
-      <li v-for="node in nodes">{{ node }}</li>
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Node</th>
+          <th>Total CPU</th>
+          <th>Free CPU</th>
+          <th>Total Memory</th>
+          <th>Free Memory</th>
+          <th>Total Disk</th>
+          <th>Free Disk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="node in nodes" :key="node.id">
+          <td>{{ node.name }}</td>
+          <td>{{ node.cpu.total }}</td>
+          <td>{{ node.cpu.free }}</td>
+          <td>{{ node.memory.total }}</td>
+          <td>{{ node.memory.free }}</td>
+          <td>{{ node.disk.total }}</td>
+          <td>{{ node.disk.free }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
