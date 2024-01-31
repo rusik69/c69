@@ -39,8 +39,8 @@ func TestListContainers(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(containers) != 3 {
-		t.Error("expected 3 container, got ", len(containers))
+	if len(containers) != 12 {
+		t.Error("expected 12 container, got ", len(containers))
 	}
 }
 
