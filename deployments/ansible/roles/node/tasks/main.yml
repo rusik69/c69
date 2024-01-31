@@ -8,3 +8,8 @@
     name: libvirtd
     state: started
     enabled: yes
+- name: copy cleanup script
+  ansible.builtin.copy:
+    src: cleanup.sh
+    dest: /usr/local/bin/cleanup.sh
+    mode: 0755
