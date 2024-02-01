@@ -2,7 +2,7 @@
 - name: Set SELinux state to disabled
   ansible.builtin.seboolean:
     name: selinux
-    state: disabled
+    state: off
 - name: Remove old Docker versions
   ansible.builtin.dnf:
     name: docker,docker-client,docker-client-latest,docker-common,docker-latest,docker-latest-logrotate,docker-logrotate,docker-engine
