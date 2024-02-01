@@ -2,7 +2,6 @@ package client_test
 
 import (
 	"fmt"
-	"log"
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -40,7 +39,6 @@ func TestListContainers(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	log.Println(containers)
 	if len(containers) != 1 {
 		t.Error("expected 1 container, got ", len(containers))
 	}
@@ -72,7 +70,6 @@ func TestDeleteContainer(t *testing.T) {
 
 // RunContainers runs containers.
 func RunContainers() {
-	fmt.Println("RunContainers")
 	for i := 1; i < 10; i++ {
 		containerName := "test" + fmt.Sprintf("%d", i)
 		_, err := client.CreateContainer(masterHost, masterPort, containerName, "nginx")

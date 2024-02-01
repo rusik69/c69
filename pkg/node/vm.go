@@ -153,6 +153,25 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if !ok {
 		return types.VM{}, errors.New("flavor not found")
 	}
+	srcFile, err := os.Open(filepath.Join(types.NodeEnvInstance.LibVirtImageDir, types.VMImages[vm.Image].Img))
+	if err != nil {
+		return types.VM{}, err
+	}
+	defer srcFile.Close()
+	destFileName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir, vm.Name+".qcow2")
+	destFile, err := os.Create(destFileName)
+	if err != nil {
+		return types.VM{}, err
+	}
+	defer destFile.Close()
+	_, err = io.Copy(destFile, srcFile)
+	if err != nil {
+		return types.VM{}, err
+	}
+	err = destFile.Sync()
+	if err != nil {
+		return types.VM{}, err
+	}
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
 		Name: vm.Name,
@@ -185,8 +204,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
-							File: filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
-								types.VMImages[vm.Image].Img),
+							File: destFileName,
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
