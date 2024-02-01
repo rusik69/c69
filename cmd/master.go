@@ -4,6 +4,9 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/rusik69/govnocloud/pkg/master"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
