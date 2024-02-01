@@ -116,6 +116,11 @@ var VMImages = map[string]VMImage{
 		Img: "ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
 		URL: "https://cloud-images.ubuntu.com/releases/20.04/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
 	},
+	"fedora39": VMImage{
+		ID:  "2",
+		Img: "Fedora-Cloud-Base-39-1.2.x86_64.qcow2",
+		URL: "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2",
+	},
 }
 
 type NodeEnv struct {

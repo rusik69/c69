@@ -185,7 +185,8 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
-							File: filepath.Join(types.NodeEnvInstance.LibVirtImageDir, types.VMImages[vm.Image].Img),
+							File: filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
+								types.VMImages[vm.Image].Img),
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{

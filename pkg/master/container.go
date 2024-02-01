@@ -58,6 +58,7 @@ func CreateContainerHandler(c *gin.Context) {
 	newContainer.Committed = true
 	newContainer.Image = tempContainer.Image
 	newContainer.Name = tempContainer.Name
+	newContainer.State = "running"
 	newContainerString, err := json.Marshal(newContainer)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
