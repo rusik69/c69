@@ -1,12 +1,11 @@
 <template>
-  <div class="nodes">
+  <div>
     <h1>Nodes</h1>
     <table>
       <thead>
         <tr>
           <th>Node</th>
           <th>Total CPU</th>
-          <th>Free CPU</th>
           <th>Total Memory</th>
           <th>Free Memory</th>
           <th>Total Disk</th>
@@ -14,14 +13,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="node in nodes" :key="node.id">
-          <td>{{ node.name }}</td>
-          <td>{{ node.cpu.total }}</td>
-          <td>{{ node.cpu.free }}</td>
-          <td>{{ node.memory.total }}</td>
-          <td>{{ node.memory.free }}</td>
-          <td>{{ node.disk.total }}</td>
-          <td>{{ node.disk.free }}</td>
+        <tr v-for="(nodeStats, nodeName) in nodes" :key="nodeName">
+          <td>{{ nodeName }}</td>
+          <td>{{ nodeStats.cpus }}</td>
+          <td>{{ humanize(nodeStats.total_mem) }}</td>
+          <td>{{ humanize(nodeStats.mem) }}</td>
+          <td>{{ humanize(nodeStats.total_disk) }}</td>
+          <td>{{ humanize(nodeStats.disk) }}</td>
         </tr>
       </tbody>
     </table>
@@ -48,6 +46,15 @@ export default {
         .catch(error => {
           console.error('Error fetching nodes:', error);
         });
+    },
+    humanize(value) {
+      const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+      let index = 0;
+      while (value >= 1024 && index < units.length - 1) {
+        value /= 1024;
+        index++;
+      }
+      return `${value.toFixed(2)} ${units[index]}`;
     }
   }
 }

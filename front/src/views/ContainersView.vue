@@ -1,9 +1,31 @@
 <template>
   <div class="containers">
     <h1>Containers</h1>
-    <ul>
-      <li v-for="container in containers">{{ container }}</li>
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Image</th>
+          <th>Status</th>
+          <th>Node</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="container in containers" :key="container.ID">
+          <td>{{ container.id }}</td>
+          <td>{{ container.name }}</td>
+          <td>{{ container.image }}</td>
+          <td>{{ container.state }}</td>
+          <td>{{ container.host }}</td>
+          <td>
+            <ul>
+              <li v-for="port in container.Ports" :key="port">{{ port }}</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 

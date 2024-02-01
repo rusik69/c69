@@ -126,19 +126,30 @@ func DeleteContainerHandler(c *gin.Context) {
 
 // ListContainerHandler handles the list container request.
 func ListContainerHandler(c *gin.Context) {
-	containers := []types.Container{}
-	for _, node := range types.MasterEnvInstance.Nodes {
-		tempContainers, err := client.ListContainers(node.Host, node.Port)
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			logrus.Error(err.Error())
-			return
-		}
-		for _, container := range tempContainers {
-			containers = append(containers, container)
-		}
+	logrus.Println("Listing containers")
+	containers, err := ETCDList("/containers/")
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
 	}
-	c.JSON(200, containers)
+	var res []types.Container
+	for _, container := range containers {
+		var tempContainer types.Container
+		c, err := ETCDGet(container)
+		if err != nil {
+			logrus.Error(err.Error())
+			continue
+		}
+		err = json.Unmarshal([]byte(c), &tempContainer)
+		if err != nil {
+			logrus.Error(err.Error())
+			continue
+		}
+		res = append(res, tempContainer)
+	}
+	logrus.Println(res)
+	c.JSON(200, res)
 }
 
 // GetContainerHandler handles the get container request.
