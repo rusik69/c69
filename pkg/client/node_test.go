@@ -56,7 +56,7 @@ func TestMain(m *testing.M) {
 	m.Run()
 	RunContainers()
 	RunVMs()
-
+	UploadFiles()
 }
 
 // TestAddNode tests the AddNode function.
