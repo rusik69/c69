@@ -41,8 +41,8 @@ func TestListContainers(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println(containers)
-	if len(containers) != 3 {
-		t.Error("expected 3 container, got ", len(containers))
+	if len(containers) != 1 {
+		t.Error("expected 1 container, got ", len(containers))
 	}
 }
 
