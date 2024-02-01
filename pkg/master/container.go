@@ -2,6 +2,7 @@ package master
 
 import (
 	"encoding/json"
+	"math/rand"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -39,6 +40,9 @@ func CreateContainerHandler(c *gin.Context) {
 	var newContainerID string
 	created := false
 	var newContainer types.Container
+	rand.Shuffle(len(types.MasterEnvInstance.Nodes), func(i, j int) {
+		types.MasterEnvInstance.Nodes[i], types.MasterEnvInstance.Nodes[j] = types.MasterEnvInstance.Nodes[j], types.MasterEnvInstance.Nodes[i]
+	})
 	for _, node := range types.MasterEnvInstance.Nodes {
 		newContainerID, err = client.CreateContainer(node.Host, node.Port, tempContainer.Name, tempContainer.Image)
 		if err != nil {

@@ -3,6 +3,7 @@ package master
 import (
 	"encoding/json"
 	"errors"
+	"math/rand"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -155,11 +156,28 @@ func DeleteFileHandler(c *gin.Context) {
 
 // ListFilesHandler handles the list files request.
 func ListFilesHandler(c *gin.Context) {
-	files, err := ETCDList("/files/")
+	filesList, err := ETCDList("/files/")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
+	}
+	var files []types.File
+	for _, file := range filesList {
+		fileInfoString, err := ETCDGet(file)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		var fileInfo types.File
+		err = json.Unmarshal([]byte(fileInfoString), &fileInfo)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		files = append(files, fileInfo)
 	}
 	c.JSON(200, files)
 }
@@ -197,6 +215,9 @@ func GetFileHandler(c *gin.Context) {
 func chooseNodeForFile(file types.File) (types.Node, error) {
 	found := false
 	var foundNode types.Node
+	rand.Shuffle(len(types.MasterEnvInstance.Nodes), func(i, j int) {
+		types.MasterEnvInstance.Nodes[i], types.MasterEnvInstance.Nodes[j] = types.MasterEnvInstance.Nodes[j], types.MasterEnvInstance.Nodes[i]
+	})
 	for _, node := range types.MasterEnvInstance.Nodes {
 		nodeStats, err := client.GetNodeStats(node.Host, node.Port)
 		if err != nil {

@@ -4,8 +4,8 @@
     <table>
       <thead>
         <tr>
-          <th>ID</th>
           <th>Name</th>
+          <th>ID</th>
           <th>Image</th>
           <th>Status</th>
           <th>Node</th>
@@ -13,8 +13,8 @@
       </thead>
       <tbody>
         <tr v-for="container in containers" :key="container.ID">
-          <td>{{ container.id }}</td>
           <td>{{ container.name }}</td>
+          <td>{{ container.id.substring(0, 8) }}</td>
           <td>{{ container.image }}</td>
           <td>{{ container.state }}</td>
           <td>{{ container.host }}</td>
