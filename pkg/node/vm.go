@@ -195,6 +195,14 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			},
 		},
 		Devices: &libvirtxml.DomainDeviceList{
+			Graphics: []libvirtxml.DomainGraphic{
+				{
+					VNC: &libvirtxml.DomainGraphicVNC{
+						Port:   vm.ID + 5900,
+						Listen: "0.0.0.0",
+					},
+				},
+			},
 			Disks: []libvirtxml.DomainDisk{
 				{
 					Device: "disk",
