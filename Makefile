@@ -25,18 +25,22 @@ docker:
 	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f build/Dockerfile-client .
 	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f build/Dockerfile-node .
 	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f build/Dockerfile-test .
+	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) -f build/Dockerfile-front .
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-node:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
+	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG)
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-node:latest
 	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
+	docker push $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
 
 deploy:
 	scp deployments/docker-compose-master.yml ~/

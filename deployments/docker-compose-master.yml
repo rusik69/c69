@@ -18,3 +18,9 @@ services:
       "MASTER_NODES": "x220:x220.rusik69.lol:6969,x230:x230.rusik69.lol:6969"
     depends_on:
       - etcd
+  front:
+    image: loqutus/govnocloud-front
+    ports:
+      - "8080:8080"
+    depends_on:
+      - master

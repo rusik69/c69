@@ -2,7 +2,7 @@
   <h1>VM Details</h1>
   <div id="details">
     <p>Details for VM {{ vm.id }} - {{ vm.name }}</p>
-    <vue-vnc :url="hostname()"></vue-vnc>
+    <vue-vnc :url=""></vue-vnc>
   </div>
 </template>
 
@@ -16,25 +16,16 @@ const VmDetails = {
     };
   },
   computed: {
-    async hostName() {
-      await this.getHostName();
-    },
+    url() {
+      return `${this.vm.nodehostname}://${this.vm.vncurl}`;
+    }
   },
   name: "VmDetails",
   components: {
     'vue-vnc': VueVnc,
   },
   methods: {
-    async getHostName() {
-      fetch(`http://govnocloud-master.rusik69.lol:7070/api/v1/node/${this.vm.host}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          this.vncurl = `ws://${data.ip}:${this.vm.vnc_port}`;
-          console.log(this.vncurl);
-          return this.vncurl;
-        });
-    }
+   
   },
 };
 export default VmDetails;

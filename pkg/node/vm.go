@@ -281,6 +281,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			vncPort = graphics.Port
 		}
 	}
+	vm.NodeHostname = types.NodeEnvInstance.IP
 	vm.ID = int(id)
 	vm.VNCPort = vncPort
 	return vm, nil
