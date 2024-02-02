@@ -148,14 +148,14 @@ func DeleteFile(host, port, name string) error {
 }
 
 // ListFiles lists files.
-func ListFiles(masterHost, masterPort string) ([]string, error) {
+func ListFiles(masterHost, masterPort string) ([]types.File, error) {
 	url := "http://" + masterHost + ":" + masterPort + "/api/v1/files"
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	var files []string
+	var files []types.File
 	err = json.NewDecoder(resp.Body).Decode(&files)
 	if err != nil {
 		return nil, err
