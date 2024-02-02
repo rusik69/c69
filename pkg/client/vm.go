@@ -11,7 +11,7 @@ import (
 )
 
 // CreateVM creates a vm.
-func CreateVM(host, port, name, image, flavor string) (int, error) {
+func CreateVM(host, port, name, image, flavor string) (types.VM, error) {
 	vm := types.VM{
 		Name:   name,
 		Image:  image,
@@ -20,25 +20,25 @@ func CreateVM(host, port, name, image, flavor string) (int, error) {
 	url := "http://" + host + ":" + port + "/api/v1/vms"
 	body, err := json.Marshal(vm)
 	if err != nil {
-		return 0, err
+		return types.VM{}, err
 	}
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		return 0, err
+		return types.VM{}, err
 	}
 	defer resp.Body.Close()
 	bodyText, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return 0, err
+		return types.VM{}, err
 	}
 	if resp.StatusCode != 200 {
-		return 0, errors.New(string(bodyText))
+		return types.VM{}, errors.New(string(bodyText))
 	}
 	err = json.Unmarshal(bodyText, &vm)
 	if err != nil {
-		return 0, err
+		return types.VM{}, err
 	}
-	return vm.ID, nil
+	return vm, nil
 }
 
 // DeleteVM deletes a vm.

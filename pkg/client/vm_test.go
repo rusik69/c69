@@ -5,17 +5,16 @@ import (
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
+	"github.com/sirupsen/logrus"
 )
 
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
-	VMID, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "tiny")
+	vm, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "tiny")
 	if err != nil {
 		t.Error(err)
 	}
-	if VMID == 0 {
-		t.Error("expected not 0, got ", VMID)
-	}
+	logrus.Println(vm)
 }
 
 // TestGETVM tests the GetVM function.

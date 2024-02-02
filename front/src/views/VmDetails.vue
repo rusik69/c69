@@ -2,7 +2,7 @@
   <h1>VM Details</h1>
   <div id="details">
     <p>Details for VM {{ vm.id }} - {{ vm.name }}</p>
-    <vue-vnc :url="ws"></vue-vnc>
+    <vue-vnc :url="url"></vue-vnc>
   </div>
 </template>
 
@@ -12,12 +12,12 @@ const VmDetails = {
   props: ["vm"],
   data() {
     return {
-      vncurl: "",
+      vm: "",
     };
   },
   computed: {
     url() {
-      return `${this.vm.nodehostname}://${this.vm.vnc_port}`;
+      return `ws://${this.vm.nodehostname}://${this.vm.vnc_port}`;
     }
   },
   name: "VmDetails",

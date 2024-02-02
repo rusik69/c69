@@ -282,6 +282,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		}
 	}
 	vm.NodeHostname = types.NodeEnvInstance.IP
+	vm.NodePort = types.NodeEnvInstance.Port
 	vm.ID = int(id)
 	vm.VNCPort = vncPort
 	return vm, nil
