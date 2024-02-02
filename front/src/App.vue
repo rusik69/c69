@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
@@ -15,11 +15,12 @@ import { RouterLink, RouterView } from 'vue-router'
       </nav>
     </div>
   </header>
-  <RouterView />
+  <div id="router_body">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
-
 nav a {
   display: inline-block;
   padding: 0 1rem;
