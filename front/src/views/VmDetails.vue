@@ -2,7 +2,7 @@
   <h1>VM Details</h1>
   <div id="details">
     <p>Details for VM {{ vm.id }} - {{ vm.name }}</p>
-    <vue-vnc :url=""></vue-vnc>
+    <vue-vnc :url="ws"></vue-vnc>
   </div>
 </template>
 
