@@ -10,7 +10,10 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"encoding/xml"
+
 	"github.com/gin-gonic/gin"
+
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 	"libvirt.org/go/libvirt"
@@ -19,6 +22,15 @@ import (
 
 // LibvirtConnection is the singleton instance of libvirt.Connection.
 var LibvirtConnection *libvirt.Connect
+
+type Graphics struct {
+	Type string `xml:"type,attr"`
+	Port int    `xml:"port,attr"`
+}
+
+type Devices struct {
+	Graphics []Graphics `xml:"graphics"`
+}
 
 // VMConnect connects to the libvirt daemon.
 func VMConnect() (*libvirt.Connect, error) {
@@ -198,8 +210,8 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			Graphics: []libvirtxml.DomainGraphic{
 				{
 					VNC: &libvirtxml.DomainGraphicVNC{
-						Port:   vm.ID + 5900,
-						Listen: "0.0.0.0",
+						AutoPort: "yes",
+						Listen:   "0.0.0.0",
 					},
 				},
 			},
@@ -235,11 +247,11 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			},
 		},
 	}
-	xml, err := domainXML.Marshal()
+	vmxml, err := domainXML.Marshal()
 	if err != nil {
 		return types.VM{}, err
 	}
-	domain, err := LibvirtConnection.DomainDefineXML(xml)
+	domain, err := LibvirtConnection.DomainDefineXML(vmxml)
 	if err != nil {
 		logrus.Error(err.Error())
 		return types.VM{}, err
@@ -253,7 +265,24 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
+	vmDesc, err := domain.GetXMLDesc(libvirt.DomainXMLFlags(0))
+	if err != nil {
+		return types.VM{}, err
+	}
+	var devices Devices
+	err = xml.Unmarshal([]byte(vmDesc), &devices)
+	if err != nil {
+		fmt.Println("Failed to unmarshal XML")
+		return types.VM{}, err
+	}
+	vncPort := 0
+	for _, graphics := range devices.Graphics {
+		if graphics.Type == "vnc" {
+			vncPort = graphics.Port
+		}
+	}
 	vm.ID = int(id)
+	vm.VNCPort = vncPort
 	return vm, nil
 }
 

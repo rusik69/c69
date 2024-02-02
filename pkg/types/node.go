@@ -42,6 +42,8 @@ type VM struct {
 	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the virtual machine.
 	Committed bool `json:"committed"`
+	// VNCPort is the VNC port of the virtual machine.
+	VNCPort int `json:"vnc_port"`
 }
 
 // Flavor represents a vm flavor.

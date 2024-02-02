@@ -18,7 +18,7 @@
           v-for="vm in vms"
           :key="vm.ID"
           v-on:click="expand(vm)"
-          :class="{ selected_row: detailsId === vm.id }"
+          :class="{ selected_row: selectedvm && selectedvm.id === vm.id }"
         >
           <td>{{ vm.id }}</td>
           <td>{{ vm.name }}</td>
@@ -39,8 +39,8 @@
         </tr>
       </tbody>
     </table>
-    <div id="details" v-if="detailsId !== 0">
-      <vm-details :id="detailsId" :name="detailsName"> </vm-details>
+    <div id="details" v-if="selectedvm !== null">
+      <vm-details :vm="selectedvm"> </vm-details>
     </div>
   </div>
 </template>
@@ -50,121 +50,9 @@ import VmDetails from "@/views/VmDetails.vue";
 export default {
   data() {
     return {
-      vms: [
-        {
-          id: 48,
-          name: "test0",
-          ip: "",
-          host: "x220",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 49,
-          name: "test1",
-          ip: "",
-          host: "x220",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 50,
-          name: "test2",
-          ip: "",
-          host: "x220",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 11,
-          name: "test3",
-          ip: "",
-          host: "x230",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 12,
-          name: "test4",
-          ip: "",
-          host: "x230",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 13,
-          name: "test5",
-          ip: "",
-          host: "x230",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 14,
-          name: "test6",
-          ip: "",
-          host: "x230",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 15,
-          name: "test7",
-          ip: "",
-          host: "x230",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 16,
-          name: "test8",
-          ip: "",
-          host: "x230",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-        {
-          id: 51,
-          name: "test9",
-          ip: "",
-          host: "x220",
-          status: "",
-          image: "ubuntu22.04",
-          flavor: "tiny",
-          volumes: null,
-          committed: true,
-        },
-      ],
-      detailsId: 0,
-      detailsName: "",
-    };
+      vms: [],
+      selectedvm : null,
+    }
   },
 
   components: {
@@ -175,15 +63,13 @@ export default {
   },
   methods: {
     expand(vm) {
-      console.log("Expanding VM", vm);
-      this.detailsId = vm.id;
-      this.detailsName = vm.name;
+      this.selectedvm = vm;
     },
     fetchVMs() {
       fetch("http://govnocloud-master.rusik69.lol:7070/api/v1/vms")
         .then((response) => response.json())
         .then((data) => {
-          //this.vms = data;
+          this.vms = data;
         })
         .catch((error) => {
           console.error("Error fetching vms:", error);
