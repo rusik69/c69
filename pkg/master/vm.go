@@ -43,12 +43,12 @@ func CreateVMHandler(c *gin.Context) {
 		types.MasterEnvInstance.Nodes[i], types.MasterEnvInstance.Nodes[j] = types.MasterEnvInstance.Nodes[j], types.MasterEnvInstance.Nodes[i]
 	})
 	for _, node := range types.MasterEnvInstance.Nodes {
-		newVMID, err := client.CreateVM(node.Host, node.Port, tempVM.Name, tempVM.Image, tempVM.Flavor)
+		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name, tempVM.Image, tempVM.Flavor)
 		if err != nil {
 			logrus.Error(err.Error())
 			continue
 		}
-		newVM.ID = newVMID
+		newVM.ID = createdVM.ID
 		newVM.Node = node.Name
 		newVM.Name = tempVM.Name
 		newVM.Image = tempVM.Image
