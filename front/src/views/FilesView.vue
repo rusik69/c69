@@ -1,9 +1,26 @@
 <template>
   <div class="about">
     <h1>Files</h1>
-    <ul>
-      <li v-for="file in files">{{ file }}</li>
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Node</th>
+          <th>Committed</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="file in files" :key="file.name">
+          <td>{{ file.name }}</td>
+          <td>{{ file.size }}</td>
+          <td>{{ file.nodename }}</td>
+          <td>{{ file.committed }}</td>
+          <td>{{ file.timestamp }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -11,7 +28,7 @@
 export default {
   data() {
     return {
-      nodes: []
+      files: []
     };
   },
   created() {

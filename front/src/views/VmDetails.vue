@@ -17,7 +17,7 @@ const VmDetails = {
   },
   computed: {
     url() {
-      return `${this.vm.nodehostname}://${this.vm.vncurl}`;
+      return `${this.vm.nodehostname}://${this.vm.vnc_port}`;
     }
   },
   name: "VmDetails",
