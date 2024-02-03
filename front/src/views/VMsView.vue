@@ -27,7 +27,6 @@
           <td>{{ vm.status }}</td>
           <td>{{ vm.image }}</td>
           <td>{{ vm.flavor }}</td>
-
           <td>
             <ul>
               <li v-for="volume in vm.Volumes" :key="volume.ID">

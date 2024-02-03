@@ -269,6 +269,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
+	logrus.Println("VM description", vmDesc)
 	var devices Devices
 	err = xml.Unmarshal([]byte(vmDesc), &devices)
 	if err != nil {

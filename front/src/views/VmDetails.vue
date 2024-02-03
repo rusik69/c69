@@ -17,6 +17,9 @@ const VmDetails = {
   },
   computed: {
     url() {
+      if (!this.vm) {
+        return "";
+      }
       return `ws://${this.vm.nodehostname}://${this.vm.vnc_port}`;
     }
   },
