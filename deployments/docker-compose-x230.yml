@@ -8,7 +8,7 @@ services:
       "NODE_LIBVIRT_SOCKET" : "qemu:///system"
       "NODE_NAME": "x230"
       "NODE_IP": "100.126.141.49"
-      "NODE_LISTEN_IP": "0.0.0.0"
+      "NODE_LISTEN_HOST": "0.0.0.0"
     volumes:
       - /run/libvirt:/run/libvirt/
       - /var/run/docker.sock:/var/run/docker.sock

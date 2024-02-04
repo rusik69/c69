@@ -133,7 +133,7 @@ type NodeEnv struct {
 	Name            string `json:"name"`
 	IP              string `json:"ip"`
 	ListenPort      string `json:"listen_port"`
-	ListenHost      string `json:"listen_host"`
+	ListenHost        string `json:"listen_host"`
 	LibVirtURI      string `json:"libvirt_socket"`
 	LibVirtImageDir string `json:"libvirt_image_dir"`
 	FilesDir        string `json:"files_dir"`
