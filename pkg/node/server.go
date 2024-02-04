@@ -34,8 +34,8 @@ func Serve() {
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
-	logrus.Println("Node is listening on port " + string(types.NodeEnvInstance.Port))
-	r.Run(":" + string(types.NodeEnvInstance.Port))
+	logrus.Println("Node is listening on port " + string(types.NodeEnvInstance.ListenPort))
+	r.Run(types.NodeEnvInstance.IP + ":" + string(types.NodeEnvInstance.ListenPort))
 }
 
 // StatsHandler handles the stats request.

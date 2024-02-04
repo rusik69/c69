@@ -21,9 +21,13 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if ip == "" {
 		return nil, errors.New("NODE_IP is not set")
 	}
-	port := os.Getenv("NODE_PORT")
-	if port == "" {
-		port = "6969"
+	listenPort := os.Getenv("NODE_LISTEN_PORT")
+	if listenPort == "" {
+		listenPort = "6969"
+	}
+	listenHost := os.Getenv("NODE_LISTEN_HOST")
+	if listenHost == "" {
+		listenHost = "localhost"
 	}
 	libvirtImageDir := os.Getenv("NODE_LIBVIRT_IMAGE_DIR")
 	if libvirtImageDir == "" {
@@ -36,7 +40,8 @@ func ParseEnv() (*types.NodeEnv, error) {
 	NodeEnvInstance := &types.NodeEnv{
 		Name:            name,
 		IP:              ip,
-		Port:            port,
+		ListenPort:      listenPort,
+		ListenHost:      listenHost,
 		LibVirtURI:      libvirtURI,
 		LibVirtImageDir: libvirtImageDir,
 		FilesDir:        filesDir,

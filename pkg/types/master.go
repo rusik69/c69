@@ -12,6 +12,8 @@ type MasterEnv struct {
 	ETCDPass string `json:"etcd_pass"`
 	// ListenPort is the port of the master.
 	ListenPort string `json:"port"`
+	// ListenIP is the IP of the master.
+	ListenIP string `json:"ip"`
 	// Nodes is the list of nodes.
 	Nodes []Node `json:"nodes"`
 }

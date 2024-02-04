@@ -25,7 +25,7 @@ var nodeCmd = &cobra.Command{
 		logrus.Println("Node environment is parsed")
 		logrus.Println("Node name is " + types.NodeEnvInstance.Name)
 		logrus.Println("Node IP is " + types.NodeEnvInstance.IP)
-		logrus.Println("Node port is " + types.NodeEnvInstance.Port)
+		logrus.Println("Node port is " + types.NodeEnvInstance.ListenPort)
 		logrus.Println("Node libvirt socket is " + types.NodeEnvInstance.LibVirtURI)
 		logrus.Println("Node libvirt image dir is " + types.NodeEnvInstance.LibVirtImageDir)
 		node.LibvirtConnection, err = node.VMConnect()
