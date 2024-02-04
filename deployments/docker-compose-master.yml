@@ -16,7 +16,7 @@ services:
     environment:
       "MASTER_ETCD_HOST": "etcd"
       "MASTER_NODES": "x220:x220.rusik69.lol:6969,x230:x230.rusik69.lol:6969"
-      "MASTER_LISTEN_IP": "0.0.0.0"
+      "MASTER_LISTEN_HOST": "0.0.0.0"
     depends_on:
       - etcd
   front:

@@ -30,9 +30,9 @@ func ParseEnv() (*types.MasterEnv, error) {
 	if listenHost == "" {
 		listenHost = "127.0.0.1"
 	}
-	listenport := os.Getenv("MASTER_LISTEN_PORT")
-	if listenport == "" {
-		listenport = "7070"
+	listenPort := os.Getenv("MASTER_LISTEN_PORT")
+	if listenPort == "" {
+		listenPort = "7070"
 	}
 	nodesString := os.Getenv("MASTER_NODES")
 	if nodesString == "" {
@@ -56,7 +56,7 @@ func ParseEnv() (*types.MasterEnv, error) {
 		ETCDPort:   etcdport,
 		ETCDUser:   etcduser,
 		ETCDPass:   etcdpass,
-		ListenPort: listenport,
+		ListenPort: listenPort,
 		ListenHost: listenHost,
 		Nodes:      nodes,
 	}, nil
