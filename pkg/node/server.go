@@ -35,7 +35,7 @@ func Serve() {
 		c.String(200, "pong")
 	})
 	logrus.Println("Node is listening on port " + string(types.NodeEnvInstance.ListenPort))
-	r.Run(types.NodeEnvInstance.IP + ":" + string(types.NodeEnvInstance.ListenPort))
+	r.Run(types.NodeEnvInstance.ListenHost + ":" + string(types.NodeEnvInstance.ListenPort))
 }
 
 // StatsHandler handles the stats request.
