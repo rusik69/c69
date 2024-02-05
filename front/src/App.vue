@@ -4,8 +4,8 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
   <header>
-    <div class="wrapper">
-      <h1>Govnocloud</h1>
+    <div>
+      <h2>Govnocloud</h2>
       <nav>
         <RouterLink to="/nodes">Nodes</RouterLink>
         <RouterLink to="/vms">VMs</RouterLink>
@@ -24,9 +24,13 @@ nav a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
+  
 }
-
+.selected {
+  background-color: green;
+}
 nav a:first-of-type {
   border: 0;
 }
+
 </style>

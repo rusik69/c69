@@ -1,6 +1,5 @@
 <template>
-  <div class="files">
-    <h1>Files</h1>
+  <div>
     <table class="bordered-table">
       <thead>
         <tr>
@@ -50,11 +49,6 @@ export default {
 </script>
 
 <style scoped>
-.files {
-  border: 2px solid green;
-  padding: 20px;
-}
-
 .bordered-table {
   border-collapse: collapse;
   width: 100%;

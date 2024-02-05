@@ -1,16 +1,17 @@
 <template>
-  <div id="vms" style="vms">
-    <h1>VM Stats</h1>
+  <div id="vms">
     <table class="bordered-table">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Name</th>
+          <th>ID</th>
           <th>IP</th>
           <th>Node</th>
           <th>State</th>
           <th>Image</th>
           <th>Flavor</th>
+          <th>Volumes</th>
+          <th>Committed</th>
         </tr>
       </thead>
       <tbody>
@@ -20,8 +21,8 @@
           v-on:click="expand(vm)"
           :class="{ selected_row: selectedvm && selectedvm.id === vm.id }"
         >
-          <td>{{ vm.id }}</td>
           <td>{{ vm.name }}</td>
+          <td>{{ vm.id }}</td>
           <td>{{ vm.ip }}</td>
           <td>{{ vm.host }}</td>
           <td>{{ vm.status }}</td>
@@ -79,11 +80,6 @@ export default {
 </script>
 
 <style scoped>
-.vms {
-  border: 2px solid green;
-  padding: 20px;
-}
-
 .bordered-table {
   border-collapse: collapse;
   width: 100%;

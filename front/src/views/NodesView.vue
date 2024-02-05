@@ -1,10 +1,9 @@
 <template>
   <div>
-    <h1>Nodes class="nodes"</h1>
     <table class="bordered-table">
       <thead>
         <tr>
-          <th>Node</th>
+          <th>Name</th>
           <th>Total CPU</th>
           <th>Total Memory</th>
           <th>Free Memory</th>

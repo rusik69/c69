@@ -1,7 +1,6 @@
 <template>
-  <div class="containers">
-    <h1>Containers</h1>
-    <table class="bordered=table">
+  <div>
+    <table class="bordered-table">
       <thead>
         <tr>
           <th>Name</th>
@@ -9,6 +8,7 @@
           <th>Image</th>
           <th>Status</th>
           <th>Node</th>
+          <th>Ports</th>
         </tr>
       </thead>
       <tbody>
@@ -55,11 +55,6 @@ export default {
 </script>
 
 <style scoped>
-.containers {
-  border: 2px solid green;
-  padding: 20px;
-}
-
 .bordered-table {
   border-collapse: collapse;
   width: 100%;
