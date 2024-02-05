@@ -23,15 +23,6 @@ import (
 // LibvirtConnection is the singleton instance of libvirt.Connection.
 var LibvirtConnection *libvirt.Connect
 
-type Graphics struct {
-	Type string `xml:"type,attr"`
-	Port int    `xml:"port,attr"`
-}
-
-type Devices struct {
-	Graphics []Graphics `xml:"graphics"`
-}
-
 // VMConnect connects to the libvirt daemon.
 func VMConnect() (*libvirt.Connect, error) {
 	logrus.Println("Connecting to libvirt daemon at", types.NodeEnvInstance.LibVirtURI)
@@ -269,23 +260,21 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	logrus.Println("VM description", vmDesc)
-	var devices Devices
-	err = xml.Unmarshal([]byte(vmDesc), &devices)
+	var vmXML libvirtxml.Domain
+	err = xml.Unmarshal([]byte(vmDesc), &vmXML)
 	if err != nil {
 		fmt.Println("Failed to unmarshal XML")
 		return types.VM{}, err
 	}
 	vncPort := 0
-	for _, graphics := range devices.Graphics {
-		if graphics.Type == "vnc" {
-			vncPort = graphics.Port
-		}
+	for _, graphics := range vmXML.Devices.Graphics {
+		vncPort = graphics.VNC.Port
 	}
 	vm.NodeHostname = types.NodeEnvInstance.IP
 	vm.NodePort = types.NodeEnvInstance.ListenPort
 	vm.ID = int(id)
 	vm.VNCPort = vncPort
+	logrus.Println("Created VM", vm)
 	return vm, nil
 }
 

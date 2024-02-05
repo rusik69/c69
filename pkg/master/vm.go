@@ -40,10 +40,12 @@ func CreateVMHandler(c *gin.Context) {
 	created := false
 	var newVM types.VM
 	rand.Shuffle(len(types.MasterEnvInstance.Nodes), func(i, j int) {
-		types.MasterEnvInstance.Nodes[i], types.MasterEnvInstance.Nodes[j] = types.MasterEnvInstance.Nodes[j], types.MasterEnvInstance.Nodes[i]
+		types.MasterEnvInstance.Nodes[i], types.MasterEnvInstance.Nodes[j] =
+			types.MasterEnvInstance.Nodes[j], types.MasterEnvInstance.Nodes[i]
 	})
 	for _, node := range types.MasterEnvInstance.Nodes {
-		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name, tempVM.Image, tempVM.Flavor)
+		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name,
+			tempVM.Image, tempVM.Flavor)
 		if err != nil {
 			logrus.Error(err.Error())
 			continue

@@ -153,7 +153,6 @@ func ListContainerHandler(c *gin.Context) {
 		}
 		res = append(res, tempContainer)
 	}
-	logrus.Println(res)
 	c.JSON(200, res)
 }
 
