@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Nodes</h1>
-    <table>
+    <h1>Nodes class="nodes"</h1>
+    <table class="bordered-table">
       <thead>
         <tr>
           <th>Node</th>
@@ -59,3 +59,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.nodes {
+  border: 2px solid green;
+  padding: 20px;
+}
+
+.bordered-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.bordered-table th, .bordered-table td {
+  border: 1px solid green;
+  padding: 10px
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
-  <div class="about">
+  <div class="files">
     <h1>Files</h1>
-    <table>
+    <table class="bordered-table">
       <thead>
         <tr>
           <th>Name</th>
@@ -48,3 +48,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.files {
+  border: 2px solid green;
+  padding: 20px;
+}
+
+.bordered-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.bordered-table th, .bordered-table td {
+  border: 1px solid green;
+  padding: 10px
+}
+</style>

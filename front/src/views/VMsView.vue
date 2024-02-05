@@ -1,7 +1,7 @@
 <template>
-  <div id="vms">
+  <div id="vms" style="vms">
     <h1>VM Stats</h1>
-    <table>
+    <table class="bordered-table">
       <thead>
         <tr>
           <th>ID</th>
@@ -77,3 +77,20 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.vms {
+  border: 2px solid green;
+  padding: 20px;
+}
+
+.bordered-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.bordered-table th, .bordered-table td {
+  border: 1px solid green;
+  padding: 10px
+}
+</style>
