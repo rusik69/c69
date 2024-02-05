@@ -7,10 +7,10 @@ import { RouterLink, RouterView } from "vue-router";
     <div>
       <h2>Govnocloud</h2>
       <nav>
-        <RouterLink to="/nodes" class="nav-item">Nodes</RouterLink>
-        <RouterLink to="/vms" class="nav-item">VMs</RouterLink>
-        <RouterLink to="/containers" class="nav-item">Containers</RouterLink>
-        <RouterLink to="/files" class="nav-item">Files</RouterLink>
+        <RouterLink to="/nodes">Nodes</RouterLink>
+        <RouterLink to="/vms">VMs</RouterLink>
+        <RouterLink to="/containers">Containers</RouterLink>
+        <RouterLink to="/files">Files</RouterLink>
       </nav>
     </div>
   </header>
