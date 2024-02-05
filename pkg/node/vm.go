@@ -266,14 +266,13 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		fmt.Println("Failed to unmarshal XML")
 		return types.VM{}, err
 	}
-	vncPort := 0
-	for _, graphics := range vmXML.Devices.Graphics {
-		vncPort = graphics.VNC.Port
-	}
+	vncPort := vmXML.Devices.Graphics[0].VNC.Port
+	vncPortString := fmt.Sprintf("%d", vncPort)
+	vncURL := "ws://" + types.NodeEnvInstance.IP + ":" + vncPortString
 	vm.NodeHostname = types.NodeEnvInstance.IP
 	vm.NodePort = types.NodeEnvInstance.ListenPort
 	vm.ID = int(id)
-	vm.VNCPort = vncPort
+	vm.VNCURL = vncURL
 	logrus.Println("Created VM", vm)
 	return vm, nil
 }

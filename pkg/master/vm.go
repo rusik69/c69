@@ -55,7 +55,7 @@ func CreateVMHandler(c *gin.Context) {
 		newVM.Name = tempVM.Name
 		newVM.Image = tempVM.Image
 		newVM.Flavor = tempVM.Flavor
-		newVM.VNCPort = tempVM.VNCPort
+		newVM.VNCURL = tempVM.VNCURL
 		newVM.NodeHostname = tempVM.NodeHostname
 		created = true
 		break

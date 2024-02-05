@@ -46,8 +46,8 @@ type VM struct {
 	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the virtual machine.
 	Committed bool `json:"committed"`
-	// VNCPort is the VNC port of the virtual machine.
-	VNCPort int `json:"vnc_port"`
+	// VNCURL is the VNC url of the virtual machine.
+	VNCURL string `json:"vncurl"`
 }
 
 // Flavor represents a vm flavor.
@@ -133,7 +133,7 @@ type NodeEnv struct {
 	Name            string `json:"name"`
 	IP              string `json:"ip"`
 	ListenPort      string `json:"listen_port"`
-	ListenHost        string `json:"listen_host"`
+	ListenHost      string `json:"listen_host"`
 	LibVirtURI      string `json:"libvirt_socket"`
 	LibVirtImageDir string `json:"libvirt_image_dir"`
 	FilesDir        string `json:"files_dir"`
