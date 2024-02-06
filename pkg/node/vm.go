@@ -376,6 +376,7 @@ func ListVMs() ([]types.VM, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to get domain id: %w", err)
 		}
+		logrus.Println("Found VM", name, state, id)
 		vm := types.VM{
 			Name:  name,
 			State: ParseState(state),
