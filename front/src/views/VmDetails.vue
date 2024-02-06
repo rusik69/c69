@@ -3,7 +3,7 @@
   <h1>VM Details</h1>
   <div id="details">
     <p>Details for VM {{ vm.id }} - {{ vm.name }}</p>
-    <vue-vnc :url="`vm.vncurl`"></vue-vnc>
+    <vue-vnc :url="vncURL"></vue-vnc>
   </div>
   </body>
 </template>
@@ -18,6 +18,9 @@ const VmDetails = {
     };
   },
   computed: {
+    vncURL() {
+      return vm.vncurl
+    }
   },
   name: "VmDetails",
   components: {
