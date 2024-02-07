@@ -169,14 +169,14 @@ func GetVMHandler(c *gin.Context) {
 // ListVMHandler handles the list vm request.
 func ListVMHandler(c *gin.Context) {
 	logrus.Println("Listing VMs")
-	vms, err := ETCDList("/vms/")
+	vmsList, err := ETCDList("/vms/")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
-	res := []types.VM{}
-	for _, vmName := range vms {
+	vmsMap := map[string]types.VM{}
+	for _, vmName := range vmsList {
 		vmString, err := ETCDGet(vmName)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
@@ -190,8 +190,54 @@ func ListVMHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			return
 		}
-		res = append(res, vm)
+		vmsMap[vm.Name] = vm
 	}
+	var res []types.VM
+	nodes, err := ETCDList("/nodes/")
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, nodeName := range nodes {
+		nodeString, err := ETCDGet(nodeName)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		var node types.Node
+		err = json.Unmarshal([]byte(nodeString), &node)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		nodeVMS, err := client.ListVMs(node.Host, node.Port)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error(err.Error())
+			return
+		}
+		for _, vm := range nodeVMS {
+			if vmsMap[vm.Name].Name == vm.Name {
+				var tempVM types.VM
+				tempVM.ID = vm.ID
+				tempVM.Name = vm.Name
+				tempVM.IP = vm.IP
+				tempVM.Node = nodeName
+				tempVM.NodeHostname = node.Host
+				tempVM.NodePort = node.Port
+				tempVM.State = vm.State
+				tempVM.Image = vmsMap[vm.Name].Image
+				tempVM.Flavor = vmsMap[vm.Name].Flavor
+				tempVM.Volumes = vmsMap[vm.Name].Volumes
+				tempVM.VNCURL = vmsMap[vm.Name].VNCURL
+				res = append(res, tempVM)
+			}
+		}
+	}
+
 	logrus.Println("VMs:", res)
 	c.JSON(200, res)
 }
