@@ -1,7 +1,11 @@
 ---
 - name: Install libvirt
   ansible.builtin.dnf:
-    name: libvirt,qemu-kvm
+    name: libvirt,qemu-kvm,python3-devel,libxml2-devel,libxslt-devel,redhat-rpm-config,gcc
+    state: present
+- name: Install lxml
+  ansible.builtin.pip:
+    name: lxml
     state: present
 - name: Start libvirtd
   ansible.builtin.systemd:
