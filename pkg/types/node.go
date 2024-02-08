@@ -114,18 +114,18 @@ type VMImage struct {
 var VMImages = map[string]VMImage{
 	"ubuntu22.04": VMImage{
 		ID:  "0",
-		Img: "ubuntu-22.04-server-cloudimg-amd64-disk-kvm.img",
-		URL: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-disk-kvm.img",
+		Img: "ubuntu-22.04.3-live-server-amd64.iso",
+		URL: "https://releases.ubuntu.com/jammy/ubuntu-22.04.3-live-server-amd64.iso",
 	},
 	"ubuntu20.04": VMImage{
 		ID:  "1",
-		Img: "ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
-		URL: "https://cloud-images.ubuntu.com/releases/20.04/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
+		Img: "ubuntu-20.04.6-live-server-amd64.iso",
+		URL: "https://releases.ubuntu.com/focal/ubuntu-20.04.6-live-server-amd64.iso",
 	},
 	"fedora39": VMImage{
 		ID:  "2",
 		Img: "Fedora-Cloud-Base-39-1.2.x86_64.qcow2",
-		URL: "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2",
+		URL: "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/iso/Fedora-Server-netinst-x86_64-39-1.5.iso",
 	},
 }
 
@@ -155,6 +155,8 @@ type NodeStats struct {
 type Volume struct {
 	// ID is the ID of the volume.
 	ID string `json:"id"`
+	// Name is the name of the volume.
+	Name string `json:"name"`
 	// Path is the path of the volume.
 	Path string `json:"path"`
 	// Size is the size of the volume.

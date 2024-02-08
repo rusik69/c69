@@ -156,22 +156,27 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if !ok {
 		return types.VM{}, errors.New("flavor not found")
 	}
-	srcFile, err := os.Open(filepath.Join(types.NodeEnvInstance.LibVirtImageDir, types.VMImages[vm.Image].Img))
+	storagePool, err := LibvirtConnection.LookupStoragePoolByName("default")
 	if err != nil {
 		return types.VM{}, err
 	}
-	defer srcFile.Close()
-	destFileName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir, vm.Name+".qcow2")
-	destFile, err := os.Create(destFileName)
+	storageXML := libvirtxml.StorageVolume{
+		Name: vm.Name + ".qcow2",
+		Capacity: &libvirtxml.StorageVolumeSize{
+			Unit:  "G",
+			Value: uint64(flavor.Disk),
+		},
+		Target: &libvirtxml.StorageVolumeTarget{
+			Format: &libvirtxml.StorageVolumeTargetFormat{
+				Type: "qcow2",
+			},
+		},
+	}
+	storageXMLString, err := storageXML.Marshal()
 	if err != nil {
 		return types.VM{}, err
 	}
-	defer destFile.Close()
-	_, err = io.Copy(destFile, srcFile)
-	if err != nil {
-		return types.VM{}, err
-	}
-	err = destFile.Sync()
+	_, err = storagePool.StorageVolCreateXML(storageXMLString, 0)
 	if err != nil {
 		return types.VM{}, err
 	}
@@ -202,11 +207,28 @@ func CreateVM(vm types.VM) (types.VM, error) {
 				{
 					VNC: &libvirtxml.DomainGraphicVNC{
 						AutoPort: "yes",
-						Listen:   "0.0.0.0",
+						Listen:   types.NodeEnvInstance.ListenHost,
 					},
 				},
 			},
 			Disks: []libvirtxml.DomainDisk{
+				{
+					Device: "cdrom",
+					Driver: &libvirtxml.DomainDiskDriver{
+						Name: "qemu",
+						Type: "raw",
+					},
+					Source: &libvirtxml.DomainDiskSource{
+						File: &libvirtxml.DomainDiskSourceFile{
+							File: filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
+								path.Base(types.VMImages[vm.Image].Img)),
+						},
+					},
+					Target: &libvirtxml.DomainDiskTarget{
+						Dev: "sr0",
+						Bus: "virtio",
+					},
+				},
 				{
 					Device: "disk",
 					Driver: &libvirtxml.DomainDiskDriver{
@@ -215,7 +237,8 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
-							File: destFileName,
+							File: filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
+								vm.Name+".qcow2"),
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
