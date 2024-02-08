@@ -3,6 +3,7 @@ package client_test
 import (
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -15,6 +16,7 @@ var (
 	nodeName   string
 	nodeHost   string
 	nodePort   string
+	nodes      []string
 )
 
 // waitForMaster waits for the master to start.
@@ -30,9 +32,28 @@ func waitForMaster() {
 	}
 }
 
+// waitForNodes waits for the nodes to start.
+func waitForNodes() {
+	waitTime := 60
+	for _, node := range nodes {
+		s := strings.Split(node, ":")
+		host := s[1]
+		port := s[2]
+		for {
+			_, err := http.Get("http://" + host + ":" + port + "/ping")
+			if err == nil || waitTime == 0 {
+				break
+			}
+			waitTime--
+			time.Sleep(1 * time.Second)
+		}
+	}
+}
+
 // TestMain is the main test function.
 func TestMain(m *testing.M) {
 	waitForMaster()
+	waitForNodes()
 	masterHost = os.Getenv("TEST_MASTER_HOST")
 	if masterHost == "" {
 		masterHost = "localhost"
@@ -53,6 +74,12 @@ func TestMain(m *testing.M) {
 	if nodePort == "" {
 		nodePort = "6969"
 	}
+	nodesString := os.Getenv("TEST_NODES")
+	if nodesString == "" {
+		nodes = []string{}
+	}
+	nodesSplit := strings.Split(nodesString, ",")
+	nodes = append(nodes, nodesSplit...)
 	m.Run()
 	RunContainers()
 	RunVMs()
