@@ -125,7 +125,7 @@ var VMImages = map[string]VMImage{
 	*/
 	"fedora39": VMImage{
 		ID:  "2",
-		Img: "Fedora-Cloud-Base-39-1.2.x86_64.qcow2",
+		Img: "Fedora-Server-netinst-x86_64-39-1.5.iso",
 		URL: "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/iso/Fedora-Server-netinst-x86_64-39-1.5.iso",
 	},
 }

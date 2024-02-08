@@ -13,3 +13,14 @@
     src: cleanup.sh
     dest: /usr/local/bin/cleanup.sh
     mode: 0755
+- name: Create default storage pool
+  community.libvirt.virt_pool:
+    name: default
+    state: present
+    xml: |
+      <pool type='dir'>
+        <name>default</name>
+        <target>
+          <path>/var/lib/libvirt/images</path>
+        </target>
+      </pool>
