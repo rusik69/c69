@@ -55,6 +55,7 @@ deploy:
 	ssh x230.rusik69.lol "docker compose -f ~/docker-compose-x230.yml up -d --quiet-pull"
 
 ansible:
+	pip install -r deployments/ansible/requirements.txt
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
 composetest:
