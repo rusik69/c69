@@ -178,6 +178,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	}
 	_, err = storagePool.StorageVolCreateXML(storageXMLString, 0)
 	if err != nil {
+		logrus.Error("Failed to create storage volume", err.Error())
 		return types.VM{}, err
 	}
 	domainXML := libvirtxml.Domain{
