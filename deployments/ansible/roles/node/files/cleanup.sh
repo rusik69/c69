@@ -7,4 +7,6 @@ for i in $(seq 0 10); do
 	sudo virsh undefine test$i
 done
 docker ps -aq | xargs docker stop | xargs docker rm || true
-sudo rm -f /var/lib/libvirt/images/test* || true
+for i in $(sudo ls /var/lib/libvirt/images/); do
+	sudo rm /var/lib/libvirt/images/$i 
+done
