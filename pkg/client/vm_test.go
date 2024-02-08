@@ -10,7 +10,7 @@ import (
 
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
-	vm, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "tiny")
+	vm, err := client.CreateVM(masterHost, masterPort, "test", "fedora39", "tiny")
 	if err != nil {
 		t.Error(err)
 	}
