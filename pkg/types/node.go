@@ -112,16 +112,17 @@ type VMImage struct {
 }
 
 var VMImages = map[string]VMImage{
-	"ubuntu22.04": VMImage{
-		ID:  "0",
-		Img: "ubuntu-22.04.3-live-server-amd64.iso",
-		URL: "https://releases.ubuntu.com/jammy/ubuntu-22.04.3-live-server-amd64.iso",
-	},
-	"ubuntu20.04": VMImage{
-		ID:  "1",
-		Img: "ubuntu-20.04.6-live-server-amd64.iso",
-		URL: "https://releases.ubuntu.com/focal/ubuntu-20.04.6-live-server-amd64.iso",
-	},
+	/*	"ubuntu22.04": VMImage{
+			ID:  "0",
+			Img: "ubuntu-22.04.3-live-server-amd64.iso",
+			URL: "https://releases.ubuntu.com/jammy/ubuntu-22.04.3-live-server-amd64.iso",
+		},
+		"ubuntu20.04": VMImage{
+			ID:  "1",
+			Img: "ubuntu-20.04.6-live-server-amd64.iso",
+			URL: "https://releases.ubuntu.com/focal/ubuntu-20.04.6-live-server-amd64.iso",
+		},
+	*/
 	"fedora39": VMImage{
 		ID:  "2",
 		Img: "Fedora-Cloud-Base-39-1.2.x86_64.qcow2",
