@@ -55,7 +55,7 @@ deploy:
 	ssh x230.rusik69.lol "docker compose -f ~/docker-compose-x230.yml up -d --quiet-pull"
 
 ansible:
-	sudo dnf install python3-devel libxml2-devel libxslt-devel redhat-rpm-config gcc
+	sudo dnf install -y python3-devel libxml2-devel libxslt-devel redhat-rpm-config gcc
 	pip3 install -r deployments/ansible/requirements.txt
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
