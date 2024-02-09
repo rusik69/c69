@@ -17,6 +17,11 @@
     src: cleanup.sh
     dest: /usr/local/bin/cleanup.sh
     mode: 0755
+- name: copy fedora39.ks
+  ansible.builtin.copy:
+    src: fedora39.ks
+    dest: /var/lib/libvirt/images/fedora39.ks
+    mode: 0644
 - name: Create default storage pool
   community.libvirt.virt_pool:
     name: default
