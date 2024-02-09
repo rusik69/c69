@@ -181,6 +181,9 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		logrus.Error("Failed to create storage volume", err.Error())
 		return types.VM{}, err
 	}
+	imgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
+		types.VMImages[vm.Image].Img)
+	logrus.Println("Creating VM with image", imgName)
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
 		Name: vm.Name,
@@ -221,8 +224,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
-							File: filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
-								types.VMImages[vm.Image].Img),
+							File: imgName,
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
