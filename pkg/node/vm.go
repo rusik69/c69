@@ -217,7 +217,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					Device: "cdrom",
 					Driver: &libvirtxml.DomainDiskDriver{
 						Name: "qemu",
-						Type: "file",
+						Type: "raw",
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
@@ -226,7 +226,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
-						Dev: "hdb",
+						Dev: "sr0",
 						Bus: "virtio",
 					},
 				},
