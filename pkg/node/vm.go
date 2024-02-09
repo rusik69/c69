@@ -205,6 +205,8 @@ func CreateVM(vm types.VM) (types.VM, error) {
 				Type:    "hvm",
 			},
 			Cmdline: "ks=file:///var/lib/libvirt/images/fedora39.ks",
+			Kernel:  "",
+			Initrd:  "",
 			BootDevices: []libvirtxml.DomainBootDevice{
 				{
 					Dev: "cdrom",
