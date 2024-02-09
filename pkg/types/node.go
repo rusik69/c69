@@ -109,6 +109,8 @@ type VMImage struct {
 	Img string `json:"img"`
 	// URL is the URL of the image.
 	URL string `json:"url"`
+	// Cmdline is the cmdline of the image.
+	Cmdline string `json:"cmdline"`
 }
 
 var VMImages = map[string]VMImage{
@@ -124,9 +126,10 @@ var VMImages = map[string]VMImage{
 		},
 	*/
 	"fedora39": VMImage{
-		ID:  "2",
-		Img: "Fedora-Server-netinst-x86_64-39-1.5.iso",
-		URL: "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/iso/Fedora-Server-netinst-x86_64-39-1.5.iso",
+		ID:      "2",
+		Img:     "Fedora-Server-netinst-x86_64-39-1.5.iso",
+		URL:     "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/iso/Fedora-Server-netinst-x86_64-39-1.5.iso",
+		Cmdline: "ks=file:///var/lib/libvirt/images/fedora39.ks",
 	},
 }
 
