@@ -186,8 +186,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		logrus.Error("Failed to create storage volume", err.Error())
 		return types.VM{}, err
 	}
-
-	logrus.Println("Creating VM with image", imgName)
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
 		Name: vm.Name,
