@@ -199,7 +199,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			},
 			BootDevices: []libvirtxml.DomainBootDevice{
 				{
-					Dev: "hd",
+					Dev: "cdrom",
 				},
 			},
 		},
@@ -226,7 +226,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
-						Dev: "sr0",
+						Dev: "vdb",
 						Bus: "virtio",
 					},
 				},
