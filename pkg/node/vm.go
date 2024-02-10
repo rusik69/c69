@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strconv"
@@ -161,29 +162,32 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if imgName == "" {
 		return types.VM{}, errors.New("image not found")
 	}
-	storagePool, err := LibvirtConnection.LookupStoragePoolByName("default")
+	if _, err := os.Stat(imgName); os.IsNotExist(err) {
+		// download image
+		err := DownloadFile(types.VMImages[vm.Image].URL, types.NodeEnvInstance.LibVirtImageDir)
+		if err != nil {
+			return types.VM{}, err
+		}
+	}
+	sourceImg, err := os.Open(imgName)
 	if err != nil {
 		return types.VM{}, err
 	}
-	storageXML := libvirtxml.StorageVolume{
-		Name: vm.Name + ".qcow2",
-		Capacity: &libvirtxml.StorageVolumeSize{
-			Unit:  "G",
-			Value: uint64(flavor.Disk),
-		},
-		Target: &libvirtxml.StorageVolumeTarget{
-			Format: &libvirtxml.StorageVolumeTargetFormat{
-				Type: "qcow2",
-			},
-		},
-	}
-	storageXMLString, err := storageXML.Marshal()
+	defer sourceImg.Close()
+	desgImgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
+		vm.Name+".qcow2")
+	destImg, err := os.Create(desgImgName)
 	if err != nil {
 		return types.VM{}, err
 	}
-	_, err = storagePool.StorageVolCreateXML(storageXMLString, 0)
+	defer destImg.Close()
+	_, err = io.Copy(destImg, sourceImg)
 	if err != nil {
-		logrus.Error("Failed to create storage volume", err.Error())
+		return types.VM{}, err
+	}
+	cmd := exec.Command("qemu-img", "resize", desgImgName, strconv.Itoa(flavor.Disk)+"G")
+	err = cmd.Run()
+	if err != nil {
 		return types.VM{}, err
 	}
 	domainXML := libvirtxml.Domain{
@@ -202,13 +206,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 				Machine: "pc",
 				Type:    "hvm",
 			},
-			//Cmdline: types.VMImages[vm.Image].Cmdline,
-			//Kernel:  "",
-			//Initrd:  "",
 			BootDevices: []libvirtxml.DomainBootDevice{
-				{
-					Dev: "cdrom",
-				},
 				{
 					Dev: "hd",
 				},
@@ -224,22 +222,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 				},
 			},
 			Disks: []libvirtxml.DomainDisk{
-				{
-					Device: "cdrom",
-					Driver: &libvirtxml.DomainDiskDriver{
-						Name: "qemu",
-						Type: "raw",
-					},
-					Source: &libvirtxml.DomainDiskSource{
-						File: &libvirtxml.DomainDiskSourceFile{
-							File: imgName,
-						},
-					},
-					Target: &libvirtxml.DomainDiskTarget{
-						Dev: "hda",
-						Bus: "ide",
-					},
-				},
 				{
 					Device: "disk",
 					Driver: &libvirtxml.DomainDiskDriver{
@@ -262,7 +244,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 				{
 					Source: &libvirtxml.DomainInterfaceSource{
 						Network: &libvirtxml.DomainInterfaceSourceNetwork{
-							Network: "default",
+							Network: "govnocloud",
 						},
 					},
 					Model: &libvirtxml.DomainInterfaceModel{

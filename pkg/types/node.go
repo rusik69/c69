@@ -77,28 +77,28 @@ var VMFlavors = map[string]VMFlavor{
 		Name:  "small",
 		VCPUs: 1,
 		RAM:   1024,
-		Disk:  10,
+		Disk:  4,
 	},
 	"medium": VMFlavor{
 		ID:    "2",
 		Name:  "medium",
-		VCPUs: 2,
+		VCPUs: 1,
 		RAM:   2048,
-		Disk:  20,
+		Disk:  8,
 	},
 	"large": VMFlavor{
-		ID:    "3",
+		ID:    "2",
 		Name:  "large",
 		VCPUs: 4,
 		RAM:   4096,
-		Disk:  40,
+		Disk:  16,
 	},
 	"xlarge": VMFlavor{
 		ID:    "4",
 		Name:  "xlarge",
-		VCPUs: 8,
+		VCPUs: 4,
 		RAM:   8192,
-		Disk:  80,
+		Disk:  32,
 	},
 }
 
@@ -114,22 +114,20 @@ type VMImage struct {
 }
 
 var VMImages = map[string]VMImage{
-	/*	"ubuntu22.04": VMImage{
-			ID:  "0",
-			Img: "ubuntu-22.04.3-live-server-amd64.iso",
-			URL: "https://releases.ubuntu.com/jammy/ubuntu-22.04.3-live-server-amd64.iso",
-		},
-		"ubuntu20.04": VMImage{
-			ID:  "1",
-			Img: "ubuntu-20.04.6-live-server-amd64.iso",
-			URL: "https://releases.ubuntu.com/focal/ubuntu-20.04.6-live-server-amd64.iso",
-		},
-	*/
+	"ubuntu22.04": VMImage{
+		ID:  "0",
+		Img: "jammy-server-cloudimg-amd64-disk-kvm.img",
+		URL: "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-disk-kvm.img",
+	},
+	"ubuntu20.04": VMImage{
+		ID:  "1",
+		Img: "ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
+		URL: "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
+	},
 	"fedora39": VMImage{
-		ID:      "2",
-		Img:     "Fedora-Server-netinst-x86_64-39-1.5.iso",
-		URL:     "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/iso/Fedora-Server-netinst-x86_64-39-1.5.iso",
-		Cmdline: "ks=file:/var/lib/libvirt/images/fedora39.ks console=ttys0",
+		ID:  "2",
+		Img: "Fedora-Server-KVM-39-1.5.x86_64.qcow2",
+		URL: "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/images/Fedora-Server-KVM-39-1.5.x86_64.qcow2",
 	},
 }
 
