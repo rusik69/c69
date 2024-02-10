@@ -27,10 +27,6 @@ var masterCmd = &cobra.Command{
 		logrus.Println("ETCD user is " + types.MasterEnvInstance.ETCDUser)
 		logrus.Println("ETCD pass is " + types.MasterEnvInstance.ETCDPass)
 		logrus.Println("Listen port is " + types.MasterEnvInstance.ListenPort)
-		logrus.Println("Nodes are:")
-		for _, node := range types.MasterEnvInstance.Nodes {
-			logrus.Println(node.Name + " " + node.Host + " " + node.Port)
-		}
 		master.ETCDClient, err = master.ETCDConnect(types.MasterEnvInstance.ETCDHost,
 			types.MasterEnvInstance.ETCDPort, types.MasterEnvInstance.ETCDUser,
 			types.MasterEnvInstance.ETCDPass)
@@ -39,10 +35,6 @@ var masterCmd = &cobra.Command{
 		}
 		defer master.ETCDClient.Close()
 		logrus.Println("ETCD is connected at " + types.MasterEnvInstance.ETCDHost + ":" + types.MasterEnvInstance.ETCDPort)
-		err = master.AddEnvNodesToETCD()
-		if err != nil {
-			panic(err)
-		}
 		master.Serve()
 	},
 }
