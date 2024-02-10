@@ -24,18 +24,18 @@ type Node struct {
 	Host string `json:"ip"`
 	// Port is the port of the node.
 	Port string `json:"port"`
-	// CPUSTotal is the total number of CPUs of the node.
-	CPUSTotal int `json:"cpus_total"`
-	// CPUsUsed is the used number of CPUs of the node.
-	CPUsUsed float64 `json:"cpus_used"`
+	// MilliCPUSTotal is the total number of CPUs of the node.
+	MilliCPUSTotal uint64 `json:"millicpus_total"`
+	// MilliCPUSUsed is the used number of CPUs of the node.
+	MilliCPUSUsed uint64 `json:"millicpus_used"`
 	// MemoryTotal is the total memory of the node.
-	MemoryTotal int64 `json:"memory_total"`
+	MemoryTotal uint64 `json:"memory_total"`
 	// MemoryUsed is the used memory of the node.
-	MemoryUsed int64 `json:"memory_used"`
+	MemoryUsed uint64 `json:"memory_used"`
 	// DiskTotal is the total disk of the node.
-	DiskTotal int64 `json:"disk_total"`
+	DiskTotal uint64 `json:"disk_total"`
 	// DiskUsed is the used disk of the node.
-	DiskUsed int64 `json:"disk_used"`
+	DiskUsed uint64 `json:"disk_used"`
 }
 
 // File represents a file.
@@ -43,7 +43,7 @@ type File struct {
 	// Name is the name of the file.
 	Name string `json:"name"`
 	// Size is the size of the file.
-	Size int64 `json:"size"`
+	Size uint64 `json:"size"`
 	// NodeHost is the node of the file.
 	NodeHost string `json:"nodehost"`
 	// NodePort is the node of the file.
@@ -53,7 +53,7 @@ type File struct {
 	// Committed is the committed status of the file.
 	Committed bool `json:"committed"`
 	// Timestamp is the timestamp of the file.
-	Timestamp int64 `json:"timestamp"`
+	Timestamp uint64 `json:"timestamp"`
 }
 
 // MasterEnvInstance is the singleton instance of MasterEnv.

@@ -63,10 +63,10 @@ func GetStats() (types.NodeStats, error) {
 		return types.NodeStats{}, err
 	}
 	return types.NodeStats{
-		CPUs:      numCPUs,
-		FreeMEM:   int64(mem.Free),
-		TotalMEM:  int64(mem.Total),
-		FreeDISK:  int64(disk.Free),
-		TotalDISK: int64(disk.Total),
+		MilliCPUs: uint64(1024 * numCPUs),
+		FreeMEM:   uint64(mem.Free),
+		TotalMEM:  uint64(mem.Total),
+		FreeDISK:  uint64(disk.Free),
+		TotalDISK: uint64(disk.Total),
 	}, nil
 }

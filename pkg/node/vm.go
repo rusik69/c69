@@ -164,7 +164,8 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	}
 	if _, err := os.Stat(imgName); os.IsNotExist(err) {
 		// download image
-		err := DownloadFile(types.VMImages[vm.Image].URL, types.NodeEnvInstance.LibVirtImageDir)
+		err := DownloadFile(types.VMImages[vm.Image].URL,
+			types.NodeEnvInstance.LibVirtImageDir)
 		if err != nil {
 			return types.VM{}, err
 		}
@@ -185,10 +186,16 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	cmd := exec.Command("qemu-img", "resize", destImgName, strconv.Itoa(flavor.Disk)+"G")
+	cmd := exec.Command("qemu-img", "resize", destImgName, strconv.Itoa(int(flavor.Disk))+"G")
 	err = cmd.Run()
 	if err != nil {
 		return types.VM{}, err
+	}
+	var cpuShares uint
+	if flavor.MilliCPUs > 1024 {
+		cpuShares = 1024
+	} else {
+		cpuShares = uint(flavor.MilliCPUs)
 	}
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
@@ -198,7 +205,12 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			Unit:  "MB",
 		},
 		VCPU: &libvirtxml.DomainVCPU{
-			Value: uint(flavor.VCPUs),
+			Value: uint(flavor.MilliCPUs / 1024),
+		},
+		CPUTune: &libvirtxml.DomainCPUTune{
+			Shares: &libvirtxml.DomainCPUTuneShares{
+				Value: cpuShares,
+			},
 		},
 		OS: &libvirtxml.DomainOS{
 			Type: &libvirtxml.DomainOSType{

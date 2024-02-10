@@ -54,49 +54,49 @@ type VMFlavor struct {
 	ID string `json:"id"`
 	// Name is the name of the flavor.
 	Name string `json:"name"`
-	// VCPUs is the number of VCPUs of the flavor.
-	VCPUs int `json:"vcpus"`
+	// MilliCPUs is the number of MilliCPUs of the flavor.
+	MilliCPUs uint64 `json:"millicpus"`
 	// RAM is the RAM of the flavor.
-	RAM int `json:"ram"`
+	RAM uint64 `json:"ram"`
 	// Disk is the disk of the flavor.
-	Disk int `json:"disk"`
+	Disk uint64 `json:"disk"`
 }
 
 var VMFlavors = map[string]VMFlavor{
 	"tiny": VMFlavor{
-		ID:    "0",
-		Name:  "tiny",
-		VCPUs: 1,
-		RAM:   512,
-		Disk:  2,
+		ID:        "0",
+		Name:      "tiny",
+		MilliCPUs: 128,
+		RAM:       512,
+		Disk:      2,
 	},
 	"small": VMFlavor{
-		ID:    "1",
-		Name:  "small",
-		VCPUs: 1,
-		RAM:   1024,
-		Disk:  4,
+		ID:        "1",
+		Name:      "small",
+		MilliCPUs: 256,
+		RAM:       1024,
+		Disk:      4,
 	},
 	"medium": VMFlavor{
-		ID:    "2",
-		Name:  "medium",
-		VCPUs: 1,
-		RAM:   2048,
-		Disk:  8,
+		ID:        "2",
+		Name:      "medium",
+		MilliCPUs: 512,
+		RAM:       2048,
+		Disk:      8,
 	},
 	"large": VMFlavor{
-		ID:    "2",
-		Name:  "large",
-		VCPUs: 4,
-		RAM:   4096,
-		Disk:  16,
+		ID:        "2",
+		Name:      "large",
+		MilliCPUs: 1024,
+		RAM:       4096,
+		Disk:      16,
 	},
 	"xlarge": VMFlavor{
-		ID:    "4",
-		Name:  "xlarge",
-		VCPUs: 4,
-		RAM:   8192,
-		Disk:  32,
+		ID:        "4",
+		Name:      "xlarge",
+		MilliCPUs: 2048,
+		RAM:       8192,
+		Disk:      32,
 	},
 }
 
@@ -144,11 +144,11 @@ var NodeEnvInstance *NodeEnv
 
 // NodeStats represents the stats.
 type NodeStats struct {
-	CPUs      int   `json:"cpus"`
-	TotalMEM  int64 `json:"total_mem"`
-	FreeMEM   int64 `json:"mem"`
-	TotalDISK int64 `json:"total_disk"`
-	FreeDISK  int64 `json:"disk"`
+	MilliCPUs uint64 `json:"millicpus"`
+	TotalMEM  uint64 `json:"total_mem"`
+	FreeMEM   uint64 `json:"mem"`
+	TotalDISK uint64 `json:"total_disk"`
+	FreeDISK  uint64 `json:"disk"`
 }
 
 // Volume represents a volume.

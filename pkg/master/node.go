@@ -42,7 +42,7 @@ func AddNodeHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	tempNode.CPUSTotal = nodeStats.CPUs
+	tempNode.MilliCPUSTotal = nodeStats.MilliCPUs
 	tempNode.MemoryTotal = nodeStats.TotalMEM
 	tempNode.DiskTotal = nodeStats.TotalDISK
 	logrus.Println("Adding node", tempNode)

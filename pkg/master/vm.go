@@ -24,6 +24,7 @@ func CreateVMHandler(c *gin.Context) {
 		logrus.Error("name, image or flavor is empty")
 		return
 	}
+	vmFlavorName := tempVM.Flavor
 	logrus.Println("Creating VM", tempVM)
 	vmInfoString, err := ETCDGet("/vms/" + tempVM.Name)
 	if err != nil {
@@ -44,7 +45,14 @@ func CreateVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
+	vmFlavor := types.VMFlavors[vmFlavorName]
+	usedNode := types.Node{}
 	for _, node := range nodes {
+		if uint64(node.MilliCPUSTotal-node.MilliCPUSUsed) < vmFlavor.MilliCPUs ||
+			(node.MemoryTotal-node.MemoryUsed) < vmFlavor.RAM ||
+			(node.DiskTotal-node.DiskUsed) < vmFlavor.Disk {
+			continue
+		}
 		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name,
 			tempVM.Image, tempVM.Flavor)
 		if err != nil {
@@ -59,6 +67,7 @@ func CreateVMHandler(c *gin.Context) {
 		newVM.VNCURL = tempVM.VNCURL
 		newVM.NodeHostname = tempVM.NodeHostname
 		created = true
+		usedNode = node
 		break
 	}
 	if !created {
@@ -74,6 +83,21 @@ func CreateVMHandler(c *gin.Context) {
 		return
 	}
 	err = ETCDPut("/vms/"+newVM.Name, string(newVmstring))
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	usedNode.MilliCPUSUsed += uint64(vmFlavor.MilliCPUs)
+	usedNode.MemoryUsed += uint64(vmFlavor.RAM)
+	usedNode.DiskUsed += uint64(vmFlavor.Disk)
+	nodeString, err := json.Marshal(usedNode)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = ETCDPut("/nodes/"+usedNode.Name, string(nodeString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -116,6 +140,7 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
+	foundNode := types.Node{}
 	for _, node := range nodes {
 		if node.Name == vmInfo.Node {
 			err = client.DeleteVM(node.Host, node.Port, vmInfo.Name)
@@ -125,6 +150,7 @@ func DeleteVMHandler(c *gin.Context) {
 				return
 			}
 			deleted = true
+			foundNode = node
 		}
 	}
 	if !deleted {
@@ -133,6 +159,21 @@ func DeleteVMHandler(c *gin.Context) {
 		return
 	}
 	err = ETCDDelete("/vms/" + name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	foundNode.MilliCPUSUsed -= types.VMFlavors[vmInfo.Flavor].MilliCPUs
+	foundNode.MemoryUsed -= types.VMFlavors[vmInfo.Flavor].RAM
+	foundNode.DiskUsed -= types.VMFlavors[vmInfo.Flavor].Disk
+	nodeString, err := json.Marshal(foundNode)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = ETCDPut("/nodes/"+foundNode.Name, string(nodeString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())

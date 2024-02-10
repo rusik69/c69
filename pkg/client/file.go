@@ -29,8 +29,8 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	url := "http://" + masterHost + ":" + masterPort + "/api/v1/files"
 	var tempFile types.File
 	tempFile.Name = fileName
-	tempFile.Size = fileSize
-	tempFile.Timestamp = time.Now().Unix()
+	tempFile.Size = uint64(fileSize)
+	tempFile.Timestamp = uint64(time.Now().Unix())
 	tempFileBody, err := json.Marshal(tempFile)
 	if err != nil {
 		return err
