@@ -2,6 +2,7 @@ package master
 
 import (
 	"encoding/json"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -24,6 +25,26 @@ func AddNodeHandler(c *gin.Context) {
 		logrus.Error("name, host and port are required")
 		return
 	}
+	req, err := http.Get("http://" + tempNode.Host + ":" + tempNode.Port + "/ping")
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	if req.StatusCode != 200 {
+		c.JSON(500, gin.H{"error": "node is not available"})
+		logrus.Error("node is not available")
+		return
+	}
+	nodeStats, err := client.GetNodeStats(tempNode.Host, tempNode.Port)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	tempNode.CPUSTotal = nodeStats.CPUs
+	tempNode.MemoryTotal = nodeStats.TotalMEM
+	tempNode.DiskTotal = nodeStats.TotalDISK
 	logrus.Println("Adding node", tempNode)
 	tempNodeBody, err := json.Marshal(tempNode)
 	if err != nil {
@@ -121,35 +142,4 @@ func DeleteNodeHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{"status": "OK"})
-}
-
-// AddEnvNodesToETCD adds nodes from env to etcd.
-func AddEnvNodesToETCD() error {
-	logrus.Println("Adding nodes from env to etcd")
-	nodesList, err := ETCDList("/nodes/")
-	if err != nil {
-		logrus.Error(err.Error())
-		return err
-	}
-	nodesMap := map[string]bool{}
-	for _, node := range nodesList {
-		nodesMap[node] = true
-	}
-	for _, node := range types.MasterEnvInstance.Nodes {
-		if nodesMap[node.Name] {
-			logrus.Printf("Node %s already exists in etcd\n", node.Name)
-			continue
-		}
-		nodeString, err := json.Marshal(node)
-		if err != nil {
-			logrus.Error(err.Error())
-			return err
-		}
-		err = ETCDPut("/nodes/"+node.Name, string(nodeString))
-		if err != nil {
-			logrus.Error(err.Error())
-			return err
-		}
-	}
-	return nil
 }

@@ -1,9 +1,7 @@
 package master
 
 import (
-	"errors"
 	"os"
-	"strings"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
@@ -34,23 +32,6 @@ func ParseEnv() (*types.MasterEnv, error) {
 	if listenPort == "" {
 		listenPort = "7070"
 	}
-	nodesString := os.Getenv("MASTER_NODES")
-	if nodesString == "" {
-		return nil, errors.New("no nodes")
-	}
-	nodesStringSplit := strings.Split(nodesString, ",")
-	var nodes []types.Node
-	for _, nodeString := range nodesStringSplit {
-		s := strings.Split(nodeString, ":")
-		name := s[0]
-		host := s[1]
-		port := s[2]
-		nodes = append(nodes, types.Node{
-			Name: name,
-			Host: host,
-			Port: port,
-		})
-	}
 	return &types.MasterEnv{
 		ETCDHost:   etcdhost,
 		ETCDPort:   etcdport,
@@ -58,6 +39,5 @@ func ParseEnv() (*types.MasterEnv, error) {
 		ETCDPass:   etcdpass,
 		ListenPort: listenPort,
 		ListenHost: listenHost,
-		Nodes:      nodes,
 	}, nil
 }

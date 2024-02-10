@@ -133,7 +133,7 @@ func DeleteFileHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	fileNode, err := types.FindNodeByName(fileInfo.NodeName)
+	fileNode, err := GetNode(fileInfo.NodeName)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -215,10 +215,14 @@ func GetFileHandler(c *gin.Context) {
 func chooseNodeForFile(file types.File) (types.Node, error) {
 	found := false
 	var foundNode types.Node
-	rand.Shuffle(len(types.MasterEnvInstance.Nodes), func(i, j int) {
-		types.MasterEnvInstance.Nodes[i], types.MasterEnvInstance.Nodes[j] = types.MasterEnvInstance.Nodes[j], types.MasterEnvInstance.Nodes[i]
+	nodes, err := GetNodes()
+	if err != nil {
+		return types.Node{}, err
+	}
+	rand.Shuffle(len(nodes), func(i, j int) {
+		nodes[i], nodes[j] = nodes[j], nodes[i]
 	})
-	for _, node := range types.MasterEnvInstance.Nodes {
+	for _, node := range nodes {
 		nodeStats, err := client.GetNodeStats(node.Host, node.Port)
 		if err != nil {
 			logrus.Error(err.Error())

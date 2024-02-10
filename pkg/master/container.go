@@ -33,18 +33,25 @@ func CreateContainerHandler(c *gin.Context) {
 		return
 	}
 	if containerInfoString != "" {
-		c.JSON(400, gin.H{"error": "container with this id already exists"})
-		logrus.Error("container with this id already exists")
+		c.JSON(400, gin.H{"error": "container with this name already exists"})
+		logrus.Error("container with this name already exists")
+		return
+	}
+	nodes, err := GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
 		return
 	}
 	var newContainerID string
 	created := false
 	var newContainer types.Container
-	rand.Shuffle(len(types.MasterEnvInstance.Nodes), func(i, j int) {
-		types.MasterEnvInstance.Nodes[i], types.MasterEnvInstance.Nodes[j] = types.MasterEnvInstance.Nodes[j], types.MasterEnvInstance.Nodes[i]
+	rand.Shuffle(len(nodes), func(i, j int) {
+		nodes[i], nodes[j] = nodes[j], nodes[i]
 	})
-	for _, node := range types.MasterEnvInstance.Nodes {
-		newContainerID, err = client.CreateContainer(node.Host, node.Port, tempContainer.Name, tempContainer.Image)
+	for _, node := range nodes {
+		newContainerID, err = client.CreateContainer(node.Host, node.Port,
+			tempContainer.Name, tempContainer.Image)
 		if err != nil {
 			logrus.Error(node.Host, node.Port, err.Error())
 			continue
@@ -105,7 +112,13 @@ func DeleteContainerHandler(c *gin.Context) {
 		return
 	}
 	deleted := false
-	for _, node := range types.MasterEnvInstance.Nodes {
+	nodes, err := GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range nodes {
 		if node.Host == tempContainer.Host {
 			err = client.DeleteContainer(node.Host, node.Port, tempContainer.ID)
 			if err != nil {
@@ -212,7 +225,13 @@ func StartContainerHandler(c *gin.Context) {
 		return
 	}
 	started := false
-	for _, node := range types.MasterEnvInstance.Nodes {
+	nodes, err := GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range nodes {
 		if node.Host == container.Host {
 			err = client.StartContainer(node.Host, node.Port, container.ID)
 			if err != nil {
@@ -270,7 +289,13 @@ func StopContainerHandler(c *gin.Context) {
 		return
 	}
 	stopped := false
-	for _, node := range types.MasterEnvInstance.Nodes {
+	nodes, err := GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range nodes {
 		if node.Host == container.Host {
 			err = client.StopContainer(node.Host, node.Port, container.ID)
 			if err != nil {

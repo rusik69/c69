@@ -2,7 +2,6 @@ package master
 
 import (
 	"encoding/json"
-	"math/rand"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -39,11 +38,13 @@ func CreateVMHandler(c *gin.Context) {
 	}
 	created := false
 	var newVM types.VM
-	rand.Shuffle(len(types.MasterEnvInstance.Nodes), func(i, j int) {
-		types.MasterEnvInstance.Nodes[i], types.MasterEnvInstance.Nodes[j] =
-			types.MasterEnvInstance.Nodes[j], types.MasterEnvInstance.Nodes[i]
-	})
-	for _, node := range types.MasterEnvInstance.Nodes {
+	nodes, err := GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range nodes {
 		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name,
 			tempVM.Image, tempVM.Flavor)
 		if err != nil {
@@ -109,7 +110,13 @@ func DeleteVMHandler(c *gin.Context) {
 		return
 	}
 	deleted := false
-	for _, node := range types.MasterEnvInstance.Nodes {
+	nodes, err := GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range nodes {
 		if node.Name == vmInfo.Node {
 			err = client.DeleteVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {
@@ -269,7 +276,13 @@ func StartVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	for _, node := range types.MasterEnvInstance.Nodes {
+	nodes, err := GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range nodes {
 		if node.Host == vmInfo.Node {
 			err = client.StartVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {
@@ -309,7 +322,13 @@ func StopVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	for _, node := range types.MasterEnvInstance.Nodes {
+	nodes, err := GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	for _, node := range nodes {
 		if node.Host == vmInfo.Node {
 			err = client.StopVM(node.Host, node.Port, vmInfo.Name)
 			if err != nil {

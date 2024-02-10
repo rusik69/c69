@@ -2,6 +2,8 @@ package master
 
 import (
 	"context"
+	"encoding/json"
+	"math/rand"
 	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
@@ -78,3 +80,45 @@ func ETCDDelete(key string) error {
 
 // ETCDClient is the database connection.
 var ETCDClient *clientv3.Client
+
+// GetNodes gets the nodes from the database.
+func GetNodes() ([]types.Node, error) {
+	nodes, err := ETCDList("/nodes/")
+	if err != nil {
+		return nil, err
+	}
+	var res []types.Node
+	for _, nodeName := range nodes {
+		nodeString, err := ETCDGet(nodeName)
+		if err != nil {
+			return nil, err
+		}
+		var node types.Node
+		err = json.Unmarshal([]byte(nodeString), &node)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, node)
+	}
+	rand.Shuffle(len(res), func(i, j int) {
+		res[i], res[j] = res[j], res[i]
+	})
+	return res, nil
+}
+
+// GetNode gets the node from the database.
+func GetNode(name string) (types.Node, error) {
+	nodeString, err := ETCDGet("/nodes/" + name)
+	if err != nil {
+		return types.Node{}, err
+	}
+	if nodeString == "" {
+		return types.Node{}, nil
+	}
+	var node types.Node
+	err = json.Unmarshal([]byte(nodeString), &node)
+	if err != nil {
+		return types.Node{}, err
+	}
+	return node, nil
+}
