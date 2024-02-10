@@ -3,7 +3,7 @@ services:
   node:
     image: loqutus/govnocloud-node
     ports:
-      - "6969:100.126.141.49:6969"
+      - "100.126.141.49:6969:6969"
     environment:
       "NODE_LIBVIRT_SOCKET" : "qemu:///system"
       "NODE_NAME": "x230"
