@@ -12,7 +12,7 @@ cp -a /mnt/iso/* /tmp/newiso
 cp /var/lib/libvirt/images/fedora39.ks /tmp/newiso/ks.cfg
 
 # Create a new ISO
-mkisofs -o /var/lib/libvirt/images/new-Fedora-Server-netinst-x86_64-39-1.5.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -R -J -v -T /tmp/newiso
+mkisofs -o /var/lib/libvirt/images/new-Fedora-Server-netinst-x86_64-39-1.5.iso -b images/eltorito.img -no-emul-boot -boot-load-size 4 -boot-info-table -R -J -v -T /tmp/newiso
 
 # Clean up
 umount /mnt/iso
