@@ -187,10 +187,13 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		return types.VM{}, err
 	}
 	cmd := exec.Command("qemu-img", "resize", destImgName, strconv.Itoa(int(flavor.Disk))+"G")
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return types.VM{}, err
+	}
+	logrus.Println(string(output))
 	err = cmd.Run()
 	if err != nil {
-		logrus.Error(cmd.Stdout)
-		logrus.Error(cmd.Stderr)
 		return types.VM{}, err
 	}
 	var cpuShares uint
