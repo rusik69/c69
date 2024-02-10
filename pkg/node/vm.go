@@ -174,9 +174,9 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		return types.VM{}, err
 	}
 	defer sourceImg.Close()
-	desgImgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
+	destImgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
 		vm.Name+".qcow2")
-	destImg, err := os.Create(desgImgName)
+	destImg, err := os.Create(destImgName)
 	if err != nil {
 		return types.VM{}, err
 	}
@@ -185,7 +185,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	cmd := exec.Command("qemu-img", "resize", desgImgName, strconv.Itoa(flavor.Disk)+"G")
+	cmd := exec.Command("qemu-img", "resize", destImgName, strconv.Itoa(flavor.Disk)+"G")
 	err = cmd.Run()
 	if err != nil {
 		return types.VM{}, err
@@ -230,8 +230,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
-							File: filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
-								vm.Name+".qcow2"),
+							File: destImgName,
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
