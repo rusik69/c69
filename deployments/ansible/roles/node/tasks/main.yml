@@ -17,11 +17,24 @@
     src: cleanup.sh
     dest: /usr/local/bin/cleanup.sh
     mode: 0755
+- name: download fedora39 iso
+  ansible.builtin.get_url:
+    url: https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/iso/Fedora-Server-netinst-x86_64-39-1.5.iso
+    dest: /var/lib/libvirt/images/Fedora-Server-netinst-x86_64-39-1.5.iso
 - name: copy fedora39.ks
   ansible.builtin.copy:
     src: fedora39.ks
     dest: /var/lib/libvirt/images/fedora39.ks
     mode: 0644
+- name: copy createiso.sh
+  ansible.builtin.copy:
+    src: createiso.sh
+    dest: /usr/local/bin/createiso.sh
+    mode: 0755
+- name: build fedora39 iso
+  become: true
+  ansible.builtin.command:
+    cmd: /usr/local/bin/createiso.sh
 - name: Create default storage pool
   community.libvirt.virt_pool:
     name: default

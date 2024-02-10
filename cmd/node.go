@@ -40,11 +40,11 @@ var nodeCmd = &cobra.Command{
 			logrus.Error(err.Error())
 			panic(err)
 		}
-		err = node.DownloadVMImages()
+		/*err = node.DownloadVMImages()
 		if err != nil {
 			logrus.Error(err.Error())
 			panic(err)
-		}
+		}*/
 		node.Serve()
 	},
 }

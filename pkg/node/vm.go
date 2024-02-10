@@ -209,6 +209,9 @@ func CreateVM(vm types.VM) (types.VM, error) {
 				{
 					Dev: "cdrom",
 				},
+				{
+					Dev: "hd",
+				},
 			},
 		},
 		Devices: &libvirtxml.DomainDeviceList{
