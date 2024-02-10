@@ -35,6 +35,10 @@
   become: true
   ansible.builtin.command:
     cmd: /usr/local/bin/createiso.sh
+  register: createiso
+- name: show createiso output
+  ansible.builtin.debug:
+    var: createiso
 - name: Create default storage pool
   community.libvirt.virt_pool:
     name: default

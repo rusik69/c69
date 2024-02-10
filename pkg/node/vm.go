@@ -202,9 +202,9 @@ func CreateVM(vm types.VM) (types.VM, error) {
 				Machine: "pc",
 				Type:    "hvm",
 			},
-			Cmdline: types.VMImages[vm.Image].Cmdline,
-			Kernel:  "",
-			Initrd:  "",
+			//Cmdline: types.VMImages[vm.Image].Cmdline,
+			//Kernel:  "",
+			//Initrd:  "",
 			BootDevices: []libvirtxml.DomainBootDevice{
 				{
 					Dev: "cdrom",
