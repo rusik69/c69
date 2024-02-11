@@ -205,8 +205,17 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			break
 		}
 	}
-	logrus.Println("Virtual size", virtualSize)
-	cmd := exec.Command("qemu-img", "resize", destImgName, strconv.Itoa(int(flavor.Disk))+"G")
+	virtualSizeInt, err := strconv.Atoi(virtualSize)
+	if err != nil {
+		return types.VM{}, err
+	}
+	var cmdString string
+	if virtualSizeInt < int(flavor.Disk) {
+		cmdString = "qemu-img resize " + destImgName + strconv.Itoa(int(flavor.Disk)) + "G"
+	} else {
+		cmdString = "qemu-img resize --shrink " + destImgName + " " + strconv.Itoa(virtualSizeInt) + "G"
+	}
+	cmd := exec.Command(cmdString)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(output))
