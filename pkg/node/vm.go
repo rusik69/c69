@@ -349,6 +349,7 @@ func resizeImage(image string, flavor types.VMFlavor, size int) error {
 		logrus.Println(string(output))
 		return err
 	}
+	logrus.Println(cmdString)
 	logrus.Println(string(output))
 	return nil
 }
