@@ -100,13 +100,14 @@ func TestAddNode(t *testing.T) {
 // addNode adds node
 func addNodes() {
 	for _, node := range nodes {
+		fmt.Println("Adding node: ", node)
 		s := strings.Split(node, ":")
 		host := s[0]
 		port := s[1]
 		name := strings.Split(host, ".")[0]
 		err := client.AddNode(masterHost, masterPort, name, host, port)
 		if err != nil {
-			fmt.Errorf("Error adding node: %s", err.Error())
+			fmt.Println("Error adding node: ", err.Error())
 			continue
 		}
 	}
