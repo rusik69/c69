@@ -7,6 +7,7 @@ RUN make build
 FROM alpine:latest
 WORKDIR /
 RUN apk add --no-cache libvirt ca-certificates qemu-img
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ guestfs-tools
 COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud-linux-amd64 /
 ENTRYPOINT ["/govnocloud-linux-amd64", "node"]
 EXPOSE 6969

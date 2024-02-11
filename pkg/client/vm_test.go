@@ -66,7 +66,7 @@ func TestDeleteVM(t *testing.T) {
 // RunVMs runs vms.
 func RunVMs() {
 	fmt.Println("RunVMs")
-	for i := 0; i < 8; i++ {
+	for i := 0; i < 10; i++ {
 		vmName := "test" + fmt.Sprintf("%d", i)
 		_, err := client.CreateVM(masterHost, masterPort, vmName, "fedora39", "tiny")
 		if err != nil {

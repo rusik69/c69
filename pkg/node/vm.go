@@ -196,6 +196,10 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
+	err = enableNetworking(destImgName)
+	if err != nil {
+		return types.VM{}, err
+	}
 	var cpuShares uint
 	var vcpus uint
 	if flavor.MilliCPUs > 1024 {
@@ -344,6 +348,18 @@ func resizeImage(image string, flavor types.VMFlavor, size int) error {
 		cmdStrings = []string{"resize", "--shrink", image, strconv.Itoa(int(flavor.Disk)) + "G"}
 	}
 	cmd := exec.Command("/usr/bin/qemu-img", cmdStrings...)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		logrus.Println(string(output))
+		return err
+	}
+	logrus.Println(string(output))
+	return nil
+}
+
+// enableNetworking enables networking.
+func enableNetworking(image string) error {
+	cmd := exec.Command("virt-sysprep", "-a", image, "--enable", "network")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(output))
