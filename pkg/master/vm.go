@@ -88,9 +88,9 @@ func CreateVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	usedNode.MilliCPUSUsed += uint64(vmFlavor.MilliCPUs)
-	usedNode.MemoryUsed += uint64(vmFlavor.RAM)
-	usedNode.DiskUsed += uint64(vmFlavor.Disk)
+	usedNode.MilliCPUSUsed += vmFlavor.MilliCPUs
+	usedNode.MemoryUsed += vmFlavor.RAM * 1024 * 1024
+	usedNode.DiskUsed += vmFlavor.Disk * 1024 * 1024 * 1024
 	nodeString, err := json.Marshal(usedNode)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -165,8 +165,8 @@ func DeleteVMHandler(c *gin.Context) {
 		return
 	}
 	foundNode.MilliCPUSUsed -= types.VMFlavors[vmInfo.Flavor].MilliCPUs
-	foundNode.MemoryUsed -= types.VMFlavors[vmInfo.Flavor].RAM
-	foundNode.DiskUsed -= types.VMFlavors[vmInfo.Flavor].Disk
+	foundNode.MemoryUsed -= types.VMFlavors[vmInfo.Flavor].RAM * 1024 * 1024
+	foundNode.DiskUsed -= types.VMFlavors[vmInfo.Flavor].Disk * 1024 * 1024
 	nodeString, err := json.Marshal(foundNode)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
