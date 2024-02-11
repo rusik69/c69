@@ -18,6 +18,7 @@ type Container struct {
 	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the container.
 	Committed bool `json:"committed"`
+	
 }
 
 // VM represents a virtual machine.
