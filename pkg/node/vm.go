@@ -343,13 +343,13 @@ func resizeImage(image string, flavor types.VMFlavor, size int) error {
 	} else {
 		cmdString = "qemu-img resize --shrink " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
 	}
+	logrus.Println(cmdString)
 	cmd := exec.Command(cmdString)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(output))
 		return err
 	}
-	logrus.Println(cmdString)
 	logrus.Println(string(output))
 	return nil
 }
