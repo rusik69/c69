@@ -213,7 +213,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if virtualSizeInt < int(flavor.Disk) {
 		cmdString = "qemu-img resize " + destImgName + strconv.Itoa(int(flavor.Disk)) + "G"
 	} else {
-		cmdString = "qemu-img resize --shrink " + destImgName + " " + strconv.Itoa(virtualSizeInt) + "G"
+		cmdString = "qemu-img resize --shrink " + destImgName + " " + strconv.Itoa(int(flavor.Disk)) + "G"
 	}
 	cmd := exec.Command(cmdString)
 	output, err := cmd.CombinedOutput()
