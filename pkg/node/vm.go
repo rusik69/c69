@@ -188,49 +188,22 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	imgInfo, err := exec.Command("qemu-img", "info", destImgName).CombinedOutput()
+	virtualSizeInt, err := getVirtualSize(destImgName)
 	if err != nil {
 		return types.VM{}, err
 	}
-	lines := strings.Split(string(imgInfo), "\n")
-	re := regexp.MustCompile(`^virtual size: (\d+)`)
-	var virtualSize string
-	// Iterate over the lines
-	for _, line := range lines {
-		// If the line matches the regular expression
-		if re.MatchString(line) {
-			// Extract the virtual size from the line
-			matches := re.FindStringSubmatch(line)
-			virtualSize = matches[1]
-			break
-		}
-	}
-	virtualSizeInt, err := strconv.Atoi(virtualSize)
-	if err != nil {
-		return types.VM{}, err
-	}
-	var cmdString string
-	if virtualSizeInt < int(flavor.Disk) {
-		cmdString = "qemu-img resize " + destImgName + " " + strconv.Itoa(int(flavor.Disk)) + "G"
-	} else {
-		cmdString = "qemu-img resize --shrink " + destImgName + " " + strconv.Itoa(int(flavor.Disk)) + "G"
-	}
-	cmd := exec.Command(cmdString)
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		logrus.Println(string(output))
-		return types.VM{}, err
-	}
-	logrus.Println(string(output))
-	err = cmd.Run()
+	err = resizeImage(destImgName, flavor, virtualSizeInt)
 	if err != nil {
 		return types.VM{}, err
 	}
 	var cpuShares uint
+	var vcpus uint
 	if flavor.MilliCPUs > 1024 {
 		cpuShares = 1024
+		vcpus = uint(flavor.MilliCPUs / 1024)
 	} else {
 		cpuShares = uint(flavor.MilliCPUs)
+		vcpus = 1
 	}
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
@@ -240,7 +213,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			Unit:  "MB",
 		},
 		VCPU: &libvirtxml.DomainVCPU{
-			Value: uint(flavor.MilliCPUs / 1024),
+			Value: vcpus,
 		},
 		CPUTune: &libvirtxml.DomainCPUTune{
 			Shares: &libvirtxml.DomainCPUTuneShares{
@@ -337,6 +310,47 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	vm.VNCURL = vncURL
 	logrus.Println("Created VM", vm)
 	return vm, nil
+}
+
+// getVIrtualSize gets the virtual size of the image.
+func getVirtualSize(image string) (int, error) {
+	imgInfo, err := exec.Command("qemu-img", "info", image).CombinedOutput()
+	if err != nil {
+		return 0, err
+	}
+	lines := strings.Split(string(imgInfo), "\n")
+	re := regexp.MustCompile(`^virtual size: (\d+)`)
+	var virtualSize string
+	for _, line := range lines {
+		if re.MatchString(line) {
+			matches := re.FindStringSubmatch(line)
+			virtualSize = matches[1]
+			break
+		}
+	}
+	virtualSizeInt, err := strconv.Atoi(virtualSize)
+	if err != nil {
+		return 0, err
+	}
+	return virtualSizeInt, nil
+}
+
+// resizeImage resizes the image.
+func resizeImage(image string, flavor types.VMFlavor, size int) error {
+	var cmdString string
+	if size < int(flavor.Disk) {
+		cmdString = "qemu-img resize " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
+	} else {
+		cmdString = "qemu-img resize --shrink " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
+	}
+	cmd := exec.Command(cmdString)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		logrus.Println(string(output))
+		return err
+	}
+	logrus.Println(string(output))
+	return nil
 }
 
 // DeleteVM deletes the vm.
