@@ -188,7 +188,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	imgInfo, err := exec.Command("qemu-img", "info", destImgName).Output()
+	imgInfo, err := exec.Command("qemu-img", "info", destImgName).CombinedOutput()
 	if err != nil {
 		return types.VM{}, err
 	}
