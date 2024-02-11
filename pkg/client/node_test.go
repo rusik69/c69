@@ -1,6 +1,7 @@
 package client_test
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -80,8 +81,9 @@ func TestMain(m *testing.M) {
 	}
 	nodesSplit := strings.Split(nodesString, ",")
 	nodes = append(nodes, nodesSplit...)
+	addNodes()
 	m.Run()
-	addNode()
+	addNodes()
 	RunContainers()
 	RunVMs()
 	UploadFiles()
@@ -96,10 +98,17 @@ func TestAddNode(t *testing.T) {
 }
 
 // addNode adds node
-func addNode() {
-	err := client.AddNode(masterHost, masterPort, nodeName, nodeHost, nodePort)
-	if err != nil {
-		panic(err)
+func addNodes() {
+	for _, node := range nodes {
+		s := strings.Split(node, ":")
+		host := s[0]
+		port := s[1]
+		name := strings.Split(host, ".")[0]
+		err := client.AddNode(masterHost, masterPort, name, host, port)
+		if err != nil {
+			fmt.Errorf("Error adding node: %s", err.Error())
+			continue
+		}
 	}
 }
 
