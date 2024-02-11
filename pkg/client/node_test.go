@@ -81,10 +81,10 @@ func TestMain(m *testing.M) {
 	nodesSplit := strings.Split(nodesString, ",")
 	nodes = append(nodes, nodesSplit...)
 	m.Run()
+	addNode()
 	RunContainers()
 	RunVMs()
 	UploadFiles()
-	AddNode()
 }
 
 // TestAddNode tests the AddNode function.
@@ -95,8 +95,8 @@ func TestAddNode(t *testing.T) {
 	}
 }
 
-// AddNode adds node
-func AddNode() {
+// addNode adds node
+func addNode() {
 	err := client.AddNode(masterHost, masterPort, nodeName, nodeHost, nodePort)
 	if err != nil {
 		panic(err)
