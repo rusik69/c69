@@ -6,7 +6,7 @@ RUN make get
 RUN make build
 FROM fedora:39
 WORKDIR /
-RUN dnf install libvirt ca-certificates qemu-img guestfs-tools
+RUN dnf -y install libvirt ca-certificates qemu-img guestfs-tools
 COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud-linux-amd64 /
 ENTRYPOINT ["/govnocloud-linux-amd64", "node"]
 EXPOSE 6969
