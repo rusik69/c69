@@ -341,7 +341,7 @@ func resizeImage(image string, flavor types.VMFlavor, size int) error {
 	if size < int(flavor.Disk) {
 		cmdString = "qemu-img resize " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
 	} else {
-		cmdString = "qemu-img resize --shrink " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
+		cmdString = "qemu-img resize " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G" + " --shrink"
 	}
 	cmd := exec.Command(cmdString)
 	output, err := cmd.CombinedOutput()
