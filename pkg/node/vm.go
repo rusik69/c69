@@ -339,9 +339,9 @@ func getVirtualSize(image string) (int, error) {
 func resizeImage(image string, flavor types.VMFlavor, size int) error {
 	var cmdString string
 	if size < int(flavor.Disk) {
-		cmdString = "qemu-img resize " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
+		cmdString = "/usr/bin/qemu-img resize " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
 	} else {
-		cmdString = "qemu-img resize --shrink " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
+		cmdString = "/usr/bin/qemu-img resize --shrink " + image + " " + strconv.Itoa(int(flavor.Disk)) + "G"
 	}
 	logrus.Println(cmdString)
 	cmd := exec.Command(cmdString)
