@@ -9,7 +9,9 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strconv"
+	"strings"
 
 	"encoding/xml"
 
@@ -186,6 +188,24 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
+	imgInfo, err := exec.Command("qemu-img", "info", destImgName).Output()
+	if err != nil {
+		return types.VM{}, err
+	}
+	lines := strings.Split(string(imgInfo), "\n")
+	re := regexp.MustCompile(`^virtual size: (\d+)`)
+	var virtualSize string
+	// Iterate over the lines
+	for _, line := range lines {
+		// If the line matches the regular expression
+		if re.MatchString(line) {
+			// Extract the virtual size from the line
+			matches := re.FindStringSubmatch(line)
+			virtualSize = matches[1]
+			break
+		}
+	}
+	logrus.Println("Virtual size", virtualSize)
 	cmd := exec.Command("qemu-img", "resize", destImgName, strconv.Itoa(int(flavor.Disk))+"G")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
