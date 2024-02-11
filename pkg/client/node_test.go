@@ -84,6 +84,7 @@ func TestMain(m *testing.M) {
 	RunContainers()
 	RunVMs()
 	UploadFiles()
+	AddNode()
 }
 
 // TestAddNode tests the AddNode function.
@@ -91,6 +92,14 @@ func TestAddNode(t *testing.T) {
 	err := client.AddNode(masterHost, masterPort, nodeName, nodeHost, nodePort)
 	if err != nil {
 		t.Error(err)
+	}
+}
+
+// AddNode adds node
+func AddNode() {
+	err := client.AddNode(masterHost, masterPort, nodeName, nodeHost, nodePort)
+	if err != nil {
+		panic(err)
 	}
 }
 
