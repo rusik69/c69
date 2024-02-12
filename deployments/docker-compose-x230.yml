@@ -4,6 +4,7 @@ services:
     image: loqutus/govnocloud-node
     ports:
       - "100.126.141.49:6969:6969"
+    entrypoint: ["/usr/local/bin/govnocloud-linux-amd64", "node"]
     environment:
       "NODE_LIBVIRT_SOCKET" : "qemu:///system"
       "NODE_NAME": "x230"

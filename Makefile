@@ -21,26 +21,26 @@ test:
 	go test -v ./...
 
 docker:
-	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) -f build/Dockerfile-master .
-	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f build/Dockerfile-client .
-	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f build/Dockerfile-node .
-	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f build/Dockerfile-test .
-	docker build --progress=plain -t $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) -f build/Dockerfile-front .
+	docker build -q -t $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) -f build/Dockerfile-master .
+	docker build -q -t $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) -f build/Dockerfile-client .
+	docker build -q -t $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) -f build/Dockerfile-node .
+	docker build -q -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f build/Dockerfile-test .
+	docker build -q -t $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) -f build/Dockerfile-front .
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-node:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG)
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG)
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG)
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG)
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-node:latest
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
-	docker push $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-master:$(IMAGE_TAG)
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-client:$(IMAGE_TAG)
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-node:$(IMAGE_TAG)
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG)
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-master:latest
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-client:latest
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-node:latest
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
+	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
 
 deploy:
 	scp deployments/docker-compose-master.yml ~/
@@ -68,6 +68,9 @@ composelogs:
 remotetest:
 	rsync -avz . govnocloud-master.rusik69.lol:~/govnocloud
 	ssh govnocloud-master.rusik69.lol "cd govnocloud; make docker; make deploy; make composetest; make composelogs"
+
+rsync:
+	rsync -avz . govnocloud-master.rusik69.lol:~/govnocloud
 
 default: get build
 
