@@ -347,7 +347,7 @@ func resizeImage(image string, flavor types.VMFlavor, size int) error {
 	} else {
 		cmdStrings = []string{"resize", "--shrink", image, strconv.Itoa(int(flavor.Disk)) + "G"}
 	}
-	cmd := exec.Command("/usr/bin/qemu-img", cmdStrings...)
+	cmd := exec.Command("qemu-img", cmdStrings...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(output))
@@ -359,7 +359,8 @@ func resizeImage(image string, flavor types.VMFlavor, size int) error {
 
 // enableNetworking enables networking.
 func enableNetworking(image string) error {
-	cmd := exec.Command("LIBGUESTFS_BACKEND=direct", "virt-customize", "-a", image, "--run-command", "systemctl enable NetworkManager")
+	cmd := exec.Command("virt-customize", "-a", image, "--run-command", "systemctl enable NetworkManager")
+	cmd.Env = append(cmd.Env, "LIBGUESTFS_BACKEND=direct")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(output))
