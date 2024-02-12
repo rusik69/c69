@@ -1,12 +1,12 @@
 FROM golang:1.22-alpine AS build-env
 WORKDIR /go/src/github.com/rusik69/govnocloud
 COPY . ./
-RUN apk add --no-cache libvirt-dev make bash gcc git musl-dev
+RUN apk add -q --no-cache libvirt-dev make bash gcc git musl-dev
 RUN make get
 RUN make build
 FROM alpine:latest
 WORKDIR /
-RUN apk add --no-cache libvirt
+RUN apk add -q --no-cache libvirt
 COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud-linux-amd64 /
 ENTRYPOINT ["/govnocloud-linux-amd64", "master"]
 EXPOSE 7070
