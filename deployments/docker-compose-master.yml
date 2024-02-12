@@ -10,7 +10,8 @@ services:
       ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379
       ETCD_DEBUG: "false"
   master:
-    image: loqutus/govnocloud-master
+    image: loqutus/govnocloud
+    entrypoint: ["/usr/local/bin/govnocloud-linux-amd64", "master"]
     ports:
       - "7070:7070"
     environment:

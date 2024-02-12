@@ -1,6 +1,6 @@
-FROM golang:1.22-alpine AS build-env
+FROM fedora:39 AS build-env
 WORKDIR /go/src/github.com/rusik69/govnocloud
 COPY ../ ./
-RUN apk add -q --no-cache libvirt-dev make bash gcc git musl-dev
+RUN dnf -y install make go libvirt-devel make bash gcc git
 RUN make get
 ENTRYPOINT ["make", "test"]
