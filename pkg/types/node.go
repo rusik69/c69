@@ -18,7 +18,6 @@ type Container struct {
 	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the container.
 	Committed bool `json:"committed"`
-	
 }
 
 // VM represents a virtual machine.
@@ -115,8 +114,8 @@ type VMImage struct {
 var VMImages = map[string]VMImage{
 	"ubuntu22.04": VMImage{
 		ID:  "0",
-		Img: "jammy-server-cloudimg-amd64-disk-kvm.img",
-		URL: "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-disk-kvm.img",
+		Img: "jammy-server-cloudimg-amd64.img",
+		URL: "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img",
 	},
 	"ubuntu20.04": VMImage{
 		ID:  "1",
