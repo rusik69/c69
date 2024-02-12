@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine AS build-env
+FROM golang:1.22-alpine AS build-env
 WORKDIR /go/src/github.com/rusik69/govnocloud
 COPY ../ ./
 RUN apk add --no-cache libvirt-dev make bash gcc git musl-dev
@@ -6,7 +6,7 @@ RUN make get
 RUN make build
 FROM fedora:39
 WORKDIR /
-RUN dnf -y install libvirt ca-certificates qemu-img guestfs-tools
+RUN dnf -y install --setopt=install_weak_deps=False libvirt ca-certificates qemu-img guestfs-tools
 RUN dnf clean all
 COPY --from=build-env /go/src/github.com/rusik69/govnocloud/bin/govnocloud-linux-amd64 /
 ENTRYPOINT ["/govnocloud-linux-amd64", "node"]
