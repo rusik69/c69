@@ -4,14 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
-	"os/exec"
-	"path"
 	"path/filepath"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"encoding/xml"
 
@@ -196,10 +191,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	/*err = enableNetworking(destImgName)
-	if err != nil {
-		return types.VM{}, err
-	}*/
 	var cpuShares uint
 	var vcpus uint
 	if flavor.MilliCPUs > 1024 {
@@ -208,6 +199,11 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	} else {
 		cpuShares = uint(flavor.MilliCPUs)
 		vcpus = 1
+	}
+	userDataFile := types.VMImages[vm.Image].UserDataFile
+	err = createCloudInit(userDataFile, vm.Name, "")
+	if err != nil {
+		return types.VM{}, err
 	}
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
@@ -259,6 +255,22 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					},
 					Target: &libvirtxml.DomainDiskTarget{
 						Dev: "sda",
+						Bus: "virtio",
+					},
+				},
+				{
+					Device: "disk",
+					Driver: &libvirtxml.DomainDiskDriver{
+						Name: "qemu",
+						Type: "raw",
+					},
+					Source: &libvirtxml.DomainDiskSource{
+						File: &libvirtxml.DomainDiskSourceFile{
+							File: userDataFile,
+						},
+					},
+					Target: &libvirtxml.DomainDiskTarget{
+						Dev: "sdb",
 						Bus: "virtio",
 					},
 				},
@@ -314,60 +326,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	vm.VNCURL = vncURL
 	logrus.Println("Created VM", vm)
 	return vm, nil
-}
-
-// getVIrtualSize gets the virtual size of the image.
-func getVirtualSize(image string) (int, error) {
-	imgInfo, err := exec.Command("qemu-img", "info", image).CombinedOutput()
-	if err != nil {
-		return 0, err
-	}
-	lines := strings.Split(string(imgInfo), "\n")
-	re := regexp.MustCompile(`^virtual size: (\d+)`)
-	var virtualSize string
-	for _, line := range lines {
-		if re.MatchString(line) {
-			matches := re.FindStringSubmatch(line)
-			virtualSize = matches[1]
-			break
-		}
-	}
-	virtualSizeInt, err := strconv.Atoi(virtualSize)
-	if err != nil {
-		return 0, err
-	}
-	return virtualSizeInt, nil
-}
-
-// resizeImage resizes the image.
-func resizeImage(image string, flavor types.VMFlavor, size int) error {
-	var cmdStrings []string
-	if size < int(flavor.Disk) {
-		cmdStrings = []string{"resize", image, strconv.Itoa(int(flavor.Disk)) + "G"}
-	} else {
-		cmdStrings = []string{"resize", "--shrink", image, strconv.Itoa(int(flavor.Disk)) + "G"}
-	}
-	cmd := exec.Command("qemu-img", cmdStrings...)
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		logrus.Println(string(output))
-		return err
-	}
-	logrus.Println(string(output))
-	return nil
-}
-
-// enableNetworking enables networking.
-func enableNetworking(image string) error {
-	cmd := exec.Command("virt-customize", "-a", image, "--run-command", "systemctl enable NetworkManager")
-	cmd.Env = append(cmd.Env, "LIBGUESTFS_BACKEND=direct")
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		logrus.Println(string(output))
-		return err
-	}
-	logrus.Println(string(output))
-	return nil
 }
 
 // DeleteVM deletes the vm.
@@ -479,69 +437,4 @@ func ListVMs() ([]types.VM, error) {
 	}
 
 	return vms, nil
-}
-
-// ParseState parses the state of the vm.
-func ParseState(state libvirt.DomainState) string {
-	switch state {
-	case libvirt.DOMAIN_NOSTATE:
-		return "NOSTATE"
-	case libvirt.DOMAIN_RUNNING:
-		return "RUNNING"
-	case libvirt.DOMAIN_BLOCKED:
-		return "BLOCKED"
-	case libvirt.DOMAIN_PAUSED:
-		return "PAUSED"
-	case libvirt.DOMAIN_SHUTDOWN:
-		return "SHUTDOWN"
-	case libvirt.DOMAIN_SHUTOFF:
-		return "SHUTOFF"
-	case libvirt.DOMAIN_CRASHED:
-		return "CRASHED"
-	case libvirt.DOMAIN_PMSUSPENDED:
-		return "PMSUSPENDED"
-	}
-	return ""
-}
-
-// DownloadFile downloads the file.
-func DownloadFile(url string, dir string) error {
-	err := os.MkdirAll(dir, os.ModePerm)
-	if err != nil {
-		return err
-	}
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	fileName := path.Base(url)
-	filePath := path.Join(dir, fileName)
-	file, err := os.Create(filePath)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	bufferSize := 4096
-	buffer := make([]byte, bufferSize)
-	_, err = io.CopyBuffer(file, resp.Body, buffer)
-	if err != nil {
-		return err
-	}
-	return err
-}
-
-// DownloadVMImages downloads the images.
-func DownloadVMImages() error {
-	for _, image := range types.VMImages {
-		_, err := os.Stat(filepath.Join(types.NodeEnvInstance.LibVirtImageDir, path.Base(image.URL)))
-		if err != nil && os.IsNotExist(err) {
-			logrus.Println("Downloading image", image.URL)
-			err := DownloadFile(image.URL, types.NodeEnvInstance.LibVirtImageDir)
-			if err != nil {
-				return err
-			}
-		}
-	}
-	return nil
 }
