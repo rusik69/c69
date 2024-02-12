@@ -5,4 +5,4 @@
 - name: install dhcp and tftp servers
   ansible.builtin.dnf:
     name: dhcp-server,tftp-server
-    state: present
+    state: absent
