@@ -359,7 +359,7 @@ func resizeImage(image string, flavor types.VMFlavor, size int) error {
 
 // enableNetworking enables networking.
 func enableNetworking(image string) error {
-	cmd := exec.Command("virt-sysprep", "-a", image, "--enable", "network")
+	cmd := exec.Command("virt-customize", "-a", image, "--run-command", "systemctl enable NetworkManager")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(output))
