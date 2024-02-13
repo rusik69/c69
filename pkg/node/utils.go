@@ -71,7 +71,7 @@ func createCloudInit(filename, vmName, sshKey string) error {
 	  - ` + sshKey
 	userDataFile, err := os.Create(filename)
 	if err != nil {
-		return err
+		return nil
 	}
 	defer userDataFile.Close()
 	_, err = userDataFile.WriteString(userData)
