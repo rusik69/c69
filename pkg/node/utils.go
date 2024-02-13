@@ -57,7 +57,7 @@ func getVirtualSize(image string) (int, error) {
 }
 
 // createCloudInit creates the cloud-init iso.
-func createCloudInit(vmName, sshKey string) error {
+func createCloudInit(vmName, sshKey string) (string, error) {
 	filename := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.iso"
 	userData := `#cloud-config
 	hostname: ` + vmName + `
@@ -72,14 +72,14 @@ func createCloudInit(vmName, sshKey string) error {
 	  - ` + sshKey
 	userDataFile, err := os.Create(filename)
 	if err != nil {
-		return nil
+		return filename, nil
 	}
 	defer userDataFile.Close()
 	_, err = userDataFile.WriteString(userData)
 	if err != nil {
-		return err
+		return filename, err
 	}
-	return nil
+	return filename, nil
 }
 
 // ParseState parses the state of the vm.

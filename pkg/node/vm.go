@@ -200,7 +200,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		cpuShares = uint(flavor.MilliCPUs)
 		vcpus = 1
 	}
-	err = createCloudInit(vm.Name, "")
+	cloudInitFileName, err := createCloudInit(vm.Name, "")
 	if err != nil {
 		return types.VM{}, err
 	}
@@ -265,7 +265,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
-							File: userDataFile,
+							File: cloudInitFileName,
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
