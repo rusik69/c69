@@ -183,14 +183,14 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	/*virtualSizeInt, err := getVirtualSize(destImgName)
+	virtualSizeInt, err := getVirtualSize(destImgName)
 	if err != nil {
 		return types.VM{}, err
-	}*/
-	/*err = resizeImage(destImgName, flavor, virtualSizeInt)
+	}
+	err = resizeImage(destImgName, flavor, virtualSizeInt)
 	if err != nil {
 		return types.VM{}, err
-	}*/
+	}
 	var cpuShares uint
 	var vcpus uint
 	if flavor.MilliCPUs > 1024 {
