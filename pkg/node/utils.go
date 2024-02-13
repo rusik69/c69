@@ -148,6 +148,7 @@ func CreateSSHKey(fileName string) error {
 	if _, err := os.Stat(fileName); err == nil {
 		return nil
 	}
+	logrus.Println("Creating ssh key", fileName)
 	cmd := exec.Command("ssh-keygen", "-t", "rsa", "-N", "", "-f", fileName)
 	err := cmd.Run()
 	if err != nil {
