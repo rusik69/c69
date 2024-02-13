@@ -197,7 +197,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		vcpus = 1
 	}
 	vmType := types.VMImages[vm.Image].Type
-	pubkey, err := GetSSHPublicKey(types.NodeEnvInstance.PublicSSHKeyPath)
+	pubkey, err := GetSSHPublicKey()
 	if err != nil {
 		return types.VM{}, err
 	}

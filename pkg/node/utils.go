@@ -149,7 +149,7 @@ func CreateSSHKey(fileName string) error {
 		return nil
 	}
 	logrus.Println("Creating ssh key", fileName)
-	cmd := exec.Command("ssh-keygen", "-t", "rsa", "-N", "", "-f", fileName)
+	cmd := exec.Command("ssh-keygen", "-f", "/root/.ssh/id_rsa", "-t", "rsa", "-N", "")
 	err := cmd.Run()
 	if err != nil {
 		return err
@@ -158,8 +158,8 @@ func CreateSSHKey(fileName string) error {
 }
 
 // GetSSHPublicKey gets the ssh public key.
-func GetSSHPublicKey(fileName string) (string, error) {
-	file, err := os.Open(fileName)
+func GetSSHPublicKey() (string, error) {
+	file, err := os.Open("/root/.ssh/id_rsa.pub")
 	if err != nil {
 		return "", err
 	}
