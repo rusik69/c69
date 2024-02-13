@@ -36,19 +36,20 @@ func ParseEnv() (*types.NodeEnv, error) {
 	filesDir := os.Getenv("NODE_FILES_DIR")
 	if filesDir == "" {
 		filesDir = "/mnt"
+	}
 	passwordHash := os.Getenv("NODE_PASSWORD_HASH")
 	if passwordHash == "" {
 		passwordHash = "$6$s8MnnqJhANzOg7Za$XrZ71rgB7kGIq2t4MmkqsUepik3.ZMyT9uZ3d.2LSjX766rmeMEaE2UI6dfoeVQ5q1i51xlXAVrSG7SjFsz2O0"
 	}
 	NodeEnvInstance := &types.NodeEnv{
-		Name:              name,
-		IP:                ip,
-		ListenPort:        listenPort,
-		ListenHost:        listenHost,
-		LibVirtURI:        libvirtURI,
-		LibVirtImageDir:   libvirtImageDir,
-		FilesDir:          filesDir,
-		PasswordHash:      passwordHash,
+		Name:            name,
+		IP:              ip,
+		ListenPort:      listenPort,
+		ListenHost:      listenHost,
+		LibVirtURI:      libvirtURI,
+		LibVirtImageDir: libvirtImageDir,
+		FilesDir:        filesDir,
+		PasswordHash:    passwordHash,
 	}
 	return NodeEnvInstance, nil
 }
