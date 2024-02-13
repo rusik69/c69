@@ -143,13 +143,14 @@ func DownloadFile(url string, dir string) error {
 }
 
 // CreateSSHKey creates the ssh key.
-func CreateSSHKey(fileName string) error {
+func CreateSSHKey() error {
 	// check if file exists
+	fileName := "/root/.ssh/id_rsa"
 	if _, err := os.Stat(fileName); err == nil {
 		return nil
 	}
 	logrus.Println("Creating ssh key", fileName)
-	cmd := exec.Command("ssh-keygen", "-f", "/root/.ssh/id_rsa", "-t", "rsa", "-N", "")
+	cmd := exec.Command("ssh-keygen", "-f", fileName, "-t", "rsa", "-N", "")
 	err := cmd.Run()
 	if err != nil {
 		return err
