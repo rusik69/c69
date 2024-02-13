@@ -63,38 +63,31 @@ type VMFlavor struct {
 }
 
 var VMFlavors = map[string]VMFlavor{
-	"tiny": VMFlavor{
-		ID:        "0",
-		Name:      "tiny",
-		MilliCPUs: 128,
-		RAM:       512,
-		Disk:      2,
-	},
 	"small": VMFlavor{
 		ID:        "1",
 		Name:      "small",
-		MilliCPUs: 256,
+		MilliCPUs: 512,
 		RAM:       1024,
-		Disk:      4,
+		Disk:      8,
 	},
 	"medium": VMFlavor{
 		ID:        "2",
 		Name:      "medium",
-		MilliCPUs: 512,
+		MilliCPUs: 1024,
 		RAM:       2048,
 		Disk:      8,
 	},
 	"large": VMFlavor{
 		ID:        "2",
 		Name:      "large",
-		MilliCPUs: 1024,
+		MilliCPUs: 2048,
 		RAM:       4096,
 		Disk:      16,
 	},
 	"xlarge": VMFlavor{
 		ID:        "4",
 		Name:      "xlarge",
-		MilliCPUs: 2048,
+		MilliCPUs: 4096,
 		RAM:       8192,
 		Disk:      32,
 	},

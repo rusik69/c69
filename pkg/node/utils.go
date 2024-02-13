@@ -64,6 +64,7 @@ func createCloudInit(vmName, sshKey string) (string, error) {
 	manage_etc_hosts: true
 	users:
 	- name: ubuntu
+	  passwd: $6$rounds=4096$4b24w.B0WMskMhB/$De/LwoWFnLGTOMYYLpM0lNe8UFPKqk9eU.sZsncaM1StkpAj5w6zgYDRFk6XFW2x8FMdnYwoLwCHlkBTtlEHK1
 	  sudo: ALL=(ALL) NOPASSWD:ALL
 	  groups: sudo, admin
 	  home: /home/ubuntu
