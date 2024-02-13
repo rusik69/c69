@@ -56,17 +56,19 @@ func createCloudInit(vmName, sshKey string) (string, error) {
 	logrus.Println("Creating cloud-init iso")
 	filename := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.cfg"
 	userData := `#cloud-config
-	hostname: ` + vmName + `
-	manage_etc_hosts: true
+	disable_root: false
 	users:
-	- name: ubuntu
-	  passwd: $6$rounds=4096$4b24w.B0WMskMhB/$De/LwoWFnLGTOMYYLpM0lNe8UFPKqk9eU.sZsncaM1StkpAj5w6zgYDRFk6XFW2x8FMdnYwoLwCHlkBTtlEHK1
-	  sudo: ALL=(ALL) NOPASSWD:ALL
-	  groups: sudo, admin
-	  home: /home/ubuntu
-	  shell: /bin/bash
-	  ssh-authorized-keys:
-	  - ` + sshKey
+	  - name: work
+		shell: /bin/bash
+		sudo: true
+		passwd: $6$JeZUUZ771KMKfRgI$rConZlL.UqJxCU3VYyimgUun4toLvWQ8LgfxasNwC5XXQgkQsxPgnWrxi8SzI7GO6XhbMHtdrW89s5KIZV1nm0
+		ssh_authorized_keys:
+		  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCf743YdT1CjsAIb8ptN2AE2/LOhq2Qp+9o78vpr+l7pfb0Mx140dUxVp+IuqbtTVv2swCyMD8n/sHXND/Yy2T4ekoOQQvuIP0o5UJEFerKr+3HydfctNFb8DOdB/joc7EkdF6a7pqbQGDE9wxPrZphGIhzFCJzQoRjaNUo6JOHd/lJHKc8potHvKJ/ef0mXyHCoEvHaDeragV5SIzozSSeWMUwKR+VgGu/tt/fY6PXr5p596u39CoMkngtGm0ROTLMj/vBHUrcdhMgFrqkzinMxPxR2bw0O9Y9/43s2B/H0abr/YhBxBdFVDlY2msKog5K8cr1vOCF4QCIZUMTHIMOh4uRVVnzPNPvSzCUP5ckotkrnajjG+kc5yNq3qI5PA9UE7twU4unF9T9wBwsYNPkRM1eQbOcs7T5M9DHM6E9PQJZzdTGMLLbiErSfFRbIqz/GFptmrTiFLUrIG7txmRRFW0H04OtfnPwBA6C2v4z7bWaEnRfFlWlxmTaT31APyE= root@x230
+	  - name: root
+		shell: /bin/bash
+		passwd: $6$mYbPgu4O.jOCejHE$.clC6joK06iMMCkNXx0HCtdbNNlmiF1mjwc24l9fGM7Ufcl8/loxD/Nf9F.ap7d6zQUFawtcvhNlKTf2GqxLO/
+		ssh_authorized_keys:
+		  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCf743YdT1CjsAIb8ptN2AE2/LOhq2Qp+9o78vpr+l7pfb0Mx140dUxVp+IuqbtTVv2swCyMD8n/sHXND/Yy2T4ekoOQQvuIP0o5UJEFerKr+3HydfctNFb8DOdB/joc7EkdF6a7pqbQGDE9wxPrZphGIhzFCJzQoRjaNUo6JOHd/lJHKc8potHvKJ/ef0mXyHCoEvHaDeragV5SIzozSSeWMUwKR+VgGu/tt/fY6PXr5p596u39CoMkngtGm0ROTLMj/vBHUrcdhMgFrqkzinMxPxR2bw0O9Y9/43s2B/H0abr/YhBxBdFVDlY2msKog5K8cr1vOCF4QCIZUMTHIMOh4uRVVnzPNPvSzCUP5ckotkrnajjG+kc5yNq3qI5PA9UE7twU4unF9T9wBwsYNPkRM1eQbOcs7T5M9DHM6E9PQJZzdTGMLLbiErSfFRbIqz/GFptmrTiFLUrIG7txmRRFW0H04OtfnPwBA6C2v4z7bWaEnRfFlWlxmTaT31APyE=`
 	userDataFile, err := os.Create(filename)
 	if err != nil {
 		return "", nil
