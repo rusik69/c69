@@ -21,9 +21,9 @@ test:
 	go test -v ./...
 
 docker:
-	docker build -q -t $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG) -f build/Dockerfile .
-	docker build -q -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f build/Dockerfile-test .
-	docker build -q -t $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) -f build/Dockerfile-front .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG) -f build/Dockerfile .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f build/Dockerfile-test .
+	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) -f build/Dockerfile-front .
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME):latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
 	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
