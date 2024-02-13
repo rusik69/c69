@@ -200,8 +200,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		cpuShares = uint(flavor.MilliCPUs)
 		vcpus = 1
 	}
-	userDataFile := types.VMImages[vm.Image].UserDataFile
-	err = createCloudInit(userDataFile, vm.Name, "")
+	err = createCloudInit(vm.Name, "")
 	if err != nil {
 		return types.VM{}, err
 	}

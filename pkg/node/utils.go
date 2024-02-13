@@ -57,7 +57,8 @@ func getVirtualSize(image string) (int, error) {
 }
 
 // createCloudInit creates the cloud-init iso.
-func createCloudInit(filename, vmName, sshKey string) error {
+func createCloudInit(vmName, sshKey string) error {
+	filename := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.iso"
 	userData := `#cloud-config
 	hostname: ` + vmName + `
 	manage_etc_hosts: true

@@ -115,25 +115,22 @@ type VMImage struct {
 
 var VMImages = map[string]VMImage{
 	"ubuntu22.04": VMImage{
-		ID:           "0",
-		Type:         "ubuntu",
-		Img:          "jammy-server-cloudimg-amd64.img",
-		URL:          "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img",
-		UserDataFile: "/var/lib/libvirt/images/cloud-init-ubuntu.img",
+		ID:   "0",
+		Type: "ubuntu",
+		Img:  "jammy-server-cloudimg-amd64.img",
+		URL:  "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img",
 	},
 	"ubuntu20.04": VMImage{
-		ID:           "1",
-		Type:         "ubuntu",
-		Img:          "ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
-		URL:          "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
-		UserDataFile: "/var/lib/libvirt/images/cloud-init-ubuntu.img",
+		ID:   "1",
+		Type: "ubuntu",
+		Img:  "ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
+		URL:  "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
 	},
 	"fedora39": VMImage{
-		ID:           "2",
-		Type:         "fedora",
-		Img:          "Fedora-Server-KVM-39-1.5.x86_64.qcow2",
-		UserDataFile: "/var/lib/libvirt/images/fedora-kickstart.img",
-		URL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/images/Fedora-Server-KVM-39-1.5.x86_64.qcow2",
+		ID:   "2",
+		Type: "fedora",
+		Img:  "Fedora-Server-KVM-39-1.5.x86_64.qcow2",
+		URL:  "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/images/Fedora-Server-KVM-39-1.5.x86_64.qcow2",
 	},
 }
 
