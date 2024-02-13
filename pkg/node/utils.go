@@ -17,6 +17,7 @@ import (
 
 // resizeImage resizes the image.
 func resizeImage(image string, flavor types.VMFlavor) error {
+	logrus.Println("Resizing image", image, "to", flavor.Disk, "GB")
 	imgInfo, err := exec.Command("qemu-img", "info", image).CombinedOutput()
 	if err != nil {
 		return err
@@ -53,6 +54,7 @@ func resizeImage(image string, flavor types.VMFlavor) error {
 
 // createCloudInit creates the cloud-init iso.
 func createCloudInit(vmName, sshKey string) (string, error) {
+	logrus.Println("Creating cloud-init iso")
 	filename := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.iso"
 	userData := `#cloud-config
 	hostname: ` + vmName + `
@@ -126,4 +128,14 @@ func DownloadFile(url string, dir string) error {
 		return err
 	}
 	return err
+}
+
+// createSSHKey creates the ssh key.
+func createSSHKey(fileName string) error {
+	cmd := exec.Command("ssh-keygen", "-t", "rsa", "-N", "", "-f", fileName)
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+	return nil
 }
