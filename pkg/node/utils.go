@@ -55,7 +55,7 @@ func resizeImage(image string, flavor types.VMFlavor) error {
 // createCloudInit creates the cloud-init iso.
 func createCloudInit(vmName, sshKey string) (string, error) {
 	logrus.Println("Creating cloud-init iso")
-	filename := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.iso"
+	filename := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.cfg"
 	userData := `#cloud-config
 	hostname: ` + vmName + `
 	manage_etc_hosts: true
@@ -74,6 +74,12 @@ func createCloudInit(vmName, sshKey string) (string, error) {
 	}
 	defer userDataFile.Close()
 	_, err = userDataFile.WriteString(userData)
+	if err != nil {
+		return filename, err
+	}
+	isoFileName := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.iso"
+	cmd := exec.Command("cloud-localds", isoFileName, filename)
+	err = cmd.Run()
 	if err != nil {
 		return filename, err
 	}
