@@ -10,7 +10,7 @@ import (
 
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
-	vm, err := client.CreateVM(masterHost, masterPort, "test", "fedora39", "tiny")
+	vm, err := client.CreateVM(masterHost, masterPort, "test", "fedora39", "small")
 	if err != nil {
 		t.Error(err)
 	}
@@ -66,9 +66,9 @@ func TestDeleteVM(t *testing.T) {
 // RunVMs runs vms.
 func RunVMs() {
 	fmt.Println("RunVMs")
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 8; i++ {
 		vmName := "test" + fmt.Sprintf("%d", i)
-		_, err := client.CreateVM(masterHost, masterPort, vmName, "ubuntu22.04", "tiny")
+		_, err := client.CreateVM(masterHost, masterPort, vmName, "ubuntu22.04", "small")
 		if err != nil {
 			fmt.Println(err)
 		}
