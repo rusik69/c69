@@ -128,13 +128,16 @@ var VMImages = map[string]VMImage{
 }
 
 type NodeEnv struct {
-	Name            string `json:"name"`
-	IP              string `json:"ip"`
-	ListenPort      string `json:"listen_port"`
-	ListenHost      string `json:"listen_host"`
-	LibVirtURI      string `json:"libvirt_socket"`
-	LibVirtImageDir string `json:"libvirt_image_dir"`
-	FilesDir        string `json:"files_dir"`
+	Name              string `json:"name"`
+	IP                string `json:"ip"`
+	ListenPort        string `json:"listen_port"`
+	ListenHost        string `json:"listen_host"`
+	LibVirtURI        string `json:"libvirt_socket"`
+	LibVirtImageDir   string `json:"libvirt_image_dir"`
+	FilesDir          string `json:"files_dir"`
+	PrivateSSHKeyPath string `json:"private_ssh_key_path"`
+	PublicSSHKeyPath  string `json:"public_ssh_key_path"`
+	PasswordHash      string `json:"password_hash"`
 }
 
 // NodeEnvInstance is the singleton instance of NodeEnv.

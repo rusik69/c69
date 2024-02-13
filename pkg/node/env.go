@@ -37,14 +37,29 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if filesDir == "" {
 		filesDir = "/mnt"
 	}
+	privateSSHKeyPath := os.Getenv("NODE_PRIVATE_SSH_KEY_PATH")
+	if privateSSHKeyPath == "" {
+		privateSSHKeyPath = "/root/.ssh/id_rsa"
+	}
+	publicSSHKeyPath := os.Getenv("NODE_PUBLIC_SSH_KEY_PATH")
+	if publicSSHKeyPath == "" {
+		publicSSHKeyPath = "/root/.ssh/id_rsa.pub"
+	}
+	passwordHash := os.Getenv("NODE_PASSWORD_HASH")
+	if passwordHash == "" {
+		passwordHash = "$6$s8MnnqJhANzOg7Za$XrZ71rgB7kGIq2t4MmkqsUepik3.ZMyT9uZ3d.2LSjX766rmeMEaE2UI6dfoeVQ5q1i51xlXAVrSG7SjFsz2O0"
+	}
 	NodeEnvInstance := &types.NodeEnv{
-		Name:            name,
-		IP:              ip,
-		ListenPort:      listenPort,
-		ListenHost:      listenHost,
-		LibVirtURI:      libvirtURI,
-		LibVirtImageDir: libvirtImageDir,
-		FilesDir:        filesDir,
+		Name:              name,
+		IP:                ip,
+		ListenPort:        listenPort,
+		ListenHost:        listenHost,
+		LibVirtURI:        libvirtURI,
+		LibVirtImageDir:   libvirtImageDir,
+		FilesDir:          filesDir,
+		PrivateSSHKeyPath: privateSSHKeyPath,
+		PublicSSHKeyPath:  publicSSHKeyPath,
+		PasswordHash:      passwordHash,
 	}
 	return NodeEnvInstance, nil
 }

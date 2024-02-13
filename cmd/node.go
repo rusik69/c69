@@ -40,6 +40,7 @@ var nodeCmd = &cobra.Command{
 			logrus.Error(err.Error())
 			panic(err)
 		}
+		node.CreateSSHKey(types.NodeEnvInstance.PrivateSSHKeyPath)
 		node.Serve()
 	},
 }

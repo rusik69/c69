@@ -196,7 +196,12 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		cpuShares = uint(flavor.MilliCPUs)
 		vcpus = 1
 	}
-	cloudInitFileName, err := createCloudInit(vm.Name, "")
+	vmType := types.VMImages[vm.Image].Type
+	pubkey, err := GetSSHPublicKey(types.NodeEnvInstance.PublicSSHKeyPath)
+	if err != nil {
+		return types.VM{}, err
+	}
+	cloudInitFileName, err := createCloudInit(vm.Name, vmType, pubkey, types.NodeEnvInstance.PasswordHash)
 	if err != nil {
 		return types.VM{}, err
 	}

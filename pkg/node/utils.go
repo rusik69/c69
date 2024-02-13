@@ -52,26 +52,30 @@ func resizeImage(image string, flavor types.VMFlavor) error {
 }
 
 // createCloudInit creates the cloud-init iso.
-func createCloudInit(vmName, sshKey string) (string, error) {
+func createCloudInit(vmName, vmType, sshKey, passwordHash string) (string, error) {
 	logrus.Println("Creating cloud-init iso")
 	filename := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.cfg"
-	userData := `#cloud-config
-	disable_root: false
-	users:
-	  - name: work
-		shell: /bin/bash
-		sudo: true
-		passwd: $6$JeZUUZ771KMKfRgI$rConZlL.UqJxCU3VYyimgUun4toLvWQ8LgfxasNwC5XXQgkQsxPgnWrxi8SzI7GO6XhbMHtdrW89s5KIZV1nm0
-		ssh_authorized_keys:
-		  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCf743YdT1CjsAIb8ptN2AE2/LOhq2Qp+9o78vpr+l7pfb0Mx140dUxVp+IuqbtTVv2swCyMD8n/sHXND/Yy2T4ekoOQQvuIP0o5UJEFerKr+3HydfctNFb8DOdB/joc7EkdF6a7pqbQGDE9wxPrZphGIhzFCJzQoRjaNUo6JOHd/lJHKc8potHvKJ/ef0mXyHCoEvHaDeragV5SIzozSSeWMUwKR+VgGu/tt/fY6PXr5p596u39CoMkngtGm0ROTLMj/vBHUrcdhMgFrqkzinMxPxR2bw0O9Y9/43s2B/H0abr/YhBxBdFVDlY2msKog5K8cr1vOCF4QCIZUMTHIMOh4uRVVnzPNPvSzCUP5ckotkrnajjG+kc5yNq3qI5PA9UE7twU4unF9T9wBwsYNPkRM1eQbOcs7T5M9DHM6E9PQJZzdTGMLLbiErSfFRbIqz/GFptmrTiFLUrIG7txmRRFW0H04OtfnPwBA6C2v4z7bWaEnRfFlWlxmTaT31APyE= root@x230
-	  - name: root
-		shell: /bin/bash
-		passwd: $6$mYbPgu4O.jOCejHE$.clC6joK06iMMCkNXx0HCtdbNNlmiF1mjwc24l9fGM7Ufcl8/loxD/Nf9F.ap7d6zQUFawtcvhNlKTf2GqxLO/
-		ssh_authorized_keys:
-		  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCf743YdT1CjsAIb8ptN2AE2/LOhq2Qp+9o78vpr+l7pfb0Mx140dUxVp+IuqbtTVv2swCyMD8n/sHXND/Yy2T4ekoOQQvuIP0o5UJEFerKr+3HydfctNFb8DOdB/joc7EkdF6a7pqbQGDE9wxPrZphGIhzFCJzQoRjaNUo6JOHd/lJHKc8potHvKJ/ef0mXyHCoEvHaDeragV5SIzozSSeWMUwKR+VgGu/tt/fY6PXr5p596u39CoMkngtGm0ROTLMj/vBHUrcdhMgFrqkzinMxPxR2bw0O9Y9/43s2B/H0abr/YhBxBdFVDlY2msKog5K8cr1vOCF4QCIZUMTHIMOh4uRVVnzPNPvSzCUP5ckotkrnajjG+kc5yNq3qI5PA9UE7twU4unF9T9wBwsYNPkRM1eQbOcs7T5M9DHM6E9PQJZzdTGMLLbiErSfFRbIqz/GFptmrTiFLUrIG7txmRRFW0H04OtfnPwBA6C2v4z7bWaEnRfFlWlxmTaT31APyE=`
+	var userData string
+	switch vmType {
+	case "ubuntu":
+		userData = `#cloud-config
+disable_root: false
+users:
+  - name: work
+	shell: /bin/bash
+	sudo: ALL=(ALL) NOPASSWD:ALL
+	passwd: ` + passwordHash + `
+	ssh_authorized_keys:
+	  - ssh-rsa ` + sshKey + `
+  - name: root
+	shell: /bin/bash
+	passwd: ` + passwordHash + `
+	ssh_authorized_keys:
+	  - ssh-rsa ` + sshKey
+	}
 	userDataFile, err := os.Create(filename)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 	defer userDataFile.Close()
 	_, err = userDataFile.WriteString(userData)
@@ -138,12 +142,36 @@ func DownloadFile(url string, dir string) error {
 	return err
 }
 
-// createSSHKey creates the ssh key.
-func createSSHKey(fileName string) error {
+// CreateSSHKey creates the ssh key.
+func CreateSSHKey(fileName string) error {
+	// check if file exists
+	if _, err := os.Stat(fileName); err == nil {
+		return nil
+	}
 	cmd := exec.Command("ssh-keygen", "-t", "rsa", "-N", "", "-f", fileName)
 	err := cmd.Run()
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+// GetSSHPublicKey gets the ssh public key.
+func GetSSHPublicKey(fileName string) (string, error) {
+	file, err := os.Open(fileName)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+	fileInfo, err := file.Stat()
+	if err != nil {
+		return "", err
+	}
+	fileSize := fileInfo.Size()
+	buffer := make([]byte, fileSize)
+	_, err = file.Read(buffer)
+	if err != nil {
+		return "", err
+	}
+	return string(buffer), nil
 }
