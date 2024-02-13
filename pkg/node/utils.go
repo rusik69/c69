@@ -48,7 +48,6 @@ func resizeImage(image string, flavor types.VMFlavor) error {
 		logrus.Println(string(output))
 		return err
 	}
-	logrus.Println(string(output))
 	return nil
 }
 
@@ -70,20 +69,21 @@ func createCloudInit(vmName, sshKey string) (string, error) {
 	  - ` + sshKey
 	userDataFile, err := os.Create(filename)
 	if err != nil {
-		return filename, nil
+		return "", nil
 	}
 	defer userDataFile.Close()
 	_, err = userDataFile.WriteString(userData)
 	if err != nil {
-		return filename, err
+		return "", err
 	}
 	isoFileName := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.iso"
 	cmd := exec.Command("cloud-localds", isoFileName, filename)
-	err = cmd.Run()
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return filename, err
+		logrus.Println(string(output))
+		return "", err
 	}
-	return filename, nil
+	return isoFileName, nil
 }
 
 // ParseState parses the state of the vm.
