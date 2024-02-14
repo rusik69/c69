@@ -270,8 +270,8 @@ func CreateVM(vm types.VM) (types.VM, error) {
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
-						Dev: "sdb",
-						Bus: "virtio",
+						Dev: "hda",
+						Bus: "ide",
 					},
 				},
 			},
