@@ -234,17 +234,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			},
 		},
 		Devices: &libvirtxml.DomainDeviceList{
-			Serials: []libvirtxml.DomainSerial{
-				{
-					Source: &libvirtxml.DomainChardevSource{
-						Pty: &libvirtxml.DomainChardevSourcePty{},
-					},
-					Target: &libvirtxml.DomainSerialTarget{
-						Port: &serialPort,
-						Type: "serial",
-					},
-				},
-			},
 			Graphics: []libvirtxml.DomainGraphic{
 				{
 					VNC: &libvirtxml.DomainGraphicVNC{
