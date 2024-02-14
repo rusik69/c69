@@ -262,7 +262,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					Device: "cdrom",
 					Driver: &libvirtxml.DomainDiskDriver{
 						Name: "qemu",
-						Type: "file",
+						Type: "raw",
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
