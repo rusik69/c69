@@ -8,4 +8,4 @@ services:
       "TEST_NODE_NAME": "x220"
       "TEST_NODE_HOST": "x220.rusik69.lol"
       "TEST_NODE_PORT": "6969"
-      "TEST_NODES": "x220.rusik69.lol:6969,x230.rusik69.lol:6969"
+      "TEST_NODES": "x220.rusik69.lol:6969,x230.rusik69.lol:6969,t440p.rusik69.lol:6969"

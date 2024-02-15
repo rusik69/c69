@@ -72,6 +72,50 @@ users:
 	passwd: ` + passwordHash + `
 	ssh_authorized_keys:
 	  - ssh-rsa ` + sshKey
+	case "fedora":
+		userData = `#version=Fedora/39
+		# System authorization information
+		auth --enableshadow --passalgo=sha512
+		
+		# Use network installation
+		url --url="http://download.fedoraproject.org/pub/fedora/linux/releases/39/Everything/x86_64/os/"
+		
+		# Run the Setup Agent on first boot
+		firstboot --enable
+		
+		# System keyboard
+		keyboard --vckeymap=us --xlayouts='us'
+		
+		# System language
+		lang en_US.UTF-8
+		
+		# Firewall configuration
+		firewall --enabled
+		
+		# Network information
+		network  --bootproto=dhcp --device=eth0 --onboot=on
+		
+		# Root password
+		rootpw --iscrypted ` + passwordHash + `
+		
+		# System timezone
+		timezone America/New_York --isUtc
+		
+		# System bootloader configuration
+		bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=sda
+		
+		# Clear the Master Boot Record
+		zerombr
+		
+		# Partition clearing information
+		clearpart --all --initlabel
+		
+		# Disk partitioning information
+		part / --fstype="ext4" --grow --size=1
+		
+		%packages
+		@^minimal-environment
+		%end`
 	}
 	userDataFile, err := os.Create(filename)
 	if err != nil {

@@ -1,0 +1,17 @@
+version: '3'
+services:
+  node:
+    image: loqutus/govnocloud
+    ports:
+      - "100.82.210.47:6969:6969"
+    entrypoint: ["/usr/local/bin/govnocloud-linux-amd64", "node"]
+    environment:
+      "NODE_LIBVIRT_SOCKET" : "qemu:///system"
+      "NODE_NAME": "t440p"
+      "NODE_IP": "100.82.210.47"
+      "NODE_LISTEN_HOST": "0.0.0.0"
+    volumes:
+      - /run/libvirt:/run/libvirt/
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/libvirt/images:/var/lib/libvirt/images
+      - /mnt:/mnt
