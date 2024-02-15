@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -147,14 +148,18 @@ func AddSSHPublicKey(image string, publicKey string) error {
 		return err
 	}
 	defer exec.Command("qemu-nbd", "-d", "/dev/nbd0").Run()
-	cmd = exec.Command("mount", "/dev/nbd0p1", "/mnt")
+	err = os.Mkdir(types.NodeEnvInstance.NbdMountPoint, os.FileMode(0755))
+	if err != nil {
+		return err
+	}
+	cmd = exec.Command("mount", "/dev/nbd0p1", types.NodeEnvInstance.NbdMountPoint)
 	output, err = cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(output))
 		return err
 	}
-	defer exec.Command("umount", "/mnt").Run()
-	authkeysFile := "/mnt/home/ubuntu/.ssh/authorized_keys"
+	defer exec.Command("umount", types.NodeEnvInstance.NbdMountPoint).Run()
+	authkeysFile := filepath.Join(types.NodeEnvInstance.NbdMountPoint, "/home/ubuntu/.ssh/authorized_keys")
 	file, err := os.OpenFile(authkeysFile, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		return err

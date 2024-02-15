@@ -41,6 +41,10 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if passwordHash == "" {
 		passwordHash = "$6$s8MnnqJhANzOg7Za$XrZ71rgB7kGIq2t4MmkqsUepik3.ZMyT9uZ3d.2LSjX766rmeMEaE2UI6dfoeVQ5q1i51xlXAVrSG7SjFsz2O0"
 	}
+	nbdMountPoint := os.Getenv("NODE_NBD_MOUNT_POINT")
+	if nbdMountPoint == "" {
+		nbdMountPoint = "/nbd"
+	}
 	NodeEnvInstance := &types.NodeEnv{
 		Name:            name,
 		IP:              ip,
@@ -50,6 +54,7 @@ func ParseEnv() (*types.NodeEnv, error) {
 		LibVirtImageDir: libvirtImageDir,
 		FilesDir:        filesDir,
 		PasswordHash:    passwordHash,
+		NbdMountPoint:   nbdMountPoint,
 	}
 	return NodeEnvInstance, nil
 }
