@@ -17,3 +17,4 @@ services:
       - /mnt:/mnt
     devices:
       - /dev/nbd0:/dev/nbd0
+    privileged: true
