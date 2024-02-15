@@ -205,7 +205,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	serialPort := uint(0)
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
 		Name: vm.Name,
