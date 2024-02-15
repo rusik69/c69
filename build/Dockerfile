@@ -1,7 +1,7 @@
 FROM fedora:39 AS build-env
 WORKDIR /go/src/github.com/rusik69/govnocloud
 COPY ../ ./
-RUN dnf -y install make go libvirt-devel make bash gcc git
+RUN dnf -y install --quiet make go libvirt-devel make bash gcc git
 RUN make get
 RUN make build
 FROM fedora:39
