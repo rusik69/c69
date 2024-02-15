@@ -52,16 +52,16 @@ composetest:
 	docker compose -f deployments/docker-compose-test.yml up --abort-on-container-exit --exit-code-from test --quiet-pull
 
 composelogs:
-	ssh govnocloud-master.rusik69.lol "docker compose -f docker-compose-master.yml logs"
+	ssh t440p.rusik69.lol "docker compose -f docker-compose-master.yml logs"
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml logs"
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml logs"
 
 remotetest:
-	rsync -avz . govnocloud-master.rusik69.lol:~/govnocloud
+	rsync -avz . t440p.rusik69.lol:~/govnocloud
 	ssh govnocloud-master.rusik69.lol "cd govnocloud; make docker; make deploy; make composetest; make composelogs"
 
 rsync:
-	rsync -avz . govnocloud-master.rusik69.lol:~/govnocloud
+	rsync -avz . t440p.rusik69.lol:~/govnocloud
 
 default: get build
 
