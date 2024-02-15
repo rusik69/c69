@@ -15,3 +15,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/libvirt/images:/var/lib/libvirt/images
       - /mnt:/mnt
+    devices:
+      - /dev/nbd0:/dev/nbd0
