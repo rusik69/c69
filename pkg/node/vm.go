@@ -196,12 +196,11 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		cpuShares = uint(flavor.MilliCPUs)
 		vcpus = 1
 	}
-	vmType := types.VMImages[vm.Image].Type
 	pubkey, err := GetSSHPublicKey()
 	if err != nil {
 		return types.VM{}, err
 	}
-	cloudInitFileName, err := createCloudInit(vm.Name, vmType, pubkey, types.NodeEnvInstance.PasswordHash)
+	err = AddSSHPublicKey(destImgName, pubkey)
 	if err != nil {
 		return types.VM{}, err
 	}
@@ -256,22 +255,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					Target: &libvirtxml.DomainDiskTarget{
 						Dev: "sda",
 						Bus: "virtio",
-					},
-				},
-				{
-					Device: "cdrom",
-					Driver: &libvirtxml.DomainDiskDriver{
-						Name: "qemu",
-						Type: "raw",
-					},
-					Source: &libvirtxml.DomainDiskSource{
-						File: &libvirtxml.DomainDiskSourceFile{
-							File: cloudInitFileName,
-						},
-					},
-					Target: &libvirtxml.DomainDiskTarget{
-						Dev: "hda",
-						Bus: "ide",
 					},
 				},
 			},

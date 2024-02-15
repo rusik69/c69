@@ -145,6 +145,22 @@ func AddSSHPublicKey(image string, publicKey string) error {
 	if err != nil {
 		return err
 	}
-	
+	defer exec.Command("qemu-nbd", "-d", "/dev/nbd0").Run()
+	cmd = exec.Command("mount", "/dev/nbd0p1", "/mnt")
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+	defer exec.Command("umount", "/mnt").Run()
+	authkeysFile := "/mnt/home/ubuntu/.ssh/authorized_keys"
+	file, err := os.OpenFile(authkeysFile, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	_, err = file.WriteString(publicKey)
+	if err != nil {
+		return err
+	}
 	return nil
 }
