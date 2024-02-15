@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     fetchContainers() {
-      fetch('http://govnocloud-master.rusik69.lol:7070/api/v1/containers')
+      fetch('http://t440p.rusik69.lol:7070/api/v1/containers')
         .then(response => response.json())
         .then(data => {
           this.containers = data;

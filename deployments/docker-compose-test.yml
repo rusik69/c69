@@ -3,7 +3,7 @@ services:
   test:
     image: loqutus/govnocloud-test
     environment:
-      "TEST_MASTER_HOST": "govnocloud-master.rusik69.lol"
+      "TEST_MASTER_HOST": "t440p.rusik69.lol"
       "TEST_MASTER_PORT": "7070"
       "TEST_NODE_NAME": "x220"
       "TEST_NODE_HOST": "x220.rusik69.lol"
