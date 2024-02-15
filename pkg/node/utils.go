@@ -51,91 +51,6 @@ func resizeImage(image string, flavor types.VMFlavor) error {
 	return nil
 }
 
-// createCloudInit creates the cloud-init iso.
-func createCloudInit(vmName, vmType, sshKey, passwordHash string) (string, error) {
-	logrus.Println("Creating cloud-init iso")
-	filename := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.cfg"
-	var userData string
-	switch vmType {
-	case "ubuntu":
-		userData = `#cloud-config
-disable_root: false
-users:
-  - name: work
-	shell: /bin/bash
-	sudo: ALL=(ALL) NOPASSWD:ALL
-	passwd: ` + passwordHash + `
-	ssh_authorized_keys:
-	  - ssh-rsa ` + sshKey + `
-  - name: root
-	shell: /bin/bash
-	passwd: ` + passwordHash + `
-	ssh_authorized_keys:
-	  - ssh-rsa ` + sshKey
-	case "fedora":
-		userData = `#version=Fedora/39
-		# System authorization information
-		auth --enableshadow --passalgo=sha512
-		
-		# Use network installation
-		url --url="http://download.fedoraproject.org/pub/fedora/linux/releases/39/Everything/x86_64/os/"
-		
-		# Run the Setup Agent on first boot
-		firstboot --enable
-		
-		# System keyboard
-		keyboard --vckeymap=us --xlayouts='us'
-		
-		# System language
-		lang en_US.UTF-8
-		
-		# Firewall configuration
-		firewall --enabled
-		
-		# Network information
-		network  --bootproto=dhcp --device=eth0 --onboot=on
-		
-		# Root password
-		rootpw --iscrypted ` + passwordHash + `
-		
-		# System timezone
-		timezone America/New_York --isUtc
-		
-		# System bootloader configuration
-		bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=sda
-		
-		# Clear the Master Boot Record
-		zerombr
-		
-		# Partition clearing information
-		clearpart --all --initlabel
-		
-		# Disk partitioning information
-		part / --fstype="ext4" --grow --size=1
-		
-		%packages
-		@^minimal-environment
-		%end`
-	}
-	userDataFile, err := os.Create(filename)
-	if err != nil {
-		return "", err
-	}
-	defer userDataFile.Close()
-	_, err = userDataFile.WriteString(userData)
-	if err != nil {
-		return "", err
-	}
-	isoFileName := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-cloud-init.iso"
-	cmd := exec.Command("cloud-localds", isoFileName, filename)
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		logrus.Println(string(output))
-		return "", err
-	}
-	return isoFileName, nil
-}
-
 // ParseState parses the state of the vm.
 func ParseState(state libvirt.DomainState) string {
 	switch state {
@@ -220,4 +135,16 @@ func GetSSHPublicKey() (string, error) {
 		return "", err
 	}
 	return string(buffer), nil
+}
+
+// AddSSHPublicKey adds the ssh public key to image.
+func AddSSHPublicKey(image string, publicKey string) error {
+	logrus.Println("Adding ssh public key to", image)
+	cmd := exec.Command("qemu-nbd", "-c", "/dev/nbd0", image)
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+	
+	return nil
 }

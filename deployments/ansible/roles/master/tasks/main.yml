@@ -2,7 +2,10 @@
   ansible.builtin.dnf:
     name: git
     state: present
-- name: install dhcp and tftp servers
-  ansible.builtin.dnf:
-    name: dhcp-server,tftp-server
-    state: absent
+- name: Schedule Docker cleanup
+  ansible.builtin.cron:
+    name: "Docker cleanup"
+    user: "root"
+    minute: "0"
+    hour: "5"
+    job: "/usr/bin/docker system prune -f > /dev/null 2>&1"

@@ -28,3 +28,8 @@
           <path>/var/lib/libvirt/images</path>
         </target>
       </pool>
+- name: modprobe mbd
+  community.general.modprobe:
+    name: mbd
+    state: present
+    params: 'max_part=8'

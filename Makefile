@@ -38,7 +38,6 @@ deploy:
 	scp deployments/docker-compose-master.yml ~/
 	docker compose -f ~/docker-compose-master.yml down
 	docker compose -f ~/docker-compose-master.yml up -d --quiet-pull
-	docker system prune -a -f
 	scp deployments/docker-compose-x220.yml x220.rusik69.lol:~/
 	ssh x220.rusik69.lol "/usr/local/bin/cleanup.sh"
 	ssh x220.rusik69.lol "docker compose -f ~/docker-compose-x220.yml up -d --quiet-pull"
