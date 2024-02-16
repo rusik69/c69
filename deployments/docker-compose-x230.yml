@@ -15,7 +15,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/libvirt/images:/var/lib/libvirt/images
       - /mnt:/mnt
-    devices:
-      - /dev/nbd0:/dev/nbd0
-      - /dev/nbd0p1:/dev/nbd0p1
+      - /dev:/dev
     privileged: true
