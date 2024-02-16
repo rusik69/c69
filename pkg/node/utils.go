@@ -148,9 +148,12 @@ func AddSSHPublicKey(image string, publicKey string) error {
 		return err
 	}
 	defer exec.Command("qemu-nbd", "-d", "/dev/nbd0").Run()
-	err = os.Mkdir(types.NodeEnvInstance.NbdMountPoint, os.FileMode(0755))
-	if err != nil {
-		return err
+	_, err = os.Stat(types.NodeEnvInstance.NbdMountPoint)
+	if os.IsNotExist(err) {
+		err = os.Mkdir(types.NodeEnvInstance.NbdMountPoint, os.FileMode(0755))
+		if err != nil {
+			return err
+		}
 	}
 	cmd = exec.Command("mount", "/dev/nbd0p1", types.NodeEnvInstance.NbdMountPoint)
 	output, err = cmd.CombinedOutput()
