@@ -14,7 +14,7 @@
     src: govnocloud-master.service
     dest: /etc/systemd/system/govnocloud-master.service
     mode: 0644
-    register: govnocloud_master_service
+  register: govnocloud_master_service
 - name: reload systemd
   ansible.builtin.systemd:
     daemon_reload: yes
