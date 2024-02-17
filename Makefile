@@ -20,6 +20,12 @@ build:
 test:
 	go test -v ./...
 
+deploy:
+	sudo cp bin/${BINARY_NAME}-linux-amd64 /usr/local/bin/
+	scp bin/${BINARY_NAME}-linux-amd64 root@x220.rusik69.lol:/usr/local/bin/
+	scp bin/${BINARY_NAME}-linux-amd64 root@x230.rusik69.lol:/usr/local/bin/
+	
+
 docker:
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG) -f build/Dockerfile .
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f build/Dockerfile-test .
@@ -34,7 +40,7 @@ docker:
 	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
 	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
 
-deploy:
+dockerdeploy:
 	scp deployments/docker-compose-master.yml ~/
 	docker compose -f ~/docker-compose-master.yml down
 	docker compose -f ~/docker-compose-master.yml up -d --quiet-pull
@@ -58,7 +64,7 @@ composelogs:
 
 remotetest:
 	rsync -avz . t440p.rusik69.lol:~/govnocloud
-	ssh govnocloud-master.rusik69.lol "cd govnocloud; make docker; make deploy; make composetest; make composelogs"
+	ssh t440p.rusik69.lol "cd govnocloud; make docker; make deploy; make composetest; make composelogs"
 
 rsync:
 	rsync -avz . t440p.rusik69.lol:~/govnocloud

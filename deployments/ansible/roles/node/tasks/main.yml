@@ -33,3 +33,10 @@
     name: nbd
     state: present
     params: 'max_part=8'
+- name: add ssh key to root
+  ansible.builtin.copy:
+    src: authorized_keys
+    dest: /root/.ssh/authorized_keys
+    owner: root
+    group: root
+    mode: 0600

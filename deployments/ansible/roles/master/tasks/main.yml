@@ -1,6 +1,6 @@
-- name: Install git
+- name: Install packages
   ansible.builtin.dnf:
-    name: git
+    name: git,make,go,libvirt-devel,make,bash,gcc,git,libvirt,ca-certificates,qemu-img,guestfs-tools,cloud-utils,genisoimage,openssh,livecd-tools
     state: present
 - name: Schedule Docker cleanup
   ansible.builtin.cron:
@@ -9,3 +9,8 @@
     minute: "0"
     hour: "5"
     job: "/usr/bin/docker system prune -f > /dev/null 2>&1"
+- name: install govnocloud-master service
+  ansible.builtin.copy:
+    src: govnocloud-master.service
+    dest: /etc/systemd/system/govnocloud-master.service
+    mode: 0644
