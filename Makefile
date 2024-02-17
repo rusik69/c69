@@ -24,9 +24,9 @@ deploy:
 	sudo systemctl stop govnocloud-master
 	ssh x220.rusik69.lol "sudo systemctl stop govnocloud-node" || true
 	ssh x230.rusik69.lol "sudo systemctl stop govnocloud-node" || true
-	sudo cp bin/${BINARY_NAME}-linux-amd64 /usr/local/bin/
-	scp bin/${BINARY_NAME}-linux-amd64 root@x220.rusik69.lol:/usr/local/bin/
-	scp bin/${BINARY_NAME}-linux-amd64 root@x230.rusik69.lol:/usr/local/bin/
+	sudo cp bin/${BINARY_NAME}-linux-amd64 /usr/local/bin/govnocloud
+	scp bin/${BINARY_NAME}-linux-amd64 root@x220.rusik69.lol:/usr/local/bin/govnocloud
+	scp bin/${BINARY_NAME}-linux-amd64 root@x230.rusik69.lol:/usr/local/bin/govnocloud
 	sudo systemctl start govnocloud-master
 	ssh x220.rusik69.lol "sudo systemctl start govnocloud-node"
 	ssh x230.rusik69.lol "sudo systemctl start govnocloud-node"
