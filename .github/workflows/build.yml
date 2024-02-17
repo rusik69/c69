@@ -14,8 +14,8 @@ jobs:
       run: make deploy
     - name: composetest
       run: make composetest
-    - name: composelogs
-      run: make composelogs
+    - name: logs
+      run: make logs
       if: always()
     # - name: Create Release
     #   id: create_release

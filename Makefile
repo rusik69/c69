@@ -21,10 +21,15 @@ test:
 	go test -v ./...
 
 deploy:
+	sudo systemctl stop govnocloud
+	ssh x220.rusik69.lol "sudo systemctl stop govnocloud"
+	ssh x230.rusik69.lol "sudo systemctl stop govnocloud"
 	sudo cp bin/${BINARY_NAME}-linux-amd64 /usr/local/bin/
 	scp bin/${BINARY_NAME}-linux-amd64 root@x220.rusik69.lol:/usr/local/bin/
 	scp bin/${BINARY_NAME}-linux-amd64 root@x230.rusik69.lol:/usr/local/bin/
-	
+	sudo systemctl start govnocloud
+	ssh x220.rusik69.lol "sudo systemctl start govnocloud"
+	ssh x230.rusik69.lol "sudo systemctl start govnocloud"
 
 docker:
 	docker build -t $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG) -f build/Dockerfile .
@@ -61,6 +66,11 @@ composelogs:
 	ssh t440p.rusik69.lol "docker compose -f docker-compose-master.yml logs"
 	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml logs"
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml logs"
+
+logs:
+	journalctl -u govnocloud-master
+	ssh x220.rusik69.lol "journalctl -u govnocloud-node"
+	ssh x230.rusik69.lol "journalctl -u govnocloud-node"
 
 remotetest:
 	rsync -avz . t440p.rusik69.lol:~/govnocloud

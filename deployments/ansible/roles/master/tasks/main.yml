@@ -1,6 +1,6 @@
 - name: Install packages
   ansible.builtin.dnf:
-    name: git,make,go,libvirt-devel,make,bash,gcc,git,libvirt,ca-certificates,qemu-img,guestfs-tools,cloud-utils,genisoimage,openssh,livecd-tools
+    name: git,make,go,libvirt-devel,make,bash,gcc,git,libvirt,ca-certificates,qemu-img,guestfs-tools,cloud-utils,genisoimage,openssh,livecd-tools,etcd
     state: present
 - name: Schedule Docker cleanup
   ansible.builtin.cron:
@@ -14,3 +14,13 @@
     src: govnocloud-master.service
     dest: /etc/systemd/system/govnocloud-master.service
     mode: 0644
+    register: govnocloud_master_service
+- name: reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  when: govnocloud_master_service.changed
+- name: start etcd
+  ansible.builtin.systemd:
+    name: etcd
+    state: started
+    enabled: yes
