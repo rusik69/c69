@@ -22,8 +22,8 @@ test:
 
 deploy:
 	sudo systemctl stop govnocloud
-	ssh x220.rusik69.lol "sudo systemctl stop govnocloud"
-	ssh x230.rusik69.lol "sudo systemctl stop govnocloud"
+	ssh x220.rusik69.lol "sudo systemctl stop govnocloud" || true
+	ssh x230.rusik69.lol "sudo systemctl stop govnocloud" || true
 	sudo cp bin/${BINARY_NAME}-linux-amd64 /usr/local/bin/
 	scp bin/${BINARY_NAME}-linux-amd64 root@x220.rusik69.lol:/usr/local/bin/
 	scp bin/${BINARY_NAME}-linux-amd64 root@x230.rusik69.lol:/usr/local/bin/
