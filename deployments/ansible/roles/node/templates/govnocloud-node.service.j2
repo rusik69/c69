@@ -4,7 +4,8 @@ Description=govnocloud node
 [Service]
 Restart=always
 ExecStart=/usr/local/bin/govnocloud node
-Environment="NODE_LISTEN_HOST={{ ansible_tailscale0.ipv4.address }} NODE_NAME={{ ansible_hostname }}" 
+Environment="NODE_LISTEN_HOST={{ ansible_tailscale0.ipv4.address }}"
+Environment="NODE_NAME={{ ansible_hostname }}" 
 
 [Install]
 WantedBy=default.target
