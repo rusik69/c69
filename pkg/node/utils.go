@@ -181,7 +181,7 @@ func AddSSHPublicKey(image string, publicKey string) error {
 		return err
 	}
 	authkeysFile := filepath.Join(types.NodeEnvInstance.NbdMountPoint, "/home/ubuntu/.ssh/authorized_keys")
-	file, err := os.OpenFile(authkeysFile, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	file, err := os.OpenFile(authkeysFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		return err
 	}
