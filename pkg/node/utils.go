@@ -1,6 +1,7 @@
 package node
 
 import (
+	"errors"
 	"io"
 	"net/http"
 	"os"
@@ -10,6 +11,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
@@ -154,6 +156,19 @@ func AddSSHPublicKey(image string, publicKey string) error {
 		if err != nil {
 			return err
 		}
+	}
+	// wait for /dev/nbd0p1 to appear
+	count := 0
+	for {
+		if count > 100 {
+			return errors.New("timeout waiting for /dev/nbd0p1")
+		}
+		_, err := os.Stat("/dev/nbd0p1")
+		if err == nil {
+			break
+		}
+		time.Sleep(10 * time.Millisecond)
+		count++
 	}
 	cmd = exec.Command("mount", "/dev/nbd0p1", types.NodeEnvInstance.NbdMountPoint)
 	output, err = cmd.CombinedOutput()
