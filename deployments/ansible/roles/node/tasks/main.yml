@@ -17,6 +17,11 @@
     src: cleanup.sh
     dest: /usr/local/bin/cleanup.sh
     mode: 0755
+- name: copy get_logs.sh
+  ansible.builtin.copy:
+    src: get_logs.sh
+    dest: /usr/local/bin/get_logs.sh
+    mode: 0755
 - name: Create default storage pool
   community.libvirt.virt_pool:
     name: default

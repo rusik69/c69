@@ -71,9 +71,9 @@ composelogs:
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml logs"
 
 logs:
-	journalctl -u govnocloud-master
-	ssh x220.rusik69.lol "journalctl -u govnocloud-node"
-	ssh x230.rusik69.lol "journalctl -u govnocloud-node"
+	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`
+	ssh x220.rusik69.lol "get_logs.sh"
+	ssh x230.rusik69.lol "get_logs.sh"
 
 remotetest:
 	rsync -avz . t440p.rusik69.lol:~/govnocloud
