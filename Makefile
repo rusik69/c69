@@ -25,8 +25,8 @@ deploy:
 	ETCDCTL_API=3 etcdctl del --prefix ""
 	ssh x220.rusik69.lol "sudo systemctl stop govnocloud-node" || true
 	ssh x230.rusik69.lol "sudo systemctl stop govnocloud-node" || true
-	ssh x220.rusik69.lol "sudo cleanup.sh" || true
-	ssh x230.rusik69.lol "sudo cleanup.sh" || true
+	ssh x220.rusik69.lol "cleanup.sh" || true
+	ssh x230.rusik69.lol "cleanup.sh" || true
 	sudo cp bin/${BINARY_NAME}-linux-amd64 /usr/local/bin/govnocloud
 	scp bin/${BINARY_NAME}-linux-amd64 root@x220.rusik69.lol:/usr/local/bin/govnocloud
 	scp bin/${BINARY_NAME}-linux-amd64 root@x230.rusik69.lol:/usr/local/bin/govnocloud
