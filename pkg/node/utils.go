@@ -141,7 +141,7 @@ func GetSSHPublicKey() (string, error) {
 }
 
 // AddSSHPublicKey adds the ssh public key to image.
-func AddSSHPublicKey(image string, publicKey string, type string) error {
+func AddSSHPublicKey(image string, publicKey string) error {
 	logrus.Println("Adding ssh public key to", image)
 	cmd := exec.Command("qemu-nbd", "-c", "/dev/nbd0", image)
 	_, err := cmd.CombinedOutput()
@@ -169,7 +169,6 @@ func AddSSHPublicKey(image string, publicKey string, type string) error {
 		time.Sleep(10 * time.Millisecond)
 		count++
 	}
-	var sshDir, autehKeysPath string
 	cmd = exec.Command("mount", "/dev/nbd0p1", types.NodeEnvInstance.NbdMountPoint)
 	_, err = cmd.CombinedOutput()
 	if err != nil {
