@@ -161,9 +161,9 @@ func AddSSHPublicKey(image string, publicKey string) error {
 	count := 0
 	for {
 		if count > 100 {
-			return errors.New("timeout waiting for /dev/nbd0p1")
+			return errors.New("timeout waiting for /dev/sysvg/root")
 		}
-		_, err := os.Stat("/dev/nbd0p3")
+		_, err := os.Stat("/dev/sysvg/root")
 		if err == nil {
 			break
 		}
