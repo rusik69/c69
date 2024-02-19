@@ -23,7 +23,7 @@ test:
 	export TEST_NODE_NAME="x220"
 	export TEST_NODE_HOST="x220.rusik69.lol"
 	export TEST_NODE_PORT="6969"
-	export TESTNODES="x220.rusik69.lol:6969,x230.rusik69.lol:6969"
+	export TEST_NODES="x220.rusik69.lol:6969,x230.rusik69.lol:6969"
 	go test -v ./...
 
 deploy:
