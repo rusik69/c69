@@ -76,6 +76,7 @@ func TestMain(m *testing.M) {
 		nodePort = "6969"
 	}
 	nodesString := os.Getenv("TEST_NODES")
+	t.Log("nodesString: ", nodesString)
 	if nodesString == "" {
 		nodes = []string{}
 	}
