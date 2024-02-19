@@ -147,6 +147,23 @@ func StartVMHandler(c *gin.Context) {
 	}
 }
 
+// DownloadImages downloads the images.
+func DownloadImages() error {
+	for _, img := range types.VMImages {
+		if img.Img == "" {
+			continue
+		}
+		imgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir, img.Img)
+		if _, err := os.Stat(imgName); os.IsNotExist(err) {
+			err := DownloadFile(img.URL, types.NodeEnvInstance.LibVirtImageDir)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 // CreateVM creates the vm.
 func CreateVM(vm types.VM) (types.VM, error) {
 	flavor, ok := types.VMFlavors[vm.Flavor]
@@ -159,12 +176,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	imgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
 		types.VMImages[vm.Image].Img)
 	if _, err := os.Stat(imgName); os.IsNotExist(err) {
-		// download image
-		err := DownloadFile(types.VMImages[vm.Image].URL,
-			types.NodeEnvInstance.LibVirtImageDir)
-		if err != nil {
-			return types.VM{}, err
-		}
+		return types.VM{}, errors.New(vm.Image + " image not found")
 	}
 	destImgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
 		vm.Name+".qcow2")

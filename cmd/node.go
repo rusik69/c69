@@ -45,6 +45,11 @@ var nodeCmd = &cobra.Command{
 			logrus.Error(err.Error())
 			panic(err)
 		}
+		err = node.DownloadImages()
+		if err != nil {
+			logrus.Error(err.Error())
+			panic(err)
+		}
 		node.Serve()
 	},
 }
