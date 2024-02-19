@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+sudo docker system prune -a -f
 sudo virsh destroy test; sudo virsh undefine test || true
 for i in $(seq 0 10); do
 	sudo virsh destroy test$i

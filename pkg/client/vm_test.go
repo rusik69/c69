@@ -68,7 +68,7 @@ func RunVMs() {
 	fmt.Println("RunVMs")
 	for i := 0; i < 8; i++ {
 		vmName := "test" + fmt.Sprintf("%d", i)
-		_, err := client.CreateVM(masterHost, masterPort, vmName, "ubuntu22.04", "small")
+		_, err := client.CreateVM(masterHost, masterPort, vmName, "fedora39", "small")
 		if err != nil {
 			fmt.Println(err)
 		}

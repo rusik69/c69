@@ -141,7 +141,7 @@ func GetSSHPublicKey() (string, error) {
 }
 
 // AddSSHPublicKey adds the ssh public key to image.
-func AddSSHPublicKey(image string, publicKey string) error {
+func AddSSHPublicKey(image string, publicKey string, type string) error {
 	logrus.Println("Adding ssh public key to", image)
 	cmd := exec.Command("qemu-nbd", "-c", "/dev/nbd0", image)
 	_, err := cmd.CombinedOutput()
@@ -169,6 +169,7 @@ func AddSSHPublicKey(image string, publicKey string) error {
 		time.Sleep(10 * time.Millisecond)
 		count++
 	}
+	var sshDir, autehKeysPath string
 	cmd = exec.Command("mount", "/dev/nbd0p1", types.NodeEnvInstance.NbdMountPoint)
 	_, err = cmd.CombinedOutput()
 	if err != nil {
@@ -176,11 +177,11 @@ func AddSSHPublicKey(image string, publicKey string) error {
 	}
 	defer exec.Command("umount", types.NodeEnvInstance.NbdMountPoint).Run()
 	// create /nb0/home/ubuntu/.ssh directory recursively
-	err = os.MkdirAll(filepath.Join(types.NodeEnvInstance.NbdMountPoint, "/home/ubuntu/.ssh"), os.FileMode(0755))
+	err = os.MkdirAll(filepath.Join(types.NodeEnvInstance.NbdMountPoint, "/root/.ssh"), os.FileMode(0755))
 	if err != nil {
 		return err
 	}
-	authkeysFile := filepath.Join(types.NodeEnvInstance.NbdMountPoint, "/home/ubuntu/.ssh/authorized_keys")
+	authkeysFile := filepath.Join(types.NodeEnvInstance.NbdMountPoint, "/root/.ssh/authorized_keys")
 	file, err := os.OpenFile(authkeysFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		return err
