@@ -11,3 +11,4 @@ for i in $(sudo ls /var/lib/libvirt/images/); do
 	sudo rm /var/lib/libvirt/images/$i 
 done
 sudo umount /nbd0 || true
+sudo qemu-nbd -d /dev/nbd0 || true

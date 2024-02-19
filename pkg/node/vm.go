@@ -3,7 +3,6 @@ package node
 import (
 	"errors"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -154,11 +153,11 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if !ok {
 		return types.VM{}, errors.New("flavor not found")
 	}
-	imgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
-		types.VMImages[vm.Image].Img)
-	if imgName == "" {
+	if types.VMImages[vm.Image].Img == "" {
 		return types.VM{}, errors.New("image not found")
 	}
+	imgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
+		types.VMImages[vm.Image].Img)
 	if _, err := os.Stat(imgName); os.IsNotExist(err) {
 		// download image
 		err := DownloadFile(types.VMImages[vm.Image].URL,
@@ -167,20 +166,10 @@ func CreateVM(vm types.VM) (types.VM, error) {
 			return types.VM{}, err
 		}
 	}
-	sourceImg, err := os.Open(imgName)
-	if err != nil {
-		return types.VM{}, err
-	}
-	defer sourceImg.Close()
 	destImgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
 		vm.Name+".qcow2")
-	destImg, err := os.Create(destImgName)
-	if err != nil {
-		return types.VM{}, err
-	}
-	defer destImg.Close()
 	logrus.Println("Copying image", imgName, "to", destImgName)
-	_, err = io.Copy(destImg, sourceImg)
+	err := copyFile(imgName, destImgName)
 	if err != nil {
 		return types.VM{}, err
 	}
