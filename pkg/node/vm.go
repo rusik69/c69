@@ -179,10 +179,12 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		return types.VM{}, err
 	}
 	defer destImg.Close()
+	logrus.Println("Copying image", imgName, "to", destImgName)
 	_, err = io.Copy(destImg, sourceImg)
 	if err != nil {
 		return types.VM{}, err
 	}
+	logrus.Println("Resizing image", destImgName, "to", flavor.Disk)
 	err = resizeImage(destImgName, flavor)
 	if err != nil {
 		return types.VM{}, err
