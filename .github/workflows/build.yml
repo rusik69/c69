@@ -12,8 +12,8 @@ jobs:
       run: make get build
     - name: deploy
       run: make deploy
-    - name: composetest
-      run: make composetest
+    - name: test
+      run: make test
     - name: logs
       run: make logs
       if: always()
