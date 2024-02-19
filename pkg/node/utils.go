@@ -171,7 +171,7 @@ func AddSSHPublicKey(image string, publicKey string) error {
 		count++
 	}
 	cmd = exec.Command("mount", "/dev/nbd0p1", types.NodeEnvInstance.NbdMountPoint)
-	output, err := cmd.CombinedOutput()
+	output, err = cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(output)
 		return err
