@@ -76,7 +76,6 @@ func TestMain(m *testing.M) {
 		nodePort = "6969"
 	}
 	nodesString := os.Getenv("TEST_NODES")
-	t.Log("nodesString: ", nodesString)
 	if nodesString == "" {
 		nodes = []string{}
 	}
@@ -100,6 +99,7 @@ func TestAddNode(t *testing.T) {
 
 // addNode adds node
 func addNodes() {
+	t.Log("nodesString: ", nodes)
 	for _, node := range nodes {
 		fmt.Println("Adding node: ", node)
 		s := strings.Split(node, ":")
