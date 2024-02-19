@@ -154,7 +154,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		return types.VM{}, errors.New("flavor not found")
 	}
 	if types.VMImages[vm.Image].Img == "" {
-		return types.VM{}, errors.New("image not found")
+		return types.VM{}, errors.New(vm.Image + " image not found")
 	}
 	imgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
 		types.VMImages[vm.Image].Img)
