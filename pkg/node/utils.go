@@ -163,14 +163,14 @@ func AddSSHPublicKey(image string, publicKey string) error {
 		if count > 100 {
 			return errors.New("timeout waiting for /dev/nbd0p1")
 		}
-		_, err := os.Stat("/dev/nbd0p1")
+		_, err := os.Stat("/dev/nbd0p3")
 		if err == nil {
 			break
 		}
 		time.Sleep(10 * time.Millisecond)
 		count++
 	}
-	cmd = exec.Command("mount", "/dev/nbd0p1", types.NodeEnvInstance.NbdMountPoint)
+	cmd = exec.Command("mount", "/dev/sysvg/root", types.NodeEnvInstance.NbdMountPoint)
 	output, err = cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(output)
