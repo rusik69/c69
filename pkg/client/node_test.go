@@ -99,9 +99,7 @@ func TestAddNode(t *testing.T) {
 
 // addNode adds node
 func addNodes() {
-	t.Log("nodesString: ", nodes)
 	for _, node := range nodes {
-		fmt.Println("Adding node: ", node)
 		s := strings.Split(node, ":")
 		host := s[0]
 		port := s[1]

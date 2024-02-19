@@ -7,6 +7,13 @@ IMAGE_TAG=$(shell git describe --tags --always)
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
 ORG_PREFIX := loqutus
 
+export TEST_MASTER_HOST := t440p.rusik69.lol
+export TEST_MASTER_PORT := 7070
+export TEST_NODE_NAME := x220
+export TEST_NODE_HOST := x220.rusik69.lol
+export TEST_NODE_PORT := 6969
+export TEST_NODES := x220.rusik69.lol:6969,x230.rusik69.lol:6969
+
 tidy:
 	go mod tidy
 
@@ -18,12 +25,7 @@ build:
 	chmod +x bin/*
 
 test:
-	export TEST_MASTER_HOST="t440p.rusik69.lol"
-	export TEST_MASTER_PORT="7070"
-	export TEST_NODE_NAME="x220"
-	export TEST_NODE_HOST="x220.rusik69.lol"
-	export TEST_NODE_PORT="6969"
-	export TEST_NODES="x220.rusik69.lol:6969,x230.rusik69.lol:6969"
+	
 	go test -v ./...
 
 deploy:
