@@ -144,8 +144,9 @@ func GetSSHPublicKey() (string, error) {
 func AddSSHPublicKey(image string, publicKey string) error {
 	logrus.Println("Adding ssh public key to", image)
 	cmd := exec.Command("qemu-nbd", "-c", "/dev/nbd0", image)
-	_, err := cmd.CombinedOutput()
+	output, err := cmd.CombinedOutput()
 	if err != nil {
+		logrus.Println(string(output))
 		return err
 	}
 	defer exec.Command("qemu-nbd", "-d", "/dev/nbd0").Run()
@@ -170,8 +171,9 @@ func AddSSHPublicKey(image string, publicKey string) error {
 		count++
 	}
 	cmd = exec.Command("mount", "/dev/nbd0p1", types.NodeEnvInstance.NbdMountPoint)
-	_, err = cmd.CombinedOutput()
+	output, err := cmd.CombinedOutput()
 	if err != nil {
+		logrus.Println(output)
 		return err
 	}
 	defer exec.Command("umount", types.NodeEnvInstance.NbdMountPoint).Run()
@@ -188,6 +190,7 @@ func AddSSHPublicKey(image string, publicKey string) error {
 	defer file.Close()
 	_, err = file.WriteString(publicKey)
 	if err != nil {
+		logrus.Println(err)
 		return err
 	}
 	return nil
