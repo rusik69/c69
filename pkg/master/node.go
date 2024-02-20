@@ -38,12 +38,10 @@ func AddNodeHandler(c *gin.Context) {
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			logrus.Error(err.Error())
-			return
 		}
 		if req.StatusCode != 200 {
 			c.JSON(500, gin.H{"error": "node is not available"})
 			logrus.Error("node is not available")
-			return
 		} else {
 			failed = false
 		}
