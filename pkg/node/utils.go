@@ -140,7 +140,17 @@ func GetSSHPublicKey() (string, error) {
 // AddSSHPublicKey adds the ssh public key to image.
 func AddSSHPublicKey(image string, publicKey string) error {
 	logrus.Println("Adding ssh public key to", image)
-	cmd := exec.Command(" LIBGUESTFS_BACKEND=direct virt-copy-in -a " + image + " /root/.ssh/authorized_keys /root/.ssh")
+	// write publicKey to temp file
+	tmpFile, err := os.CreateTemp("", "authorized_keys")
+	if err != nil {
+		return err
+	}
+	defer os.Remove(tmpFile.Name())
+	_, err = tmpFile.WriteString(publicKey)
+	if err != nil {
+		return err
+	}
+	cmd := exec.Command("LIBGUESTFS_BACKEND=direct virt-copy-in -a " + image + " " + tmpFile.Name() + " /root/.ssh/")
 	res, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(res))
