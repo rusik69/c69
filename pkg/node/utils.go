@@ -1,17 +1,14 @@
 package node
 
 import (
-	"errors"
 	"io"
 	"net/http"
 	"os"
 	"os/exec"
 	"path"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
@@ -143,54 +140,10 @@ func GetSSHPublicKey() (string, error) {
 // AddSSHPublicKey adds the ssh public key to image.
 func AddSSHPublicKey(image string, publicKey string) error {
 	logrus.Println("Adding ssh public key to", image)
-	cmd := exec.Command("qemu-nbd", "-c", "/dev/nbd0", image)
-	output, err := cmd.CombinedOutput()
+	cmd := exec.Command(" LIBGUESTFS_BACKEND=direct virt-copy-in -a " + image + " /root/.ssh /root/.ssh")
+	res, err := cmd.CombinedOutput()
 	if err != nil {
-		logrus.Println(string(output))
-		return err
-	}
-	defer exec.Command("qemu-nbd", "-d", "/dev/nbd0").Run()
-	_, err = os.Stat(types.NodeEnvInstance.NbdMountPoint)
-	if os.IsNotExist(err) {
-		err = os.Mkdir(types.NodeEnvInstance.NbdMountPoint, os.FileMode(0755))
-		if err != nil {
-			return err
-		}
-	}
-	// wait for /dev/nbd0p1 to appear
-	count := 0
-	for {
-		if count > 100 {
-			return errors.New("timeout waiting for /dev/sysvg/root")
-		}
-		_, err := os.Stat("/dev/sysvg/root")
-		if err == nil {
-			break
-		}
-		time.Sleep(10 * time.Millisecond)
-		count++
-	}
-	cmd = exec.Command("mount", "/dev/sysvg/root", types.NodeEnvInstance.NbdMountPoint)
-	output, err = cmd.CombinedOutput()
-	if err != nil {
-		logrus.Println(output)
-		return err
-	}
-	defer exec.Command("umount", types.NodeEnvInstance.NbdMountPoint).Run()
-	// create /nb0/home/ubuntu/.ssh directory recursively
-	err = os.MkdirAll(filepath.Join(types.NodeEnvInstance.NbdMountPoint, "/root/.ssh"), os.FileMode(0755))
-	if err != nil {
-		return err
-	}
-	authkeysFile := filepath.Join(types.NodeEnvInstance.NbdMountPoint, "/root/.ssh/authorized_keys")
-	file, err := os.OpenFile(authkeysFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModeAppend)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	_, err = file.WriteString(publicKey)
-	if err != nil {
-		logrus.Println(err)
+		logrus.Println(string(res))
 		return err
 	}
 	return nil
