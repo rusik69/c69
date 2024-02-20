@@ -3,6 +3,7 @@ package master
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -28,7 +29,7 @@ func AddNodeHandler(c *gin.Context) {
 	failed := true
 	count := 0
 	for failed {
-		if count == 100 {
+		if count == 10 {
 			c.JSON(500, gin.H{"error": "node is not available"})
 			logrus.Error("node is not available")
 			return
@@ -47,6 +48,7 @@ func AddNodeHandler(c *gin.Context) {
 			failed = false
 		}
 		count++
+		time.Sleep(1 * time.Second)
 	}
 	nodeStats, err := client.GetNodeStats(tempNode.Host, tempNode.Port)
 	if err != nil {
