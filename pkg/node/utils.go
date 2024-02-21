@@ -117,40 +117,10 @@ func CreateSSHKey() error {
 	return nil
 }
 
-// GetSSHPublicKey gets the ssh public key.
-func GetSSHPublicKey() (string, error) {
-	file, err := os.Open("/root/.ssh/id_rsa.pub")
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-	fileInfo, err := file.Stat()
-	if err != nil {
-		return "", err
-	}
-	fileSize := fileInfo.Size()
-	buffer := make([]byte, fileSize)
-	_, err = file.Read(buffer)
-	if err != nil {
-		return "", err
-	}
-	return string(buffer), nil
-}
-
 // AddSSHPublicKey adds the ssh public key to image.
 func AddSSHPublicKey(image string, publicKey string) error {
 	logrus.Println("Adding ssh public key to", image)
-	// write publicKey to temp file
-	tmpFile, err := os.CreateTemp("", "authorized_keys")
-	if err != nil {
-		return err
-	}
-	defer os.Remove(tmpFile.Name())
-	_, err = tmpFile.WriteString(publicKey)
-	if err != nil {
-		return err
-	}
-	cmd := exec.Command("LIBGUESTFS_BACKEND=direct virt-copy-in -a " + image + " " + tmpFile.Name() + " /root/.ssh/")
+	cmd := exec.Command("LIBGUESTFS_BACKEND=direct virt-copy-in -a /root/.ssh/id_rsa.pub " + " /root/.ssh/")
 	res, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(res))
