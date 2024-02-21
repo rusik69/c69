@@ -68,7 +68,7 @@ var VMFlavors = map[string]VMFlavor{
 		Name:      "small",
 		MilliCPUs: 512,
 		RAM:       1024,
-		Disk:      4,
+		Disk:      8,
 	},
 	"medium": VMFlavor{
 		ID:        "2",
