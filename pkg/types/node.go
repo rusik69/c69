@@ -134,6 +134,7 @@ type NodeEnv struct {
 	ListenHost      string `json:"listen_host"`
 	LibVirtURI      string `json:"libvirt_socket"`
 	LibVirtImageDir string `json:"libvirt_image_dir"`
+	LibVirtBootDir  string `json:"libvirt_boot_dir"`
 	FilesDir        string `json:"files_dir"`
 	PasswordHash    string `json:"password_hash"`
 	NbdMountPoint   string `json:"nbd_mount_point"`

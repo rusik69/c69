@@ -33,6 +33,10 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if libvirtImageDir == "" {
 		libvirtImageDir = "/var/lib/libvirt/images"
 	}
+	libvirtBootDir := os.Getenv("NODE_LIBVIRT_BOOT_DIR")
+	if libvirtBootDir == "" {
+		libvirtBootDir = "/var/lib/libvirt/boot"
+	}
 	filesDir := os.Getenv("NODE_FILES_DIR")
 	if filesDir == "" {
 		filesDir = "/mnt"
@@ -52,6 +56,7 @@ func ParseEnv() (*types.NodeEnv, error) {
 		ListenHost:      listenHost,
 		LibVirtURI:      libvirtURI,
 		LibVirtImageDir: libvirtImageDir,
+		LibVirtBootDir:  libvirtBootDir,
 		FilesDir:        filesDir,
 		PasswordHash:    passwordHash,
 		NbdMountPoint:   nbdMountPoint,
