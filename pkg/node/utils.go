@@ -17,7 +17,6 @@ import (
 
 // resizeImage resizes the image.
 func resizeImage(image string, flavor types.VMFlavor) error {
-	logrus.Println("Resizing image", image, "to", flavor.Disk, "GB")
 	imgInfo, err := exec.Command("qemu-img", "info", image).CombinedOutput()
 	if err != nil {
 		return err

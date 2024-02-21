@@ -185,7 +185,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	logrus.Println("Resizing image", destImgName, "to", flavor.Disk)
+	logrus.Println("Resizing image", destImgName, "to", flavor.Disk, "GB")
 	err = resizeImage(destImgName, flavor)
 	if err != nil {
 		return types.VM{}, err
