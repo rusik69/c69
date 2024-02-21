@@ -120,7 +120,7 @@ func CreateSSHKey() error {
 // AddSSHPublicKey adds the ssh public key to image.
 func AddSSHPublicKey(image string) error {
 	logrus.Println("Adding ssh public key to", image)
-	cmd := exec.Command("LIBGUESTFS_BACKEND=direct virt-copy-in -a /root/.ssh/id_rsa.pub " + " /root/.ssh/")
+	cmd := exec.Command("LIBGUESTFS_BACKEND=direct virt-copy-in -a " + image + "/root/.ssh/id_rsa.pub " + " /root/.ssh/")
 	res, err := cmd.CombinedOutput()
 	if err != nil {
 		logrus.Println(string(res))
