@@ -260,22 +260,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 						Bus: "virtio",
 					},
 				},
-				{
-					Device: "cdrom",
-					Driver: &libvirtxml.DomainDiskDriver{
-						Name: "qemu",
-						Type: "raw",
-					},
-					Source: &libvirtxml.DomainDiskSource{
-						File: &libvirtxml.DomainDiskSourceFile{
-							File: types.NodeEnvInstance.LibVirtImageDir + "/" + vm.Name + "-ks.iso",
-						},
-					},
-					Target: &libvirtxml.DomainDiskTarget{
-						Dev: "hda",
-						Bus: "ide",
-					},
-				},
 			},
 			Interfaces: []libvirtxml.DomainInterface{
 				{
@@ -326,7 +310,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	vm.NodePort = types.NodeEnvInstance.ListenPort
 	vm.ID = int(id)
 	vm.VNCURL = vncURL
-	logrus.Println("Created VM", vm)
 	return vm, nil
 }
 
