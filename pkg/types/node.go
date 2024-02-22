@@ -107,12 +107,12 @@ type VMImage struct {
 }
 
 var VMImages = map[string]VMImage{
-	// "ubuntu22.04": VMImage{
-	// 	ID:   "0",
-	// 	Type: "ubuntu",
-	// 	Img:  "jammy-server-cloudimg-amd64.img",
-	// 	URL:  "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img",
-	// },
+	"ubuntu22.04": VMImage{
+		ID:   "0",
+		Type: "ubuntu",
+		Img:  "jammy-server-cloudimg-amd64.img",
+		URL:  "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img",
+	},
 	// "ubuntu20.04": VMImage{
 	// 	ID:   "1",
 	// 	Type: "ubuntu",
