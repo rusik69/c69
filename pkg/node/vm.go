@@ -52,7 +52,7 @@ func CreateVMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	logrus.Println("Created VM with id", vm.ID)
+	logrus.Println("Created VM", vm)
 	c.JSON(200, vm)
 }
 
@@ -187,10 +187,6 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	}
 	logrus.Println("Resizing image", destImgName, "to", flavor.Disk, "GB")
 	err = resizeImage(destImgName, flavor)
-	if err != nil {
-		return types.VM{}, err
-	}
-	err = createKickstartFile(vm.Name)
 	if err != nil {
 		return types.VM{}, err
 	}
