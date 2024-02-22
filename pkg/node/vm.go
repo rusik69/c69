@@ -264,7 +264,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 					},
 					Source: &libvirtxml.DomainDiskSource{
 						File: &libvirtxml.DomainDiskSourceFile{
-							File: types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-ks.iso",
+							File: types.NodeEnvInstance.LibVirtImageDir + "/" + vm.Name + "-ks.iso",
 						},
 					},
 					Target: &libvirtxml.DomainDiskTarget{
