@@ -153,6 +153,10 @@ func createKickstartFile(vmName string) error {
 	fileName := types.NodeEnvInstance.LibVirtBootDir + "/" + vmName + ".ks"
 	if _, err := os.Stat(fileName); err == nil {
 		logrus.Println("Kickstart file", fileName, "already exists")
+	}
+	isoFileName := types.NodeEnvInstance.LibVirtImageDir + "/" + vmName + "-ks.iso"
+	if _, err := os.Stat(isoFileName); err == nil {
+		logrus.Println("Kickstart iso file", isoFileName, "already exists")
 		return nil
 	}
 	logrus.Println("Creating kickstart file", fileName)
@@ -197,6 +201,11 @@ user --groups=wheel --name=fedora --password=$y$j9T$mx8yRQ5WUUva4BGK3/cOdA8z$WZl
 	if err != nil {
 		return err
 	}
-	cmd := 
+	cmd := exec.Command("genisoimage", "-output", isoFileName, "-volid", "cidata", "-joliet", "-rock", fileName)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		logrus.Println(string(output))
+		return err
+	}
 	return nil
 }
