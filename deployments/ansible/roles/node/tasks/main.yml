@@ -1,7 +1,7 @@
 ---
 - name: Install packages
   ansible.builtin.dnf:
-    name: libvirt,qemu-kvm,python3-devel,libxml2-devel,libxslt-devel,redhat-rpm-config,gcc,libguestfs-tools,genisoimage
+    name: libvirt,qemu-kvm,python3-devel,libxml2-devel,libxslt-devel,redhat-rpm-config,gcc,libguestfs-tools,genisoimage,guestfs-tools
     state: present
 - name: Install lxml
   ansible.builtin.pip:
