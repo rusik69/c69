@@ -190,6 +190,10 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
+	err = createKickstartFile(vm.Name)
+	if err != nil {
+		return types.VM{}, err
+	}
 	var cpuShares uint
 	var vcpus uint
 	if flavor.MilliCPUs > 1024 {
