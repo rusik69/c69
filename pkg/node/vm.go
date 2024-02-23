@@ -199,10 +199,10 @@ func CreateVM(vm types.VM) (types.VM, error) {
 		cpuShares = uint(flavor.MilliCPUs)
 		vcpus = 1
 	}
-	//err = AddSSHPublicKey(destImgName)
-	//if err != nil {
-	//	return types.VM{}, err
-	//}
+	err = AddSSHPublicKey(destImgName)
+	if err != nil {
+		return types.VM{}, err
+	}
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
 		Name: vm.Name,
