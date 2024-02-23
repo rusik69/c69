@@ -123,7 +123,6 @@ func AddSSHPublicKey(image string) error {
 	mkdirCmd := exec.Command("virt-customize", cmdSlice...)
 	_, err := mkdirCmd.CombinedOutput()
 	if err != nil {
-		logrus.Println(err)
 		return err
 	}
 	return nil
