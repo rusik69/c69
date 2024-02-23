@@ -48,7 +48,7 @@ func CreateVMHandler(c *gin.Context) {
 	logrus.Println("Creating VM", tempVM.Name, tempVM.Image, tempVM.Flavor)
 	vm, err := CreateVM(tempVM)
 	if err != nil {
-		logrus.Error(err.Error())
+		logrus.Error("Failed to create VM", err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
