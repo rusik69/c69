@@ -120,16 +120,14 @@ func CreateSSHKey() error {
 func AddSSHPublicKey(image string) error {
 	logrus.Println("Adding ssh public key to", image)
 	mkdirCmd := exec.Command("/usr/bin/virt-customize", "-q", "--no-selinux-relabel", "-a", image, "--mkdir", "/root/.ssh")
-	res, err := mkdirCmd.CombinedOutput()
+	_, err := mkdirCmd.CombinedOutput()
 	if err != nil {
-		logrus.Println(string(res))
 		return err
 	}
-	cmd := exec.Command("/usr/bin/virt-copy-in", "-a", image, "/root/.ssh/authorized_keys", "/root/.ssh")
+	cmd := exec.Command("/usr/bin/virt-copy-in", "-a", image, "/root/.ssh/authorized_keys", "/root/.ssh", "--root-password", "password:root", "--password", "password:ubuntu")
 	cmd.Env = append(cmd.Env, "LIBGUESTFS_BACKEND=direct")
-	res, err = cmd.CombinedOutput()
+	_, err = cmd.CombinedOutput()
 	if err != nil {
-		logrus.Println(string(res))
 		return err
 	}
 	return nil
