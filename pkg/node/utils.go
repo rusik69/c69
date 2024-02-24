@@ -134,6 +134,7 @@ func AddSSHPublicKey(image string) error {
 
 // wait for the vm to be up
 func waitForVMUp(domain *libvirt.Domain) (string, error) {
+	logrus.Println("Waiting for VM to be up")
 	count := 0
 	for {
 		if count == 120 {
@@ -162,6 +163,7 @@ func waitForVMUp(domain *libvirt.Domain) (string, error) {
 
 // wait for ssh connection
 func waitForSSH(ip string) error {
+	logrus.Println("Waiting for SSH")
 	count := 0
 	for {
 		if count == 120 {
