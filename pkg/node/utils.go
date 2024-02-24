@@ -181,6 +181,7 @@ func waitForSSH(ip string) error {
 
 // apply ansible to vm
 func applyAnsible(ip string) error {
+	logrus.Println("Applying ansible to", ip)
 	cmd := exec.Command("ansible-playbook", "-u", "root", "-i", ip+",", "/var/lib/libvirt/ansible/vm.yml")
 	cmd.Env = append(cmd.Env, "ANSIBLE_HOST_KEY_CHECKING=False")
 	cmd.Env = append(cmd.Env, "ANSIBLE_GATHERING=explicit")
