@@ -4,7 +4,7 @@
     timeout: 60
 - name: configure dhcp networking on ubuntu 22.04
   ansible.builtin.copy:
-    src: 50-cloud-init.yaml
+    src: 01-enp0s3.yaml
     dest: /etc/netplan/01-enp0s3.yaml
     owner: root
     group: root
