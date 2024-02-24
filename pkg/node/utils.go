@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -169,13 +170,18 @@ func waitForSSH(ip string) error {
 		if count == 120 {
 			return errors.New("timeout")
 		}
-		cmd := exec.Command("ssh", "-o", "StrictHostKeyChecking=no", "-i", "/root/.ssh/id_rsa", "root@"+ip, "echo")
-		err := cmd.Run()
-		if err == nil {
-			return nil
+		conn, err := net.DialTimeout("tcp", net.JoinHostPort(ip, "22"), time.Second)
+		if err != nil {
+			logrus.Println("Failed to connect to SSH")
+			count++
+			time.Sleep(1 * time.Second)
+			continue
+		} else {
+			if conn != nil {
+				conn.Close()
+				return nil
+			}
 		}
-		count++
-		time.Sleep(1 * time.Second)
 	}
 }
 
