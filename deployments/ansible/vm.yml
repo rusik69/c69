@@ -1,0 +1,5 @@
+---
+- name: apply vm role
+  hosts: all
+  roles:
+    - vm

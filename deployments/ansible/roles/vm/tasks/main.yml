@@ -1,0 +1,9 @@
+---
+- name: configure dhcp networking on ubuntu 22.04
+  ansible.builtin.copy:
+    src: 50-cloud-init.yaml
+    dest: /etc/netplan/01-enp0s3.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: netplan apply

@@ -119,7 +119,7 @@ func CreateSSHKey() error {
 // AddSSHPublicKey adds the ssh public key to image.
 func AddSSHPublicKey(image string) error {
 	logrus.Println("Adding ssh public key to", image)
-	cmdSlice := []string{"--no-selinux-relabel", "-a", image, "--mkdir", "/root/.ssh", "--root-password", "password:password", "--password", "password:password", "--network", "--ssh-inject", "root:file:/root/.ssh/id_rsa.pub", "--firstboot-command", "dhclient;dpkg-reconfigure openssh-server;systemctl restart sshd"}
+	cmdSlice := []string{"--no-selinux-relabel", "-a", image, "--mkdir", "/root/.ssh", "--root-password", "password:password", "--password", "password:password", "--network", "--ssh-inject", "root:file:/root/.ssh/id_rsa.pub", "--firstboot-command", "dhclient;dpkg-reconfigure openssh-server;systemctl restart sshd; growpart /dev/vda 1; resize2fs /dev/vda1"}
 	mkdirCmd := exec.Command("virt-customize", cmdSlice...)
 	output, err := mkdirCmd.CombinedOutput()
 	logrus.Println(string(output))
@@ -127,6 +127,18 @@ func AddSSHPublicKey(image string) error {
 		return err
 	}
 	return nil
+}
+
+// apply ansible to vm
+func applyAnsible(ip string) error {
+	cmd := exec.Command("ansible-playbook", "-u", "root", "-i", ip+",", "/var/lib/libvirt/ansible/vm.yml")
+	output, err := cmd.CombinedOutput()
+	logrus.Println(string(output))
+	if err != nil {
+		return err
+	}
+	return nil
+
 }
 
 // copyFile copies the file.

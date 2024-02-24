@@ -119,12 +119,12 @@ var VMImages = map[string]VMImage{
 	// 	Img:  "ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
 	// 	URL:  "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64-disk-kvm.img",
 	// },
-	"fedora39": VMImage{
-		ID:   "0",
-		Type: "fedora",
-		Img:  "Fedora-Server-KVM-39-1.5.x86_64.qcow2",
-		URL:  "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/images/Fedora-Server-KVM-39-1.5.x86_64.qcow2",
-	},
+	//"fedora39": VMImage{
+	//	ID:   "0",
+	//		Type: "fedora",
+	//	Img:  "Fedora-Server-KVM-39-1.5.x86_64.qcow2",
+	//	URL:  "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/images/Fedora-Server-KVM-39-1.5.x86_64.qcow2",
+	//},
 }
 
 type NodeEnv struct {
