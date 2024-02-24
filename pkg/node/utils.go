@@ -164,7 +164,7 @@ func waitForVMUp(domain *libvirt.Domain) (string, error) {
 
 // wait for ssh connection
 func waitForSSH(ip string) error {
-	logrus.Println("Waiting for SSH")
+	logrus.Println("Waiting for SSH on", ip)
 	count := 0
 	for {
 		if count == 120 {
@@ -172,13 +172,13 @@ func waitForSSH(ip string) error {
 		}
 		conn, err := net.DialTimeout("tcp", net.JoinHostPort(ip, "22"), time.Second)
 		if err != nil {
-			logrus.Println("Failed to connect to SSH")
 			count++
 			time.Sleep(1 * time.Second)
 			continue
 		} else {
 			if conn != nil {
 				conn.Close()
+				logrus.Println("SSH is up")
 				return nil
 			}
 		}
