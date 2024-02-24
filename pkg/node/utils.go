@@ -132,6 +132,8 @@ func AddSSHPublicKey(image string) error {
 // apply ansible to vm
 func applyAnsible(ip string) error {
 	cmd := exec.Command("ansible-playbook", "-u", "root", "-i", ip+",", "/var/lib/libvirt/ansible/vm.yml")
+	cmd.Env = append(cmd.Env, "ANSIBLE_HOST_KEY_CHECKING=False")
+	cmd.Env = append(cmd.Env, "ANSIBLE_GATHERING=explicit")
 	output, err := cmd.CombinedOutput()
 	logrus.Println(string(output))
 	if err != nil {
