@@ -46,10 +46,10 @@ func CreateVMHandler(c *gin.Context) {
 		return
 	}
 	logrus.Println("Creating VM", tempVM.Name, tempVM.Image, tempVM.Flavor)
-	vm, err := CreateVM(tempVM)
+	vm, code, err := CreateVM(tempVM)
 	if err != nil {
 		logrus.Error("Failed to create VM", err.Error())
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(code, gin.H{"error": err.Error()})
 		return
 	}
 	logrus.Println("Created VM", vm)
@@ -165,30 +165,30 @@ func DownloadImages() error {
 }
 
 // CreateVM creates the vm.
-func CreateVM(vm types.VM) (types.VM, error) {
+func CreateVM(vm types.VM) (types.VM, int, error) {
 	flavor, ok := types.VMFlavors[vm.Flavor]
 	if !ok {
-		return types.VM{}, errors.New("flavor not found")
+		return types.VM{}, 400, errors.New("flavor not found")
 	}
 	if types.VMImages[vm.Image].Img == "" {
-		return types.VM{}, errors.New(vm.Image + " image not found")
+		return types.VM{}, 400, errors.New(vm.Image + " image not found")
 	}
 	imgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
 		types.VMImages[vm.Image].Img)
 	if _, err := os.Stat(imgName); os.IsNotExist(err) {
-		return types.VM{}, errors.New(vm.Image + " image not found")
+		return types.VM{}, 400, errors.New(vm.Image + " image not found")
 	}
 	destImgName := filepath.Join(types.NodeEnvInstance.LibVirtImageDir,
 		vm.Name+".qcow2")
 	logrus.Println("Copying image", imgName, "to", destImgName)
 	err := copyFile(imgName, destImgName)
 	if err != nil {
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	logrus.Println("Resizing image", destImgName, "to", flavor.Disk, "GB")
 	err = resizeImage(destImgName, flavor)
 	if err != nil {
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	var cpuShares uint
 	var vcpus uint
@@ -201,7 +201,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	}
 	err = AddSSHPublicKey(destImgName)
 	if err != nil {
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	domainXML := libvirtxml.Domain{
 		Type: "kvm",
@@ -273,31 +273,31 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	}
 	vmxml, err := domainXML.Marshal()
 	if err != nil {
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	domain, err := LibvirtConnection.DomainDefineXML(vmxml)
 	if err != nil {
 		logrus.Error(err.Error())
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	defer domain.Free()
 	err = domain.Create()
 	if err != nil {
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	id, err := domain.GetID()
 	if err != nil {
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	vmDesc, err := domain.GetXMLDesc(libvirt.DomainXMLFlags(0))
 	if err != nil {
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	var vmXML libvirtxml.Domain
 	err = xml.Unmarshal([]byte(vmDesc), &vmXML)
 	if err != nil {
 		fmt.Println("Failed to unmarshal XML")
-		return types.VM{}, err
+		return types.VM{}, 500, err
 	}
 	vncPort := vmXML.Devices.Graphics[0].VNC.Port
 	vncPortString := fmt.Sprintf("%d", vncPort)
@@ -306,7 +306,7 @@ func CreateVM(vm types.VM) (types.VM, error) {
 	vm.NodePort = types.NodeEnvInstance.ListenPort
 	vm.ID = int(id)
 	vm.VNCURL = vncURL
-	return vm, nil
+	return vm, 200, nil
 }
 
 // DeleteVM deletes the vm.
