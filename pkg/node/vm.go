@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"time"
 
 	"encoding/xml"
 
@@ -318,8 +317,6 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	vm.IP = ip
 	return vm, 200, nil
 }
-
-
 
 // DeleteVM deletes the vm.
 func DeleteVM(vm types.VM) error {
