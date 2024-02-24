@@ -1,4 +1,7 @@
 ---
+- name: wait for connection
+  ansible.builtin.wait_for_connection:
+    timeout: 60
 - name: configure dhcp networking on ubuntu 22.04
   ansible.builtin.copy:
     src: 50-cloud-init.yaml
