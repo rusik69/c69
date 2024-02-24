@@ -44,31 +44,6 @@ deploy:
 	ssh x220.rusik69.lol "sudo systemctl start govnocloud-node"
 	ssh x230.rusik69.lol "sudo systemctl start govnocloud-node"
 
-docker:
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG) -f build/Dockerfile .
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) -f build/Dockerfile-test .
-	docker build -t $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) -f build/Dockerfile-front .
-	docker tag $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME):latest
-	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
-	docker tag $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG) $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
-	docker push -q $(ORG_PREFIX)/$(BINARY_NAME):$(IMAGE_TAG)
-	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-test:$(IMAGE_TAG)
-	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-front:$(IMAGE_TAG)
-	docker push -q $(ORG_PREFIX)/$(BINARY_NAME):latest
-	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-test:latest
-	docker push -q $(ORG_PREFIX)/$(BINARY_NAME)-front:latest
-
-dockerdeploy:
-	scp deployments/docker-compose-master.yml ~/
-	docker compose -f ~/docker-compose-master.yml down
-	docker compose -f ~/docker-compose-master.yml up -d --quiet-pull
-	scp deployments/docker-compose-x220.yml x220.rusik69.lol:~/
-	ssh x220.rusik69.lol "/usr/local/bin/cleanup.sh"
-	ssh x220.rusik69.lol "docker compose -f ~/docker-compose-x220.yml up -d --quiet-pull"
-	scp deployments/docker-compose-x230.yml x230.rusik69.lol:~/
-	ssh x230.rusik69.lol "/usr/local/bin/cleanup.sh"
-	ssh x230.rusik69.lol "docker compose -f ~/docker-compose-x230.yml up -d --quiet-pull"
-
 ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
@@ -87,7 +62,7 @@ logs:
 
 remotetest:
 	rsync -avz . t440p.rusik69.lol:~/govnocloud
-	ssh t440p.rusik69.lol "cd govnocloud; make docker; make deploy; make composetest; make composelogs"
+	ssh t440p.rusik69.lol "cd govnocloud; make ansible get build deploy test logs"
 
 rsync:
 	rsync -avz . t440p.rusik69.lol:~/govnocloud

@@ -22,3 +22,4 @@ bin/*
 go.work
 front/.vscode
 front/node_modules
+.idea/*
