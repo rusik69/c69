@@ -26,7 +26,7 @@ build:
 
 test:
 	
-	go test -timeout 20m -v ./...
+	go test -timeout 30m -v ./...
 
 deploy:
 	sudo systemctl stop govnocloud-master

@@ -166,7 +166,7 @@ func waitForSSH(ip string) error {
 	logrus.Println("Waiting for SSH")
 	count := 0
 	for {
-		if count == 120 {
+		if count == 60 {
 			return errors.New("timeout")
 		}
 		cmd := exec.Command("ssh", "-o", "StrictHostKeyChecking=no", "-i", "/root/.ssh/id_rsa", "root@"+ip, "echo")
