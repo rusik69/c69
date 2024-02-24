@@ -20,6 +20,16 @@ var clientCmd = &cobra.Command{
 	},
 }
 
+// sshClientCmd represents the ssh commands
+var sshClientCmd = &cobra.Command{
+	Use:   "ssh",
+	Short: "ssh to vm or node",
+	Long:  `ssh to vm or node`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("usage: ssh [vm|node]")
+	},
+}
+
 // vmClientCmd represents the vm commands
 var vmClientCmd = &cobra.Command{
 	Use:   "vm",
@@ -57,6 +67,48 @@ var containerClientCmd = &cobra.Command{
 	Long:  `container commands`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("usage: container [create|delete|list|get]")
+	},
+}
+
+// sshNodeCmd represents the ssh node command
+var sshNodeCmd = &cobra.Command{
+	Use:   "node",
+	Short: "ssh to node",
+	Long:  `ssh to node`,
+	Run: func(cmd *cobra.Command, args []string) {
+		node := cmd.PersistentFlags().Lookup("node").Value.String()
+		if node == "" {
+			panic("node is required")
+		}
+		user := cmd.PersistentFlags().Lookup("user").Value.String()
+		if user == "" {
+			user = "root"
+		}
+		err := client.SSHNode(node, user)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// sshVMCmd represents the ssh vm command
+var sshVMCmd = &cobra.Command{
+	Use:   "vm",
+	Short: "ssh to vm",
+	Long:  `ssh to vm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		vm := cmd.PersistentFlags().Lookup("vm").Value.String()
+		if vm == "" {
+			panic("vm is required")
+		}
+		user := cmd.PersistentFlags().Lookup("user").Value.String()
+		if user == "" {
+			user = "root"
+		}
+		err := client.SSHVM(vm, user)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 
@@ -612,6 +664,7 @@ var fileListCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(clientCmd)
+	clientCmd.AddCommand(sshClientCmd)
 	clientCmd.AddCommand(vmClientCmd)
 	clientCmd.AddCommand(nodeClientCmd)
 	clientCmd.AddCommand(containerClientCmd)
@@ -636,7 +689,8 @@ func init() {
 	fileClientCmd.AddCommand(fileDownloadCmd)
 	fileClientCmd.AddCommand(fileDeleteCmd)
 	fileClientCmd.AddCommand(fileListCmd)
-
+	sshClientCmd.AddCommand(sshNodeCmd)
+	sshClientCmd.AddCommand(sshVMCmd)
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

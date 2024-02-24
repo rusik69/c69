@@ -136,8 +136,6 @@ type NodeEnv struct {
 	LibVirtImageDir string `json:"libvirt_image_dir"`
 	LibVirtBootDir  string `json:"libvirt_boot_dir"`
 	FilesDir        string `json:"files_dir"`
-	PasswordHash    string `json:"password_hash"`
-	NbdMountPoint   string `json:"nbd_mount_point"`
 }
 
 // NodeEnvInstance is the singleton instance of NodeEnv.
