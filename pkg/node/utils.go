@@ -122,8 +122,8 @@ func AddSSHPublicKey(image string) error {
 	cmdSlice := []string{"--no-selinux-relabel", "-a", image, "--mkdir", "/root/.ssh", "--root-password", "password:password", "--password", "password:password", "--network", "--ssh-inject", "root:file:/root/.ssh/id_rsa.pub"}
 	mkdirCmd := exec.Command("virt-customize", cmdSlice...)
 	output, err := mkdirCmd.CombinedOutput()
+	logrus.Println(string(output))
 	if err != nil {
-		logrus.Error(string(output))
 		return err
 	}
 	return nil
