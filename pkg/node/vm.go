@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"time"
 
 	"encoding/xml"
 
@@ -296,9 +297,13 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	var vmXML libvirtxml.Domain
 	err = xml.Unmarshal([]byte(vmDesc), &vmXML)
 	if err != nil {
-		fmt.Println("Failed to unmarshal XML")
 		return types.VM{}, 500, err
 	}
+	ip, err := waitForVMUp(domain)
+	if err != nil {
+		return types.VM{}, 500, err
+	}
+	logrus.Println("VM IP", ip)
 	vncPort := vmXML.Devices.Graphics[0].VNC.Port
 	vncPortString := fmt.Sprintf("%d", vncPort)
 	vncURL := "ws://" + types.NodeEnvInstance.IP + ":" + vncPortString
@@ -306,7 +311,36 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	vm.NodePort = types.NodeEnvInstance.ListenPort
 	vm.ID = int(id)
 	vm.VNCURL = vncURL
+	vm.IP = ip
 	return vm, 200, nil
+}
+
+// wait for the vm to be up
+func waitForVMUp(domain *libvirt.Domain) (string, error) {
+	count := 0
+	for {
+		if count == 120 {
+			return "", errors.New("timeout")
+		}
+		ifaces, err := domain.ListAllInterfaceAddresses(libvirt.DOMAIN_INTERFACE_ADDRESSES_SRC_LEASE)
+		if err != nil {
+			fmt.Println("Failed to get interface addresses")
+			return "", err
+		}
+
+		for _, iface := range ifaces {
+			for _, addr := range iface.Addrs {
+				if addr.Addr != "" {
+					fmt.Println("IP address:", addr.Addr)
+					return addr.Addr, nil
+				}
+			}
+		}
+
+		// Wait before checking again
+		count++
+		time.Sleep(1 * time.Second)
+	}
 }
 
 // DeleteVM deletes the vm.
