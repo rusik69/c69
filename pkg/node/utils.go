@@ -1,6 +1,8 @@
 package node
 
 import (
+	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -9,6 +11,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
@@ -127,6 +130,34 @@ func AddSSHPublicKey(image string) error {
 		return err
 	}
 	return nil
+}
+
+// wait for the vm to be up
+func waitForVMUp(domain *libvirt.Domain) (string, error) {
+	count := 0
+	for {
+		if count == 120 {
+			return "", errors.New("timeout")
+		}
+		ifaces, err := domain.ListAllInterfaceAddresses(libvirt.DOMAIN_INTERFACE_ADDRESSES_SRC_LEASE)
+		if err != nil {
+			logrus.Println("Failed to get interface addresses")
+			return "", err
+		}
+
+		for _, iface := range ifaces {
+			for _, addr := range iface.Addrs {
+				if addr.Addr != "" {
+					fmt.Println("IP address:", addr.Addr)
+					return addr.Addr, nil
+				}
+			}
+		}
+
+		// Wait before checking again
+		count++
+		time.Sleep(1 * time.Second)
+	}
 }
 
 // apply ansible to vm

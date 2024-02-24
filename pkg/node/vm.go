@@ -319,33 +319,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	return vm, 200, nil
 }
 
-// wait for the vm to be up
-func waitForVMUp(domain *libvirt.Domain) (string, error) {
-	count := 0
-	for {
-		if count == 120 {
-			return "", errors.New("timeout")
-		}
-		ifaces, err := domain.ListAllInterfaceAddresses(libvirt.DOMAIN_INTERFACE_ADDRESSES_SRC_LEASE)
-		if err != nil {
-			fmt.Println("Failed to get interface addresses")
-			return "", err
-		}
 
-		for _, iface := range ifaces {
-			for _, addr := range iface.Addrs {
-				if addr.Addr != "" {
-					fmt.Println("IP address:", addr.Addr)
-					return addr.Addr, nil
-				}
-			}
-		}
-
-		// Wait before checking again
-		count++
-		time.Sleep(1 * time.Second)
-	}
-}
 
 // DeleteVM deletes the vm.
 func DeleteVM(vm types.VM) error {
