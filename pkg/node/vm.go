@@ -302,6 +302,10 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	if err != nil {
 		return types.VM{}, 500, err
 	}
+	err = waitForSSH(ip)
+	if err != nil {
+		return types.VM{}, 500, err
+	}
 	err = applyAnsible(ip)
 	if err != nil {
 		return types.VM{}, 500, err

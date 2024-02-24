@@ -160,6 +160,23 @@ func waitForVMUp(domain *libvirt.Domain) (string, error) {
 	}
 }
 
+// wait for ssh connection
+func waitForSSH(ip string) error {
+	count := 0
+	for {
+		if count == 120 {
+			return errors.New("timeout")
+		}
+		cmd := exec.Command("ssh", "-o", "StrictHostKeyChecking=no", "-i", "/root/.ssh/id_rsa", "root@"+ip, "echo")
+		err := cmd.Run()
+		if err == nil {
+			return nil
+		}
+		count++
+		time.Sleep(1 * time.Second)
+	}
+}
+
 // apply ansible to vm
 func applyAnsible(ip string) error {
 	cmd := exec.Command("ansible-playbook", "-u", "root", "-i", ip+",", "/var/lib/libvirt/ansible/vm.yml")
