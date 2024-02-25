@@ -7,8 +7,8 @@ import (
 )
 
 // SSHNode runs ssh to a node
-func SSHNode(host, port, node, user string) error {
-	n, err := GetNode(host, port, node)
+func SSHNode(host, port, nodeName, user string) error {
+	node, err := GetNode(host, port, nodeName)
 	if err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func SSHNode(host, port, node, user string) error {
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
-	sshClient, err := ssh.Dial("tcp", n.Host+":22", sshConfig)
+	sshClient, err := ssh.Dial("tcp", node.Host+":22", sshConfig)
 	if err != nil {
 		return err
 	}
@@ -45,6 +45,6 @@ func SSHNode(host, port, node, user string) error {
 }
 
 // SSHVM runs ssh to a vm
-func SSHVM(host, user string) error {
+func SSHVM(host, port, vmName, user string) error {
 	return nil
 }
