@@ -7,7 +7,11 @@ import (
 )
 
 // SSHNode runs ssh to a node
-func SSHNode(host, user string) error {
+func SSHNode(host, port, node, user string) error {
+	n, err := GetNode(host, port, node)
+	if err != nil {
+		return err
+	}
 	key, err := os.ReadFile("~/.ssh/id_rsa")
 	if err != nil {
 		return err
@@ -23,7 +27,7 @@ func SSHNode(host, user string) error {
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
-	sshClient, err := ssh.Dial("tcp", host+":22", sshConfig)
+	sshClient, err := ssh.Dial("tcp", n.Host+":22", sshConfig)
 	if err != nil {
 		return err
 	}
