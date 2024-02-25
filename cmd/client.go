@@ -134,11 +134,11 @@ var nodeAddCmd = &cobra.Command{
 	Long:  `add node`,
 	Run: func(cmd *cobra.Command, args []string) {
 		nodehost := cmd.PersistentFlags().Lookup("nodehost").Value.String()
-		if host == "" {
+		if nodehost == "" {
 			panic("nodehost is required")
 		}
 		nodeport := cmd.PersistentFlags().Lookup("nodeport").Value.String()
-		if port == "" {
+		if nodeport == "" {
 			panic("nodeport is required")
 		}
 		name := cmd.PersistentFlags().Lookup("name").Value.String()
@@ -175,7 +175,6 @@ var nodeListCmd = &cobra.Command{
 	Short: "list nodes",
 	Long:  `list nodes`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var host string
 		nodes, err := client.ListNodes(clientHost, clientPort)
 		if err != nil {
 			panic(err)
@@ -431,7 +430,6 @@ var containerStartCmd = &cobra.Command{
 		if containerID == "" {
 			panic("container id is required")
 		}
-		host := cmd.PersistentFlags().Lookup("host").Value.String()
 		err := client.StartContainer(clientHost, clientPort, containerID)
 		if err != nil {
 			panic(err)
