@@ -16,7 +16,7 @@ var clientCmd = &cobra.Command{
 	Short: "govnocloud client",
 	Long:  `govnocloud client`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("client called")
+		fmt.Println("usage: ssh|vm|node|container|file [command] [flags]")
 	},
 }
 
