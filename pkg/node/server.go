@@ -54,19 +54,19 @@ func GetStats() (types.NodeStats, error) {
 	if err != nil {
 		return types.NodeStats{}, err
 	}
-	mem, err := mem.VirtualMemory()
+	memory, err := mem.VirtualMemory()
 	if err != nil {
 		return types.NodeStats{}, err
 	}
-	disk, err := disk.Usage("/")
+	usage, err := disk.Usage("/")
 	if err != nil {
 		return types.NodeStats{}, err
 	}
 	return types.NodeStats{
 		MilliCPUs: uint64(1024 * numCPUs),
-		FreeMEM:   uint64(mem.Free),
-		TotalMEM:  uint64(mem.Total),
-		FreeDISK:  uint64(disk.Free),
-		TotalDISK: uint64(disk.Total),
+		FreeMEM:   uint64(memory.Free),
+		TotalMEM:  uint64(memory.Total),
+		FreeDISK:  uint64(usage.Free),
+		TotalDISK: uint64(usage.Total),
 	}, nil
 }

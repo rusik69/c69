@@ -105,6 +105,14 @@ var sshVMCmd = &cobra.Command{
 	Short: "ssh to vm",
 	Long:  `ssh to vm`,
 	Run: func(cmd *cobra.Command, args []string) {
+		host := cmd.PersistentFlags().Lookup("host").Value.String()
+		if host == "" {
+			panic("host is required")
+		}
+		port := cmd.PersistentFlags().Lookup("port").Value.String()
+		if port == "" {
+			panic("port is required")
+		}
 		vm := cmd.PersistentFlags().Lookup("vm").Value.String()
 		if vm == "" {
 			panic("vm is required")
@@ -113,7 +121,7 @@ var sshVMCmd = &cobra.Command{
 		if user == "" {
 			user = "root"
 		}
-		err := client.SSHVM(vm, user)
+		err := client.SSHVM(host, port, vm, user)
 		if err != nil {
 			panic(err)
 		}
