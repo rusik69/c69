@@ -540,7 +540,7 @@ func init() {
 	clientCmd.PersistentFlags().String("port", "7070", "port to connect to")
 	hostLookup := clientCmd.PersistentFlags().Lookup("host")
 	if hostLookup == nil {
-		clientHost = "localhost"
+		clientHost = "127.0.0.1"
 	} else {
 		clientHost = hostLookup.Value.String()
 	}
