@@ -550,20 +550,10 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	clientCmd.PersistentFlags().String("host", "127.0.0.1", "host to connect to")
-	clientCmd.PersistentFlags().String("port", "7070", "port to connect to")
-	hostLookup := clientCmd.PersistentFlags().Lookup("host")
-	if hostLookup == nil {
-		clientHost = "127.0.0.1"
-	} else {
-		clientHost = hostLookup.Value.String()
-	}
-	portLookup := clientCmd.PersistentFlags().Lookup("port")
-	if portLookup == nil {
-		clientPort = "7070"
-	} else {
-		clientPort = portLookup.Value.String()
-	}
+	hostVal := clientCmd.PersistentFlags().String("host", "127.0.0.1", "host to connect to")
+	portVal := clientCmd.PersistentFlags().String("port", "7070", "port to connect to")
+	clientHost = *hostVal
+	clientPort = *portVal
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// clientCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
