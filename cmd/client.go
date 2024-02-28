@@ -79,15 +79,16 @@ var sshNodeCmd = &cobra.Command{
 	Short: "ssh to node",
 	Long:  `ssh to node`,
 	Run: func(cmd *cobra.Command, args []string) {
-		node := cmd.PersistentFlags().Lookup("node").Value.String()
-		if node == "" {
+		node := cmd.PersistentFlags().Lookup("node")
+		if node == nil {
 			panic("node is required")
 		}
+		nodeString := node.Value.String()
 		user := cmd.PersistentFlags().Lookup("user").Value.String()
 		if user == "" {
 			user = "root"
 		}
-		err := client.SSHNode(clientHost, clientPort, node, user)
+		err := client.SSHNode(clientHost, clientPort, nodeString, user)
 		if err != nil {
 			panic(err)
 		}
