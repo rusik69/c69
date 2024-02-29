@@ -524,6 +524,7 @@ func init() {
 	portVal := clientCmd.PersistentFlags().String("port", "7070", "port to connect to")
 	clientHost = *hostVal
 	clientPort = *portVal
+	fmt.Println("Connecting to " + clientHost + ":" + clientPort)
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// clientCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
