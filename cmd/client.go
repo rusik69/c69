@@ -79,18 +79,15 @@ var sshNodeCmd = &cobra.Command{
 	Short: "ssh to node",
 	Long:  `ssh to node`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("node", "", "node to ssh to")
-		node := cmd.PersistentFlags().Lookup("node")
-		if node == nil {
+		nodePtr := cmd.PersistentFlags().String("node", "", "node to ssh to")
+		if *nodePtr == "" {
 			panic("node is required")
 		}
-		cmd.PersistentFlags().String("user", "", "user to ssh as")
-		var userString string
-		user := cmd.PersistentFlags().Lookup("user")
-		if user == nil {
-			userString = "root"
+		userPtr := cmd.PersistentFlags().String("user", "root", "user to ssh as")
+		if *userPtr == "" {
+			panic("user is required")
 		}
-		err := client.SSHNode(clientHost, clientPort, node.Value.String(), userString)
+		err := client.SSHNode(clientHost, clientPort, *nodePtr, *userPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -103,18 +100,15 @@ var sshVMCmd = &cobra.Command{
 	Short: "ssh to vm",
 	Long:  `ssh to vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("vm", "", "vm to ssh to")
-		vm := cmd.PersistentFlags().Lookup("vm")
-		if vm == nil {
+		vmPtr := cmd.PersistentFlags().String("vm", "", "vm to ssh to")
+		if *vmPtr == "" {
 			panic("vm is required")
 		}
-		cmd.PersistentFlags().String("user", "", "user to ssh as")
-		user := cmd.PersistentFlags().Lookup("user")
-		var userString string
-		if user == nil {
-			userString = "root"
+		userPtr := cmd.PersistentFlags().String("user", "root", "user to ssh as")
+		if *userPtr == "" {
+			panic("user is required")
 		}
-		err := client.SSHVM(clientHost, clientPort, vm.Value.String(), userString)
+		err := client.SSHVM(clientHost, clientPort, *vmPtr, *userPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -127,22 +121,19 @@ var nodeAddCmd = &cobra.Command{
 	Short: "add node",
 	Long:  `add node`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("nodehost", "", "node host")
-		cmd.PersistentFlags().String("nodeport", "", "node port")
-		cmd.PersistentFlags().String("name", "", "node name")
-		nodehost := cmd.PersistentFlags().Lookup("nodehost")
-		if nodehost == nil {
+		hostPtr := cmd.PersistentFlags().String("nodehost", "", "node host")
+		if *hostPtr == "" {
 			panic("nodehost is required")
 		}
-		nodeport := cmd.PersistentFlags().Lookup("nodeport")
-		if nodeport == nil {
+		portPtr := cmd.PersistentFlags().String("nodeport", "", "node port")
+		if *portPtr == "" {
 			panic("nodeport is required")
 		}
-		name := cmd.PersistentFlags().Lookup("name")
-		if name == nil {
+		namePtr := cmd.PersistentFlags().String("name", "", "node name")
+		if *namePtr == "" {
 			panic("name is required")
 		}
-		err := client.AddNode(clientHost, clientPort, name.Value.String(), nodehost.Value.String(), nodeport.Value.String())
+		err := client.AddNode(clientHost, clientPort, *namePtr, *portPtr, *namePtr)
 		if err != nil {
 			panic(err)
 		}
@@ -155,12 +146,11 @@ var nodeDeleteCmd = &cobra.Command{
 	Short: "delete node",
 	Long:  `delete node`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "node name")
-		name := cmd.PersistentFlags().Lookup("name")
-		if name == nil {
+		namePtr := cmd.PersistentFlags().String("name", "", "node name")
+		if *namePtr == "" {
 			panic("name is required")
 		}
-		err := client.DeleteNode(clientHost, clientPort, name.Value.String())
+		err := client.DeleteNode(clientHost, clientPort, *namePtr)
 		if err != nil {
 			panic(err)
 		}
@@ -187,12 +177,11 @@ var nodeGetCmd = &cobra.Command{
 	Short: "get node",
 	Long:  `get node`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "node name")
-		name := cmd.PersistentFlags().Lookup("name")
-		if name == nil {
+		namePtr := cmd.PersistentFlags().String("name", "", "node name")
+		if *namePtr == "" {
 			panic("name is required")
 		}
-		node, err := client.GetNode(clientHost, clientPort, name.Value.String())
+		node, err := client.GetNode(clientHost, clientPort, *namePtr)
 		if err != nil {
 			panic(err)
 		}
@@ -210,22 +199,19 @@ var vmCreateCmd = &cobra.Command{
 	Short: "create vm",
 	Long:  `create vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "vm name")
-		cmd.PersistentFlags().String("image", "", "vm image")
-		cmd.PersistentFlags().String("flavor", "", "vm flavor")
-		vmName := cmd.PersistentFlags().Lookup("name")
-		if vmName == nil {
-			panic("vm name is required")
+		namePtr := cmd.PersistentFlags().String("name", "", "vm name")
+		if *namePtr == "" {
+			panic("name is required")
 		}
-		vmImage := cmd.PersistentFlags().Lookup("image")
-		if vmImage == nil {
-			panic("vm image is required")
+		imagePtr := cmd.PersistentFlags().String("image", "", "vm image")
+		if *imagePtr == "" {
+			panic("image is required")
 		}
-		vmFlavor := cmd.PersistentFlags().Lookup("flavor")
-		if vmFlavor == nil {
-			panic("vm flavor is required")
+		flavorPtr := cmd.PersistentFlags().String("flavor", "", "vm flavor")
+		if *flavorPtr == "" {
+			panic("flavor is required")
 		}
-		id, err := client.CreateVM(clientHost, clientPort, vmName.Value.String(), vmImage.Value.String(), vmFlavor.Value.String())
+		id, err := client.CreateVM(clientHost, clientPort, *namePtr, *imagePtr, *flavorPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -239,12 +225,11 @@ var vmDeleteCmd = &cobra.Command{
 	Short: "delete vm",
 	Long:  `delete vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "vm name")
-		name := cmd.PersistentFlags().Lookup("name")
-		if name == nil {
+		namePtr := cmd.PersistentFlags().String("name", "", "vm name")
+		if *namePtr == "" {
 			panic("name is required")
 		}
-		err := client.DeleteVM(clientHost, clientPort, name.Value.String())
+		err := client.DeleteVM(clientHost, clientPort, *namePtr)
 		if err != nil {
 			panic(err)
 		}
@@ -256,12 +241,11 @@ var vmGetCmd = &cobra.Command{
 	Short: "get vm",
 	Long:  `get vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "vm name")
-		name := cmd.PersistentFlags().Lookup("name")
-		if name == nil {
+		namePtr := cmd.PersistentFlags().String("name", "", "vm name")
+		if *namePtr == "" {
 			panic("name is required")
 		}
-		vm, err := client.GetVM(clientHost, clientPort, name.Value.String())
+		vm, err := client.GetVM(clientHost, clientPort, *namePtr)
 		if err != nil {
 			panic(err)
 		}
@@ -297,12 +281,11 @@ var vmStopCmd = &cobra.Command{
 	Short: "stop vm",
 	Long:  `stop vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "vm name")
-		name := cmd.PersistentFlags().Lookup("name")
-		if name == nil {
+		namePtr := cmd.PersistentFlags().String("name", "", "vm name")
+		if *namePtr == "" {
 			panic("name is required")
 		}
-		err := client.StopVM(clientHost, clientPort, name.Value.String())
+		err := client.StopVM(clientHost, clientPort, *namePtr)
 		if err != nil {
 			panic(err)
 		}
@@ -315,12 +298,11 @@ var vmStartCmd = &cobra.Command{
 	Short: "start vm",
 	Long:  `start vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "vm name")
-		name := cmd.PersistentFlags().Lookup("name")
-		if name == nil {
+		namePtr := cmd.PersistentFlags().String("name", "", "vm name")
+		if *namePtr == "" {
 			panic("name is required")
 		}
-		err := client.StartVM(clientHost, clientPort, name.Value.String())
+		err := client.StartVM(clientHost, clientPort, *namePtr)
 		if err != nil {
 			panic(err)
 		}
@@ -333,17 +315,15 @@ var containerCreateCmd = &cobra.Command{
 	Short: "create container",
 	Long:  `create container`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "container name")
-		cmd.PersistentFlags().String("image", "", "container image")
-		containerName := cmd.PersistentFlags().Lookup("name")
-		if containerName == nil {
-			panic("container name is required")
+		namePtr := cmd.PersistentFlags().String("name", "", "container name")
+		if *namePtr == "" {
+			panic("name is required")
 		}
-		containerImage := cmd.PersistentFlags().Lookup("image")
-		if containerImage == nil {
-			panic("container image is required")
+		imagePtr := cmd.PersistentFlags().String("image", "", "container image")
+		if *imagePtr == "" {
+			panic("image is required")
 		}
-		id, err := client.CreateContainer(clientHost, clientPort, containerName.Value.String(), containerImage.Value.String())
+		id, err := client.CreateContainer(clientHost, clientPort, *namePtr, *imagePtr)
 		if err != nil {
 			panic(err)
 		}
@@ -357,12 +337,11 @@ var containerDeleteCmd = &cobra.Command{
 	Short: "delete container",
 	Long:  `delete container`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("id", "", "container id")
-		id := cmd.PersistentFlags().Lookup("id")
-		if id == nil {
+		idPtr := cmd.PersistentFlags().String("id", "", "container id")
+		if *idPtr == "" {
 			panic("id is required")
 		}
-		err := client.DeleteContainer(clientHost, clientPort, id.Value.String())
+		err := client.DeleteContainer(clientHost, clientPort, *idPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -375,12 +354,11 @@ var containerGetCmd = &cobra.Command{
 	Short: "get container",
 	Long:  `get container`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("id", "", "container id")
-		id := cmd.PersistentFlags().Lookup("id")
-		if id == nil {
+		idPtr := cmd.PersistentFlags().String("id", "", "container id")
+		if *idPtr == "" {
 			panic("id is required")
 		}
-		container, err := client.GetContainer(clientHost, clientPort, id.Value.String())
+		container, err := client.GetContainer(clientHost, clientPort, *idPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -419,12 +397,11 @@ var containerStopCmd = &cobra.Command{
 	Short: "stop container",
 	Long:  `stop container`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("id", "", "container id")
-		containerID := cmd.PersistentFlags().Lookup("id")
-		if containerID == nil {
-			panic("container id is required")
+		idPtr := cmd.PersistentFlags().String("id", "", "container id")
+		if *idPtr == "" {
+			panic("id is required")
 		}
-		err := client.StopContainer(clientHost, clientPort, containerID.Value.String())
+		err := client.StopContainer(clientHost, clientPort, *idPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -437,12 +414,8 @@ var containerStartCmd = &cobra.Command{
 	Short: "start container",
 	Long:  `start container`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("id", "", "container id")
-		containerID := cmd.PersistentFlags().Lookup("id")
-		if containerID == nil {
-			panic("container id is required")
-		}
-		err := client.StartContainer(clientHost, clientPort, containerID.Value.String())
+		idPtr := cmd.PersistentFlags().String("id", "", "container id")
+		err := client.StartContainer(clientHost, clientPort, *idPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -455,12 +428,11 @@ var fileUploadCmd = &cobra.Command{
 	Short: "upload file",
 	Long:  `upload file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("src", "", "file source")
-		fileSource := cmd.PersistentFlags().Lookup("src")
-		if fileSource == nil {
-			panic("file source is required")
+		srcPtr := cmd.PersistentFlags().String("src", "", "file source")
+		if *srcPtr == "" {
+			panic("src is required")
 		}
-		err := client.UploadFile(clientHost, clientPort, fileSource.Value.String())
+		err := client.UploadFile(clientHost, clientPort, *srcPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -473,12 +445,11 @@ var fileDownloadCmd = &cobra.Command{
 	Short: "download file",
 	Long:  `download file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("source", "", "file source")
-		fileSource := cmd.PersistentFlags().Lookup("source")
-		if fileSource == nil {
-			panic("file source is required")
+		srcPtr := cmd.PersistentFlags().String("source", "", "file source")
+		if *srcPtr == "" {
+			panic("source is required")
 		}
-		err := client.DownloadFile(clientHost, clientPort, fileSource.Value.String())
+		err := client.DownloadFile(clientHost, clientPort, *srcPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -491,12 +462,11 @@ var fileDeleteCmd = &cobra.Command{
 	Short: "delete file",
 	Long:  `delete file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.PersistentFlags().String("name", "", "file name")
-		fileName := cmd.PersistentFlags().Lookup("name")
-		if fileName == nil {
+		namePtr := cmd.PersistentFlags().String("name", "", "file name")
+		if *namePtr == "" {
 			panic("name is required")
 		}
-		err := client.DeleteFile(clientHost, clientPort, fileName.Value.String())
+		err := client.DeleteFile(clientHost, clientPort, *namePtr)
 		if err != nil {
 			panic(err)
 		}
