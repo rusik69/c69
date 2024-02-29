@@ -10,8 +10,8 @@
     hour: "5"
     job: "/usr/bin/docker system prune -f > /dev/null 2>&1"
 - name: install govnocloud-master service
-  ansible.builtin.copy:
-    src: govnocloud-master.service
+  ansible.builtin.template:
+    src: govnocloud-master.service.j2
     dest: /etc/systemd/system/govnocloud-master.service
     mode: 0644
   register: govnocloud_master_service
