@@ -520,10 +520,8 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	hostVal := clientCmd.PersistentFlags().String("host", "127.0.0.1", "host to connect to")
-	portVal := clientCmd.PersistentFlags().String("port", "7070", "port to connect to")
-	clientHost = *hostVal
-	clientPort = *portVal
+	clientCmd.PersistentFlags().StringVar(&clientHost, "host", "127.0.0.1", "host to connect to")
+	clientCmd.PersistentFlags().StringVar(&clientPort, "port", "7070", "port to connect to")
 	fmt.Println("Connecting to " + clientHost + ":" + clientPort)
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
