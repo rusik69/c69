@@ -79,6 +79,7 @@ var sshNodeCmd = &cobra.Command{
 	Short: "ssh to node",
 	Long:  `ssh to node`,
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(args)
 		nodePtr := cmd.PersistentFlags().String("node", "", "node to ssh to")
 		if *nodePtr == "" {
 			panic("node is required")
@@ -522,7 +523,6 @@ func init() {
 	// and all subcommands, e.g.:
 	clientCmd.PersistentFlags().StringVar(&clientHost, "host", "127.0.0.1", "host to connect to")
 	clientCmd.PersistentFlags().StringVar(&clientPort, "port", "7070", "port to connect to")
-	fmt.Println("Connecting to " + clientHost + ":" + clientPort)
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// clientCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
