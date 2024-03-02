@@ -7,12 +7,12 @@ import (
 )
 
 // SSHNode runs ssh to a node
-func SSHNode(host, port, nodeName, user string) error {
+func SSHNode(host, port, nodeName, user, keypath string) error {
 	node, err := GetNode(host, port, nodeName)
 	if err != nil {
 		return err
 	}
-	key, err := os.ReadFile("~/.ssh/id_rsa")
+	key, err := os.ReadFile(keypath)
 	if err != nil {
 		return err
 	}

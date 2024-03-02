@@ -79,16 +79,13 @@ var sshNodeCmd = &cobra.Command{
 	Short: "ssh to node",
 	Long:  `ssh to node`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 		if len(args) == 0 {
 			panic("node is required")
 		}
 		node := args[0]
 		userPtr := cmd.PersistentFlags().String("user", "root", "user to ssh as")
-		if *userPtr == "" {
-			panic("user is required")
-		}
-		err := client.SSHNode(clientHost, clientPort, node, *userPtr)
+		keyPtr := cmd.PersistentFlags().String("key", "~/.ssh/id_rsa", "ssh key")
+		err := client.SSHNode(clientHost, clientPort, node, *userPtr, *keyPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -106,9 +103,6 @@ var sshVMCmd = &cobra.Command{
 			panic("vm is required")
 		}
 		userPtr := cmd.PersistentFlags().String("user", "root", "user to ssh as")
-		if *userPtr == "" {
-			panic("user is required")
-		}
 		err := client.SSHVM(clientHost, clientPort, *vmPtr, *userPtr)
 		if err != nil {
 			panic(err)
