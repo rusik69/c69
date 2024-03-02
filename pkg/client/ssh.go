@@ -26,6 +26,7 @@ func SSHNode(host, port, nodeName, user, keypath string) error {
 			ssh.PublicKeys(sshKey),
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		Timeout:         10,
 	}
 	sshClient, err := ssh.Dial("tcp", node.Host+":22", sshConfig)
 	if err != nil {
