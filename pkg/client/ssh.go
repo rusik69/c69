@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"time"
@@ -46,9 +47,23 @@ func SSHNode(host, port, nodeName, user, keypath string) error {
 	defer session.Close()
 	session.Stdout = os.Stdout
 	session.Stderr = os.Stderr
-	session.Stdin = os.Stdin
-	fmt.Println("Running bash")
-	err = session.Run("bash")
+	in, _ := session.StdinPipe()
+	modes := ssh.TerminalModes{
+		ssh.ECHO:          0,     // disable echoing
+		ssh.TTY_OP_ISPEED: 14400, // input speed = 14.4kbaud
+		ssh.TTY_OP_OSPEED: 14400, // output speed = 14.4kbaud
+	}
+	if err := session.RequestPty("xterm", 80, 40, modes); err != nil {
+		return err
+	}
+	if err := session.Shell(); err != nil {
+		return err
+	}
+	for {
+		reader := bufio.NewReader(os.Stdin)
+		str, _ := reader.ReadString('\n')
+		fmt.Fprint(in, str)
+	}
 	return err
 }
 
