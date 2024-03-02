@@ -5,6 +5,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/rusik69/govnocloud/pkg/client"
 	"github.com/spf13/cobra"
@@ -84,7 +86,15 @@ var sshNodeCmd = &cobra.Command{
 		}
 		node := args[0]
 		userPtr := cmd.PersistentFlags().String("user", "root", "user to ssh as")
-		keyPtr := cmd.PersistentFlags().String("key", "~/.ssh/id_rsa", "ssh key")
+		keyPtr := cmd.PersistentFlags().String("key", "", "ssh key")
+		if *keyPtr == "" {
+			homeDir, err := os.UserHomeDir()
+			if err != nil {
+				panic(err)
+			}
+			heyPath := filepath.Join(homeDir, ".ssh/id_rsa")
+			keyPtr = &heyPath
+		}
 		err := client.SSHNode(clientHost, clientPort, node, *userPtr, *keyPtr)
 		if err != nil {
 			panic(err)
