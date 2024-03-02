@@ -112,10 +112,10 @@ var sshVMCmd = &cobra.Command{
 	Short: "ssh to vm",
 	Long:  `ssh to vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmPtr := cmd.PersistentFlags().String("vm", "", "vm to ssh to")
-		if *vmPtr == "" {
+		if len(args) == 0 {
 			panic("vm is required")
 		}
+		vmName := args[0]
 		userPtr := cmd.PersistentFlags().String("user", "root", "user to ssh as")
 		keyPtr := cmd.PersistentFlags().String("key", "", "ssh key")
 		if *keyPtr == "" {
@@ -126,7 +126,7 @@ var sshVMCmd = &cobra.Command{
 			keyPath := filepath.Join(homeDir, ".ssh/id_rsa")
 			keyPtr = &keyPath
 		}
-		vm, err := client.GetVM(clientHost, clientPort, *vmPtr)
+		vm, err := client.GetVM(clientHost, clientPort, vmName)
 		if err != nil {
 			panic(err)
 		}
