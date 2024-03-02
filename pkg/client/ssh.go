@@ -64,7 +64,7 @@ func SSHNode(host, port, nodeName, user, keypath string) error {
 		str, _ := reader.ReadString('\n')
 		fmt.Fprint(in, str)
 	}
-	return err
+	return nil
 }
 
 // SSHVM runs ssh to a vm
