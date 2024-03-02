@@ -84,7 +84,7 @@ var sshNodeCmd = &cobra.Command{
 		if len(args) == 0 {
 			panic("node is required")
 		}
-		node := args[0]
+		nodeName := args[0]
 		userPtr := cmd.PersistentFlags().String("user", "root", "user to ssh as")
 		keyPtr := cmd.PersistentFlags().String("key", "", "ssh key")
 		if *keyPtr == "" {
@@ -95,7 +95,11 @@ var sshNodeCmd = &cobra.Command{
 			keyPath := filepath.Join(homeDir, ".ssh/id_rsa")
 			keyPtr = &keyPath
 		}
-		err := client.SSHNode(clientHost, clientPort, node, *userPtr, *keyPtr)
+		node, err := client.GetNode(clientHost, clientPort, nodeName)
+		if err != nil {
+			panic(err)
+		}
+		err = client.RunSSH(node.Host, *keyPtr, *userPtr, "")
 		if err != nil {
 			panic(err)
 		}
@@ -113,7 +117,20 @@ var sshVMCmd = &cobra.Command{
 			panic("vm is required")
 		}
 		userPtr := cmd.PersistentFlags().String("user", "root", "user to ssh as")
-		err := client.SSHVM(clientHost, clientPort, *vmPtr, *userPtr)
+		keyPtr := cmd.PersistentFlags().String("key", "", "ssh key")
+		if *keyPtr == "" {
+			homeDir, err := os.UserHomeDir()
+			if err != nil {
+				panic(err)
+			}
+			keyPath := filepath.Join(homeDir, ".ssh/id_rsa")
+			keyPtr = &keyPath
+		}
+		vm, err := client.GetVM(clientHost, clientPort, *vmPtr)
+		if err != nil {
+			panic(err)
+		}
+		err = client.RunSSH(vm.IP, *keyPtr, *userPtr, vm.NodeHostname)
 		if err != nil {
 			panic(err)
 		}

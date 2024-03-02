@@ -9,14 +9,9 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-// SSHNode runs ssh to a node
-func SSHNode(host, port, nodeName, user, keypath string) error {
-	node, err := GetNode(host, port, nodeName)
-	if err != nil {
-		return err
-	}
-	fmt.Println("Reading key from", keypath)
-	key, err := os.ReadFile(keypath)
+// RunSSH runs ssh to a node or a vm
+func RunSSH(host, keyPath, user, proxyHost string) error {
+	key, err := os.ReadFile(keyPath)
 	if err != nil {
 		return err
 	}
@@ -33,14 +28,33 @@ func SSHNode(host, port, nodeName, user, keypath string) error {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		Timeout:         10 * time.Second,
 	}
-	fmt.Println("Connecting to", node.Host)
-	sshClient, err := ssh.Dial("tcp", node.Host+":22", sshConfig)
-	if err != nil {
-		return err
+	var cli *ssh.Client
+	if proxyHost == "" {
+		cli, err = ssh.Dial("tcp", host+":22", sshConfig)
+		if err != nil {
+			return err
+		}
+		defer cli.Close()
+	} else {
+		proxy, err := ssh.Dial("tcp", proxyHost+":22", sshConfig)
+		if err != nil {
+			return err
+		}
+		defer proxy.Close()
+		conn, err := proxy.Dial("tcp", host+":22")
+		if err != nil {
+			return err
+		}
+		defer conn.Close()
+		ncc, chans, reqs, err := ssh.NewClientConn(conn, host, sshConfig)
+		if err != nil {
+			return err
+		}
+		cli = ssh.NewClient(ncc, chans, reqs)
+		defer cli.Close()
 	}
-	defer sshClient.Close()
 	fmt.Println("Opening session")
-	session, err := sshClient.NewSession()
+	session, err := cli.NewSession()
 	if err != nil {
 		return err
 	}
@@ -64,10 +78,4 @@ func SSHNode(host, port, nodeName, user, keypath string) error {
 		str, _ := reader.ReadString('\n')
 		fmt.Fprint(in, str)
 	}
-	return nil
-}
-
-// SSHVM runs ssh to a vm
-func SSHVM(host, port, vmName, user string) error {
-	return nil
 }
