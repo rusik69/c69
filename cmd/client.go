@@ -92,8 +92,8 @@ var sshNodeCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			heyPath := filepath.Join(homeDir, ".ssh/id_rsa")
-			keyPtr = &heyPath
+			keyPath := filepath.Join(homeDir, ".ssh/id_rsa")
+			keyPtr = &keyPath
 		}
 		err := client.SSHNode(clientHost, clientPort, node, *userPtr, *keyPtr)
 		if err != nil {
