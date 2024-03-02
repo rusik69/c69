@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -13,10 +14,12 @@ func SSHNode(host, port, nodeName, user, keypath string) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("Reading key from", keypath)
 	key, err := os.ReadFile(keypath)
 	if err != nil {
 		return err
 	}
+	fmt.Println("Parsing key")
 	sshKey, err := ssh.ParsePrivateKey(key)
 	if err != nil {
 		return err
@@ -29,11 +32,13 @@ func SSHNode(host, port, nodeName, user, keypath string) error {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		Timeout:         10 * time.Second,
 	}
+	fmt.Println("Connecting to", node.Host)
 	sshClient, err := ssh.Dial("tcp", node.Host+":22", sshConfig)
 	if err != nil {
 		return err
 	}
 	defer sshClient.Close()
+	fmt.Println("Opening session")
 	session, err := sshClient.NewSession()
 	if err != nil {
 		return err
@@ -42,6 +47,7 @@ func SSHNode(host, port, nodeName, user, keypath string) error {
 	session.Stdout = os.Stdout
 	session.Stderr = os.Stderr
 	session.Stdin = os.Stdin
+	fmt.Println("Running bash")
 	err = session.Run("bash")
 	return err
 }
