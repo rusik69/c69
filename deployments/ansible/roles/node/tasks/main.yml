@@ -43,6 +43,10 @@
         <forward mode='bridge'/>
         <bridge name='br0'/>
       </network>
+- name: Start a bridge network
+  community.libvirt.virt_net:
+    command: start
+    name: br0
 - name: modprobe mbd
   community.general.modprobe:
     name: nbd
