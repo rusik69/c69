@@ -33,25 +33,6 @@
           <path>/var/lib/libvirt/images</path>
         </target>
       </pool>
-- name: Define a bridge network
-  community.libvirt.virt_net:
-    command: define
-    name: br0
-    xml: |
-      <network>
-        <name>br0</name>
-        <forward mode='bridge'/>
-        <bridge name='virbr0'/>
-      </network>
-- name: Start a bridge network
-  community.libvirt.virt_net:
-    command: start
-    name: br0
-- name: modprobe mbd
-  community.general.modprobe:
-    name: nbd
-    state: present
-    params: 'max_part=8'
 - name: add ssh key to root
   ansible.builtin.copy:
     src: authorized_keys
