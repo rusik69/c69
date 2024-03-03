@@ -33,6 +33,16 @@
           <path>/var/lib/libvirt/images</path>
         </target>
       </pool>
+- name: Define a bridge network
+  community.libvirt.virt_net:
+    command: define
+    name: br0
+    xml: |
+      <network>
+        <name>br0</name>
+        <forward mode='bridge'/>
+        <bridge name='br0'/>
+      </network>
 - name: modprobe mbd
   community.general.modprobe:
     name: nbd
