@@ -3,7 +3,7 @@ Description=govnocloud master
 
 [Service]
 Restart=always
-ExecStart=/usr/local/bin/govnocloud master
+ExecStart=/usr/local/bin/govnocloud-master
 Environment="MASTER_ETCD_HOST=localhost"
 Environment="MASTER_LISTEN_HOST={{ ansible_tailscale0.ipv4.address }}"
 

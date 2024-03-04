@@ -1,20 +1,26 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package cmd
+package main
 
 import (
+	"fmt"
+	"os"
+	"runtime"
+	"strings"
+
+	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/node"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
-// nodeCmd represents the node command
-var nodeCmd = &cobra.Command{
-	Use:   "node",
-	Short: "Start govnocloud node",
-	Long:  `Start govnocloud node.`,
+// rootCmd represents the base command when called without any subcommands
+var rootCmd = &cobra.Command{
+	Use:   "govnocloud",
+	Short: "govnocloud is a shitty cloud",
+	Long:  `govnocloud is a shitty cloud`,
 	Run: func(cmd *cobra.Command, args []string) {
 		envInstance, err := node.ParseEnv()
 		if err != nil {
@@ -54,16 +60,26 @@ var nodeCmd = &cobra.Command{
 	},
 }
 
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() {
+	err := rootCmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
+}
+
 func init() {
-	rootCmd.AddCommand(nodeCmd)
+	logrus.SetFormatter(&logrus.JSONFormatter{
+		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
+			filename := strings.Split(f.File, "/")
+			return fmt.Sprintf("%s:%d", filename[len(filename)-1], f.Line), ""
+		},
+	})
+	gin.DefaultWriter = logrus.StandardLogger().Writer()
+	gin.DefaultErrorWriter = logrus.StandardLogger().Writer()
+}
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// nodeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// nodeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+func main() {
+	Execute()
 }

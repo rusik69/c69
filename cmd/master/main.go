@@ -1,7 +1,7 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package cmd
+package main
 
 import (
 	"fmt"
@@ -10,6 +10,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rusik69/govnocloud/pkg/master"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -21,7 +23,28 @@ var rootCmd = &cobra.Command{
 	Long:  `govnocloud is a shitty cloud`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+		envInstance, err := master.ParseEnv()
+		if err != nil {
+			panic(err)
+		}
+		types.MasterEnvInstance = envInstance
+		logrus.Println("Master environment is parsed")
+		logrus.Println("ETCD host is " + types.MasterEnvInstance.ETCDHost)
+		logrus.Println("ETCD port is " + types.MasterEnvInstance.ETCDPort)
+		logrus.Println("ETCD user is " + types.MasterEnvInstance.ETCDUser)
+		logrus.Println("ETCD pass is " + types.MasterEnvInstance.ETCDPass)
+		logrus.Println("Listen port is " + types.MasterEnvInstance.ListenPort)
+		master.ETCDClient, err = master.ETCDConnect(types.MasterEnvInstance.ETCDHost,
+			types.MasterEnvInstance.ETCDPort, types.MasterEnvInstance.ETCDUser,
+			types.MasterEnvInstance.ETCDPass)
+		if err != nil {
+			panic(err)
+		}
+		defer master.ETCDClient.Close()
+		logrus.Println("ETCD is connected at " + types.MasterEnvInstance.ETCDHost + ":" + types.MasterEnvInstance.ETCDPort)
+		master.Serve()
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -42,13 +65,8 @@ func init() {
 	})
 	gin.DefaultWriter = logrus.StandardLogger().Writer()
 	gin.DefaultErrorWriter = logrus.StandardLogger().Writer()
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
+}
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.govnocloud.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+func main() {
+	Execute()
 }

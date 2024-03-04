@@ -21,11 +21,13 @@ get:
 	go get -v ./...
 
 build:
-	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-linux-amd64 main.go
+	GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-darwin-arm64 cmd/client/main.go
+	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-master-linux-amd64 cmd/master/main.go
+	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-node-linux-amd64 cmd/node/main.go
+	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-linux-amd64 cmd/client/main.go
 	chmod +x bin/*
 
 test:
-	
 	go test -timeout 30m -v ./...
 
 deploy:
@@ -35,9 +37,9 @@ deploy:
 	ssh x230.rusik69.lol "sudo systemctl stop govnocloud-node" || true
 	ssh x220.rusik69.lol "/usr/local/bin/cleanup.sh" || true
 	ssh x230.rusik69.lol "/usr/local/bin/cleanup.sh" || true
-	sudo cp bin/${BINARY_NAME}-linux-amd64 /usr/local/bin/govnocloud
-	scp bin/${BINARY_NAME}-linux-amd64 root@x220.rusik69.lol:/usr/local/bin/govnocloud
-	scp bin/${BINARY_NAME}-linux-amd64 root@x230.rusik69.lol:/usr/local/bin/govnocloud
+	sudo cp bin/${BINARY_NAME}-master-linux-amd64 /usr/local/bin/govnocloud-master
+	scp bin/${BINARY_NAME}-node-linux-amd64 root@x220.rusik69.lol:/usr/local/bin/govnocloud-node
+	scp bin/${BINARY_NAME}-node-linux-amd64 root@x230.rusik69.lol:/usr/local/bin/govnocloud-node
 	rsync -a deployments/ansible root@x220.rusik69.lol:/var/lib/libvirt/
 	rsync -a deployments/ansible root@x230.rusik69.lol:/var/lib/libvirt/
 	sudo systemctl start govnocloud-master

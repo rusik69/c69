@@ -1,7 +1,4 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
-package cmd
+package main
 
 import (
 	"fmt"
@@ -12,18 +9,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// rootCmd represents the base command when called without any subcommands
+var rootCmd = &cobra.Command{
+	Use:   "govnocloud-client",
+	Short: "govnocloud is a shitty cloud",
+	Long:  `govnocloud is a shitty cloud`,
+}
+
 var clientHost string
 var clientPort string
-
-// clientCmd represents the client command
-var clientCmd = &cobra.Command{
-	Use:   "client",
-	Short: "govnocloud client",
-	Long:  `govnocloud client`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("usage: ssh|vm|node|container|file [command] [flags]")
-	},
-}
 
 // sshClientCmd represents the ssh commands
 var sshClientCmd = &cobra.Command{
@@ -509,13 +503,21 @@ var fileListCmd = &cobra.Command{
 	},
 }
 
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() {
+	err := rootCmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
+}
+
 func init() {
-	rootCmd.AddCommand(clientCmd)
-	clientCmd.AddCommand(sshClientCmd)
-	clientCmd.AddCommand(vmClientCmd)
-	clientCmd.AddCommand(nodeClientCmd)
-	clientCmd.AddCommand(containerClientCmd)
-	clientCmd.AddCommand(fileClientCmd)
+	rootCmd.AddCommand(sshClientCmd)
+	rootCmd.AddCommand(vmClientCmd)
+	rootCmd.AddCommand(nodeClientCmd)
+	rootCmd.AddCommand(containerClientCmd)
+	rootCmd.AddCommand(fileClientCmd)
 	vmClientCmd.AddCommand(vmGetCmd)
 	vmClientCmd.AddCommand(vmCreateCmd)
 	vmClientCmd.AddCommand(vmDeleteCmd)
@@ -538,13 +540,10 @@ func init() {
 	fileClientCmd.AddCommand(fileListCmd)
 	sshClientCmd.AddCommand(sshNodeCmd)
 	sshClientCmd.AddCommand(sshVMCmd)
-	// Here you will define your flags and configuration settings.
+	rootCmd.PersistentFlags().StringVar(&clientHost, "host", "127.0.0.1", "host to connect to")
+	rootCmd.PersistentFlags().StringVar(&clientPort, "port", "7070", "port to connect to")
+}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	clientCmd.PersistentFlags().StringVar(&clientHost, "host", "127.0.0.1", "host to connect to")
-	clientCmd.PersistentFlags().StringVar(&clientPort, "port", "7070", "port to connect to")
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// clientCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+func main() {
+	Execute()
 }
