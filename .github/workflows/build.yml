@@ -17,14 +17,17 @@ jobs:
     - name: logs
       run: make logs
       if: always()
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::$(date +%Y%m%d%H%M%S)
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
-        tag_name: v0.0.3
-        release_name: Release v0.0.3
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
+        release_name: Release ${{ steps.get_version.outputs.VERSION }}
         draft: false
         prerelease: false
 
