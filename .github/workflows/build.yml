@@ -34,8 +34,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./bin/govnocloud-linux-master-amd64
-        asset_name: govnocloud-linux-master-amd64
+        asset_path: ./bin/govnocloud-master-linux-amd64
+        asset_name: govnocloud-master-linux-amd64
         asset_content_type: application/octet-stream
     - name: Upload linux master arm64 binary
       uses: actions/upload-release-asset@v1
@@ -43,8 +43,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./bin/govnocloud-linux-master-arm64
-        asset_name: govnocloud-linux-master-arm64
+        asset_path: ./bin/govnocloud-master-linux-arm64
+        asset_name: govnocloud-master-linux-arm64
         asset_content_type: application/octet-stream
     - name: upload darwin arm64 client
       uses: actions/upload-release-asset@v1
