@@ -17,24 +17,78 @@ jobs:
     - name: logs
       run: make logs
       if: always()
-    # - name: Create Release
-    #   id: create_release
-    #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-    #   with:
-    #     tag_name: v0.0.1
-    #     release_name: Release v0.0.1
-    #     draft: false
-    #     prerelease: false
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        tag_name: v0.0.2
+        release_name: Release v0.0.2
+        draft: false
+        prerelease: false
 
-    # - name: Upload binary
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-    #     asset_path: ./bin/govnocloud-linux-amd64
-    #     asset_name: govnocloud-linux-amd64
-    #     asset_content_type: application/octet-stream
+    - name: Upload linux master amd64 binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./bin/govnocloud-linux-master-amd64
+        asset_name: govnocloud-linux-master-amd64
+        asset_content_type: application/octet-stream
+    - name: Upload linux master arm64 binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./bin/govnocloud-linux-master-arm64
+        asset_name: govnocloud-linux-master-arm64
+        asset_content_type: application/octet-stream
+    - name: upload darwin arm64 client
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./bin/govnocloud-client-darwin-arm64
+        asset_name: govnocloud-client-darwin-arm64
+        asset_content_type: application/octet-stream
+    - name: upload linux amd64 client
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./bin/govnocloud-client-linux-amd64
+        asset_name: govnocloud-client-linux-amd64
+        asset_content_type: application/octet-stream
+    - name: upload linux arm64 client
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./bin/govnocloud-client-linux-arm64
+        asset_name: govnocloud-client-linux-arm64
+        asset_content_type: application/octet-stream
+    - name: upload linux amd64 node
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./bin/govnocloud-node-linux-amd64
+        asset_name: govnocloud-node-linux-amd64
+        asset_content_type: application/octet-stream
+    - name: upload linux arm64 node
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./bin/govnocloud-node-linux-arm64
+        asset_name: govnocloud-node-linux-arm64
+        asset_content_type: application/octet-stream
     timeout-minutes: 30
