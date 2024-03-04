@@ -82,13 +82,4 @@ jobs:
         asset_path: ./bin/govnocloud-node-linux-amd64
         asset_name: govnocloud-node-linux-amd64
         asset_content_type: application/octet-stream
-    - name: upload linux arm64 node
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./bin/govnocloud-node-linux-arm64
-        asset_name: govnocloud-node-linux-arm64
-        asset_content_type: application/octet-stream
     timeout-minutes: 30
