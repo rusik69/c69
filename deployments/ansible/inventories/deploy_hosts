@@ -1,0 +1,9 @@
+[all]
+x220.rusik69.lol ansible_become=true
+x230.rusik69.lol ansible_become=true
+t440p.rusik69.lol ansible_become=true
+[nodes]
+x220.rusik69.lol ansible_become=true
+x230.rusik69.lol ansible_become=true
+[master]
+t440p.rusik69.lol ansible_become=true
