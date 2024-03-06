@@ -34,7 +34,7 @@ test:
 	go test -timeout 30m -v ./...
 
 deploy:
-	/bin/govnocloud-deploy-linux-amd64 --master t440p.rusik69.lol --nodes x220.rusik69.lol,x230.rusik69.lol
+	bin/govnocloud-deploy-linux-amd64 --master t440p.rusik69.lol --nodes x220.rusik69.lol,x230.rusik69.lol
 
 ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
