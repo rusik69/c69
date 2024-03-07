@@ -16,7 +16,10 @@ func TestFileUpload(t *testing.T) {
 		t.Error(err)
 	}
 	defer os.Remove(tempFile.Name())
-	tempFile.WriteString("test")
+	_, err = tempFile.WriteString("test")
+	if err != nil {
+		t.Error(err)
+	}
 	tempFileName = tempFile.Name()
 	err = client.UploadFile(masterHost, masterPort, tempFileName)
 	if err != nil {
@@ -55,8 +58,14 @@ func UploadFiles() {
 	for i := 0; i < 10; i++ {
 		tempFile, _ := os.CreateTemp("", "testfile-*.txt")
 		defer os.Remove(tempFile.Name())
-		tempFile.WriteString("test")
+		_, err := tempFile.WriteString("test")
+		if err != nil {
+			panic(err)
+		}
 		tempFileName = tempFile.Name()
-		client.UploadFile(masterHost, masterPort, tempFileName)
+		err = client.UploadFile(masterHost, masterPort, tempFileName)
+		if err != nil {
+			panic(err)
+		}
 	}
 }

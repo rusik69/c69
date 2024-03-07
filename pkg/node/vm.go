@@ -280,7 +280,12 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 		logrus.Error(err.Error())
 		return types.VM{}, 500, err
 	}
-	defer domain.Free()
+	defer func() {
+		err := domain.Free()
+		if err != nil {
+			return
+		}
+	}()
 	err = domain.Create()
 	if err != nil {
 		return types.VM{}, 500, err
@@ -327,8 +332,12 @@ func DeleteVM(vm types.VM) error {
 	if err != nil {
 		return fmt.Errorf("failed to lookup domain: %w", err)
 	}
-	defer domain.Free()
-
+	defer func() {
+		err := domain.Free()
+		if err != nil {
+			return
+		}
+	}()
 	active, err := domain.IsActive()
 	if err != nil {
 		return fmt.Errorf("failed to check domain status: %w", err)
@@ -354,7 +363,12 @@ func StopVM(vm types.VM) error {
 	if err != nil {
 		return err
 	}
-	defer domain.Free()
+	defer func() {
+		err := domain.Free()
+		if err != nil {
+			return
+		}
+	}()
 	err = domain.Destroy()
 	if err != nil {
 		return err

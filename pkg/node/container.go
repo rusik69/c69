@@ -140,7 +140,10 @@ func CreateContainer(c types.Container) (types.Container, error) {
 		return types.Container{}, err
 	}
 	defer reader.Close()
-	io.Copy(io.Discard, reader)
+	_, err = io.Copy(io.Discard, reader)
+	if err != nil {
+		return types.Container{}, err
+	}
 	dockerContainer := dockercontainer.Config{
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},

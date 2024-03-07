@@ -33,5 +33,8 @@ func Serve() {
 	r.GET("/api/v1/files", ListFilesHandler)
 	r.GET("/api/v1/file/:name", GetFileHandler)
 	logrus.Println("Master is listening on port " + string(types.MasterEnvInstance.ListenPort))
-	r.Run(types.MasterEnvInstance.ListenHost + ":" + types.MasterEnvInstance.ListenPort)
+	err := r.Run(types.MasterEnvInstance.ListenHost + ":" + types.MasterEnvInstance.ListenPort)
+	if err != nil {
+		panic(err)
+	}
 }
