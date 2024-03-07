@@ -382,7 +382,12 @@ func StartVM(vm types.VM) error {
 	if err != nil {
 		return err
 	}
-	defer domain.Free()
+	defer func() {
+		err := domain.Free()
+		if err != nil {
+			return
+		}
+	}()
 	err = domain.Create()
 	if err != nil {
 		return err
@@ -416,7 +421,12 @@ func ListVMs() ([]types.VM, error) {
 	}
 	defer func() {
 		for _, domain := range domains {
-			domain.Free()
+			defer func() {
+				err := domain.Free()
+				if err != nil {
+					return
+				}
+			}()
 		}
 	}()
 
