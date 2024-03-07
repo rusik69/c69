@@ -421,12 +421,12 @@ func ListVMs() ([]types.VM, error) {
 	}
 	defer func() {
 		for _, domain := range domains {
-			defer func() {
+			defer func(d libvirt.Domain) {
 				err := domain.Free()
 				if err != nil {
 					return
 				}
-			}()
+			}(domain)
 		}
 	}()
 
