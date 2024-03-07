@@ -419,17 +419,14 @@ func ListVMs() ([]types.VM, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to list domains: %w", err)
 	}
-	defer func() {
-		for _, domain := range domains {
-			defer func(d libvirt.Domain) {
-				err := domain.Free()
-				if err != nil {
-					return
-				}
-			}(domain)
-		}
-	}()
-
+	for _, domain := range domains {
+		defer func(d libvirt.Domain) {
+			err := domain.Free()
+			if err != nil {
+				return
+			}
+		}(domain)
+	}
 	vms := make([]types.VM, 0, len(domains))
 	for _, domain := range domains {
 		name, err := domain.GetName()
