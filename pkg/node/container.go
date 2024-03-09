@@ -2,6 +2,7 @@ package node
 
 import (
 	"context"
+	"fmt"
 	"io"
 
 	dockertypes "github.com/docker/docker/api/types"
@@ -157,7 +158,7 @@ func CreateContainer(c types.Container) (types.Container, error) {
 			CPUShares: int64(cpuShares),
 		},
 		StorageOpt: map[string]string{
-			"size": string(diskLimit) + "G",
+			"size": fmt.Sprint(diskLimit) + "G",
 		},
 	}
 	resp, err := DockerConnection.ContainerCreate(ctx, &dockerContainer, &hostConfig, nil, nil, c.Name)
