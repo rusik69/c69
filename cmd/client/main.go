@@ -339,7 +339,11 @@ var containerCreateCmd = &cobra.Command{
 		if *imagePtr == "" {
 			panic("image is required")
 		}
-		id, err := client.CreateContainer(clientHost, clientPort, *namePtr, *imagePtr)
+		flavorPtr := cmd.PersistentFlags().String("flavor", "", "container flavor")
+		if *flavorPtr == "" {
+			panic("flavor is required")
+		}
+		id, err := client.CreateContainer(clientHost, clientPort, *namePtr, *imagePtr, "tiny")
 		if err != nil {
 			panic(err)
 		}
