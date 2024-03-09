@@ -53,8 +53,7 @@ func CreateContainerHandler(c *gin.Context) {
 	var usedNode types.Node
 	for _, node := range nodes {
 		if uint64(node.MilliCPUSTotal-node.MilliCPUSUsed) < containerFlavor.MilliCPUs ||
-			(node.MemoryTotal-node.MemoryUsed) < containerFlavor.RAM ||
-			(node.DiskTotal-node.DiskUsed) < containerFlavor.Disk {
+			(node.MemoryTotal-node.MemoryUsed) < containerFlavor.RAM {
 			continue
 		}
 		usedNode = node
@@ -92,7 +91,6 @@ func CreateContainerHandler(c *gin.Context) {
 	}
 	usedNode.MilliCPUSUsed += containerFlavor.MilliCPUs
 	usedNode.MemoryUsed += containerFlavor.RAM
-	usedNode.DiskUsed += containerFlavor.Disk
 	usedNodeString, err := json.Marshal(usedNode)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
