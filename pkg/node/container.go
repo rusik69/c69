@@ -2,7 +2,6 @@ package node
 
 import (
 	"context"
-	"fmt"
 	"io"
 
 	dockertypes "github.com/docker/docker/api/types"
