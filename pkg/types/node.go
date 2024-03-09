@@ -17,7 +17,8 @@ type Container struct {
 	// Volumes is the volumes of the container.
 	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the container.
-	Committed bool `json:"committed"`
+	Committed bool   `json:"committed"`
+	Flavor    string `json:"flavor"`
 }
 
 // VM represents a virtual machine.
@@ -51,9 +52,7 @@ type VM struct {
 // Flavor represents a vm flavor.
 type VMFlavor struct {
 	// ID is the ID of the flavor.
-	ID string `json:"id"`
-	// Name is the name of the flavor.
-	Name string `json:"name"`
+	ID int `json:"id"`
 	// MilliCPUs is the number of MilliCPUs of the flavor.
 	MilliCPUs uint64 `json:"millicpus"`
 	// RAM is the RAM of the flavor.
@@ -64,29 +63,75 @@ type VMFlavor struct {
 
 var VMFlavors = map[string]VMFlavor{
 	"small": VMFlavor{
-		ID:        "1",
-		Name:      "small",
+		ID:        0,
 		MilliCPUs: 512,
 		RAM:       1024,
 		Disk:      8,
 	},
 	"medium": VMFlavor{
-		ID:        "2",
-		Name:      "medium",
+		ID:        1,
 		MilliCPUs: 1024,
 		RAM:       2048,
 		Disk:      8,
 	},
 	"large": VMFlavor{
-		ID:        "2",
-		Name:      "large",
+		ID:        2,
 		MilliCPUs: 2048,
 		RAM:       4096,
 		Disk:      16,
 	},
 	"xlarge": VMFlavor{
-		ID:        "4",
-		Name:      "xlarge",
+		ID:        3,
+		MilliCPUs: 4096,
+		RAM:       8192,
+		Disk:      32,
+	},
+}
+
+type ContainerFlavor struct {
+	// ID is the ID of the flavor.
+	ID int `json:"id"`
+	// MilliCPUs is the number of MilliCPUs of the flavor.
+	MilliCPUs uint64 `json:"millicpus"`
+	// RAM is the RAM of the flavor.
+	RAM uint64 `json:"ram"`
+	// Disk is the disk of the flavor.
+	Disk uint64 `json:"disk"`
+}
+
+var ContainerFlavors = map[string]ContainerFlavor{
+	"tiny": ContainerFlavor{
+		ID:        0,
+		MilliCPUs: 128,
+		RAM:       256,
+		Disk:      1,
+	},
+	"small": ContainerFlavor{
+		ID:        1,
+		MilliCPUs: 256,
+		RAM:       512,
+		Disk:      2,
+	},
+	"medium": ContainerFlavor{
+		ID:        2,
+		MilliCPUs: 512,
+		RAM:       1024,
+		Disk:      4,
+	},
+	"large": ContainerFlavor{
+		ID:        3,
+		MilliCPUs: 1024,
+		RAM:       2048,
+		Disk:      8,
+	},
+	"xlarge": ContainerFlavor{
+		ID:        4,
+		MilliCPUs: 2048,
+		RAM:       4096,
+		Disk:      16,
+	},
+	"2xlarge": ContainerFlavor{
+		ID:        5,
 		MilliCPUs: 4096,
 		RAM:       8192,
 		Disk:      32,

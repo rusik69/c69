@@ -13,7 +13,7 @@ var (
 
 // TestCreateContainer tests the CreateContainer function.
 func TestCreateContainer(t *testing.T) {
-	ContainerID, err := client.CreateContainer(masterHost, masterPort, "test", "busybox")
+	ContainerID, err := client.CreateContainer(masterHost, masterPort, "test", "busybox", "tiny")
 	if err != nil {
 		t.Error(err)
 	}
@@ -72,7 +72,7 @@ func TestDeleteContainer(t *testing.T) {
 func RunContainers() {
 	for i := 1; i < 10; i++ {
 		containerName := "test" + fmt.Sprintf("%d", i)
-		_, err := client.CreateContainer(masterHost, masterPort, containerName, "nginx")
+		_, err := client.CreateContainer(masterHost, masterPort, containerName, "nginx", "tiny")
 		if err != nil {
 			fmt.Println(err)
 		}

@@ -11,10 +11,11 @@ import (
 )
 
 // CreateContainer creates a container.
-func CreateContainer(host, port, name, image string) (string, error) {
+func CreateContainer(host, port, name, image, flavor string) (string, error) {
 	container := types.Container{
-		Name:  name,
-		Image: image,
+		Name:   name,
+		Image:  image,
+		Flavor: flavor,
 	}
 	url := "http://" + host + ":" + port + "/api/v1/containers"
 	body, err := json.Marshal(container)

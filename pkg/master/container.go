@@ -43,15 +43,23 @@ func CreateContainerHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
+	containerFlavor := types.ContainerFlavors[tempContainer.Flavor]
 	var newContainerID string
 	created := false
 	var newContainer types.Container
 	rand.Shuffle(len(nodes), func(i, j int) {
 		nodes[i], nodes[j] = nodes[j], nodes[i]
 	})
+	var usedNode types.Node
 	for _, node := range nodes {
+		if uint64(node.MilliCPUSTotal-node.MilliCPUSUsed) < containerFlavor.MilliCPUs ||
+			(node.MemoryTotal-node.MemoryUsed) < containerFlavor.RAM ||
+			(node.DiskTotal-node.DiskUsed) < containerFlavor.Disk {
+			continue
+		}
+		usedNode = node
 		newContainerID, err = client.CreateContainer(node.Host, node.Port,
-			tempContainer.Name, tempContainer.Image)
+			tempContainer.Name, tempContainer.Image, tempContainer.Flavor)
 		if err != nil {
 			logrus.Error(node.Host, node.Port, err.Error())
 			continue
@@ -77,6 +85,21 @@ func CreateContainerHandler(c *gin.Context) {
 		return
 	}
 	err = ETCDPut("/containers/"+tempContainer.Name, string(newContainerString))
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	usedNode.MilliCPUSUsed += containerFlavor.MilliCPUs
+	usedNode.MemoryUsed += containerFlavor.RAM
+	usedNode.DiskUsed += containerFlavor.Disk
+	usedNodeString, err := json.Marshal(usedNode)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = ETCDPut("/nodes/"+usedNode.Name, string(usedNodeString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
