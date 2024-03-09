@@ -151,14 +151,10 @@ func CreateContainer(c types.Container) (types.Container, error) {
 	}
 	memLimit := types.ContainerFlavors[c.Flavor].RAM * 1024 * 1024
 	cpuShares := types.ContainerFlavors[c.Flavor].MilliCPUs
-	diskLimit := types.ContainerFlavors[c.Flavor].Disk * 1024 * 1024 * 1024
 	hostConfig := dockercontainer.HostConfig{
 		Resources: dockercontainer.Resources{
 			Memory:    int64(memLimit),
 			CPUShares: int64(cpuShares),
-		},
-		StorageOpt: map[string]string{
-			"size": fmt.Sprint(diskLimit) + "G",
 		},
 	}
 	resp, err := DockerConnection.ContainerCreate(ctx, &dockerContainer, &hostConfig, nil, nil, c.Name)

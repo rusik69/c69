@@ -95,8 +95,6 @@ type ContainerFlavor struct {
 	MilliCPUs uint64 `json:"millicpus"`
 	// RAM is the RAM of the flavor.
 	RAM uint64 `json:"ram"`
-	// Disk is the disk of the flavor.
-	Disk uint64 `json:"disk"`
 }
 
 var ContainerFlavors = map[string]ContainerFlavor{
@@ -104,37 +102,31 @@ var ContainerFlavors = map[string]ContainerFlavor{
 		ID:        0,
 		MilliCPUs: 128,
 		RAM:       256,
-		Disk:      1,
 	},
 	"small": ContainerFlavor{
 		ID:        1,
 		MilliCPUs: 256,
 		RAM:       512,
-		Disk:      2,
 	},
 	"medium": ContainerFlavor{
 		ID:        2,
 		MilliCPUs: 512,
 		RAM:       1024,
-		Disk:      4,
 	},
 	"large": ContainerFlavor{
 		ID:        3,
 		MilliCPUs: 1024,
 		RAM:       2048,
-		Disk:      8,
 	},
 	"xlarge": ContainerFlavor{
 		ID:        4,
 		MilliCPUs: 2048,
 		RAM:       4096,
-		Disk:      16,
 	},
 	"2xlarge": ContainerFlavor{
 		ID:        5,
 		MilliCPUs: 4096,
 		RAM:       8192,
-		Disk:      32,
 	},
 }
 
