@@ -2,3 +2,7 @@
   ansible.builtin.systemd:
     name: nfs-server
     state: restarted
+- name: restart rpcbind
+  ansible.builtin.systemd:
+    name: rpcbind
+    state: restarted

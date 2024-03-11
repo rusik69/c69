@@ -52,3 +52,17 @@
     group: root
     mode: '0644'
   notify: restart nfs
+
+- name: Configure RPC bind to listen on specific interface
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/nfs
+    regexp: '^RPCBIND_ARGS='
+    line: 'RPCBIND_ARGS="-h tailscale0"'
+    create: yes
+  notify: restart rpcbind
+
+- name: Allow NFS through firewall
+  ansible.posix.firewalld:
+    service: nfs
+    permanent: yes
+    state: enabled
