@@ -19,8 +19,8 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "simplecloud",
-	Short: "simplecloud is a shitty cloud",
-	Long:  `simplecloud is a shitty cloud`,
+	Short: "simplecloud is a simple cloud",
+	Long:  `simplecloud is a simple cloud`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {

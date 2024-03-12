@@ -16,8 +16,8 @@ var key, user, nodesString string
 
 var rootCmd = &cobra.Command{
 	Use:   "deploy",
-	Short: "deploy a shitty cloud",
-	Long:  `deploy a shitty cloud`,
+	Short: "deploy a simple cloud",
+	Long:  `deploy a simple cloud`,
 	Run: func(cmd *cobra.Command, args []string) {
 		nodes = strings.Split(nodesString, ",")
 		if len(nodes) == 0 || master == "" {

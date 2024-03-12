@@ -12,8 +12,8 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "simplecloud-client",
-	Short: "simplecloud is a shitty cloud",
-	Long:  `simplecloud is a shitty cloud`,
+	Short: "simplecloud is a simple cloud",
+	Long:  `simplecloud is a simple cloud`,
 }
 
 var clientHost string
