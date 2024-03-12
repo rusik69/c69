@@ -10,17 +10,17 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rusik69/govnocloud/pkg/node"
-	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/rusik69/simplecloud/pkg/node"
+	"github.com/rusik69/simplecloud/pkg/types"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "govnocloud",
-	Short: "govnocloud is a shitty cloud",
-	Long:  `govnocloud is a shitty cloud`,
+	Use:   "simplecloud",
+	Short: "simplecloud is a shitty cloud",
+	Long:  `simplecloud is a shitty cloud`,
 	Run: func(cmd *cobra.Command, args []string) {
 		envInstance, err := node.ParseEnv()
 		if err != nil {

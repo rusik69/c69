@@ -5,15 +5,15 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/rusik69/govnocloud/pkg/client"
+	"github.com/rusik69/simplecloud/pkg/client"
 	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "govnocloud-client",
-	Short: "govnocloud is a shitty cloud",
-	Long:  `govnocloud is a shitty cloud`,
+	Use:   "simplecloud-client",
+	Short: "simplecloud is a shitty cloud",
+	Long:  `simplecloud is a shitty cloud`,
 }
 
 var clientHost string

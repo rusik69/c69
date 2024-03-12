@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rusik69/govnocloud/pkg/deploy"
+	"github.com/rusik69/simplecloud/pkg/deploy"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -29,7 +29,7 @@ var rootCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		nodesString := strings.Join(nodes, ",")
-		logrus.Println("Deploying govnocloud on nodes", nodesString, "and master", master)
+		logrus.Println("Deploying simplecloud on nodes", nodesString, "and master", master)
 		logrus.Println("Generating Ansible inventory file", ansibleInventoryFile)
 		err := deploy.GenerateAnsibleConfig(nodes, master, ansibleInventoryFile)
 		if err != nil {
@@ -41,14 +41,14 @@ var rootCmd = &cobra.Command{
 			panic(err)
 		}
 		for _, node := range nodes {
-			logrus.Println("Stopping govnocloud on node", node)
-			err := deploy.RunSSHCommand(node, key, user, "sudo systemctl stop govnocloud-node; cleanup.sh")
+			logrus.Println("Stopping simplecloud on node", node)
+			err := deploy.RunSSHCommand(node, key, user, "sudo systemctl stop simplecloud-node; cleanup.sh")
 			if err != nil {
 				panic(err)
 			}
 		}
-		logrus.Println("Stopping govnocloud on master", master)
-		err = deploy.RunSSHCommand(master, key, user, "sudo systemctl stop govnocloud-master; cleanup.sh")
+		logrus.Println("Stopping simplecloud on master", master)
+		err = deploy.RunSSHCommand(master, key, user, "sudo systemctl stop simplecloud-master; cleanup.sh")
 		if err != nil {
 			panic(err)
 		}
@@ -64,14 +64,14 @@ var rootCmd = &cobra.Command{
 				panic(err)
 			}
 		}
-		logrus.Println("Copying govnocloud-master-linux-amd64 to master", master)
-		err = deploy.CopyFile(master, key, user, "bin/govnocloud-master-linux-amd64", "/usr/local/bin/govnocloud-master")
+		logrus.Println("Copying simplecloud-master-linux-amd64 to master", master)
+		err = deploy.CopyFile(master, key, user, "bin/simplecloud-master-linux-amd64", "/usr/local/bin/simplecloud-master")
 		if err != nil {
 			panic(err)
 		}
 		for _, node := range nodes {
-			logrus.Println("Copying govnocloud-node-linux-amd64 to node", node)
-			err := deploy.CopyFile(node, key, user, "bin/govnocloud-node-linux-amd64", "/usr/local/bin/govnocloud-node")
+			logrus.Println("Copying simplecloud-node-linux-amd64 to node", node)
+			err := deploy.CopyFile(node, key, user, "bin/simplecloud-node-linux-amd64", "/usr/local/bin/simplecloud-node")
 			if err != nil {
 				panic(err)
 			}
@@ -80,14 +80,14 @@ var rootCmd = &cobra.Command{
 				panic(err)
 			}
 		}
-		logrus.Println("Starting govnocloud on master", master)
-		err = deploy.RunSSHCommand(master, key, user, "sudo systemctl start govnocloud-master")
+		logrus.Println("Starting simplecloud on master", master)
+		err = deploy.RunSSHCommand(master, key, user, "sudo systemctl start simplecloud-master")
 		if err != nil {
 			panic(err)
 		}
 		for _, node := range nodes {
-			logrus.Println("Starting govnocloud on node", node)
-			err := deploy.RunSSHCommand(node, key, user, "sudo systemctl start govnocloud-node")
+			logrus.Println("Starting simplecloud on node", node)
+			err := deploy.RunSSHCommand(node, key, user, "sudo systemctl start simplecloud-node")
 			if err != nil {
 				panic(err)
 			}

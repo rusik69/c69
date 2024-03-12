@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/rusik69/govnocloud/pkg/client"
+	"github.com/rusik69/simplecloud/pkg/client"
 	"github.com/sirupsen/logrus"
 )
 

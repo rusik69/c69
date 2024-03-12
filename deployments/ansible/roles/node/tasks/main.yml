@@ -40,13 +40,13 @@
     owner: root
     group: root
     mode: 0600
-- name: install govnocloud-node service
+- name: install simplecloud-node service
   ansible.builtin.template:
-    src: govnocloud-node.service.j2
-    dest: /etc/systemd/system/govnocloud-node.service
+    src: simplecloud-node.service.j2
+    dest: /etc/systemd/system/simplecloud-node.service
     mode: 0644
-  register: govnocloud_node_service
+  register: simplecloud_node_service
 - name: reload systemd
   ansible.builtin.systemd:
     daemon_reload: yes
-  when: govnocloud_node_service.changed
+  when: simplecloud_node_service.changed

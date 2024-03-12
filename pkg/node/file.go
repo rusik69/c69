@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/rusik69/simplecloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 

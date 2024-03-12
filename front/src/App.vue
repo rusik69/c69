@@ -5,7 +5,7 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
   <header>
     <div>
-      <h2>Govnocloud</h2>
+      <h2>simplecloud</h2>
       <nav>
         <RouterLink to="/nodes">Nodes</RouterLink>
         <RouterLink to="/vms">VMs</RouterLink>

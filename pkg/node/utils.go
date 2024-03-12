@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/rusik69/simplecloud/pkg/types"
 	"github.com/sirupsen/logrus"
 	"libvirt.org/go/libvirt"
 )

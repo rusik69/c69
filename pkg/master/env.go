@@ -3,7 +3,7 @@ package master
 import (
 	"os"
 
-	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/rusik69/simplecloud/pkg/types"
 )
 
 // ParseEnv parses the master environment.

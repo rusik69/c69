@@ -1,5 +1,5 @@
 FROM fedora:39 AS build-env
-WORKDIR /go/src/github.com/rusik69/govnocloud
+WORKDIR /go/src/github.com/rusik69/simplecloud
 COPY ../ ./
 RUN dnf -y -q install make go libvirt-devel make bash gcc git
 RUN make get

@@ -2,7 +2,7 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := default
 .PHONY: all build
 
-BINARY_NAME=govnocloud
+BINARY_NAME=simplecloud
 IMAGE_TAG=$(shell git describe --tags --always)
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
 ORG_PREFIX := loqutus
@@ -35,7 +35,7 @@ test:
 	go test -timeout 30m -v ./...
 
 deploy:
-	bin/govnocloud-deploy-linux-amd64 --master t440p.rusik69.lol --nodes x220.rusik69.lol,x230.rusik69.lol
+	bin/simplecloud-deploy-linux-amd64 --master t440p.rusik69.lol --nodes x220.rusik69.lol,x230.rusik69.lol
 
 ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
@@ -49,16 +49,16 @@ composelogs:
 	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml logs"
 
 logs:
-	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`
+	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value simplecloud-master.service`
 	ssh x220.rusik69.lol "get_logs.sh"
 	ssh x230.rusik69.lol "get_logs.sh"
 
 remotetest:
-	rsync -avz . t440p.rusik69.lol:~/govnocloud
-	ssh t440p.rusik69.lol "cd govnocloud; make ansible get build deploy test logs"
+	rsync -avz . t440p.rusik69.lol:~/simplecloud
+	ssh t440p.rusik69.lol "cd simplecloud; make ansible get build deploy test logs"
 
 rsync:
-	rsync -avz . t440p.rusik69.lol:~/govnocloud
+	rsync -avz . t440p.rusik69.lol:~/simplecloud
 
 default: get build
 
