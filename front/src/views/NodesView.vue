@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     fetchNodes() {
-      fetch('http://t440p.rusik69.lol:7070/api/v1/nodes')
+      fetch('http://master.govno.cloud:7070/api/v1/nodes')
         .then(response => response.json())
         .then(data => {
           this.nodes = data;

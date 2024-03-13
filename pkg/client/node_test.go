@@ -129,8 +129,8 @@ func TestGetNode(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if node.Name != "x220" {
-		t.Error("expected x220, got ", node.Name)
+	if node.Name != "node0" {
+		t.Error("expected node0, got ", node.Name)
 	}
 }
 
@@ -143,7 +143,7 @@ func TestDeleteNode(t *testing.T) {
 }
 
 func TestAddNodes(t *testing.T) {
-	err := client.AddNode(masterHost, masterPort, "x220", "x220.rusik69.lol", "6969")
+	err := client.AddNode(masterHost, masterPort, "node0", "node0.govno.cloud", "6969")
 	if err != nil {
 		t.Error(err)
 	}

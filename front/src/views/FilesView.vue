@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     fetchFiles() {
-      fetch('http://t440p.rusik69.lol:7070/api/v1/files')
+      fetch('http://master.govno.cloud:7070/api/v1/files')
         .then(response => response.json())
         .then(data => {
           this.files = data;

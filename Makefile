@@ -7,12 +7,12 @@ IMAGE_TAG=$(shell git describe --tags --always)
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
 ORG_PREFIX := loqutus
 
-export TEST_MASTER_HOST := t440p.rusik69.lol
+export TEST_MASTER_HOST := master.govno.cloud
 export TEST_MASTER_PORT := 7070
-export TEST_NODE_NAME := x220
-export TEST_NODE_HOST := x220.rusik69.lol
+export TEST_NODE_NAME := node0
+export TEST_NODE_HOST := node0.govno.cloud
 export TEST_NODE_PORT := 6969
-export TEST_NODES := x220.rusik69.lol:6969,x230.rusik69.lol:6969
+export TEST_NODES := node0.govno.cloud:6969,node1.govno.cloud:6969
 
 tidy:
 	go mod tidy
@@ -35,7 +35,7 @@ test:
 	go test -timeout 30m -v ./...
 
 deploy:
-	bin/govnocloud-deploy-linux-amd64 --master t440p.rusik69.lol --nodes x220.rusik69.lol,x230.rusik69.lol
+	bin/govnocloud-deploy-linux-amd64 --master master.govno.cloud --nodes node0.govno.cloud,node1.govno.cloud
 
 ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
@@ -44,21 +44,21 @@ composetest:
 	docker compose -f deployments/docker-compose-test.yml up --abort-on-container-exit --exit-code-from test --quiet-pull
 
 composelogs:
-	ssh t440p.rusik69.lol "docker compose -f docker-compose-master.yml logs"
-	ssh x220.rusik69.lol "docker compose -f docker-compose-x220.yml logs"
-	ssh x230.rusik69.lol "docker compose -f docker-compose-x230.yml logs"
+	ssh master.govno.cloud "docker compose -f docker-compose-master.yml logs"
+	ssh node0.govno.cloud "docker compose -f docker-compose-node0.yml logs"
+	ssh node1.govno.cloud "docker compose -f docker-compose-node1.yml logs"
 
 logs:
 	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`
-	ssh x220.rusik69.lol "get_logs.sh"
-	ssh x230.rusik69.lol "get_logs.sh"
+	ssh node0.govno.cloud "get_logs.sh"
+	ssh node1.govno.cloud "get_logs.sh"
 
 remotetest:
-	rsync -avz . t440p.rusik69.lol:~/govnocloud
-	ssh t440p.rusik69.lol "cd govnocloud; make ansible get build deploy test logs"
+	rsync -avz . master.govno.cloud:~/govnocloud
+	ssh master.govno.cloud "cd govnocloud; make ansible get build deploy test logs"
 
 rsync:
-	rsync -avz . t440p.rusik69.lol:~/govnocloud
+	rsync -avz . master.govno.cloud:~/govnocloud
 
 default: get build
 
