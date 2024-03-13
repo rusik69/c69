@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/rusik69/simplecloud/pkg/types"
+	"github.com/rusik69/govnocloud/pkg/types"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 

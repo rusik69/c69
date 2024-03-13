@@ -1,4 +1,4 @@
-module github.com/rusik69/simplecloud
+module github.com/rusik69/govnocloud
 
 go 1.20
 

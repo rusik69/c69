@@ -5,8 +5,8 @@ import (
 	"math/rand"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rusik69/simplecloud/pkg/client"
-	"github.com/rusik69/simplecloud/pkg/types"
+	"github.com/rusik69/govnocloud/pkg/client"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 

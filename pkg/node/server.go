@@ -3,7 +3,7 @@ package node
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/rusik69/simplecloud/pkg/types"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"

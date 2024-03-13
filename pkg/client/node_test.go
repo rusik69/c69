@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rusik69/simplecloud/pkg/client"
+	"github.com/rusik69/govnocloud/pkg/client"
 )
 
 var (

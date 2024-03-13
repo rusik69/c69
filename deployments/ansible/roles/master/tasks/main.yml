@@ -9,16 +9,16 @@
     minute: "0"
     hour: "5"
     job: "/usr/bin/docker system prune -f > /dev/null 2>&1"
-- name: install simplecloud-master service
+- name: install govnocloud-master service
   ansible.builtin.template:
-    src: simplecloud-master.service.j2
-    dest: /etc/systemd/system/simplecloud-master.service
+    src: govnocloud-master.service.j2
+    dest: /etc/systemd/system/govnocloud-master.service
     mode: 0644
-  register: simplecloud_master_service
+  register: govnocloud_master_service
 - name: reload systemd
   ansible.builtin.systemd:
     daemon_reload: yes
-  when: simplecloud_master_service.changed
+  when: govnocloud_master_service.changed
 - name: start etcd
   ansible.builtin.systemd:
     name: etcd

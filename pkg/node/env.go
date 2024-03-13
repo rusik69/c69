@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	"github.com/rusik69/simplecloud/pkg/types"
+	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 // ParseEnv parses the node environment.

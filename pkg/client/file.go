@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/rusik69/simplecloud/pkg/types"
+	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 // UploadFile uploads a file.

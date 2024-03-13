@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/rusik69/simplecloud/pkg/types"
+	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 // CreateContainer creates a container.
