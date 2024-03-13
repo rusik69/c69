@@ -92,6 +92,11 @@ var rootCmd = &cobra.Command{
 				panic(err)
 			}
 		}
+		logrus.Println("Starting govnocloud front on master", master)
+		err = deploy.RunSSHCommand(master, key, user, "docker pull loqutus/govnocloud-front:latest; docker run -d -p 8080:80 loqutus/govnocloud-front:latest")
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 
