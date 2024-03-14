@@ -66,3 +66,10 @@
     service: nfs
     permanent: yes
     state: enabled
+
+- name: allow govnocloud-master through firewall
+  ansible.posix.firewalld:
+    port: 7070/tcp
+    permanent: yes
+    state: enabled
+```
