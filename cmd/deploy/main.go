@@ -53,13 +53,13 @@ var rootCmd = &cobra.Command{
 			panic(err)
 		}
 		logrus.Println("Running cleanup.sh on master", master)
-		err = deploy.RunSSHCommand(master, key, user, "cleanup.sh")
+		err = deploy.RunSSHCommand(master, key, user, "/usr/local/bin/cleanup.sh")
 		if err != nil {
 			panic(err)
 		}
 		for _, node := range nodes {
 			logrus.Println("Running cleanup.sh on node", node)
-			err := deploy.RunSSHCommand(node, key, user, "cleanup.sh")
+			err := deploy.RunSSHCommand(node, key, user, "/usr/local/bin/cleanup.sh")
 			if err != nil {
 				panic(err)
 			}
@@ -93,7 +93,7 @@ var rootCmd = &cobra.Command{
 			}
 		}
 		logrus.Println("Starting govnocloud front on master", master)
-		err = deploy.RunSSHCommand(master, key, user, "docker pull loqutus/govnocloud-front:latest; docker run --name govnocloud-front -d -p 8080:80 loqutus/govnocloud-front:latest")
+		err = deploy.RunSSHCommand(master, key, user, "docker stop govnocloud-front; docker rm govnocloud-front;docker pull loqutus/govnocloud-front:latest; docker run --name govnocloud-front -d -p 8080:80 loqutus/govnocloud-front:latest")
 		if err != nil {
 			panic(err)
 		}
