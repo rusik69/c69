@@ -260,8 +260,8 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 			Interfaces: []libvirtxml.DomainInterface{
 				{
 					Source: &libvirtxml.DomainInterfaceSource{
-						Network: &libvirtxml.DomainInterfaceSourceNetwork{
-							Network: "default",
+						Bridge: &libvirtxml.DomainInterfaceSourceBridge{
+							Bridge: "mybridge",
 						},
 					},
 					Model: &libvirtxml.DomainInterfaceModel{
