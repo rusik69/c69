@@ -27,7 +27,7 @@ All nodes and masters should be connected using tailscale.
 govnocloud-client can be used to interact with govnocloud.
 Web interface is available on port 8080 of the master instance.
 
-Container flavors:
+## Container flavors:
 ```go
 var ContainerFlavors = map[string]ContainerFlavor{
 	"tiny": ContainerFlavor{
