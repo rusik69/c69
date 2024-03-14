@@ -1,2 +1,2 @@
-theme: jekyll-theme-minimal
-index: README.md
+remote_theme: pages-themes/midnight@v0.1.1
+color_scheme: dark
