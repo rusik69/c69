@@ -38,7 +38,7 @@ Web interface is available on port 8080 of the master instance.
 | 2xlarge |  5  | 4096      | 8192 |
 
 ## VM flavors:
-| Flavor | ID | MilliCPUs | RAM  | Disk |
+| Flavor | ID  | MilliCPUs | RAM  | Disk |
 | ------ | --- | --------- | ---- | ---- |
 | small  |  0  | 512       | 1024 | 8    |
 | medium |  1  | 1024      | 2048 | 8    |
