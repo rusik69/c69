@@ -33,6 +33,18 @@
           <path>/var/lib/libvirt/images</path>
         </target>
       </pool>
+- name: Define network
+  community.libvirt.virt_net:
+    command: define
+    name: mynetwork
+    xml: |
+      <network>
+        <name>mynetwork</name>
+        <forward mode='bridge'/>
+        <bridge name='mybridge'/>
+      </network>
+    state: active
+    autostart: yes
 - name: add ssh key to root
   ansible.builtin.copy:
     src: authorized_keys
