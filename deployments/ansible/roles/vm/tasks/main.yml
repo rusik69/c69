@@ -12,3 +12,6 @@
   notify: netplan apply
 - name: Flush handlers
   meta: flush_handlers
+- name: set tailscale authkey
+  set_fact:
+    tailscale_authkey: "{{ lookup('file', '/etc/govnocloud/tailscale_auth_key') }}"
