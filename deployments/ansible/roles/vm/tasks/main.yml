@@ -11,7 +11,4 @@
     mode: 0644
   notify: netplan apply
 - name: Flush handlers
-  meta: flush_handlers  
-- name: get tailscale token
-  set_fact:
-    my_token: "{{ lookup('file', '/etc/govnocloud/tailscale_auth_key') }}"
+  meta: flush_handlers

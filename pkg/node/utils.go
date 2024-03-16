@@ -185,8 +185,8 @@ func waitForSSH(ip string) error {
 	}
 }
 
-// install Ansible requirements
-func installAnsible() error {
+// Install Ansible requirements
+func InstallAnsible() error {
 	logrus.Println("Installing ansible requirements")
 	cmd := exec.Command("ansible-galaxy", "install", "-r", "/etc/govnocloud/ansible/requirements.yml")
 	output, err := cmd.CombinedOutput()
