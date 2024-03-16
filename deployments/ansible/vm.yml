@@ -4,8 +4,6 @@
   roles:
     - vm
     - artis3n.tailscale
-  set_fact:
-    my_token: "{{ lookup('file', '/etc/govnocloud/tailscale_auth_key') }}"
   vars:
     tailscale_authkey: "{{ my_token }}"
   
