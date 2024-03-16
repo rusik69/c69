@@ -33,18 +33,6 @@
           <path>/var/lib/libvirt/images</path>
         </target>
       </pool>
-- name: Define network
-  community.libvirt.virt_net:
-    command: define
-    name: mynetwork
-    xml: |
-      <network>
-        <name>mynetwork</name>
-        <forward mode='bridge'/>
-        <bridge name='mybridge'/>
-      </network>
-    state: active
-    autostart: yes
 - name: add ssh key to root
   ansible.builtin.copy:
     src: authorized_keys
@@ -62,3 +50,24 @@
   ansible.builtin.systemd:
     daemon_reload: yes
   when: govnocloud_node_service.changed
+- name: create govnocloud directory
+  ansible.builtin.file:
+    path: /etc/govnocloud
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+- name: create tailscale token file
+  ansible.builtin.template:
+    src: tailscale_auth_key.j2
+    dest: /etc/govnocloud/tailscale_auth_key
+    owner: root
+    group: root
+    mode: 0600
+- name: copy ansible to /etc/govnocloud
+  ansible.builtin.copy:
+    src: deployments/ansible
+    dest: /etc/govnocloud/ansible
+    owner: root
+    group: root
+    mode: 0600

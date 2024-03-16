@@ -41,17 +41,6 @@ test:
 deploy:
 	bin/govnocloud-deploy-linux-amd64 --master master.govno.cloud --nodes node0.govno.cloud,node1.govno.cloud
 
-ansible:
-	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
-
-composetest:
-	docker compose -f deployments/docker-compose-test.yml up --abort-on-container-exit --exit-code-from test --quiet-pull
-
-composelogs:
-	ssh master.govno.cloud "docker compose -f docker-compose-master.yml logs"
-	ssh node0.govno.cloud "docker compose -f docker-compose-node0.yml logs"
-	ssh node1.govno.cloud "docker compose -f docker-compose-node1.yml logs"
-
 logs:
 	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`
 	ssh node0.govno.cloud "get_logs.sh"

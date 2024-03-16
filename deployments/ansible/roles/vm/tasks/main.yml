@@ -10,3 +10,25 @@
     group: root
     mode: 0644
   notify: netplan apply
+- name: Flush handlers
+  meta: flush_handlers
+- name: Get token from file
+  set_fact:
+    my_token: "{{ lookup('file', '/etc/govnocloud/tailscale_auth_key') }}"
+- name: Add Tailscale repo
+  copy:
+    dest: /etc/yum.repos.d/tailscale.repo
+    content: |
+      [tailscale]
+      name=Tailscale
+      baseurl=https://pkgs.tailscale.com/stable/fedora/$releasever/$basearch
+      enabled=1
+      gpgcheck=1
+      repo_gpgcheck=1
+      gpgkey=https://pkgs.tailscale.com/stable/fedora/RPM-GPG-KEY-tailscale
+- name: Install Tailscale
+  dnf:
+    name: tailscale
+    state: present
+- name: Authenticate Tailscale
+  command: tailscale up --authkey {{ my_token }}

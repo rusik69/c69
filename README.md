@@ -28,6 +28,7 @@ govnocloud-client can be used to interact with govnocloud.
 Web interface is available on port 8080 of the master instance.
 
 ## Container flavors:
+
 | Flavor  | ID  | MilliCPUs | RAM  |
 | ------- | --- | --------- | ---- |
 | tiny    |  0  | 128       | 256  |
@@ -38,6 +39,7 @@ Web interface is available on port 8080 of the master instance.
 | 2xlarge |  5  | 4096      | 8192 |
 
 ## VM flavors:
+
 | Flavor | ID  | MilliCPUs | RAM  | Disk |
 | ------ | --- | --------- | ---- | ---- |
 | small  |  0  | 512       | 1024 | 8    |
