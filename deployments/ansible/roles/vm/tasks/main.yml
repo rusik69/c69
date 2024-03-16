@@ -15,13 +15,13 @@
 - name: Get token from file
   set_fact:
     my_token: "{{ lookup('file', '/etc/govnocloud/tailscale_auth_key') }}"
-- name: Add Tailscale repo
-  apt_repository:
-    repo: deb http://pkgs.tailscale.com/stable/ubuntu jammy main
-    state: present
 - name: Add Tailscale GPG key
   apt_key:
     url: https://pkgs.tailscale.com/stable/ubuntu/key.pub
+    state: present
+- name: Add Tailscale repo
+  apt_repository:
+    repo: deb http://pkgs.tailscale.com/stable/ubuntu jammy main
     state: present
 - name: Update apt and install Tailscale
   apt:
