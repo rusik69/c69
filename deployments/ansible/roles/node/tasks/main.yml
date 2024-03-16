@@ -67,7 +67,7 @@
 - name: copy ansible to /etc/govnocloud
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../ansible"
-    dest: /etc/govnocloud/ansible
+    dest: /etc/govnocloud/
     owner: root
     group: root
     mode: 0600
