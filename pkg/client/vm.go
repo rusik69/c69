@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -18,7 +17,6 @@ func CreateVM(host, port, name, image, flavor string) (types.VM, error) {
 		Image:  image,
 		Flavor: flavor,
 	}
-	fmt.Println("Creating VM", vm)
 	url := "http://" + host + ":" + port + "/api/v1/vms"
 	body, err := json.Marshal(vm)
 	if err != nil {
