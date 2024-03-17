@@ -311,9 +311,15 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	if err != nil {
 		return types.VM{}, 500, err
 	}
-	err = applyAnsible(ip)
+	err = applyAnsible(ip,  "/etc/govnocloud/ansible/vm.yml")
 	if err != nil {
 		return types.VM{}, 500, err
+	}
+	if vm.Image == "k8s" {
+		err = applyAnsible(ip, "/etc/govnocloud/ansible/k8s.yml")
+		if err != nil {
+			return types.VM{}, 500, err
+		}
 	}
 	vncPort := vmXML.Devices.Graphics[0].VNC.Port
 	vncPortString := fmt.Sprintf("%d", vncPort)

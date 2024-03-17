@@ -198,3 +198,15 @@ type Volume struct {
 	// Size is the size of the volume.
 	Size int64 `json:"size"`
 }
+
+// K8S represents a k8s cluster.
+type K8S struct {
+	// ID is the ID of the k8s cluster.
+	ID string `json:"id"`
+	// Name is the name of the k8s cluster.
+	Name string `json:"name"`
+	// Vm is the virtual machine of the k8s cluster.
+	VM VM `json:"vm"`
+	// Flavor is the flavor of the k8s cluster.
+	Flavor string `json:"flavor"`
+}

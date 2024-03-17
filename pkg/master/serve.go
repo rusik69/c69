@@ -32,7 +32,15 @@ func Serve() {
 	r.DELETE("/api/v1/file/:name", DeleteFileHandler)
 	r.GET("/api/v1/files", ListFilesHandler)
 	r.GET("/api/v1/file/:name", GetFileHandler)
-	
+	r.POST("/api/v1/k8s", CreateK8SHandler)
+	r.GET("/api/v1/k8s/:name", GetK8SHandler)
+	r.DELETE("/api/v1/k8s/:name", DeleteK8SHandler)
+	r.GET("/api/v1/k8s", ListK8SHandler)
+	r.GET("/api/v1/k8sstart/:name", StartK8SHandler)
+	r.GET("/api/v1/k8sstop/:name", StopK8SHandler)
+	r.GET("/ping", func(c *gin.Context) {
+		c.String(200, "pong")
+	})
 	logrus.Println("Master is listening on port " + string(types.MasterEnvInstance.ListenPort))
 	err := r.Run(types.MasterEnvInstance.ListenHost + ":" + types.MasterEnvInstance.ListenPort)
 	if err != nil {

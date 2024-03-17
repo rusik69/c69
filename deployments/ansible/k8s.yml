@@ -1,0 +1,5 @@
+---
+- name: apply k8s role
+  hosts: all
+  roles:
+    - k8s
