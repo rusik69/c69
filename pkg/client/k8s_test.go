@@ -12,6 +12,9 @@ func TestCreateK8S(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	if k8s.Name != "test" {
+		t.Error("expected test, got ", k8s.Name)
+	}
 }
 
 // TestGetK8S tests the GetK8S function.
