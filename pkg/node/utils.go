@@ -200,7 +200,7 @@ func InstallAnsible() error {
 // apply ansible to vm
 func applyAnsible(ip, playbook string) error {
 	logrus.Println("Applying ansible to", ip)
-	cmd := exec.Command("ansible-playbook", "-u", "root", "-i", ip+",",playbook)
+	cmd := exec.Command("ansible-playbook", "-u", "root", "-i", ip+",", playbook)
 	cmd.Env = append(cmd.Env, "ANSIBLE_HOST_KEY_CHECKING=False")
 	cmd.Env = append(cmd.Env, "ANSIBLE_GATHERING=explicit")
 	output, err := cmd.CombinedOutput()
