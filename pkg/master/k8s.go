@@ -38,7 +38,7 @@ func CreateK8SHandler(c *gin.Context) {
 		Flavor: vmFlavorName,
 		Image:  "k8s",
 	}
-	newVM, err := client.CreateVM("localhost", types.WEBEnvInstance.MasterPort,
+	newVM, err := client.CreateVM("localhost", types.MasterEnvInstance.ListenPort,
 		vm.Name, vm.Image, vm.Flavor)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
