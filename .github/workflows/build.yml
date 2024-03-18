@@ -17,6 +17,8 @@ jobs:
       run: make get build
     - name: deploy
       run: make deploy
+      env:
+        TAILSCALE_AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
     - name: test
       run: make test
     - name: logs
