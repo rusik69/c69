@@ -20,6 +20,7 @@
   apt_repository:
     repo: deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu noble main
     state: present
+    allow_unauthenticated: yes
 - name: Update apt and install Tailscale
   apt:
     name: tailscale
