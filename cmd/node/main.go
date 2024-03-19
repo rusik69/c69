@@ -56,11 +56,6 @@ var rootCmd = &cobra.Command{
 			logrus.Error(err.Error())
 			panic(err)
 		}
-		err = node.InstallAnsible()
-		if err != nil {
-			logrus.Error(err.Error())
-			panic(err)
-		}
 		node.Serve()
 	},
 }

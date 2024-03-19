@@ -1,7 +1,6 @@
 package client_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -60,17 +59,5 @@ func TestDeleteVM(t *testing.T) {
 	err := client.DeleteVM(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
-	}
-}
-
-// RunVMs runs vms.
-func RunVMs() {
-	fmt.Println("RunVMs")
-	for i := 0; i < 4; i++ {
-		vmName := "test" + fmt.Sprintf("%d", i)
-		_, err := client.CreateVM(masterHost, masterPort, vmName, "ubuntu22.04", "small")
-		if err != nil {
-			fmt.Println(err)
-		}
 	}
 }
