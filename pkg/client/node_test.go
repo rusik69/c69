@@ -84,8 +84,6 @@ func TestMain(m *testing.M) {
 	addNodes()
 	m.Run()
 	addNodes()
-	RunContainers()
-	RunVMs()
 	UploadFiles()
 }
 
