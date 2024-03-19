@@ -5,5 +5,4 @@
     tailscale_authkey: "{{ lookup('file', '/etc/govnocloud/tailscale_auth_key') }}"
   roles:
     - vm
-    - artis3n.tailscale
   
