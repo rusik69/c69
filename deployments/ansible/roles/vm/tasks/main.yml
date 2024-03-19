@@ -18,7 +18,7 @@
     state: present
 - name: Add Tailscale repo
   apt_repository:
-    repo: https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring.list
+    repo: deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu noble main
     state: present
 - name: Update apt and install Tailscale
   apt:
