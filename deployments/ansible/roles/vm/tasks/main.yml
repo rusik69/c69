@@ -12,13 +12,13 @@
   notify: netplan apply
 - name: Flush handlers
   meta: flush_handlers
-- name: Add Tailscale repo
-  apt_repository:
-    repo: deb http://pkgs.tailscale.com/stable/ubuntu jammy main
-    state: present
 - name: Add Tailscale GPG key
   apt_key:
-    url: https://pkgs.tailscale.com/stable/ubuntu/key.pub
+    url: https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg
+    state: present
+- name: Add Tailscale repo
+  apt_repository:
+    repo: https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring.list
     state: present
 - name: Update apt and install Tailscale
   apt:
