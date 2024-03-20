@@ -61,6 +61,11 @@ func CreateK8SHandler(c *gin.Context) {
 // GetK8SHandler gets a k8s cluster
 func GetK8SHandler(c *gin.Context) {
 	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
+		return
+	}
+	logrus.Println("Getting K8S", name)
 	k8sInfoString, err := ETCDGet("/k8s/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -86,6 +91,7 @@ func DeleteK8SHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
+	logrus.Println("Deleting K8S", name)
 	k8sInfoString, err := ETCDGet("/k8s/" + name)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -121,12 +127,22 @@ func ListK8SHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	k8sListString, err := json.Marshal(k8sList)
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
+	res := []types.K8S{}
+	for _, k8sName := range k8sList {
+		k8sString, err := ETCDGet("/k8s/" + k8sName)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		var k8s types.K8S
+		err = json.Unmarshal([]byte(k8sString), &k8s)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		res = append(res, k8s)
 	}
-	c.JSON(200, string(k8sListString))
+	c.JSON(200, res)
 }
 
 // StartK8SHandler starts a k8s cluster

@@ -285,8 +285,6 @@ func ListVMHandler(c *gin.Context) {
 			}
 		}
 	}
-
-	logrus.Println("VMs:", res)
 	c.JSON(200, res)
 }
 
