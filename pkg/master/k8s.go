@@ -34,7 +34,7 @@ func CreateK8SHandler(c *gin.Context) {
 		return
 	}
 	vm := types.VM{
-		Name:   tempK8S.Name,
+		Name:   tempK8S.Name + "-k8s",
 		Flavor: vmFlavorName,
 		Image:  "k8s",
 	}
