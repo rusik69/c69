@@ -150,6 +150,12 @@ var VMImages = map[string]VMImage{
 		Img:  "jammy-server-cloudimg-amd64.img",
 		URL:  "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img",
 	},
+	"k8s": VMImage{
+		ID:   "0",
+		Type: "ubuntu",
+		Img:  "jammy-server-cloudimg-amd64.img",
+		URL:  "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img",
+	},
 	// "ubuntu20.04": VMImage{
 	// 	ID:   "1",
 	// 	Type: "ubuntu",
