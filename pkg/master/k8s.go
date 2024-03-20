@@ -163,7 +163,7 @@ func StartK8SHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	err = client.StartVM("localhost", types.WEBEnvInstance.MasterPort, k8s.VM.Name)
+	err = client.StartVM(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, k8s.VM.Name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -189,7 +189,7 @@ func StopK8SHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	err = client.StopVM("localhost", types.WEBEnvInstance.MasterPort, k8s.VM.Name)
+	err = client.StopVM(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, k8s.VM.Name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
