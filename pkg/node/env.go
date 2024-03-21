@@ -41,9 +41,9 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if filesDir == "" {
 		filesDir = "/mnt"
 	}
-	tailscaleKey := os.Getenv("TAILSCALE_KEY")
+	tailscaleKey := os.Getenv("TAILSCALE_AUTHKEY")
 	if tailscaleKey == "" {
-		return nil, errors.New("TAILSCALE_KEY is not set")
+		return nil, errors.New("TAILSCALE_AUTHKEY is not set")
 	}
 	NodeEnvInstance := &types.NodeEnv{
 		Name:            name,
