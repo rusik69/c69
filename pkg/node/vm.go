@@ -199,7 +199,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 		cpuShares = uint(flavor.MilliCPUs)
 		vcpus = 1
 	}
-	err = AddSSHPublicKey(destImgName)
+	err = AddSSHPublicKey(destImgName, vm.Name)
 	if err != nil {
 		return types.VM{}, 500, err
 	}
@@ -311,7 +311,11 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	if err != nil {
 		return types.VM{}, 500, err
 	}
-	err = applyAnsible(ip,  "/etc/govnocloud/ansible/vm.yml")
+	err = applyAnsible(ip, "/etc/govnocloud/ansible/vm.yml")
+	if err != nil {
+		return types.VM{}, 500, err
+	}
+	tailscaleIP, tailscaleID, err := tailscaleGetDeviceInfo(vm.Name)
 	if err != nil {
 		return types.VM{}, 500, err
 	}
@@ -329,6 +333,8 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	vm.ID = int(id)
 	vm.VNCURL = vncURL
 	vm.IP = ip
+	vm.TailscaleIP = tailscaleIP
+	vm.TailscaleID = tailscaleID
 	return vm, 200, nil
 }
 
@@ -359,6 +365,10 @@ func DeleteVM(vm types.VM) error {
 	err = domain.Undefine()
 	if err != nil {
 		return fmt.Errorf("failed to undefine domain: %w", err)
+	}
+	err = tailscaleRemove(vm.TailscaleID)
+	if err != nil {
+		return fmt.Errorf("failed to remove tailscale device: %w", err)
 	}
 	return nil
 }

@@ -41,6 +41,10 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if filesDir == "" {
 		filesDir = "/mnt"
 	}
+	tailscaleKey := os.Getenv("TAILSCALE_KEY")
+	if tailscaleKey == "" {
+		return nil, errors.New("TAILSCALE_KEY is not set")
+	}
 	NodeEnvInstance := &types.NodeEnv{
 		Name:            name,
 		IP:              ip,
@@ -50,6 +54,7 @@ func ParseEnv() (*types.NodeEnv, error) {
 		LibVirtImageDir: libvirtImageDir,
 		LibVirtBootDir:  libvirtBootDir,
 		FilesDir:        filesDir,
+		TailscaleKey:    tailscaleKey,
 	}
 	return NodeEnvInstance, nil
 }

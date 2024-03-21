@@ -1,6 +1,7 @@
 package node
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -121,9 +122,9 @@ func CreateSSHKey() error {
 }
 
 // AddSSHPublicKey adds the ssh public key to image.
-func AddSSHPublicKey(image string) error {
+func AddSSHPublicKey(image, hostName string) error {
 	logrus.Println("Adding ssh public key to", image)
-	cmdSlice := []string{"--no-selinux-relabel", "-a", image, "--mkdir", "/root/.ssh", "--root-password", "password:password", "--password", "password:password", "--network", "--ssh-inject", "root:file:/root/.ssh/id_rsa.pub", "--firstboot-command", "dhclient;dpkg-reconfigure openssh-server;systemctl restart sshd; growpart /dev/vda 1; resize2fs /dev/vda1"}
+	cmdSlice := []string{"--no-selinux-relabel", "-a", image, "--mkdir", "/root/.ssh", "--root-password", "password:password", "--password", "password:password", "--network", "--ssh-inject", "root:file:/root/.ssh/id_rsa.pub", "--firstboot-command", "dhclient;dpkg-reconfigure openssh-server;systemctl restart sshd; growpart /dev/vda 1; resize2fs /dev/vda1; hostname " + hostName}
 	mkdirCmd := exec.Command("virt-customize", cmdSlice...)
 	output, err := mkdirCmd.CombinedOutput()
 	logrus.Println(string(output))
@@ -217,4 +218,54 @@ func copyFile(src, dst string) error {
 		return err
 	}
 	return nil
+}
+
+// tailscaleRemove removes the vm from tailscale.
+func tailscaleRemove(deviceID string) error {
+	url := fmt.Sprintf("https://api.tailscale.com/api/v2/device/%s", deviceID)
+	req, _ := http.NewRequest("DELETE", url, nil)
+	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleKey)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode == http.StatusOK {
+		return nil
+	} else {
+		return errors.New("Failed to remove device")
+	}
+}
+
+type tailscaleDevice struct {
+	ID   string `json:"id"`
+	IP   string `json:"ip"`
+	Name string `json:"name"`
+}
+
+type tailscaleDevices struct {
+	Devices []tailscaleDevice `json:"devices"`
+}
+
+// tailscaleGetDeviceInfo gets the device ip and id from tailscale.
+func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
+	url := "https://api.tailscale.com/api/v2/devices"
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleKey)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return "", "", err
+	}
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	var devices tailscaleDevices
+	json.Unmarshal(body, &devices)
+	for _, device := range devices.Devices {
+		if device.Name == deviceName {
+			return device.IP, device.ID, nil
+		}
+	}
+	return "", "", errors.New("Device not found")
 }
