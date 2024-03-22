@@ -262,7 +262,9 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	body, _ := io.ReadAll(res.Body)
 	var devices tailscaleDevices
 	json.Unmarshal(body, &devices)
+	logrus.Println("Devices")
 	for _, device := range devices.Devices {
+		logrus.Println(device.Name)
 		if device.Name == deviceName {
 			return device.IP, device.ID, nil
 		}
