@@ -260,6 +260,7 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	}
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
+	logrus.Println(string(body))
 	var devices tailscaleDevices
 	json.Unmarshal(body, &devices)
 	logrus.Println("Devices")
