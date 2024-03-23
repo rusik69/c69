@@ -31,7 +31,7 @@
     - name: Authenticate Tailscale
       command: tailscale up --authkey {{ tailscale_authkey }} --hostname {{ inventory_hostname }}
       register: tailscale_auth
-  failure:
+  rescue:
     - name: Debug tailscale
       debug:
         msg: "{{ tailscale_auth.stdout }\n{{ tailscale_auth.stderr }}"
