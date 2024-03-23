@@ -33,6 +33,4 @@
     register: tailscale_auth
   always:
     - debug:
-      msg: "{{ tailscale_auth.stdout }}"
-    - debug:
-      msg: "{{ tailscale_auth.stderr }}"
+      msg: "{{ tailscale_auth.stdout }\n{{ tailscale_auth.stderr }}"
