@@ -32,4 +32,4 @@
   ignore_errors: true
 - name: Debug tailscale
   debug:
-    msg: "{{ tailscale_auth.stdout }\n{{ tailscale_auth.stderr }}"
+    msg: "{{ tailscale_auth.stdout }} {{ tailscale_auth.stderr }}"
