@@ -250,7 +250,7 @@ type tailscaleDevices struct {
 
 // tailscaleGetDeviceInfo gets the device ip and id from tailscale.
 func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
-	url := "https://api.tailscale.com/api/v2/devices"
+	url := "https://api.tailscale.com/api/v2/tailnet/-/devices"
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleKey)
 	res, err := http.DefaultClient.Do(req)
