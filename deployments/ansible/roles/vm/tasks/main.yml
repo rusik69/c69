@@ -26,10 +26,13 @@
     update_cache: yes
     state: present
     allow_unauthenticated: yes
-- name: Authenticate Tailscale
-  command: tailscale up --authkey {{ tailscale_authkey }} --hostname {{ inventory_hostname }}
-  register: tailscale_auth
-- debug:
-    msg = "{{ tailscale_auth.stdout }}"
-- debug:
-    msg = "{{ tailscale_auth.stderr }}"
+- name: run tailscale
+  block:
+  - name: Authenticate Tailscale
+    command: tailscale up --authkey {{ tailscale_authkey }} --hostname {{ inventory_hostname }}
+    register: tailscale_auth
+  always:
+    - debug:
+      msg: "{{ tailscale_auth.stdout }}"
+    - debug:
+      msg: "{{ tailscale_auth.stderr }}"
