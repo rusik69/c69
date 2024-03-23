@@ -229,8 +229,10 @@ func tailscaleRemove(deviceID string) error {
 	if err != nil {
 		return err
 	}
+	if res.StatusCode != http.StatusOK {
+		return errors.New("Failed to remove device")
+	}
 	defer res.Body.Close()
-
 	if res.StatusCode == http.StatusOK {
 		return nil
 	} else {
@@ -257,6 +259,9 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	if err != nil {
 		fmt.Println(err)
 		return "", "", err
+	}
+	if res.StatusCode != http.StatusOK {
+		return "", "", errors.New("Failed to get devices")
 	}
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
