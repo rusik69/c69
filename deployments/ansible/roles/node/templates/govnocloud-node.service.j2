@@ -7,7 +7,8 @@ ExecStart=/usr/local/bin/govnocloud-node
 Environment="NODE_LISTEN_HOST={{ ansible_tailscale0.ipv4.address }}"
 Environment="NODE_NAME={{ ansible_hostname }}"
 Environment="NODE_IP={{ ansible_tailscale0.ipv4.address }}"
-Environment="TAILSCALE_AUTHKEY={{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
+Environment="TAILSCALE_AUTH_KEY={{ lookup('env', 'TAILSCALE_AUTH_KEY') }}"
+Environment="TAILSCALE_ACCESS_TOKEN={{ lookup('env', 'TAILSCALE_ACCESS_TOKEN') }}"
 
 [Install]
 WantedBy=default.target

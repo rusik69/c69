@@ -224,7 +224,7 @@ func copyFile(src, dst string) error {
 func tailscaleRemove(deviceID string) error {
 	url := fmt.Sprintf("https://api.tailscale.com/api/v2/device/%s", deviceID)
 	req, _ := http.NewRequest("DELETE", url, nil)
-	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleKey)
+	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleAccessToken)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return err
@@ -254,7 +254,7 @@ type tailscaleDevices struct {
 func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	url := "https://api.tailscale.com/api/v2/tailnet/-/devices"
 	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleKey)
+	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleAccessToken)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		fmt.Println(err)

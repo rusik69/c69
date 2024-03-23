@@ -18,6 +18,7 @@ type Container struct {
 	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the container.
 	Committed bool   `json:"committed"`
+	// Flavor is the flavor of the container.
 	Flavor    string `json:"flavor"`
 }
 
@@ -183,7 +184,8 @@ type NodeEnv struct {
 	LibVirtImageDir string `json:"libvirt_image_dir"`
 	LibVirtBootDir  string `json:"libvirt_boot_dir"`
 	FilesDir        string `json:"files_dir"`
-	TailscaleKey    string `json:"tailscale_key"`
+	TailscaleAuthKey string `json:"tailscale_auth_key"`
+	TailscaleAccessToken string `json:"tailscale_access_token"`
 }
 
 // NodeEnvInstance is the singleton instance of NodeEnv.

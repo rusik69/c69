@@ -41,20 +41,25 @@ func ParseEnv() (*types.NodeEnv, error) {
 	if filesDir == "" {
 		filesDir = "/mnt"
 	}
-	tailscaleKey := os.Getenv("TAILSCALE_AUTHKEY")
-	if tailscaleKey == "" {
-		return nil, errors.New("TAILSCALE_AUTHKEY is not set")
+	tailscaleAuthKey := os.Getenv("TAILSCALE_AUTH_KEY")
+	if tailscaleAuthKey == "" {
+		return nil, errors.New("TAILSCALE_AUTH_KEY is not set")
+	}
+	tailscaleAccessToken := os.Getenv("TAILSCALE_ACCESS_TOKEN")
+	if tailscaleAccessToken == "" {
+		return nil, errors.New("TAILSCALE_ACCESS_TOKEN is not set")
 	}
 	NodeEnvInstance := &types.NodeEnv{
-		Name:            name,
-		IP:              ip,
-		ListenPort:      listenPort,
-		ListenHost:      listenHost,
-		LibVirtURI:      libvirtURI,
-		LibVirtImageDir: libvirtImageDir,
-		LibVirtBootDir:  libvirtBootDir,
-		FilesDir:        filesDir,
-		TailscaleKey:    tailscaleKey,
+		Name:                 name,
+		IP:                   ip,
+		ListenPort:           listenPort,
+		ListenHost:           listenHost,
+		LibVirtURI:           libvirtURI,
+		LibVirtImageDir:      libvirtImageDir,
+		LibVirtBootDir:       libvirtBootDir,
+		FilesDir:             filesDir,
+		TailscaleAuthKey:     tailscaleAuthKey,
+		TailscaleAccessToken: tailscaleAccessToken,
 	}
 	return NodeEnvInstance, nil
 }
