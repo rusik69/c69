@@ -31,6 +31,7 @@
     - name: Authenticate Tailscale
       command: tailscale up --authkey {{ tailscale_authkey }} --hostname {{ inventory_hostname }}
       register: tailscale_auth
+      ignore_errors: true
   rescue:
     - name: Debug tailscale
       debug:
