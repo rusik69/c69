@@ -229,15 +229,11 @@ func tailscaleRemove(deviceID string) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
 		return errors.New("Failed to remove device")
 	}
-	defer res.Body.Close()
-	if res.StatusCode == http.StatusOK {
-		return nil
-	} else {
-		return errors.New("Failed to remove device")
-	}
+	return nil
 }
 
 type tailscaleDevice struct {
@@ -257,7 +253,6 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleAccessToken)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		fmt.Println(err)
 		return "", "", err
 	}
 	if res.StatusCode != http.StatusOK {
@@ -270,7 +265,6 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	json.Unmarshal(body, &devices)
 	logrus.Println("Devices")
 	for _, device := range devices.Devices {
-		logrus.Println(device.Name)
 		deviceHostName := strings.Split(device.Name, ".")[0]
 		if deviceHostName == deviceName {
 			return device.IP, device.ID, nil

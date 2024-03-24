@@ -366,6 +366,7 @@ func DeleteVM(vm types.VM) error {
 	if err != nil {
 		return fmt.Errorf("failed to undefine domain: %w", err)
 	}
+	logrus.Println("Removing machine from tailscale", vm.TailscaleID)
 	err = tailscaleRemove(vm.TailscaleID)
 	if err != nil {
 		return fmt.Errorf("failed to remove tailscale device: %w", err)
