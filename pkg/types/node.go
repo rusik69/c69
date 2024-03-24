@@ -17,9 +17,9 @@ type Container struct {
 	// Volumes is the volumes of the container.
 	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the container.
-	Committed bool   `json:"committed"`
+	Committed bool `json:"committed"`
 	// Flavor is the flavor of the container.
-	Flavor    string `json:"flavor"`
+	Flavor string `json:"flavor"`
 }
 
 // VM represents a virtual machine.
@@ -176,15 +176,15 @@ var VMImages = map[string]VMImage{
 }
 
 type NodeEnv struct {
-	Name            string `json:"name"`
-	IP              string `json:"ip"`
-	ListenPort      string `json:"listen_port"`
-	ListenHost      string `json:"listen_host"`
-	LibVirtURI      string `json:"libvirt_socket"`
-	LibVirtImageDir string `json:"libvirt_image_dir"`
-	LibVirtBootDir  string `json:"libvirt_boot_dir"`
-	FilesDir        string `json:"files_dir"`
-	TailscaleAuthKey string `json:"tailscale_auth_key"`
+	Name                 string `json:"name"`
+	IP                   string `json:"ip"`
+	ListenPort           string `json:"listen_port"`
+	ListenHost           string `json:"listen_host"`
+	LibVirtURI           string `json:"libvirt_socket"`
+	LibVirtImageDir      string `json:"libvirt_image_dir"`
+	LibVirtBootDir       string `json:"libvirt_boot_dir"`
+	FilesDir             string `json:"files_dir"`
+	TailscaleAuthKey     string `json:"tailscale_auth_key"`
 	TailscaleAccessToken string `json:"tailscale_access_token"`
 }
 
