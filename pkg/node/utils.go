@@ -235,7 +235,7 @@ func tailscaleRemove(deviceID string) error {
 		return err
 	}
 	if res.StatusCode != http.StatusOK {
-		return errors.New("Failed to remove device", deviceID, string(bodyBytes))
+		return errors.New("Failed to remove device " + deviceID + " " + string(bodyBytes))
 	}
 	return nil
 }
