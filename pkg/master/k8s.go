@@ -107,7 +107,7 @@ func DeleteK8SHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	err = client.DeleteVM("localhost", types.WEBEnvInstance.MasterPort, k8s.VM.Name)
+	err = client.DeleteVM(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, k8s.VM.Name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
