@@ -230,8 +230,12 @@ func tailscaleRemove(deviceID string) error {
 		return err
 	}
 	defer res.Body.Close()
+	bodyBytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
 	if res.StatusCode != http.StatusOK {
-		return errors.New("Failed to remove device")
+		return errors.New("Failed to remove device", deviceID, string(bodyBytes))
 	}
 	return nil
 }
@@ -260,7 +264,6 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	}
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
-	logrus.Println(string(body))
 	var devices tailscaleDevices
 	json.Unmarshal(body, &devices)
 	logrus.Println("Devices")
