@@ -27,7 +27,7 @@
     state: present
     allow_unauthenticated: yes
 - name: Authenticate Tailscale
-  command: tailscale up --authkey {{ tailscale_authkey }} --hostname {{ inventory_hostname }}
+  command: tailscale up --authkey {{ tailscale_authkey }} --hostname {{ lookup('env', 'HOSTNAME') }}
   register: tailscale_auth
   ignore_errors: true
 - name: Debug tailscale

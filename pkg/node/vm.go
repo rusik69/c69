@@ -311,7 +311,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	if err != nil {
 		return types.VM{}, 500, err
 	}
-	err = applyAnsible(ip, "/etc/govnocloud/ansible/vm.yml")
+	err = applyAnsible(ip, "/etc/govnocloud/ansible/vm.yml", vm.Name)
 	if err != nil {
 		return types.VM{}, 500, err
 	}

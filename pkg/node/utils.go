@@ -187,10 +187,11 @@ func waitForSSH(ip string) error {
 }
 
 // apply ansible to vm
-func applyAnsible(ip, playbook string) error {
+func applyAnsible(ip, playbook, hostname string) error {
 	logrus.Println("Applying ansible to", ip)
 	cmd := exec.Command("ansible-playbook", "-u", "root", "-i", ip+",", playbook)
 	cmd.Env = append(cmd.Env, "ANSIBLE_HOST_KEY_CHECKING=False")
+	cmd.Env = append(cmd.Env, "HOSTNAME="+hostname)
 	output, err := cmd.CombinedOutput()
 	logrus.Println(string(output))
 	if err != nil {
