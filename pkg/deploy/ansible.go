@@ -51,7 +51,7 @@ func GenerateAnsibleConfig(nodes []string, master, invFile string) error {
 
 // RunAnsible runs ansible
 func RunAnsible(invFile string) error {
-	tailscale_authkey := os.Getenv("TAILSCALE_AUTHKEY")
+	tailscale_authkey := os.Getenv("TAILSCALE_AUTH_KEY")
 	tailscale_accesstoken := os.Getenv("TAILSCALE_ACCESS_TOKEN")
 	cmd := exec.Command("ansible-playbook", "-i", invFile, "deployments/ansible/main.yml")
 	cmd.Env = append(cmd.Env, "ANSIBLE_HOST_KEY_CHECKING=False")
