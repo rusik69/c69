@@ -320,7 +320,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 		return types.VM{}, 500, err
 	}
 	if vm.Image == "k8s" {
-		err = applyAnsible(ip, "/etc/govnocloud/ansible/k8s.yml")
+		err = applyAnsible(ip, "/etc/govnocloud/ansible/k8s.yml", vm.Name)
 		if err != nil {
 			return types.VM{}, 500, err
 		}
