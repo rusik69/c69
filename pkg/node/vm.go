@@ -335,6 +335,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	vm.IP = ip
 	vm.TailscaleIP = tailscaleIP
 	vm.TailscaleID = tailscaleID
+	logrus.Println(vm)
 	return vm, 200, nil
 }
 
