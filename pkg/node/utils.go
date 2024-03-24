@@ -270,7 +270,7 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	for _, device := range devices.Devices {
 		deviceHostName := strings.Split(device.Name, ".")[0]
 		if deviceHostName == deviceName {
-			logrus.Println("Device found", device.IP, device.ID)
+			logrus.Println("Device found", device)
 			return device.IP, device.ID, nil
 		}
 	}
