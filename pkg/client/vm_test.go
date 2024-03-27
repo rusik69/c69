@@ -12,6 +12,19 @@ func TestCreateVM(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	if vm.Name != "test" {
+		t.Error("expected test, got ", vm.Name)
+	}
+	if vm.Image != "ubuntu22.04" {
+		t.Error("expected ubuntu22.04, got ", vm.Image)
+	}
+	if vm.Flavor != "small" {
+		t.Error("expected small, got ", vm.Flavor)
+	}
+	if vm.Committed != true {
+		t.Error("expected true, got ", vm.Committed)
+	}
+	
 }
 
 // TestGETVM tests the GetVM function.
