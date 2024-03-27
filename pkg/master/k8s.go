@@ -129,7 +129,7 @@ func ListK8SHandler(c *gin.Context) {
 	}
 	res := []types.K8S{}
 	for _, k8sName := range k8sList {
-		k8sString, err := ETCDGet("/k8s/" + k8sName)
+		k8sString, err := ETCDGet(k8sName)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
