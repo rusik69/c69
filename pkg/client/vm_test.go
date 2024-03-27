@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
-	"github.com/sirupsen/logrus"
 )
 
 // TestCreateVM tests the CreateVM function.
@@ -13,7 +12,6 @@ func TestCreateVM(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	logrus.Println(vm)
 }
 
 // TestGETVM tests the GetVM function.
