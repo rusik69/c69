@@ -322,6 +322,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 		return types.VM{}, 500, err
 	}
 	tailscaleIP, tailscaleID, err := tailscaleGetDeviceInfo(vm.Name)
+	logrus.Println("Tailscale IP", tailscaleIP, "ID", tailscaleID)
 	if err != nil {
 		return types.VM{}, 500, err
 	}
