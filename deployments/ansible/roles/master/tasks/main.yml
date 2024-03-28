@@ -69,6 +69,6 @@
 
 - name: allow govnocloud-master through firewall
   ansible.posix.firewalld:
-    port: 7070/tcp
+    port: 6969/tcp
     permanent: yes
     state: enabled

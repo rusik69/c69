@@ -30,7 +30,7 @@ func ParseEnv() (*types.MasterEnv, error) {
 	}
 	listenPort := os.Getenv("MASTER_LISTEN_PORT")
 	if listenPort == "" {
-		listenPort = "7070"
+		listenPort = "6969"
 	}
 	return &types.MasterEnv{
 		ETCDHost:   etcdhost,

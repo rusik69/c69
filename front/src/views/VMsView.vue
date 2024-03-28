@@ -66,7 +66,7 @@ export default {
       this.selectedvm = vm;
     },
     fetchVMs() {
-      fetch("http://master.govno.cloud:7070/api/v1/vms")
+      fetch("http://master.govno.cloud:6969/api/v1/vms")
         .then((response) => response.json())
         .then((data) => {
           this.vms = data;

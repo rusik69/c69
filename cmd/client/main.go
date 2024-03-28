@@ -324,7 +324,6 @@ var vmCreateCmd = &cobra.Command{
 	Short: "create vm",
 	Long:  `create vm`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var name string
 		if name == "" {
 			panic("name is required")
 		}
@@ -649,7 +648,7 @@ func init() {
 	k8sClientCmd.AddCommand(k8sStartCmd)
 	k8sClientCmd.AddCommand(k8sStopCmd)
 	rootCmd.PersistentFlags().StringVar(&clientHost, "host", "127.0.0.1", "host to connect to")
-	rootCmd.PersistentFlags().StringVar(&clientPort, "port", "7070", "port to connect to")
+	rootCmd.PersistentFlags().StringVar(&clientPort, "port", "6969", "port to connect to")
 	rootCmd.PersistentFlags().StringVar(&name, "name", "", "name")
 	rootCmd.PersistentFlags().StringVar(&image, "image", "", "image")
 	rootCmd.PersistentFlags().StringVar(&flavor, "flavor", "", "flavor")

@@ -61,7 +61,7 @@ func TestMain(m *testing.M) {
 	}
 	masterPort = os.Getenv("TEST_MASTER_PORT")
 	if masterPort == "" {
-		masterPort = "7070"
+		masterPort = "6969"
 	}
 	nodeName = os.Getenv("TEST_NODE_NAME")
 	if nodeName == "" {

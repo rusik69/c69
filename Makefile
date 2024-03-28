@@ -8,7 +8,7 @@ GIT_COMMIT=$(shell git rev-parse --short HEAD)
 ORG_PREFIX := loqutus
 
 export TEST_MASTER_HOST := master.govno.cloud
-export TEST_MASTER_PORT := 7070
+export TEST_MASTER_PORT := 6969
 export TEST_NODE_NAME := node0
 export TEST_NODE_HOST := node0.govno.cloud
 export TEST_NODE_PORT := 6969
