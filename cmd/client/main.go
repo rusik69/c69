@@ -95,7 +95,7 @@ var k8sGetCmd = &cobra.Command{
 		fmt.Println(
 			"ID: " + fmt.Sprint(k8s.ID) + "\n" +
 				"Name: " + k8s.Name + "\n" +
-				"State: " + k8s.State + "\n" +
+				"VM: " + k8s.VM.Name + "\n" +
 				"Flavor: " + k8s.Flavor + "\n",
 		)
 	},
@@ -642,12 +642,12 @@ func init() {
 	fileClientCmd.AddCommand(fileListCmd)
 	sshClientCmd.AddCommand(sshNodeCmd)
 	sshClientCmd.AddCommand(sshVMCmd)
-	k8sCmd.AddCommand(k8sCreateCmd)
-	k8sCmd.AddCommand(k8sDeleteCmd)
-	k8sCmd.AddCommand(k8sListCmd)
-	k8sCmd.AddCommand(k8sGetCmd)
-	k8sCmd.AddCommand(k8sStartCmd)
-	k8sCmd.AddCommand(k8sStopCmd)
+	k8sClientCmd.AddCommand(k8sCreateCmd)
+	k8sClientCmd.AddCommand(k8sDeleteCmd)
+	k8sClientCmd.AddCommand(k8sListCmd)
+	k8sClientCmd.AddCommand(k8sGetCmd)
+	k8sClientCmd.AddCommand(k8sStartCmd)
+	k8sClientCmd.AddCommand(k8sStopCmd)
 	rootCmd.PersistentFlags().StringVar(&clientHost, "host", "127.0.0.1", "host to connect to")
 	rootCmd.PersistentFlags().StringVar(&clientPort, "port", "7070", "port to connect to")
 	rootCmd.PersistentFlags().StringVar(&name, "name", "", "name")
