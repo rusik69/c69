@@ -241,9 +241,9 @@ func tailscaleRemove(deviceID string) error {
 }
 
 type tailscaleDevice struct {
-	ID   string `json:"id"`
-	IP   string `json:"ip"`
-	Name string `json:"name"`
+	ID        string   `json:"id"`
+	Addresses []string `json:"addresses"`
+	Name      string   `json:"name"`
 }
 
 type tailscaleDevices struct {
@@ -271,7 +271,7 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 		deviceHostName := strings.Split(device.Name, ".")[0]
 		if deviceHostName == deviceName {
 			logrus.Println("Device found", device)
-			return device.IP, device.ID, nil
+			return device.Addresses[0], device.ID, nil
 		}
 	}
 	return "", "", errors.New("Device not found")
