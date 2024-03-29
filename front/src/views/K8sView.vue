@@ -6,7 +6,7 @@
           <th>Name</th>
           <th>ID</th>
           <th>Flavor</th>
-          <th>Node<th>
+          <th>Node</th>
           <th>Status</th>
           <th>IP</th>
           <th>TailscaleIP</th>
