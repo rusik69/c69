@@ -18,8 +18,8 @@ func TestCreateVM(t *testing.T) {
 	if vm.Image != "ubuntu22.04" {
 		t.Error("expected ubuntu22.04, got ", vm.Image)
 	}
-	if vm.Flavor != "small" {
-		t.Error("expected small, got ", vm.Flavor)
+	if vm.Flavor != "medium" {
+		t.Error("expected medium, got ", vm.Flavor)
 	}
 	if vm.Committed != true {
 		t.Error("expected true, got ", vm.Committed)
