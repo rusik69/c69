@@ -66,6 +66,8 @@ func CreateVMHandler(c *gin.Context) {
 		newVM.Flavor = tempVM.Flavor
 		newVM.VNCURL = tempVM.VNCURL
 		newVM.NodeHostname = tempVM.NodeHostname
+		newVM.TailscaleID = createdVM.TailscaleID
+		newVM.TailscaleIP = createdVM.TailscaleIP
 		created = true
 		usedNode = node
 		break
