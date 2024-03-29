@@ -27,6 +27,11 @@ const router = createRouter({
       path: '/files',
       name: 'files',
       component: () => import('../views/FilesView.vue')
+    },
+    {
+      path: '/k8s',
+      name: 'k8s',
+      component: () => import('../views/K8sView.vue')
     }
   ]
 })

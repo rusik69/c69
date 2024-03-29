@@ -11,6 +11,7 @@ import { RouterLink, RouterView } from "vue-router";
         <RouterLink to="/vms">VMs</RouterLink>
         <RouterLink to="/containers">Containers</RouterLink>
         <RouterLink to="/files">Files</RouterLink>
+        <RouterLink to="/k8s">K8s</RouterLink>
       </nav>
     </div>
   </header>

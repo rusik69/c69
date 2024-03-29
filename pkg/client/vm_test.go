@@ -8,7 +8,7 @@ import (
 
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
-	vm, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "small")
+	vm, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "medium")
 	if err != nil {
 		t.Error(err)
 	}
@@ -24,7 +24,7 @@ func TestCreateVM(t *testing.T) {
 	if vm.Committed != true {
 		t.Error("expected true, got ", vm.Committed)
 	}
-	
+
 }
 
 // TestGETVM tests the GetVM function.
