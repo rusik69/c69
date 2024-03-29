@@ -283,6 +283,8 @@ func ListVMHandler(c *gin.Context) {
 				tempVM.Flavor = vmsMap[vm.Name].Flavor
 				tempVM.Volumes = vmsMap[vm.Name].Volumes
 				tempVM.VNCURL = vmsMap[vm.Name].VNCURL
+				tempVM.TailscaleID = vmsMap[vm.Name].TailscaleID
+				tempVM.TailscaleIP = vmsMap[vm.Name].TailscaleIP
 				res = append(res, tempVM)
 			}
 		}
