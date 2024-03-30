@@ -331,6 +331,11 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 		if err != nil {
 			return types.VM{}, 500, err
 		}
+		kubeconfig, err := getKubeConfig(ip)
+		if err != nil {
+			return types.VM{}, 500, err
+		}
+		logrus.Println("Kubeconfig", kubeconfig)
 	}
 	vncPort := vmXML.Devices.Graphics[0].VNC.Port
 	vncPortString := fmt.Sprintf("%d", vncPort)

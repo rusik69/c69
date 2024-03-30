@@ -198,6 +198,17 @@ func applyAnsible(ip, playbook, hostname string) error {
 		return err
 	}
 	return nil
+}
+
+// getKubeConfig gets the kubeconfig.
+func getKubeConfig(ip string) (string, error) {
+	logrus.Println("Getting kubeconfig")
+	cmd := exec.Command("ssh", "-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-i", "/root/.ssh/id_rsa", "root@"+ip, "cat", "/etc/rancher/k3s/k3s.yaml")
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", err
+	}
+	return string(output), nil
 
 }
 
