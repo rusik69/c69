@@ -147,6 +147,23 @@ var k8sStartCmd = &cobra.Command{
 	},
 }
 
+// k8sGetKubeconfigCmd represents the k8s get kubeconfig command
+var k8sGetKubeconfigCmd = &cobra.Command{
+	Use:   "get-kubeconfig",
+	Short: "get k8s kubeconfig",
+	Long:  `get k8s kubeconfig`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if name == "" {
+			panic("name is required")
+		}
+		kubeconfig, err := client.GetKubeconfig(clientHost, clientPort, name)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(kubeconfig)
+	},
+}
+
 // vmClientCmd represents the vm commands
 var vmClientCmd = &cobra.Command{
 	Use:   "vm",
@@ -647,6 +664,7 @@ func init() {
 	k8sClientCmd.AddCommand(k8sGetCmd)
 	k8sClientCmd.AddCommand(k8sStartCmd)
 	k8sClientCmd.AddCommand(k8sStopCmd)
+	k8sClientCmd.AddCommand(k8sGetKubeconfigCmd)
 	rootCmd.PersistentFlags().StringVar(&clientHost, "host", "127.0.0.1", "host to connect to")
 	rootCmd.PersistentFlags().StringVar(&clientPort, "port", "6969", "port to connect to")
 	rootCmd.PersistentFlags().StringVar(&name, "name", "", "name")
