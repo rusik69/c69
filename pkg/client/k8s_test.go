@@ -55,6 +55,17 @@ func TestStartK8S(t *testing.T) {
 	}
 }
 
+// TestGetKubeconfig tests the GetKubeconfig function.
+func TestGetKubeconfig(t *testing.T) {
+	kubeconfig, err := client.GetKubeconfig(masterHost, masterPort, "test")
+	if err != nil {
+		t.Error(err)
+	}
+	if kubeconfig == "" {
+		t.Error("expected kubeconfig, got ", kubeconfig)
+	}
+}
+
 // TestDeleteK8S tests the DeleteK8S function.
 func TestDeleteK8S(t *testing.T) {
 	err := client.DeleteK8S(masterHost, masterPort, "test")
