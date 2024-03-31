@@ -1,6 +1,7 @@
 package node
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -15,8 +16,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pkg/sftp"
 	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
+	"golang.org/x/crypto/ssh"
 	"libvirt.org/go/libvirt"
 )
 
@@ -121,8 +124,8 @@ func CreateSSHKey() error {
 	return nil
 }
 
-// AddSSHPublicKey adds the ssh public key to image.
-func AddSSHPublicKey(image, hostName string) error {
+// PrepareImage adds the ssh public key to image.
+func PrepareImage(image, hostName string) error {
 	logrus.Println("Adding ssh public key to", image)
 	cmdSlice := []string{"--no-selinux-relabel", "-a", image, "--mkdir", "/root/.ssh", "--root-password", "password:password", "--password", "password:password", "--network", "--ssh-inject", "root:file:/root/.ssh/id_rsa.pub", "--firstboot-command", "dhclient;dpkg-reconfigure openssh-server;systemctl restart sshd; growpart /dev/vda 1; resize2fs /dev/vda1; hostnamectl set-hostname " + hostName}
 	mkdirCmd := exec.Command("virt-customize", cmdSlice...)
@@ -203,12 +206,41 @@ func applyAnsible(ip, playbook, hostname string) error {
 // getKubeConfig gets the kubeconfig.
 func getKubeConfig(ip string) (string, error) {
 	logrus.Println("Getting kubeconfig")
-	cmd := exec.Command("ssh", "-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-i", "/root/.ssh/id_rsa", "root@"+ip, "cat", "/etc/rancher/k3s/k3s.yaml")
-	output, err := cmd.CombinedOutput()
+	key, err := os.ReadFile("/root/.ssh/id_rsa")
 	if err != nil {
 		return "", err
 	}
-	return string(output), nil
+	signer, err := ssh.ParsePrivateKey(key)
+	if err != nil {
+		return "", err
+	}
+	sshConfig := &ssh.ClientConfig{
+		User: "root",
+		Auth: []ssh.AuthMethod{
+			ssh.PublicKeys(signer),
+		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+	}
+	conn, err := ssh.Dial("tcp", net.JoinHostPort(ip, "22"), sshConfig)
+	if err != nil {
+		return "", err
+	}
+	client, err := sftp.NewClient(conn)
+	if err != nil {
+		return "", err
+	}
+	defer client.Close()
+	srcFile, err := client.Open("/etc/rancher/k3s/k3s.yaml")
+	if err != nil {
+		return "", err
+	}
+	defer srcFile.Close()
+	buf := new(bytes.Buffer)
+	_, err = buf.ReadFrom(srcFile)
+	if err != nil {
+		return "", err
+	}
+	return buf.String(), nil
 
 }
 

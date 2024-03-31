@@ -205,7 +205,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 		cpuShares = uint(flavor.MilliCPUs)
 		vcpus = 1
 	}
-	err = AddSSHPublicKey(destImgName, vm.Name)
+	err = PrepareImage(destImgName, vm.Name)
 	if err != nil {
 		return types.VM{}, 500, err
 	}
