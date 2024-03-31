@@ -143,3 +143,26 @@ func StopK8S(host, port, name string) error {
 	}
 	return nil
 }
+
+// GetKubeconfig gets the kubeconfig of a k8s cluster.
+func GetKubeconfig(host, port, name string) (string, error) {
+	url := "http://" + host + ":" + port + "/api/v1/k8s/" + name + "/kubeconfig"
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	bodyText, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	if resp.StatusCode != 200 {
+		return "", errors.New(string(bodyText))
+	}
+	bodyJSON := map[string]string{}
+	err = json.Unmarshal(bodyText, &bodyJSON)
+	if err != nil {
+		return "", err
+	}
+	return bodyJSON["kubeconfig"], nil
+}

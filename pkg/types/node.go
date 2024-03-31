@@ -52,6 +52,8 @@ type VM struct {
 	TailscaleIP string `json:"tailscaleip"`
 	// TailscaleID is the tailscale ID of the virtual machine.
 	TailscaleID string `json:"tailscaleid"`
+	// KubeConfig is the kubeconfig of the virtual machine.
+	KubeConfig string `json:"kubeconfig"`
 }
 
 // Flavor represents a vm flavor.
@@ -222,4 +224,6 @@ type K8S struct {
 	VM VM `json:"vm"`
 	// Flavor is the flavor of the k8s cluster.
 	Flavor string `json:"flavor"`
+	// Kubeconfig is the kubeconfig of the k8s cluster.
+	Kubeconfig string `json:"kubeconfig"`
 }

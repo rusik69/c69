@@ -45,6 +45,7 @@ func CreateK8SHandler(c *gin.Context) {
 		return
 	}
 	tempK8S.VM = newVM
+	tempK8S.Kubeconfig = newVM.KubeConfig
 	tempK8SString, err := json.Marshal(tempK8S)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -82,6 +83,32 @@ func GetK8SHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, k8s)
+}
+
+// GetK8SKubeconfigHandler gets a k8s cluster kubeconfig
+func GetK8SKubeconfigHandler(c *gin.Context) {
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(400, gin.H{"error": "name is empty"})
+		return
+	}
+	logrus.Println("Getting K8S kubeconfig", name)
+	k8sInfoString, err := ETCDGet("/k8s/" + name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	if k8sInfoString == "" {
+		c.JSON(404, gin.H{"error": "k8s with this name does not exist"})
+		return
+	}
+	var k8s types.K8S
+	err = json.Unmarshal([]byte(k8sInfoString), &k8s)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"kubeconfig": k8s.Kubeconfig})
 }
 
 // DeleteK8SHandler deletes a k8s cluster
