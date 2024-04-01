@@ -455,6 +455,7 @@ func ListVMs() ([]types.VM, error) {
 	}
 	vms := make([]types.VM, 0, len(domains))
 	for _, domain := range domains {
+		logrus.Println("Found VM", domain)
 		name, err := domain.GetName()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get domain name: %w", err)
