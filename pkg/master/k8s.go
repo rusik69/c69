@@ -56,6 +56,7 @@ func CreateK8SHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Println("K8S created", tempK8S)
 	c.JSON(200, tempK8S)
 }
 
