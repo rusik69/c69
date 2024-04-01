@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/sirupsen/logrus"
 )
 
 // CreateK8S creates a k8s cluster.
@@ -164,5 +165,6 @@ func GetKubeconfig(host, port, name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	logrus.Println(bodyJSON)
 	return bodyJSON["kubeconfig"], nil
 }
