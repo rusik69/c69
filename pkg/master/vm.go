@@ -267,6 +267,7 @@ func ListVMHandler(c *gin.Context) {
 		nodeVMS, err := client.ListVMs(node.Host, node.Port)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
+			logrus.Error("ListVMs error")
 			logrus.Error(err.Error())
 			return
 		}
