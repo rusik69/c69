@@ -290,6 +290,7 @@ func ListVMHandler(c *gin.Context) {
 			}
 		}
 	}
+	logrus.Println(res)
 	c.JSON(200, res)
 }
 
