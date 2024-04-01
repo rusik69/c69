@@ -348,6 +348,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	vm.TailscaleIP = tailscaleIP
 	vm.TailscaleID = tailscaleID
 	vm.KubeConfig = kubeconfig
+	logrus.Println("kubeconfig")
 	return vm, 200, nil
 }
 
