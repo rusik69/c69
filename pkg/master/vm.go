@@ -251,6 +251,7 @@ func ListVMHandler(c *gin.Context) {
 		return
 	}
 	for _, nodeName := range nodes {
+		logrus.Println("Node", nodeName)
 		nodeString, err := ETCDGet(nodeName)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
