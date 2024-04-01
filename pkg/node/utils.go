@@ -2,6 +2,7 @@ package node
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -240,8 +241,8 @@ func getKubeConfig(ip string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return buf.String(), nil
-
+	encoded := base64.StdEncoding.EncodeToString(buf.Bytes())
+	return encoded, nil
 }
 
 // copyFile copies the file.

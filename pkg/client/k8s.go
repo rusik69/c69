@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"io"
@@ -164,5 +165,9 @@ func GetKubeconfig(host, port, name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return bodyJSON["kubeconfig"], nil
+	decoded, err := base64.StdEncoding.DecodeString(bodyJSON["kubeconfig"])
+	if err != nil {
+		return "", err
+	}
+	return string(decoded), nil
 }
