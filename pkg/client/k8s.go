@@ -35,8 +35,9 @@ func CreateK8S(host, port, name, flavor string) (types.K8S, error) {
 	if resp.StatusCode != 200 {
 		return types.K8S{}, errors.New(string(bodyText))
 	}
-	logrus.Println("K8S created", k8s)
-	err = json.Unmarshal(bodyText, &k8s)
+	var newK8S types.K8S
+	err = json.Unmarshal(bodyText, &newK8S)
+	logrus.Println("new K8S", newK8S)
 	if err != nil {
 		return types.K8S{}, err
 	}
