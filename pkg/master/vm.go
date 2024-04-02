@@ -69,6 +69,7 @@ func CreateVMHandler(c *gin.Context) {
 		newVM.NodeHostname = tempVM.NodeHostname
 		newVM.TailscaleID = createdVM.TailscaleID
 		newVM.TailscaleIP = createdVM.TailscaleIP
+		newVM.KubeConfig = createdVM.KubeConfig
 		created = true
 		usedNode = node
 		break
