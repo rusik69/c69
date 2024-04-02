@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/sirupsen/logrus"
 )
 
 // CreateVM creates a vm.
@@ -34,11 +35,13 @@ func CreateVM(host, port, name, image, flavor string) (types.VM, error) {
 	if resp.StatusCode != 200 {
 		return types.VM{}, errors.New(string(bodyText))
 	}
-	err = json.Unmarshal(bodyText, &vm)
+	var newVM types.VM
+	err = json.Unmarshal(bodyText, &newVM)
 	if err != nil {
 		return types.VM{}, err
 	}
-	return vm, nil
+	logrus.Println("new VM", newVM)
+	return newVM, nil
 }
 
 // DeleteVM deletes a vm.

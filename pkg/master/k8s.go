@@ -44,6 +44,7 @@ func CreateK8SHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Println("new VM", newVM)
 	tempK8S.VM = newVM
 	tempK8S.Kubeconfig = newVM.KubeConfig
 	logrus.Println("new VM", newVM)
