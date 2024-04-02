@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/rusik69/govnocloud/pkg/types"
-	"github.com/sirupsen/logrus"
 )
 
 // CreateVM creates a vm.
@@ -39,7 +38,6 @@ func CreateVM(host, port, name, image, flavor string) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	logrus.Println("Client vm create", vm)
 	return vm, nil
 }
 
