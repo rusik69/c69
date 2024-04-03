@@ -9,7 +9,6 @@ import (
 	"net/http"
 
 	"github.com/rusik69/govnocloud/pkg/types"
-	"github.com/sirupsen/logrus"
 )
 
 // CreateK8S creates a k8s cluster.
@@ -35,10 +34,8 @@ func CreateK8S(host, port, name, flavor string) (types.K8S, error) {
 	if resp.StatusCode != 200 {
 		return types.K8S{}, errors.New(string(bodyText))
 	}
-	logrus.Println("bodyText", string(bodyText))
 	var newK8S types.K8S
 	err = json.Unmarshal(bodyText, &newK8S)
-	logrus.Println("new K8S", newK8S)
 	if err != nil {
 		return types.K8S{}, err
 	}

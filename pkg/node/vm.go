@@ -337,7 +337,6 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 			return types.VM{}, 500, err
 		}
 	}
-	logrus.Println("kubeconfig", kubeconfig)
 	vncPort := vmXML.Devices.Graphics[0].VNC.Port
 	vncPortString := fmt.Sprintf("%d", vncPort)
 	vncURL := "ws://" + types.NodeEnvInstance.IP + ":" + vncPortString
