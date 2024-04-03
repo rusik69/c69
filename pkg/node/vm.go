@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"encoding/xml"
 
@@ -336,6 +337,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 		if err != nil {
 			return types.VM{}, 500, err
 		}
+		kubeconfig = strings.Replace(kubeconfig, "127.0.0.1", vm.TailscaleIP, 1)
 	}
 	vncPort := vmXML.Devices.Graphics[0].VNC.Port
 	vncPortString := fmt.Sprintf("%d", vncPort)

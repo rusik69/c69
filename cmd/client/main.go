@@ -39,7 +39,7 @@ var k8sClientCmd = &cobra.Command{
 	Short: "manage k8s clusters",
 	Long:  `manage k8s clusters`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("usage: k8s [create|get|list|delete|stop|start]")
+		fmt.Println("usage: k8s [create|get|list|delete|stop|start|get-kubeconfig]")
 	},
 }
 
