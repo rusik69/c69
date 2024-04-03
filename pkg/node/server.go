@@ -30,7 +30,7 @@ func Serve() {
 	r.DELETE("/api/v1/file/:name", DeleteFileHandler)
 	r.GET("/api/v1/files", ListFilesHandler)
 	r.GET("/api/v1/file/:name", GetFileHandler)
-	r.GET("/api/v1/node/stats", StatsHandler)
+	r.GET("/api/v1/stats", StatsHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})

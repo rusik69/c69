@@ -93,7 +93,7 @@ func GetNode(host, port, name string) (types.Node, error) {
 
 // GetNodeStats gets a node stats.
 func GetNodeStats(host, port string) (types.NodeStats, error) {
-	url := "http://" + host + ":" + port + "/api/v1/node/stats"
+	url := "http://" + host + ":" + port + "/api/v1/stats"
 	resp, err := http.Get(url)
 	if err != nil {
 		return types.NodeStats{}, err
