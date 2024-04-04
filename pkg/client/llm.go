@@ -6,13 +6,15 @@ import (
 	"errors"
 	"io"
 	"net/http"
+
+	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 // CreateLLM creates a llm cluster.
-func CreateLLM(host, port, name, flavor string) (types.LLM, error) {
+func CreateLLM(host, port, name, model string) (types.LLM, error) {
 	llm := types.LLM{
-		Name:   name,
-		Flavor: flavor,
+		Name:  name,
+		Model: model,
 	}
 	url := "http://" + host + ":" + port + "/api/v1/llm"
 	body, err := json.Marshal(llm)
@@ -122,13 +124,7 @@ func StartLLM(host, port, name string) error {
 	if resp.StatusCode != 200 {
 		return errors.New(string(bodyText))
 	}
-		bodyText, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		return errors.New(string(bodyText))
-	}
-	return err
+	return nil
 }
 
 // StopLLM stops a llm cluster.
@@ -146,5 +142,5 @@ func StopLLM(host, port, name string) error {
 	if resp.StatusCode != 200 {
 		return errors.New(string(bodyText))
 	}
-	return err
+	return nil
 }
