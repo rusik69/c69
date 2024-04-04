@@ -227,3 +227,34 @@ type K8S struct {
 	// Kubeconfig is the kubeconfig of the k8s cluster.
 	Kubeconfig string `json:"kubeconfig"`
 }
+
+// LLM represents an llm instance.
+type LLM struct {
+	// ID is the ID of the llm instance.
+	ID string `json:"id"`
+	// Name is the name of the llm instance.
+	Name string `json:"name"`
+	// Model is the flavor of the llm instance.
+	Model string `json:"model"`
+	// Container is the container of the llm instance.
+	Container Container `json:"container"`
+}
+
+// LLMModel represents a llm flavor.
+type LLMModel struct {
+	// ID is the ID of the flavor.
+	ID int `json:"id"`
+	// ContainerFlavorName is the container flavor of the llm flavor.
+	ContainerFlavor string `json:"container_flavor"`
+	// Image is the image of the llm flavor.
+	Image string `json:"image"`
+}
+
+// LLMModels represents the flavors of llm instances.
+var LLMModels = map[string]LLMModel{
+	"phi1.5": LLMModel{
+		ID:              0,
+		ContainerFlavor: "large",
+		Image:           "loqutus/govnocloud-llm-phi1.5",
+	},
+}

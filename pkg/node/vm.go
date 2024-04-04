@@ -65,13 +65,7 @@ func DeleteVMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	_, tailscaleID, err := tailscaleGetDeviceInfo(name)
-	if err != nil {
-		logrus.Error(err.Error())
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-	tempVM := types.VM{Name: name, TailscaleID: tailscaleID}
+	tempVM := types.VM{Name: name}
 	logrus.Println("Deleting VM", tempVM)
 	err = DeleteVM(tempVM)
 	if err != nil {

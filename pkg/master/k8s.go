@@ -15,10 +15,12 @@ func CreateK8SHandler(c *gin.Context) {
 	defer body.Close()
 	var tempK8S types.K8S
 	if err := c.ShouldBindJSON(&tempK8S); err != nil {
+		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 	if tempK8S.Name == "" || tempK8S.Flavor == "" {
+		logrus.Error("name or flavor is empty")
 		c.JSON(400, gin.H{"error": "name or flavor is empty"})
 		return
 	}
@@ -26,10 +28,12 @@ func CreateK8SHandler(c *gin.Context) {
 	logrus.Println("Creating K8S", tempK8S)
 	k8sInfoString, err := ETCDGet("/k8s/" + tempK8S.Name)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 	if k8sInfoString != "" {
+		logrus.Error("k8s with this name already exists")
 		c.JSON(400, gin.H{"error": "k8s with this name already exists"})
 		return
 	}
@@ -48,11 +52,13 @@ func CreateK8SHandler(c *gin.Context) {
 	tempK8S.Kubeconfig = newVM.KubeConfig
 	tempK8SString, err := json.Marshal(tempK8S)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 	err = ETCDPut("/k8s/"+tempK8S.Name, string(tempK8SString))
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
@@ -63,22 +69,26 @@ func CreateK8SHandler(c *gin.Context) {
 func GetK8SHandler(c *gin.Context) {
 	name := c.Param("name")
 	if name == "" {
+		logrus.Error("name is empty")
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
 	logrus.Println("Getting K8S", name)
 	k8sInfoString, err := ETCDGet("/k8s/" + name)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 	if k8sInfoString == "" {
+		logrus.Error("k8s with this name does not exist")
 		c.JSON(404, gin.H{"error": "k8s with this name does not exist"})
 		return
 	}
 	var k8s types.K8S
 	err = json.Unmarshal([]byte(k8sInfoString), &k8s)
 	if err != nil {
+		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}

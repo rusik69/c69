@@ -39,6 +39,12 @@ func Serve() {
 	r.GET("/api/v1/k8sstart/:name", StartK8SHandler)
 	r.GET("/api/v1/k8sstop/:name", StopK8SHandler)
 	r.GET("/api/v1/k8s/:name/kubeconfig", GetK8SKubeconfigHandler)
+	r.POST("/api/v1/llm", CreateLLMHandler)
+	r.GET("/api/v1/llm/:name", GetLLMHandler)
+	r.DELETE("/api/v1/llm/:name", DeleteLLMHandler)
+	r.GET("/api/v1/llm", ListLLMHandler)
+	r.GET("/api/v1/llmstart/:name", StartLLMHandler)
+	r.GET("/api/v1/llmstop/:name", StopLLMHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
