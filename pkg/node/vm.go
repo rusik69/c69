@@ -67,7 +67,7 @@ func DeleteVMHandler(c *gin.Context) {
 	}
 	tempVM := types.VM{Name: name}
 	logrus.Println("Deleting VM", tempVM)
-	err = DeleteVM(tempVM)
+	err := DeleteVM(tempVM)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})

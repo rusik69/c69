@@ -42,7 +42,7 @@ func Serve() {
 	r.POST("/api/v1/llm", CreateLLMHandler)
 	r.GET("/api/v1/llm/:name", GetLLMHandler)
 	r.DELETE("/api/v1/llm/:name", DeleteLLMHandler)
-	r.GET("/api/v1/llm", ListLLMHandler)
+	r.GET("/api/v1/llm", ListLLMsHandler)
 	r.GET("/api/v1/llmstart/:name", StartLLMHandler)
 	r.GET("/api/v1/llmstop/:name", StopLLMHandler)
 	r.GET("/ping", func(c *gin.Context) {
