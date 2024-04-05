@@ -86,8 +86,8 @@ func DeleteLLM(host, port, name string) error {
 	return err
 }
 
-// ListLLM lists all llm clusters.
-func ListLLM(host, port string) ([]types.LLM, error) {
+// ListLLMs lists all llm clusters.
+func ListLLMs(host, port string) ([]types.LLM, error) {
 	url := "http://" + host + ":" + port + "/api/v1/llm"
 	resp, err := http.Get(url)
 	if err != nil {

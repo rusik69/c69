@@ -22,6 +22,7 @@ var name, image, flavor string
 var nodehost, nodeport string
 var user, key string
 var id, src string
+var model string
 
 // sshClientCmd represents the ssh commands
 var sshClientCmd = &cobra.Command{
@@ -40,6 +41,16 @@ var k8sClientCmd = &cobra.Command{
 	Long:  `manage k8s clusters`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("usage: k8s [create|get|list|delete|stop|start|get-kubeconfig]")
+	},
+}
+
+// llmClientCmd represents the llm commands
+var llmClientCmd = &cobra.Command{
+	Use:   "llm",
+	Short: "manage llm clusters",
+	Long:  `manage llm clusters`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("usage: llm [create|get|list|delete|stop|start]")
 	},
 }
 
@@ -358,6 +369,108 @@ var vmCreateCmd = &cobra.Command{
 	},
 }
 
+// llmCreateCmd represents the llm create command
+var llmCreateCmd = &cobra.Command{
+	Use:   "create",
+	Short: "create llm",
+	Long:  `create llm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if name == "" {
+			panic("name is required")
+		}
+		if model == "" {
+			panic("model is required")
+		}
+		id, err := client.CreateLLM(clientHost, clientPort, name, model)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("LLM created with id " + fmt.Sprint(id))
+	},
+}
+
+// llmDeleteCmd represents the llm delete command
+var llmDeleteCmd = &cobra.Command{
+	Use:   "delete",
+	Short: "delete llm",
+	Long:  `delete llm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if name == "" {
+			panic("name is required")
+		}
+		err := client.DeleteLLM(clientHost, clientPort, name)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// llmGetCmd represents the llm get command
+var llmGetCmd = &cobra.Command{
+	Use:   "get",
+	Short: "get llm",
+	Long:  `get llm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if name == "" {
+			panic("name is required")
+		}
+		llm, err := client.GetLLM(clientHost, clientPort, name)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(
+			"Name: " + llm.Name + "\n" +
+				"Model: " + llm.Model + "\n",
+		)
+	},
+}
+
+// llmListCmd represents the llm list command
+var llmListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "list llms",
+	Long:  `list llms`,
+	Run: func(cmd *cobra.Command, args []string) {
+		llms, err := client.ListLLMs(clientHost, clientPort)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(llms)
+	},
+}
+
+// llmStopCmd represents the llm stop command
+var llmStopCmd = &cobra.Command{
+	Use:   "stop",
+	Short: "stop llm",
+	Long:  `stop llm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if name == "" {
+			panic("name is required")
+		}
+		err := client.StopLLM(clientHost, clientPort, name)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// llmStartCmd represents the llm start command
+var llmStartCmd = &cobra.Command{
+	Use:   "start",
+	Short: "start llm",
+	Long:  `start llm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if name == "" {
+			panic("name is required")
+		}
+		err := client.StartLLM(clientHost, clientPort, name)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
 // vmDeleteCmd represents the vm delete command
 var vmDeleteCmd = &cobra.Command{
 	Use:   "delete",
@@ -636,6 +749,13 @@ func init() {
 	rootCmd.AddCommand(containerClientCmd)
 	rootCmd.AddCommand(fileClientCmd)
 	rootCmd.AddCommand(k8sClientCmd)
+	rootCmd.AddCommand(llmClientCmd)
+	llmClientCmd.AddCommand(llmCreateCmd)
+	llmClientCmd.AddCommand(llmDeleteCmd)
+	llmClientCmd.AddCommand(llmListCmd)
+	llmClientCmd.AddCommand(llmGetCmd)
+	llmClientCmd.AddCommand(llmStopCmd)
+	llmClientCmd.AddCommand(llmStartCmd)
 	vmClientCmd.AddCommand(vmGetCmd)
 	vmClientCmd.AddCommand(vmCreateCmd)
 	vmClientCmd.AddCommand(vmDeleteCmd)
@@ -676,6 +796,7 @@ func init() {
 	sshClientCmd.PersistentFlags().StringVar(&key, "key", "", "ssh key")
 	containerClientCmd.PersistentFlags().StringVar(&id, "id", "", "container id")
 	fileClientCmd.PersistentFlags().StringVar(&src, "src", "", "file source")
+	llmClientCmd.PersistentFlags().StringVar(&model, "model", "", "model")
 }
 
 func main() {
