@@ -255,6 +255,6 @@ var LLMModels = map[string]LLMModel{
 	"phi1.5": LLMModel{
 		ID:              0,
 		ContainerFlavor: "large",
-		Image:           "loqutus/govnocloud-llm-phi1.5",
+		Image:           "docker.io/loqutus/govnocloud-llm-phi1.5",
 	},
 }
