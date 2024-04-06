@@ -11,8 +11,6 @@ import (
 
 // CreateLLMHandler handles the create LLM request.
 func CreateLLMHandler(c *gin.Context) {
-	body := c.Request.Body
-	defer body.Close()
 	var tempLLM types.LLM
 	if err := c.ShouldBindJSON(&tempLLM); err != nil {
 		logrus.Error(err.Error())

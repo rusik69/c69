@@ -12,8 +12,6 @@ import (
 
 // CreateContainerHandler handles the create container request.
 func CreateContainerHandler(c *gin.Context) {
-	body := c.Request.Body
-	defer body.Close()
 	var tempContainer types.Container
 	if err := c.ShouldBindJSON(&tempContainer); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
