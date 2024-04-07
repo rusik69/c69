@@ -118,7 +118,6 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error("name is empty")
 		return
 	}
-	logrus.Printf("Deleting VM %s\n", name)
 	vmInfoString, err := ETCDGet("/vms/" + name)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -130,6 +129,7 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error("vm with this name does not exist")
 		return
 	}
+	logrus.Printf("Deleting VM %s\n", vmInfoString)
 	var vmInfo types.VM
 	err = json.Unmarshal([]byte(vmInfoString), &vmInfo)
 	if err != nil {
