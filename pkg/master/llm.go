@@ -34,8 +34,10 @@ func CreateLLMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "llm with this name already exists"})
 		return
 	}
+	image := types.LLMModels[tempLLM.Model].Image
+	containerFlavor := types.LLMModels[tempLLM.Model].ContainerFlavor
 	ctrID, err := client.CreateContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort,
-		tempLLM.Name+"-llm", types.LLMModels[tempLLM.Model].Image, types.LLMModels[tempLLM.Model].ContainerFlavor)
+		tempLLM.Name+"-llm", image, containerFlavor)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -47,8 +49,8 @@ func CreateLLMHandler(c *gin.Context) {
 		Container: types.Container{
 			ID:     ctrID,
 			Name:   tempLLM.Name,
-			Image:  types.LLMModels[tempLLM.Model].Image,
-			Flavor: types.LLMModels[tempLLM.Model].ContainerFlavor,
+			Image:  image,
+			Flavor: containerFlavor,
 		},
 	}
 	llmString, err := json.Marshal(llm)
