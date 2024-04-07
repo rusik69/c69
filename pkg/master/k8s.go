@@ -112,7 +112,6 @@ func GetK8SKubeconfigHandler(c *gin.Context) {
 		c.JSON(404, gin.H{"error": "k8s with this name does not exist"})
 		return
 	}
-	logrus.Println(k8sInfoString)
 	var k8s types.K8S
 	err = json.Unmarshal([]byte(k8sInfoString), &k8s)
 	if err != nil {
