@@ -48,7 +48,7 @@ func CreateLLMHandler(c *gin.Context) {
 		Model: tempLLM.Model,
 		Container: types.Container{
 			ID:     ctrID,
-			Name:   tempLLM.Name,
+			Name:   tempLLM.Name + "-llm",
 			Image:  image,
 			Flavor: containerFlavor,
 		},
