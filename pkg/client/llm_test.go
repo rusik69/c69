@@ -54,3 +54,11 @@ func TestStartLLM(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+// TestDeleteLLM tests the DeleteLLM function
+func TestDeleteLLM(t *testing.T) {
+	err := client.DeleteLLM(masterHost, masterPort, "test")
+	if err != nil {
+		t.Error(err)
+	}
+}
