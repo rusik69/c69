@@ -129,7 +129,7 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error("vm with this name does not exist")
 		return
 	}
-	logrus.Printf("Deleting VM %s\n", vmInfoString)
+	logrus.Printf("Deleting VM %s\n", name)
 	var vmInfo types.VM
 	err = json.Unmarshal([]byte(vmInfoString), &vmInfo)
 	if err != nil {
