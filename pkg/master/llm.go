@@ -135,7 +135,7 @@ func DeleteLLMHandler(c *gin.Context) {
 
 // DeleteLLM deletes a llm cluster.
 func DeleteLLM(llm types.LLM) error {
-	err := client.DeleteContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, llm.Container.ID)
+	err := client.DeleteContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, llm.Container.Name)
 	if err != nil {
 		return err
 	}
