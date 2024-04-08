@@ -155,7 +155,6 @@ func waitForVMUp(domain *libvirt.Domain) (string, error) {
 		for _, iface := range ifaces {
 			for _, addr := range iface.Addrs {
 				if addr.Addr != "" {
-					fmt.Println("IP address:", addr.Addr)
 					return addr.Addr, nil
 				}
 			}
@@ -314,9 +313,8 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	for _, device := range devices.Devices {
 		deviceHostName := strings.Split(device.Name, ".")[0]
 		if deviceHostName == deviceName {
-			logrus.Println("Device found", device)
 			return device.Addresses[0], device.ID, nil
 		}
 	}
-	return "", "", errors.New("Device not found")
+	return "", "", errors.New("Tailscale machine not found")
 }

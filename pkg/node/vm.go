@@ -455,20 +455,21 @@ func ListVMs() ([]types.VM, error) {
 	}
 	vms := make([]types.VM, 0, len(domains))
 	for _, domain := range domains {
-		logrus.Println("Found VM", domain)
 		name, err := domain.GetName()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get domain name: %w", err)
 		}
+		logrus.Println("VM name", name)
 		state, _, err := domain.GetState()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get domain state: %w", err)
 		}
+		logrus.Println("VM state", state)
 		id, err := domain.GetID()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get domain id: %w", err)
 		}
-		logrus.Println("Found VM", name, state, id)
+		logrus.Println("VM id", id)
 		vm := types.VM{
 			Name:  name,
 			State: ParseState(state),
