@@ -176,7 +176,7 @@ func ListLLMs() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	var llms []types.LLM
+	var llms []string
 	if llmListString != "" {
 		err = json.Unmarshal([]byte(llmListString), &llms)
 		if err != nil {
