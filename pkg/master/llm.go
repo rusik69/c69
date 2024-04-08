@@ -144,26 +144,43 @@ func DeleteLLM(llm types.LLM) error {
 
 // ListLLMsHandler handles the list LLMs request.
 func ListLLMsHandler(c *gin.Context) {
-	llms, err := ListLLMs()
+	llmNames, err := ListLLMs()
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	var llms []types.LLM
+	for _, name := range llmNames {
+		llmString, err := ETCDGet(name)
+		if err != nil {
+			logrus.Error(err.Error())
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		var llm types.LLM
+		err = json.Unmarshal([]byte(llmString), &llm)
+		if err != nil {
+			logrus.Error(err.Error())
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		llms = append(llms, llm)
+	}
 	c.JSON(200, llms)
 }
 
 // ListLLMs lists all llm clusters.
-func ListLLMs() ([]types.LLM, error) {
+func ListLLMs() ([]string, error) {
 	llmListString, err := ETCDGet("/llm")
 	if err != nil {
-		return []types.LLM{}, err
+		return nil, err
 	}
 	var llms []types.LLM
 	if llmListString != "" {
 		err = json.Unmarshal([]byte(llmListString), &llms)
 		if err != nil {
-			return []types.LLM{}, err
+			return nil, err
 		}
 	}
 	return llms, nil
@@ -206,7 +223,7 @@ func StartLLMHandler(c *gin.Context) {
 
 // StartLLM starts a llm cluster.
 func StartLLM(llm types.LLM) error {
-	err := client.StartContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, llm.Container.ID)
+	err := client.StartContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, llm.Container.Name)
 	if err != nil {
 		return err
 	}
@@ -215,7 +232,7 @@ func StartLLM(llm types.LLM) error {
 
 // StopLLM stops a llm cluster.
 func StopLLM(llm types.LLM) error {
-	err := client.StopContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, llm.Container.ID)
+	err := client.StopContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort, llm.Container.Name)
 	if err != nil {
 		return err
 	}
