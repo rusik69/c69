@@ -288,8 +288,8 @@ func StopContainerHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
-	logrus.Printf("Stopping container with name %s\n", id)
-	containerInfoString, err := ETCDGet("/containers/" + id)
+	logrus.Printf("Stopping container with name %s\n", name)
+	containerInfoString, err := ETCDGet("/containers/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -336,7 +336,7 @@ func StopContainerHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	err = ETCDPut("/containers/"+id, string(containerString))
+	err = ETCDPut("/containers/"+name, string(containerString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
