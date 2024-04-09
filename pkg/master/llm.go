@@ -179,19 +179,11 @@ func ListLLMsHandler(c *gin.Context) {
 
 // ListLLMs lists all llm clusters.
 func ListLLMs() ([]string, error) {
-	llmListString, err := ETCDList("/llm")
+	llmList, err := ETCDList("/llm")
 	if err != nil {
 		return nil, err
 	}
-	logrus.Println("llmListString", llmListString)
-	var llms []string
-	if llmListString != "" {
-		err = json.Unmarshal([]byte(llmListString), &llms)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return llms, nil
+	return llmList, nil
 }
 
 // StartLLMHandler handles the start LLM request.
