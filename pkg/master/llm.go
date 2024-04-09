@@ -77,6 +77,7 @@ func GetLLMHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Println("Getting LLM", name)
 	if llmInfoString == "" {
 		logrus.Error("llm with this name does not exist")
 		c.JSON(400, gin.H{"error": "llm with this name does not exist"})
@@ -100,6 +101,7 @@ func DeleteLLMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
+	logrus.Println("Deleting LLM", name)
 	llmString, err := ETCDGet("/llm/" + name)
 	if err != nil {
 		logrus.Error(err.Error())
@@ -145,6 +147,7 @@ func DeleteLLM(llm types.LLM) error {
 
 // ListLLMsHandler handles the list LLMs request.
 func ListLLMsHandler(c *gin.Context) {
+	logrus.Println("Listing LLMs")
 	llmNames, err := ListLLMs()
 	if err != nil {
 		logrus.Error(err.Error())
@@ -195,6 +198,7 @@ func StartLLMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
+	logrus.Println("Starting LLM", name)
 	llmString, err := ETCDGet("/llm/" + name)
 	if err != nil {
 		logrus.Error(err.Error())
@@ -248,6 +252,7 @@ func StopLLMHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "name is empty"})
 		return
 	}
+	logrus.Println("Stopping LLM", name)
 	llmString, err := ETCDGet("/llm/" + name)
 	if err != nil {
 		logrus.Error(err.Error())
