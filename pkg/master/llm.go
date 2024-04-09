@@ -171,6 +171,7 @@ func ListLLMsHandler(c *gin.Context) {
 		}
 		llms = append(llms, llm)
 	}
+	logrus.Println(llms)
 	c.JSON(200, llms)
 }
 

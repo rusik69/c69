@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/rusik69/govnocloud/pkg/types"
+	"github.com/sirupsen/logrus"
 )
 
 // CreateLLM creates a llm cluster.
@@ -101,6 +102,7 @@ func ListLLMs(host, port string) ([]types.LLM, error) {
 	if resp.StatusCode != 200 {
 		return []types.LLM{}, errors.New(string(bodyText))
 	}
+	logrus.Println(string(bodyText))
 	var llms []types.LLM
 	err = json.Unmarshal(bodyText, &llms)
 	if err != nil {
