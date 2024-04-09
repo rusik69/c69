@@ -154,6 +154,7 @@ func ListLLMsHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Println(llmNames)
 	var llms []types.LLM
 	for _, name := range llmNames {
 		llmString, err := ETCDGet(name)
