@@ -183,6 +183,7 @@ func ListLLMs() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	logrus.Println("llmListString", llmListString)
 	var llms []string
 	if llmListString != "" {
 		err = json.Unmarshal([]byte(llmListString), &llms)
