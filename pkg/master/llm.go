@@ -179,7 +179,7 @@ func ListLLMsHandler(c *gin.Context) {
 
 // ListLLMs lists all llm clusters.
 func ListLLMs() ([]string, error) {
-	llmListString, err := ETCDGet("/llm")
+	llmListString, err := ETCDList("/llm")
 	if err != nil {
 		return nil, err
 	}
