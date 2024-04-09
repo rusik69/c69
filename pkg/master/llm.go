@@ -59,6 +59,7 @@ func CreateLLMHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Println("llmstring", llmString)
 	err = ETCDPut("/llm/"+tempLLM.Name, string(llmString))
 	if err != nil {
 		logrus.Error(err.Error())
