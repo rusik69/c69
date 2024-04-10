@@ -81,7 +81,7 @@ func ListVMHandler(c *gin.Context) {
 	vms, err := ListVMs()
 	if err != nil {
 		logrus.Error(err.Error())
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(200, vms)

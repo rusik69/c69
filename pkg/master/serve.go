@@ -45,6 +45,7 @@ func Serve() {
 	r.GET("/api/v1/llm", ListLLMsHandler)
 	r.GET("/api/v1/llmstart/:name", StartLLMHandler)
 	r.GET("/api/v1/llmstop/:name", StopLLMHandler)
+	r.POST("/api/v1/llmgenerate/:name", GenerateLLMHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})

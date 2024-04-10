@@ -2,6 +2,7 @@ package master
 
 import (
 	"encoding/json"
+	"io"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -59,7 +60,6 @@ func CreateLLMHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	logrus.Println("llmstring", llmString)
 	err = ETCDPut("/llm/"+tempLLM.Name, string(llmString))
 	if err != nil {
 		logrus.Error(err.Error())
@@ -155,7 +155,6 @@ func ListLLMsHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	logrus.Println(llmNames)
 	var llms []types.LLM
 	for _, name := range llmNames {
 		llmString, err := ETCDGet(name)
@@ -173,7 +172,6 @@ func ListLLMsHandler(c *gin.Context) {
 		}
 		llms = append(llms, llm)
 	}
-	logrus.Println(llms)
 	c.JSON(200, llms)
 }
 
@@ -274,4 +272,65 @@ func StopLLMHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{"message": "llm stopped"})
+}
+
+// GenerateLLMHandler handles the generate LLM request.
+func GenerateLLMHandler(c *gin.Context) {
+	name := c.Param("name")
+	if name == "" {
+		logrus.Error("name is empty")
+		c.JSON(400, gin.H{"error": "name is empty"})
+		return
+	}
+	logrus.Println("Generating LLM", name)
+	llmString, err := ETCDGet("/llm/" + name)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	if llmString == "" {
+		logrus.Error("llm with this name does not exist")
+		c.JSON(400, gin.H{"error": "llm with this name does not exist"})
+		return
+	}
+	var llm types.LLM
+	err = json.Unmarshal([]byte(llmString), &llm)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	// read request body to string msg
+	bodyBytes, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	input := string(bodyBytes)
+	msg, err = GenerateLLM(llm, input)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, msg)
+}
+
+// GenerateLLM gets a response from llm.
+func GenerateLLM(llm types.LLM, input string) (string, error) {
+	nodeName := llm.Container.Host
+	node, err := GetNode(nodeName)
+	if err != nil {
+		return "", err
+	}
+	host := node.Host
+	port := node.Port
+	containerIP := llm.Container.IP
+	output, err := client.GenerateLLM(host, port, containerIP, llm.Name, input)
+	if err != nil {
+		return "", err
+	}
+	return output, nil
 }

@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/rusik69/govnocloud/pkg/types"
-	"github.com/sirupsen/logrus"
 )
 
 // CreateLLM creates a llm cluster.
@@ -102,7 +101,6 @@ func ListLLMs(host, port string) ([]types.LLM, error) {
 	if resp.StatusCode != 200 {
 		return []types.LLM{}, errors.New(string(bodyText))
 	}
-	logrus.Println(string(bodyText))
 	var llms []types.LLM
 	err = json.Unmarshal(bodyText, &llms)
 	if err != nil {
@@ -145,4 +143,22 @@ func StopLLM(host, port, name string) error {
 		return errors.New(string(bodyText))
 	}
 	return nil
+}
+
+// GenerateLLM generates a response from llm.
+func GenerateLLM(host, port, ip, name, input string) (string, error) {
+	url := "http://" + host + ":" + port + "/api/v1/llmgenerate/" + name
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer([]byte(input)))
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	bodyText, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	if resp.StatusCode != 200 {
+		return "", errors.New(string(bodyText))
+	}
+	return string(bodyText), nil
 }

@@ -4,11 +4,25 @@ import (
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
+	"github.com/rusik69/govnocloud/pkg/types"
 )
+
+var llm types.LLM
 
 // TestCreateLLM tests the CreateLLM function.
 func TestCreateLLM(t *testing.T) {
 	llm, err := client.CreateLLM(masterHost, masterPort, "test", "phi1.5")
+	if err != nil {
+		t.Error(err)
+	}
+	if llm.Name != "test" {
+		t.Error("expected test, got ", llm.Name)
+	}
+}
+
+// TestGenerateLLM tests the GenerateLLM function
+func TestGenerateLLM(t *testing.T) {
+	llm, err := client.GenerateLLM(masterHost, masterPort, llm.Container.IP, "test", "hello")
 	if err != nil {
 		t.Error(err)
 	}
