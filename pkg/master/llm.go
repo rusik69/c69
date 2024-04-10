@@ -309,7 +309,7 @@ func GenerateLLMHandler(c *gin.Context) {
 		return
 	}
 	input := string(bodyBytes)
-	msg, err = GenerateLLM(llm, input)
+	msg, err := GenerateLLM(llm, input)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
