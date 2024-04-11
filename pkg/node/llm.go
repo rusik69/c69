@@ -1,12 +1,11 @@
 package node
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 
