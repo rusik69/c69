@@ -2,7 +2,10 @@ package master
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
+	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/client"
@@ -327,10 +330,25 @@ func GenerateLLM(llm types.LLM, input string) (string, error) {
 	}
 	host := node.Host
 	port := node.Port
-	containerIP := llm.Container.IP
-	output, err := client.GenerateLLM(host, port, containerIP, llm.Name, input)
+	containerName := llm.Container.Name
+	url := "http://" + host + ":" + port + "/api/v1/llmgenerate/" + containerName
+	req, err := http.NewRequest("POST", url, strings.NewReader(input))
 	if err != nil {
 		return "", err
 	}
-	return output, nil
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	bodyText, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	if resp.StatusCode != 200 {
+		return "", errors.New(string(bodyText))
+	}
+	return string(bodyText), nil
 }

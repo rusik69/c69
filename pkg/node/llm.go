@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rusik69/govnocloud/pkg/types"
 	"github.com/sirupsen/logrus"
 )
 
@@ -18,14 +19,20 @@ func GenerateLLMHandler(c *gin.Context) {
 		return
 	}
 	logrus.Println("Generating LLM response", containerName)
-	bodyBytes, err := ioutil.ReadAll(c.Request.Body)
+	bodyBytes, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 	input := string(bodyBytes)
-	url := "http://" + host + ":" + port + "/api/v1/llmgenerate/" + containerName
+	ctr, err := FindContainerByName(containerName)
+	if err != nil {
+		logrus.Error(err.Error())
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	url := "http://" + ctr.IP + "/api/v1/llmgenerate/" + containerName
 	resp, err := http.Post(url, "application/json", strings.NewReader(input))
 	if err != nil {
 		logrus.Error(err.Error())
@@ -33,7 +40,7 @@ func GenerateLLMHandler(c *gin.Context) {
 		return
 	}
 	defer resp.Body.Close()
-	bodyText, err := ioutil.ReadAll(resp.Body)
+	bodyText, err := io.ReadAll(resp.Body)
 	if err != nil {
 		logrus.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})

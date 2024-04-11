@@ -146,7 +146,7 @@ func StopLLM(host, port, name string) error {
 }
 
 // GenerateLLM generates a response from llm.
-func GenerateLLM(host, port, ip, name, input string) (string, error) {
+func GenerateLLM(host, port, name, input string) (string, error) {
 	url := "http://" + host + ":" + port + "/api/v1/llmgenerate/" + name
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer([]byte(input)))
 	if err != nil {

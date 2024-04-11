@@ -2,6 +2,7 @@ package node
 
 import (
 	"context"
+	"errors"
 	"io"
 
 	dockertypes "github.com/docker/docker/api/types"
@@ -210,6 +211,26 @@ func GetContainer(c types.Container) (types.Container, error) {
 	return c, nil
 }
 
+// FindContainerByName finds a container by name.
+func FindContainerByName(name string) (types.Container, error) {
+	ctx := context.Background()
+	containers, err := DockerConnection.ContainerList(ctx, dockertypes.ContainerListOptions{})
+	if err != nil {
+		return types.Container{}, err
+	}
+	for _, container := range containers {
+		if container.Labels["Name"] == name {
+			c := types.Container{
+				ID:   container.ID,
+				Name: container.Labels["Name"],
+				IP:   container.NetworkSettings.IPAddress,
+			}
+			return c, nil
+		}
+	}
+	return types.Container{}, errors.New("container not found")
+}
+
 // ListContainers lists containers.
 func ListContainers() ([]types.Container, error) {
 	ctx := context.Background()
@@ -222,6 +243,7 @@ func ListContainers() ([]types.Container, error) {
 		c := types.Container{
 			ID:   container.ID,
 			Name: container.Labels["Name"],
+			IP:   container.NetworkSettings.IPAddress,
 		}
 		cs = append(cs, c)
 	}
