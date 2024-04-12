@@ -33,12 +33,12 @@ func TestGenerateLLM(t *testing.T) {
 
 // TestGetLLM tests the GetLLM function.
 func TestGetLLM(t *testing.T) {
-	llm, err := client.GetLLM(masterHost, masterPort, "test")
+	res, err := client.GetLLM(masterHost, masterPort, "test")
 	if err != nil {
 		t.Error(err)
 	}
-	if llm.Name != "test" {
-		t.Error("expected test, got ", llm.Name)
+	if res.Name != "test" {
+		t.Error("expected test, got ", res.Name)
 	}
 }
 
