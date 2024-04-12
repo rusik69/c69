@@ -220,10 +220,10 @@ func FindContainerByName(name string) (types.Container, error) {
 	}
 	for _, container := range containers {
 		if container.Labels["Name"] == name {
+			logrus.Println("Found container", container)
 			c := types.Container{
 				ID:   container.ID,
 				Name: container.Labels["Name"],
-				IP:   container.NetworkSettings.IPAddress,
 			}
 			return c, nil
 		}
@@ -243,7 +243,6 @@ func ListContainers() ([]types.Container, error) {
 		c := types.Container{
 			ID:   container.ID,
 			Name: container.Labels["Name"],
-			IP:   container.NetworkSettings.IPAddress,
 		}
 		cs = append(cs, c)
 	}
