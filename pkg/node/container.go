@@ -225,6 +225,7 @@ func FindContainerByName(name string) (types.Container, error) {
 			c := types.Container{
 				ID:   container.ID,
 				Name: container.Labels["Name"],
+				IP:   container.NetworkSettings.Networks["bridge"].IPAddress,
 			}
 			return c, nil
 		}
