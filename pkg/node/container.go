@@ -219,7 +219,7 @@ func FindContainerByName(name string) (types.Container, error) {
 		return types.Container{}, err
 	}
 	for _, container := range containers {
-		logrus.Println("Checking container", container)
+		logrus.Printf("Checking container %+v", container)
 		if container.Labels["Name"] == name {
 			logrus.Println("Found container", container)
 			c := types.Container{
