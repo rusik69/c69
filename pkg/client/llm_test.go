@@ -26,8 +26,8 @@ func TestGenerateLLM(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if res.Name != "test" {
-		t.Error("expected test, got ", res.Name)
+	if res == "" {
+		t.Error("expected not empty string")
 	}
 }
 
