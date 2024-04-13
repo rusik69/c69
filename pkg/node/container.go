@@ -165,7 +165,12 @@ func CreateContainer(c types.Container) (types.Container, error) {
 	if err != nil {
 		return types.Container{}, err
 	}
+	runningContainer, err := FindContainerByName(c.Name)
+	if err != nil {
+		return types.Container{}, err
+	}
 	c.ID = resp.ID
+	c.IP = runningContainer.IP
 	return c, nil
 }
 
@@ -208,6 +213,7 @@ func GetContainer(c types.Container) (types.Container, error) {
 	}
 	c.Image = container.Config.Image
 	c.Name = container.Name
+	c.IP = container.NetworkSettings.Networks["bridge"].IPAddress
 	return c, nil
 }
 
