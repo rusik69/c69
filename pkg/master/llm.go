@@ -304,6 +304,7 @@ func GenerateLLMHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Printf("llm: %+v\n", llm)
 	// read request body to string msg
 	bodyBytes, err := io.ReadAll(c.Request.Body)
 	if err != nil {
