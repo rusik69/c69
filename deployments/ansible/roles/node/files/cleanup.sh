@@ -13,6 +13,8 @@ for i in $(seq 0 10); do
 done
 sudo virsh destroy test-k8s || true
 sudo virsh undefine test-k8s || true
+sudo virsh destroy test1-k8s || true
+sudo virsh undefine test1-k8s || true
 for i in $(sudo ls /var/lib/libvirt/images/); do
 	sudo rm /var/lib/libvirt/images/$i 
 done

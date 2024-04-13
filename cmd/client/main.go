@@ -22,7 +22,7 @@ var name, image, flavor string
 var nodehost, nodeport string
 var user, key string
 var id, src string
-var model string
+var model, input string
 
 // sshClientCmd represents the ssh commands
 var sshClientCmd = &cobra.Command{
@@ -471,6 +471,26 @@ var llmStartCmd = &cobra.Command{
 	},
 }
 
+// llmGenerateCmd represents the llm generate command
+var llmGenerateCmd = &cobra.Command{
+	Use:   "generate",
+	Short: "generate llm response",
+	Long:  `generate llm response`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if name == "" {
+			panic("name is required")
+		}
+		if input == "" {
+			panic("input is required")
+		}
+		res, err := client.GenerateLLM(clientHost, clientPort, name, input)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(res)
+	},
+}
+
 // vmDeleteCmd represents the vm delete command
 var vmDeleteCmd = &cobra.Command{
 	Use:   "delete",
@@ -756,6 +776,7 @@ func init() {
 	llmClientCmd.AddCommand(llmGetCmd)
 	llmClientCmd.AddCommand(llmStopCmd)
 	llmClientCmd.AddCommand(llmStartCmd)
+	llmClientCmd.AddCommand(llmGenerateCmd)
 	vmClientCmd.AddCommand(vmGetCmd)
 	vmClientCmd.AddCommand(vmCreateCmd)
 	vmClientCmd.AddCommand(vmDeleteCmd)
@@ -797,6 +818,7 @@ func init() {
 	containerClientCmd.PersistentFlags().StringVar(&id, "id", "", "container id")
 	fileClientCmd.PersistentFlags().StringVar(&src, "src", "", "file source")
 	llmClientCmd.PersistentFlags().StringVar(&model, "model", "", "model")
+	llmClientCmd.PersistentFlags().StringVar(&input, "input", "", "input")
 }
 
 func main() {
