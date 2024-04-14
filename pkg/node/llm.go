@@ -31,6 +31,7 @@ func GenerateLLMHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Println("llm ctr: %+v", ctr)
 	url := "http://" + ctr.IP + "/api/v1/llmgenerate/" + containerName
 	resp, err := http.Post(url, "application/json", strings.NewReader(input))
 	if err != nil {
