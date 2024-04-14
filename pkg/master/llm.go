@@ -324,7 +324,7 @@ func GenerateLLM(llm types.LLM, input string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	logrus.Printf("node: %+v\n")
+	logrus.Printf("node: %+v\n", node)
 	host := node.Host
 	port := node.Port
 	containerName := llm.Container.Name
