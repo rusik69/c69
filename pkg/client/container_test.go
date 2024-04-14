@@ -4,11 +4,6 @@ import (
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
-	"github.com/rusik69/govnocloud/pkg/types"
-)
-
-var (
-	ContainerID string
 )
 
 // TestCreateContainer tests the CreateContainer function.
@@ -17,8 +12,8 @@ func TestCreateContainer(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if ctr == types.Container{} {
-		t.Error("expected not empty container, got ", ctr)
+	if ctr.ID == "" {
+		t.Error("expected not empty container id, got ", ctr)
 	}
 }
 
