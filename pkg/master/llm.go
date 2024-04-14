@@ -324,10 +324,12 @@ func GenerateLLM(llm types.LLM, input string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	logrus.Printf("node: %+v\n")
 	host := node.Host
 	port := node.Port
 	containerName := llm.Container.Name
 	url := "http://" + host + ":" + port + "/api/v1/llmgenerate/" + containerName
+	logrus.Println("url", url)
 	req, err := http.NewRequest("POST", url, strings.NewReader(input))
 	if err != nil {
 		return "", err
