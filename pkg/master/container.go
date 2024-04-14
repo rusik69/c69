@@ -42,7 +42,6 @@ func CreateContainerHandler(c *gin.Context) {
 		return
 	}
 	containerFlavor := types.ContainerFlavors[tempContainer.Flavor]
-	var newContainerID string
 	created := false
 	var newContainer types.Container
 	rand.Shuffle(len(nodes), func(i, j int) {
