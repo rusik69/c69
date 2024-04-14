@@ -40,7 +40,7 @@ func CreateLLMHandler(c *gin.Context) {
 	}
 	image := types.LLMModels[tempLLM.Model].Image
 	containerFlavor := types.LLMModels[tempLLM.Model].ContainerFlavor
-	ctrID, err := client.CreateContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort,
+	ctr, err := client.CreateContainer(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort,
 		tempLLM.Name+"-llm", image, containerFlavor)
 	if err != nil {
 		logrus.Error(err.Error())
@@ -48,14 +48,9 @@ func CreateLLMHandler(c *gin.Context) {
 		return
 	}
 	llm := types.LLM{
-		Name:  tempLLM.Name,
-		Model: tempLLM.Model,
-		Container: types.Container{
-			ID:     ctrID,
-			Name:   tempLLM.Name + "-llm",
-			Image:  image,
-			Flavor: containerFlavor,
-		},
+		Name:      tempLLM.Name,
+		Model:     tempLLM.Model,
+		Container: ctr,
 	}
 	llmString, err := json.Marshal(llm)
 	if err != nil {

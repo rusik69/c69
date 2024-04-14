@@ -11,7 +11,7 @@ import (
 )
 
 // CreateContainer creates a container.
-func CreateContainer(host, port, name, image, flavor string) (string, error) {
+func CreateContainer(host, port, name, image, flavor string) (types.Container, error) {
 	container := types.Container{
 		Name:   name,
 		Image:  image,
@@ -20,25 +20,25 @@ func CreateContainer(host, port, name, image, flavor string) (string, error) {
 	url := "http://" + host + ":" + port + "/api/v1/containers"
 	body, err := json.Marshal(container)
 	if err != nil {
-		return "", err
+		return types.Container{}, err
 	}
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		return "", err
+		return types.Container{}, err
 	}
 	defer resp.Body.Close()
 	bodyText, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return types.Container{}, err
 	}
 	if resp.StatusCode != 200 {
-		return "", errors.New(string(bodyText))
+		return types.Container{}, errors.New(string(bodyText))
 	}
 	err = json.Unmarshal(bodyText, &container)
 	if err != nil {
-		return "", err
+		return types.Container{}, err
 	}
-	return container.ID, nil
+	return container, nil
 }
 
 // StartContainer starts a container.
