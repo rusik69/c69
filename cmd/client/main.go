@@ -633,7 +633,7 @@ var containerGetCmd = &cobra.Command{
 			"ID: " + fmt.Sprint(container.ID) + "\n" +
 				"Name: " + container.Name + "\n" +
 				"IP: " + container.IP + "\n" +
-				"Host: " + container.Host + "\n" +
+				"Host: " + container.Node + "\n" +
 				"State: " + container.State + "\n" +
 				"Image: " + container.Image + "\n",
 		)
@@ -653,7 +653,7 @@ var containerListCmd = &cobra.Command{
 		fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s |\n", "ID", "NAME", "IP", "Host", "Status", "Image")
 		fmt.Println("------------------------------------------------------------------------------------------------------------------------")
 		for _, container := range containers {
-			fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s |\n", container.ID, container.Name, container.IP, container.Host, container.State, container.Image)
+			fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s |\n", container.ID, container.Name, container.IP, container.Node, container.State, container.Image)
 		}
 	},
 }

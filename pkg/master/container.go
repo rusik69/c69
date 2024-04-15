@@ -60,7 +60,7 @@ func CreateContainerHandler(c *gin.Context) {
 			logrus.Error(node.Host, node.Port, err.Error())
 			continue
 		}
-		newContainer.Host = node.Name
+		newContainer.Node = node.Name
 		created = true
 		break
 	}
@@ -136,7 +136,7 @@ func DeleteContainerHandler(c *gin.Context) {
 		return
 	}
 	for _, node := range nodes {
-		if node.Name == tempContainer.Host {
+		if node.Name == tempContainer.Node {
 			err = client.DeleteContainer(node.Host, node.Port, tempContainer.ID)
 			if err != nil {
 				logrus.Error(err.Error())
@@ -249,7 +249,7 @@ func StartContainerHandler(c *gin.Context) {
 		return
 	}
 	for _, node := range nodes {
-		if node.Name == container.Host {
+		if node.Name == container.Node {
 			err = client.StartContainer(node.Host, node.Port, container.ID)
 			if err != nil {
 				logrus.Error(err.Error())
@@ -313,7 +313,7 @@ func StopContainerHandler(c *gin.Context) {
 		return
 	}
 	for _, node := range nodes {
-		if node.Name == container.Host {
+		if node.Name == container.Node {
 			err = client.StopContainer(node.Host, node.Port, container.ID)
 			if err != nil {
 				logrus.Error(err.Error())

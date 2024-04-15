@@ -319,7 +319,7 @@ func GenerateLLMHandler(c *gin.Context) {
 
 // GenerateLLM gets a response from llm.
 func GenerateLLM(llm types.LLM, input string) (string, error) {
-	nodeName := llm.Container.Host
+	nodeName := llm.Container.Node
 	logrus.Println("Getting node", nodeName)
 	node, err := GetNode(nodeName)
 	if err != nil {

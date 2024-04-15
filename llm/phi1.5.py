@@ -12,7 +12,7 @@ tokenizer = AutoTokenizer.from_pretrained("microsoft/phi-1_5", trust_remote_code
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    input = request.get_json()['input']
+    input = request.data.decode('utf-8')
     logging.info(f"Received input: {input}")
     output = generate_output(input)
     logging.info(f"Generated output: {output}")

@@ -12,8 +12,8 @@ type Container struct {
 	State string `json:"state"`
 	// IP is the IP address of the container.
 	IP string `json:"ip"`
-	// Host is the host of the container.
-	Host string `json:"host"`
+	// Node is the host of the container.
+	Node string `json:"host"`
 	// Volumes is the volumes of the container.
 	Volumes []Volume `json:"volumes"`
 	// Committed is the committed status of the container.
