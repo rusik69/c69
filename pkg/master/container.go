@@ -60,7 +60,7 @@ func CreateContainerHandler(c *gin.Context) {
 			logrus.Error(node.Host, node.Port, err.Error())
 			continue
 		}
-		newContainer.Host = node.Host
+		newContainer.Host = node.Name
 		created = true
 		break
 	}
@@ -73,7 +73,6 @@ func CreateContainerHandler(c *gin.Context) {
 	newContainer.Image = tempContainer.Image
 	newContainer.Name = tempContainer.Name
 	newContainer.State = "running"
-	newContainer.Host = usedNode.Name
 	newContainerString, err := json.Marshal(newContainer)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -137,7 +136,7 @@ func DeleteContainerHandler(c *gin.Context) {
 		return
 	}
 	for _, node := range nodes {
-		if node.Host == tempContainer.Host {
+		if node.Name == tempContainer.Host {
 			err = client.DeleteContainer(node.Host, node.Port, tempContainer.ID)
 			if err != nil {
 				logrus.Error(err.Error())
@@ -250,7 +249,7 @@ func StartContainerHandler(c *gin.Context) {
 		return
 	}
 	for _, node := range nodes {
-		if node.Host == container.Host {
+		if node.Name == container.Host {
 			err = client.StartContainer(node.Host, node.Port, container.ID)
 			if err != nil {
 				logrus.Error(err.Error())
@@ -314,7 +313,7 @@ func StopContainerHandler(c *gin.Context) {
 		return
 	}
 	for _, node := range nodes {
-		if node.Host == container.Host {
+		if node.Name == container.Host {
 			err = client.StopContainer(node.Host, node.Port, container.ID)
 			if err != nil {
 				logrus.Error(err.Error())
