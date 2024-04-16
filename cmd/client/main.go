@@ -24,9 +24,6 @@ var user, key string
 var id, src string
 var model, input string
 
-// comma-separated list of source:destination pairs
-var ports string
-
 // sshClientCmd represents the ssh commands
 var sshClientCmd = &cobra.Command{
 	Use:   "ssh",
@@ -595,7 +592,7 @@ var containerCreateCmd = &cobra.Command{
 		if flavor == "" {
 			panic("flavor is required")
 		}
-		id, err := client.CreateContainer(clientHost, clientPort, name, image, flavor, ports)
+		id, err := client.CreateContainer(clientHost, clientPort, name, image, flavor)
 		if err != nil {
 			panic(err)
 		}
@@ -819,7 +816,6 @@ func init() {
 	sshClientCmd.PersistentFlags().StringVar(&user, "user", "root", "user to ssh as")
 	sshClientCmd.PersistentFlags().StringVar(&key, "key", "", "ssh key")
 	containerClientCmd.PersistentFlags().StringVar(&id, "id", "", "container id")
-	containerClientCmd.PersistentFlags().StringVar(&ports, "ports", "", "container ports")
 	fileClientCmd.PersistentFlags().StringVar(&src, "src", "", "file source")
 	llmClientCmd.PersistentFlags().StringVar(&model, "model", "", "model")
 	llmClientCmd.PersistentFlags().StringVar(&input, "input", "", "input")
