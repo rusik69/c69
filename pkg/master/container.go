@@ -24,7 +24,6 @@ func CreateContainerHandler(c *gin.Context) {
 		return
 	}
 	logrus.Println("Creating container", tempContainer)
-	portsString := types.GeneratePortsString(tempContainer.Ports)
 	containerInfoString, err := ETCDGet("/containers/" + tempContainer.Name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})

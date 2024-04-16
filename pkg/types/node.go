@@ -258,16 +258,3 @@ var LLMModels = map[string]LLMModel{
 		Image:           "docker.io/loqutus/govnocloud-llm-phi1.5",
 	},
 }
-
-// GeneratePortsString generates a string of ports.
-func GeneratePortsString(ports map[string]string) string {
-	if len(ports) == 0 {
-		return ""
-	}
-	var res string
-	for k, v := range ports {
-		res += k + ":" + v + ","
-	}
-	res = res[:len(res)-1]
-	return res
-}
