@@ -20,6 +20,8 @@ type Container struct {
 	Committed bool `json:"committed"`
 	// Flavor is the flavor of the container.
 	Flavor string `json:"flavor"`
+	// Ports is the source:dest ports of the container.
+	Ports map[string]string `json:"ports"`
 }
 
 // VM represents a virtual machine.
@@ -257,4 +259,17 @@ var LLMModels = map[string]LLMModel{
 		ContainerFlavor: "large",
 		Image:           "docker.io/loqutus/govnocloud-llm-phi1.5",
 	},
+}
+
+// GeneratePortsString generates a string of ports.
+func GeneratePortsString(ports map[string]string) string {
+	if len(ports) == 0 {
+		return ""
+	}
+	var res string
+	for k, v := range ports {
+		res += k + ":" + v + ","
+	}
+	res = res[:len(res)-1]
+	return res
 }

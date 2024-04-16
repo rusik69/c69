@@ -8,7 +8,7 @@ import (
 
 // TestCreateContainer tests the CreateContainer function.
 func TestCreateContainer(t *testing.T) {
-	ctr, err := client.CreateContainer(masterHost, masterPort, "test", "docker.io/library/busybox", "tiny")
+	ctr, err := client.CreateContainer(masterHost, masterPort, "test", "docker.io/library/busybox", "tiny", "")
 	if err != nil {
 		t.Error(err)
 	}
