@@ -4,10 +4,7 @@ import (
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
-	"github.com/rusik69/govnocloud/pkg/types"
 )
-
-var llm types.LLM
 
 // TestCreateLLM tests the CreateLLM function.
 func TestCreateLLM(t *testing.T) {
