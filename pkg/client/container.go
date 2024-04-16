@@ -6,29 +6,16 @@ import (
 	"errors"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
 
 // CreateContainer creates a container.
-func CreateContainer(host, port, name, image, flavor, ports string) (types.Container, error) {
-	p := map[string]string{}
-	if ports != "" {
-		pl := strings.Split(ports, ",")
-		for _, port := range pl {
-			parts := strings.Split(port, ":")
-			if len(parts) != 2 {
-				return types.Container{}, errors.New("invalid port format")
-			}
-			p[parts[0]] = parts[1]
-		}
-	}
+func CreateContainer(host, port, name, image, flavor string) (types.Container, error) {
 	container := types.Container{
 		Name:   name,
 		Image:  image,
 		Flavor: flavor,
-		Ports:  p,
 	}
 	url := "http://" + host + ":" + port + "/api/v1/containers"
 	body, err := json.Marshal(container)

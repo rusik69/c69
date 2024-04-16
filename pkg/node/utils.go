@@ -159,7 +159,6 @@ func waitForVMUp(domain *libvirt.Domain) (string, error) {
 				}
 			}
 		}
-
 		// Wait before checking again
 		count++
 		time.Sleep(1 * time.Second)
@@ -317,4 +316,27 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 		}
 	}
 	return "", "", errors.New("Tailscale machine not found")
+}
+
+// waitForLLM waits for the llm to be up.
+func waitForLLM(ip string) error {
+	logrus.Println("Waiting for LLM on", ip)
+	count := 0
+	for {
+		if count == 600 {
+			return errors.New("llm wait timeout")
+		}
+		conn, err := net.DialTimeout("tcp", net.JoinHostPort(ip, "80"), time.Second)
+		if err != nil {
+			count++
+			time.Sleep(1 * time.Second)
+			continue
+		} else {
+			if conn != nil {
+				conn.Close()
+				logrus.Println("LLM is up")
+				return nil
+			}
+		}
+	}
 }

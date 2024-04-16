@@ -24,3 +24,5 @@ front/.vscode
 front/node_modules
 .idea/*
 qodana.yaml
+
+llm/venv/*

@@ -20,8 +20,6 @@ type Container struct {
 	Committed bool `json:"committed"`
 	// Flavor is the flavor of the container.
 	Flavor string `json:"flavor"`
-	// Ports is the source:dest ports of the container.
-	Ports map[string]string `json:"ports"`
 }
 
 // VM represents a virtual machine.

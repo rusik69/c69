@@ -56,7 +56,7 @@ func CreateContainerHandler(c *gin.Context) {
 		}
 		usedNode = node
 		newContainer, err = client.CreateContainer(node.Host, node.Port,
-			tempContainer.Name, tempContainer.Image, tempContainer.Flavor, portsString)
+			tempContainer.Name, tempContainer.Image, tempContainer.Flavor)
 		if err != nil {
 			logrus.Error(node.Host, node.Port, err.Error())
 			continue

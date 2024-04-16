@@ -7,15 +7,15 @@ app = Flask(__name__)
 
 torch.set_default_device("cpu")
 
-model = AutoModelForCausalLM.from_pretrained("microsoft/phi-1_5", torch_dtype="auto", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("microsoft/phi-1_5", torch_dtype=torch.float32, device_map="cpu", trust_remote_code=True)
 tokenizer = AutoTokenizer.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)
 
 @app.route('/generate', methods=['POST'])
 def generate():
     input = request.data.decode('utf-8')
-    logging.info(f"Received input: {input}")
+    logging.error(f"Received input: {input}")
     output = generate_output(input)
-    logging.info(f"Generated output: {output}")
+    logging.error(f"Generated output: {output}")
     return {'output': output}
 
 def generate_output(text):
