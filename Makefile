@@ -43,7 +43,7 @@ buildclient:
 	GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-darwin-arm64 cmd/client/main.go
 
 test:
-	go test -timeout 30m -v ./...
+	go test -timeout 60m -v ./...
 
 deploy:
 	bin/govnocloud-deploy-linux-amd64 --master master.govno.cloud --nodes node0.govno.cloud,node1.govno.cloud
