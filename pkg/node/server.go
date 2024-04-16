@@ -31,7 +31,7 @@ func Serve() {
 	r.GET("/api/v1/files", ListFilesHandler)
 	r.GET("/api/v1/file/:name", GetFileHandler)
 	r.GET("/api/v1/stats", StatsHandler)
-	r.GET("/api/v1/llmgenerate/:name", GenerateLLMHandler)
+	r.POST("/api/v1/llmgenerate/:name", GenerateLLMHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
