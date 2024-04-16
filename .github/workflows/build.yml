@@ -111,4 +111,4 @@ jobs:
         asset_path: ./bin/govnocloud-deploy-darwin-arm64
         asset_name: govnocloud-deploy-darwin-arm64
         asset_content_type: application/octet-stream
-    timeout-minutes: 30
+    timeout-minutes: 60
