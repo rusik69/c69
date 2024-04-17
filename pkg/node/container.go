@@ -39,7 +39,7 @@ func CreateContainerHandler(c *gin.Context) {
 	}
 	// check if container name ends with -llm
 	if len(tempContainer.Name) > 4 && tempContainer.Name[len(tempContainer.Name)-4:] == "-llm" {
-		err = waitForLLM(tempContainer.IP)
+		err = waitForLLM(container.IP)
 		if err != nil {
 			logrus.Error(err.Error())
 			c.JSON(400, gin.H{"error": err.Error()})

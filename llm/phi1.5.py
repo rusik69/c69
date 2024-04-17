@@ -20,7 +20,7 @@ def generate():
 
 def generate_output(text):
     inputs = tokenizer(text, return_tensors="pt", return_attention_mask=False)
-    outputs = model.generate(**inputs, max_length=200)
+    outputs = model.generate(**inputs, max_length=1000)
     text = tokenizer.batch_decode(outputs)[0]
     return text
 
