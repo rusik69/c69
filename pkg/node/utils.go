@@ -318,24 +318,38 @@ func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
 	return "", "", errors.New("Tailscale machine not found")
 }
 
+// HealthResponse represents the JSON response from the /health endpoint
+type HealthResponse struct {
+	Status string `json:"status"`
+}
+
 // waitForLLM waits for the llm to be up.
 func waitForLLM(ip string) error {
 	logrus.Println("Waiting for LLM on", ip)
 	count := 0
+	var healthResponse HealthResponse
 	for {
-		if count == 600 {
+		if count == 200 {
 			return errors.New("llm wait timeout")
 		}
-		conn, err := net.DialTimeout("tcp", net.JoinHostPort(ip, "80"), time.Second)
+		resp, err := http.Get("http://" + ip + ":80/health")
 		if err != nil {
 			count++
 			time.Sleep(1 * time.Second)
 			continue
 		} else {
-			if conn != nil {
-				conn.Close()
-				logrus.Println("LLM is up")
-				return nil
+			err = json.NewDecoder(resp.Body).Decode(&healthResponse)
+			if err != nil {
+				logrus.Println("Error decoding response:", err)
+				time.Sleep(1 * time.Second)
+				continue
+			}
+			if healthResponse.Status == "healthy" {
+				logrus.Println("LLM is ready.")
+				break
+			} else {
+				logrus.Println("Waiting for LLM...")
+				time.Sleep(1 * time.Second)
 			}
 		}
 	}

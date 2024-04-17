@@ -24,5 +24,9 @@ def generate_output(text):
     text = tokenizer.batch_decode(outputs)[0]
     return text
 
+@app.route('/health')
+def health():
+    return {'status': 'healthy'}
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
