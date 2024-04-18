@@ -334,6 +334,7 @@ func waitForLLM(ip string) error {
 		}
 		resp, err := http.Get("http://" + ip + ":80/health")
 		if err != nil {
+			logrus.Println("Error getting response:", err)
 			count++
 			time.Sleep(1 * time.Second)
 			continue
