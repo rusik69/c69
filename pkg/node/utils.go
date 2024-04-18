@@ -342,6 +342,7 @@ func waitForLLM(ip string) error {
 			if err != nil {
 				logrus.Println("Error decoding response:", err)
 				time.Sleep(1 * time.Second)
+				count++
 				continue
 			}
 			if healthResponse.Status == "healthy" {
@@ -350,7 +351,9 @@ func waitForLLM(ip string) error {
 			} else {
 				logrus.Println("Waiting for LLM...")
 				time.Sleep(1 * time.Second)
+				count++
 			}
 		}
 	}
+	return nil
 }
