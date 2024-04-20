@@ -329,7 +329,7 @@ func waitForLLM(ip string) error {
 	count := 0
 	var healthResponse HealthResponse
 	for {
-		if count == 200 {
+		if count == 600 {
 			return errors.New("llm wait timeout")
 		}
 		resp, err := http.Get("http://" + ip + "/health")
