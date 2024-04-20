@@ -332,7 +332,7 @@ func waitForLLM(ip string) error {
 		if count == 200 {
 			return errors.New("llm wait timeout")
 		}
-		resp, err := http.Get("http://" + ip + ":80/health")
+		resp, err := http.Get("http://" + ip + "/health")
 		if err != nil {
 			logrus.Println("Error getting response:", err)
 			count++
