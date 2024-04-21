@@ -254,7 +254,12 @@ type LLMModel struct {
 var LLMModels = map[string]LLMModel{
 	"phi1.5": LLMModel{
 		ID:              0,
-		ContainerFlavor: "large",
+		ContainerFlavor: "2xlarge",
 		Image:           "docker.io/loqutus/govnocloud-llm-phi1.5",
+	},
+	"llama3-8b": LLMModel{
+		ID:              1,
+		ContainerFlavor: "2xlarge",
+		Image:           "docker.io/loqutus/govnocloud-llm-llama3-8b",
 	},
 }

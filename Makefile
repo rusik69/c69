@@ -38,6 +38,11 @@ build:
 	docker tag ${ORG_PREFIX}/${BINARY_NAME}-llm-phi1.5:${IMAGE_TAG} ${ORG_PREFIX}/${BINARY_NAME}-llm-phi1.5:latest
 	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-phi1.5:${IMAGE_TAG}
 	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-phi1.5:latest
+	docker build -t ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:${IMAGE_TAG} -f build/Dockerfile-llm-llama3-8b .
+	docker tag ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:${IMAGE_TAG} ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:latest
+	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:${IMAGE_TAG}
+	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:latest
+
 
 buildclient:
 	GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-darwin-arm64 cmd/client/main.go

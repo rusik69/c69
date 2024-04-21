@@ -8,7 +8,7 @@ import (
 
 // TestCreateLLM tests the CreateLLM function.
 func TestCreateLLM(t *testing.T) {
-	llm, err := client.CreateLLM(masterHost, masterPort, "test", "phi1.5")
+	llm, err := client.CreateLLM(masterHost, masterPort, "test", "llama3-8b")
 	if err != nil {
 		t.Error(err)
 	}
