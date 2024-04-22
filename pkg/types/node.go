@@ -263,3 +263,39 @@ var LLMModels = map[string]LLMModel{
 		Image:           "docker.io/loqutus/govnocloud-llm-llama3-8b",
 	},
 }
+
+// DB represents a database instance.
+type DB struct {
+	// ID is the ID of the database instance.
+	ID string `json:"id"`
+	// Name is the name of the database instance.
+	Name string `json:"name"`
+	// Type is the type of the database instance.
+	Type string `json:"type"`
+	// Container is the container of the database instance.
+	Container Container `json:"container"`
+}
+
+// DBType represents a database type.
+type DBType struct {
+	// ID is the ID of the database type.
+	ID int `json:"id"`
+	// ContainerFlavor is the container flavor of the database type.
+	ContainerFlavor string `json:"container_flavor"`
+	// Image is the image of the database type.
+	Image string `json:"image"`
+}
+
+// DBTypes represents the types of database instances.
+var DBTypes = map[string]DBType{
+	"mysql": DBType{
+		ID:              0,
+		ContainerFlavor: "medium",
+		Image:           "docker.io/mysql:8",
+	},
+	"postgres": DBType{
+		ID:              1,
+		ContainerFlavor: "medium",
+		Image:           "docker.io/postgres:16",
+	},
+}

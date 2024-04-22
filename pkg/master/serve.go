@@ -46,6 +46,12 @@ func Serve() {
 	r.GET("/api/v1/llmstart/:name", StartLLMHandler)
 	r.GET("/api/v1/llmstop/:name", StopLLMHandler)
 	r.POST("/api/v1/llmgenerate/:name", GenerateLLMHandler)
+	r.POST("/api/v1/db", CreateDBHandler)
+	r.GET("/api/v1/db/:name", GetDBHandler)
+	r.DELETE("/api/v1/db/:name", DeleteDBHandler)
+	r.GET("/api/v1/db", ListDBsHandler)
+	r.GET("/api/v1/dbstart/:name", StartDBHandler)
+	r.GET("/api/v1/dbstop/:name", StopDBHandler)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
