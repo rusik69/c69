@@ -59,6 +59,7 @@ func DeleteContainerHandler(c *gin.Context) {
 	}
 	tempContainer := types.Container{ID: id}
 	logrus.Println("Deleting container", tempContainer.ID)
+	_ = StopContainer(tempContainer)
 	err := DeleteContainer(tempContainer)
 	if err != nil {
 		logrus.Error(err.Error())
