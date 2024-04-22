@@ -111,6 +111,7 @@ func DeleteDBHandler(c *gin.Context) {
 
 // ListDBsHandler handles the list DBs request.
 func ListDBsHandler(c *gin.Context) {
+	logrus.Println("Listing DBs")
 	dbNames, err := ETCDList("/db")
 	if err != nil {
 		logrus.Error(err.Error())
@@ -134,6 +135,7 @@ func ListDBsHandler(c *gin.Context) {
 		}
 		dbs = append(dbs, db)
 	}
+	logrus.Printf("Found DBs %+v", dbs)
 	c.JSON(200, dbs)
 }
 
