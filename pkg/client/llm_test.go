@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
+	"github.com/sirupsen/logrus"
 )
 
 // TestCreateLLM tests the CreateLLM function.
@@ -23,6 +24,7 @@ func TestGenerateLLM(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	logrus.Println(res)
 	if res == "" {
 		t.Error("expected not empty string")
 	}
