@@ -120,7 +120,7 @@ func ListDBsHandler(c *gin.Context) {
 	}
 	dbs := []types.DB{}
 	for _, dbName := range dbNames {
-		dbInfoString, err := ETCDGet("/db/" + dbName)
+		dbInfoString, err := ETCDGet(dbName)
 		if err != nil {
 			logrus.Error(err.Error())
 			c.JSON(500, gin.H{"error": err.Error()})
