@@ -32,6 +32,16 @@ const router = createRouter({
       path: '/k8s',
       name: 'k8s',
       component: () => import('../views/K8sView.vue')
+    },
+    {
+      path: '/llms',
+      name: 'llms',
+      component: () => import('../views/LLMsView.vue')
+    },
+    {
+      path: '/dbs',
+      name: 'dbs',
+      component: () => import('../views/DBsView.vue')
     }
   ]
 })
