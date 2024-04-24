@@ -20,7 +20,7 @@ func TestCreateLLM(t *testing.T) {
 
 // TestGenerateLLM tests the GenerateLLM function
 func TestGenerateLLM(t *testing.T) {
-	res, err := client.GenerateLLM(masterHost, masterPort, "test", "test")
+	res, err := client.GenerateLLM(masterHost, masterPort, "test", "how are you?")
 	if err != nil {
 		t.Error(err)
 	}
