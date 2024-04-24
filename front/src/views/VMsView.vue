@@ -42,6 +42,28 @@
     <div id="details" v-if="selectedvm !== null">
       <vm-details :vm="selectedvm"> </vm-details>
     </div>
+    <button @click="showCreateDialog = true">Create VM</button>
+    <div v-if="showCreateDialog">
+      <h2>Create VM</h2>
+      <label>
+        VM Name:
+        <input v-model="newVm.name" type="text" />
+      </label>
+      <label>
+        Image:
+        <select v-model="newVm.image">
+          <option v-for="image in images" :key="image" :value="image">{{ image }}</option>
+        </select>
+      </label>
+      <label>
+        Flavor:
+        <select v-model="newVm.flavor">
+          <option v-for="flavor in flavors" :key="flavor" :value="flavor">{{ flavor }}</option>
+        </select>
+      </label>
+      <button @click="createVM">Create</button>
+      <button @click="showCreateDialog = false">Cancel</button>
+    </div>
   </div>
 </template>
 
@@ -52,6 +74,14 @@ export default {
     return {
       vms: [],
       selectedvm : null,
+      showCreateDialog: false,
+      newVm: {
+        name: '',
+        image: '',
+        flavor: '',
+      },
+      images: ['ubuntu22.04'],
+      flavors: ['small', 'medium', 'large', 'xlarge', '2xlarge'],
     }
   },
 
@@ -74,6 +104,28 @@ export default {
         .catch((error) => {
           console.error("Error fetching vms:", error);
         });
+    },
+    createVM() {
+      fetch("http://master.govno.cloud:6969/api/v1/vms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.newVm.name,
+          image: this.newVm.image,
+          flavor: this.newVm.flavor,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.vms.push(data);
+        })
+        .catch((error) => {
+          console.error("Error creating vm:", error);
+        });
+        this.newVm = { name: '', image: '', flavor: '' };
+        this.showCreateDialog = false;
     },
   },
 };

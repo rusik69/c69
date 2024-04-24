@@ -105,33 +105,28 @@ type ContainerFlavor struct {
 }
 
 var ContainerFlavors = map[string]ContainerFlavor{
-	"tiny": ContainerFlavor{
-		ID:        0,
-		MilliCPUs: 128,
-		RAM:       256,
-	},
 	"small": ContainerFlavor{
-		ID:        1,
+		ID:        0,
 		MilliCPUs: 256,
 		RAM:       512,
 	},
 	"medium": ContainerFlavor{
-		ID:        2,
+		ID:        1,
 		MilliCPUs: 512,
 		RAM:       1024,
 	},
 	"large": ContainerFlavor{
-		ID:        3,
+		ID:        2,
 		MilliCPUs: 1024,
 		RAM:       2048,
 	},
 	"xlarge": ContainerFlavor{
-		ID:        4,
+		ID:        3,
 		MilliCPUs: 2048,
 		RAM:       4096,
 	},
 	"2xlarge": ContainerFlavor{
-		ID:        5,
+		ID:        4,
 		MilliCPUs: 4096,
 		RAM:       8192,
 	},
