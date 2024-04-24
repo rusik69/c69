@@ -247,10 +247,10 @@ type LLMModel struct {
 
 // LLMModels represents the flavors of llm instances.
 var LLMModels = map[string]LLMModel{
-	"phi1.5": LLMModel{
+	"phi3": LLMModel{
 		ID:              0,
 		ContainerFlavor: "2xlarge",
-		Image:           "docker.io/loqutus/govnocloud-llm-phi1.5",
+		Image:           "docker.io/loqutus/govnocloud-llm-phi3",
 	},
 	"llama3-8b": LLMModel{
 		ID:              1,

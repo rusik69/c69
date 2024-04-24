@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 80
 
 # Run phi1.5.py when the container launches
-CMD ["python", "phi1.5.py"]
+CMD ["python", "phi3.py"]
