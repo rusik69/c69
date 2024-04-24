@@ -13,5 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Make port 80 available to the world outside this container
 EXPOSE 80
 
-# Run phi1.5.py when the container launches
+# Run phi3.py when the container launches
 CMD ["python", "llama3-8b.py"]
