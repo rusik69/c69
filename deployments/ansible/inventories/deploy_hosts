@@ -1,9 +1,0 @@
-[all]
-node0.govno.cloud ansible_become=true
-node1.govno.cloud ansible_become=true
-master.govno.cloud ansible_become=true
-[nodes]
-node0.govno.cloud ansible_become=true
-node1.govno.cloud ansible_become=true
-[master]
-master.govno.cloud ansible_become=true
