@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/sirupsen/logrus"
 )
 
 // GenerateAnsibleConfig generates ansible config
@@ -51,7 +53,7 @@ func GenerateAnsibleConfig(nodes []string, master, invFile string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(fileContent))
+	logrus.Println(string(fileContent))
 	return nil
 }
 
