@@ -16,7 +16,7 @@ jobs:
     - name: build
       run: make get build
     - name: deploy
-      run: bin/govnocloud-deploy-linux-amd64 --master master.govno.cloud --nodes node0.govno.cloud,node1.govno.cloud
+      run: make deploy
       env:
         TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
         TAILSCALE_ACCESS_TOKEN: ${{ secrets.TAILSCALE_ACCESS_TOKEN }}
