@@ -12,7 +12,7 @@ export TEST_MASTER_PORT := 6969
 export TEST_NODE_NAME := node0
 export TEST_NODE_HOST := node0.govno.cloud
 export TEST_NODE_PORT := 6969
-export TEST_NODES := node0.govno.cloud:69699
+export TEST_NODES := node0.govno.cloud:6969
 
 tidy:
 	go mod tidy
@@ -51,12 +51,11 @@ test:
 	go test -timeout 40m -v ./...
 
 deploy:
-	bin/govnocloud-deploy-linux-amd64 --master master.govno.cloud --nodes $TEST_NODES
+	bin/govnocloud-deploy-linux-amd64 --master master.govno.cloud --nodes ${TEST_NODES}
 
 logs:
 	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`
 	ssh node0.govno.cloud "get_logs.sh"
-	ssh node1.govno.cloud "get_logs.sh"
 
 remotetest:
 	rsync -avz . master.govno.cloud:~/govnocloud
