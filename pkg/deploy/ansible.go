@@ -46,6 +46,12 @@ func GenerateAnsibleConfig(nodes []string, master, invFile string) error {
 	if err != nil {
 		return err
 	}
+	file.Sync()
+	fileContent, err := os.ReadFile(invFile)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(fileContent))
 	return nil
 }
 
