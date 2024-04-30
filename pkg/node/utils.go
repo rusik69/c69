@@ -330,6 +330,7 @@ func waitForLLM(ip string) error {
 	var healthResponse HealthResponse
 	for {
 		if count == 600 {
+			logrus.Println("LLM wait timeout")
 			return errors.New("llm wait timeout")
 		}
 		resp, err := http.Get("http://" + ip + "/health")
