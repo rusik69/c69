@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 torch.set_default_device("cpu")
 
-model = AutoModelForCausalLM.from_pretrained("microsoft/Phi-3-mini-4k-instruct", torch_dtype=torch.float32, device_map="cpu", trust_remote_code=True)
-tokenizer = AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-4k-instruct", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("ericzzz/falcon-rw-1b-instruct-openorca", torch_dtype=torch.float32, device_map="cpu", trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained("ericzzz/falcon-rw-1b-instruct-openorca", trust_remote_code=True)
 
 @app.route('/generate', methods=['POST'])
 def generate():
