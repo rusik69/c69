@@ -100,35 +100,35 @@ type ContainerFlavor struct {
 	ID int `json:"id"`
 	// MilliCPUs is the number of MilliCPUs of the flavor.
 	MilliCPUs uint64 `json:"millicpus"`
-	// RAM is the RAM of the flavor.
-	RAM uint64 `json:"ram"`
+	// Mem is the Mem of the flavor.
+	Mem uint64 `json:"ram"`
 }
 
 var ContainerFlavors = map[string]ContainerFlavor{
 	"small": ContainerFlavor{
 		ID:        0,
 		MilliCPUs: 256,
-		RAM:       512,
+		Mem:       512,
 	},
 	"medium": ContainerFlavor{
 		ID:        1,
 		MilliCPUs: 512,
-		RAM:       1024,
+		Mem:       1024,
 	},
 	"large": ContainerFlavor{
 		ID:        2,
 		MilliCPUs: 1024,
-		RAM:       2048,
+		Mem:       2048,
 	},
 	"xlarge": ContainerFlavor{
 		ID:        3,
 		MilliCPUs: 2048,
-		RAM:       4096,
+		Mem:       4096,
 	},
 	"2xlarge": ContainerFlavor{
 		ID:        4,
 		MilliCPUs: 4096,
-		RAM:       8192,
+		Mem:       8192,
 	},
 }
 
@@ -190,11 +190,12 @@ var NodeEnvInstance *NodeEnv
 
 // NodeStats represents the stats.
 type NodeStats struct {
-	MilliCPUs uint64 `json:"millicpus"`
-	TotalMEM  uint64 `json:"total_mem"`
-	FreeMEM   uint64 `json:"mem"`
-	TotalDISK uint64 `json:"total_disk"`
-	FreeDISK  uint64 `json:"disk"`
+	TotalMilliCPUs uint64 `json:"total_millicpus"`
+	FreeMilliCPUs  uint64 `json:"free_millicpus"`
+	TotalMEM       uint64 `json:"total_mem"`
+	FreeMEM        uint64 `json:"free_mem"`
+	TotalDISK      uint64 `json:"total_disk"`
+	FreeDISK       uint64 `json:"free_disk"`
 }
 
 // Volume represents a volume.

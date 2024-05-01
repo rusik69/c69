@@ -24,18 +24,8 @@ type Node struct {
 	Host string `json:"ip"`
 	// Port is the port of the node.
 	Port string `json:"port"`
-	// MilliCPUSTotal is the total number of CPUs of the node.
-	MilliCPUSTotal uint64 `json:"millicpus_total"`
-	// MilliCPUSUsed is the used number of CPUs of the node.
-	MilliCPUSUsed uint64 `json:"millicpus_used"`
-	// MemoryTotal is the total memory of the node.
-	MemoryTotal uint64 `json:"memory_total"`
-	// MemoryUsed is the used memory of the node.
-	MemoryUsed uint64 `json:"memory_used"`
-	// DiskTotal is the total disk of the node.
-	DiskTotal uint64 `json:"disk_total"`
-	// DiskUsed is the used disk of the node.
-	DiskUsed uint64 `json:"disk_used"`
+	// Stats is the stats of the node.
+	Stats NodeStats `json:"stats"`
 }
 
 // File represents a file.

@@ -4,7 +4,8 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Total CPU</th>
+          <th>Total milliCPUs</th>
+          <th>Free milliCPUs</th>
           <th>Total Memory</th>
           <th>Free Memory</th>
           <th>Total Disk</th>
@@ -14,11 +15,12 @@
       <tbody>
         <tr v-for="(nodeStats, nodeName) in nodes" :key="nodeName">
           <td>{{ nodeName }}</td>
-          <td>{{ nodeStats.cpus }}</td>
+          <td>{{ nodeStats.total_millicpus }}</td>
+          <td>{{ nodeStats.free_millicpus }}</td>
           <td>{{ humanize(nodeStats.total_mem) }}</td>
-          <td>{{ humanize(nodeStats.mem) }}</td>
+          <td>{{ humanize(nodeStats.free_mem) }}</td>
           <td>{{ humanize(nodeStats.total_disk) }}</td>
-          <td>{{ humanize(nodeStats.disk) }}</td>
+          <td>{{ humanize(nodeStats.free_disk) }}</td>
         </tr>
       </tbody>
     </table>

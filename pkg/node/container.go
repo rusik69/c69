@@ -159,7 +159,7 @@ func CreateContainer(c types.Container) (types.Container, error) {
 		Image:  c.Image,
 		Labels: map[string]string{"Name": c.Name},
 	}
-	memLimit := types.ContainerFlavors[c.Flavor].RAM * 1024 * 1024
+	memLimit := types.ContainerFlavors[c.Flavor].Mem * 1024 * 1024
 	cpuShares := types.ContainerFlavors[c.Flavor].MilliCPUs
 	hostConfig := dockercontainer.HostConfig{
 		Resources: dockercontainer.Resources{

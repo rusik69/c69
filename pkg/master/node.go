@@ -52,9 +52,7 @@ func AddNodeHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	tempNode.MilliCPUSTotal = nodeStats.MilliCPUs
-	tempNode.MemoryTotal = nodeStats.TotalMEM
-	tempNode.DiskTotal = nodeStats.TotalDISK
+	tempNode.Stats = nodeStats
 	logrus.Println("Adding node", tempNode)
 	tempNodeBody, err := json.Marshal(tempNode)
 	if err != nil {
@@ -80,9 +78,9 @@ func ListNodesHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	res := map[string]types.NodeStats{}
-	for _, nodeName := range nodesList {
-		nodeString, err := ETCDGet(nodeName)
+	res := []types.NodeStats{}
+	for _, nodePath := range nodesList {
+		nodeString, err := ETCDGet(nodePath)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			logrus.Error(err.Error())
@@ -95,13 +93,7 @@ func ListNodesHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			return
 		}
-		nodeStats, err := client.GetNodeStats(node.Host, node.Port)
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			logrus.Error(err.Error())
-			return
-		}
-		res[nodeName] = nodeStats
+		res = append(res, node.Stats)
 	}
 	c.JSON(200, res)
 }

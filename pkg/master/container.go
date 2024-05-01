@@ -49,8 +49,8 @@ func CreateContainerHandler(c *gin.Context) {
 	})
 	var usedNode types.Node
 	for _, node := range nodes {
-		if uint64(node.MilliCPUSTotal-node.MilliCPUSUsed) < containerFlavor.MilliCPUs ||
-			(node.MemoryTotal-node.MemoryUsed) < containerFlavor.RAM {
+		if node.Stats.FreeMilliCPUs < containerFlavor.MilliCPUs ||
+			node.Stats.FreeMEM < containerFlavor.Mem {
 			continue
 		}
 		usedNode = node
@@ -85,8 +85,8 @@ func CreateContainerHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	usedNode.MilliCPUSUsed += containerFlavor.MilliCPUs
-	usedNode.MemoryUsed += containerFlavor.RAM
+	usedNode.Stats.FreeMEM -= containerFlavor.MilliCPUs
+	usedNode.Stats.FreeMEM -= containerFlavor.Mem
 	usedNodeString, err := json.Marshal(usedNode)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})

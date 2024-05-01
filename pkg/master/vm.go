@@ -48,9 +48,9 @@ func CreateVMHandler(c *gin.Context) {
 	vmFlavor := types.VMFlavors[vmFlavorName]
 	usedNode := types.Node{}
 	for _, node := range nodes {
-		if uint64(node.MilliCPUSTotal-node.MilliCPUSUsed) < vmFlavor.MilliCPUs ||
-			(node.MemoryTotal-node.MemoryUsed) < vmFlavor.RAM ||
-			(node.DiskTotal-node.DiskUsed) < vmFlavor.Disk {
+		if node.Stats.FreeMilliCPUs < vmFlavor.MilliCPUs ||
+			node.Stats.FreeMEM < vmFlavor.RAM ||
+			node.Stats.FreeDISK < vmFlavor.Disk {
 			continue
 		}
 		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name,
@@ -94,9 +94,9 @@ func CreateVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	usedNode.MilliCPUSUsed += vmFlavor.MilliCPUs
-	usedNode.MemoryUsed += vmFlavor.RAM * 1024 * 1024
-	usedNode.DiskUsed += vmFlavor.Disk * 1024 * 1024 * 1024
+	usedNode.Stats.FreeMilliCPUs -= vmFlavor.MilliCPUs
+	usedNode.Stats.FreeMEM -= vmFlavor.RAM * 1024 * 1024
+	usedNode.Stats.FreeDISK -= vmFlavor.Disk * 1024 * 1024 * 1024
 	nodeString, err := json.Marshal(usedNode)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -170,9 +170,9 @@ func DeleteVMHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	foundNode.MilliCPUSUsed -= types.VMFlavors[vmInfo.Flavor].MilliCPUs
-	foundNode.MemoryUsed -= types.VMFlavors[vmInfo.Flavor].RAM * 1024 * 1024
-	foundNode.DiskUsed -= types.VMFlavors[vmInfo.Flavor].Disk * 1024 * 1024
+	foundNode.Stats.FreeMilliCPUs += types.VMFlavors[vmInfo.Flavor].MilliCPUs
+	foundNode.Stats.FreeMEM += types.VMFlavors[vmInfo.Flavor].RAM * 1024 * 1024
+	foundNode.Stats.FreeDISK += types.VMFlavors[vmInfo.Flavor].Disk * 1024 * 1024
 	nodeString, err := json.Marshal(foundNode)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
