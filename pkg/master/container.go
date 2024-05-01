@@ -110,19 +110,19 @@ func DeleteContainerHandler(c *gin.Context) {
 		return
 	}
 	logrus.Printf("Deleting container with name %s\n", name)
-	vmInfoString, err := ETCDGet("/containers/" + name)
+	containerInfoString, err := ETCDGet("/containers/" + name)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
 		return
 	}
-	if vmInfoString == "" {
+	if containerInfoString == "" {
 		c.JSON(400, gin.H{"error": "container with this name doesn't exist"})
 		logrus.Error("container with this name doesn't exist")
 		return
 	}
 	var tempContainer types.Container
-	err = json.Unmarshal([]byte(vmInfoString), &tempContainer)
+	err = json.Unmarshal([]byte(containerInfoString), &tempContainer)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
@@ -135,8 +135,10 @@ func DeleteContainerHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
+	var usedNode types.Node
 	for _, node := range nodes {
 		if node.Name == tempContainer.Node {
+			usedNode = node
 			err = client.DeleteContainer(node.Host, node.Port, tempContainer.ID)
 			if err != nil {
 				logrus.Error(err.Error())
@@ -150,7 +152,22 @@ func DeleteContainerHandler(c *gin.Context) {
 		logrus.Error("can't delete container")
 		return
 	}
+	containerFlavor := types.ContainerFlavors[tempContainer.Flavor]
+	usedNode.Stats.FreeMEM += containerFlavor.MilliCPUs
+	usedNode.Stats.FreeMilliCPUs += containerFlavor.MilliCPUs
 	err = ETCDDelete("/containers/" + name)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	usedNodeString, err := json.Marshal(usedNode)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		logrus.Error(err.Error())
+		return
+	}
+	err = ETCDPut("/nodes/"+usedNode.Name, string(usedNodeString))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		logrus.Error(err.Error())
