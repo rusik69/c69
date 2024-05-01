@@ -61,6 +61,8 @@ func CreateVMHandler(c *gin.Context) {
 			continue
 		}
 		newVM.ID = createdVM.ID
+		newVM.IP = createdVM.IP
+		newVM.State = createdVM.State
 		newVM.Node = node.Name
 		newVM.Name = tempVM.Name
 		newVM.Image = tempVM.Image

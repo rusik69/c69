@@ -28,20 +28,11 @@
           <td>{{ vm.state }}</td>
           <td>{{ vm.image }}</td>
           <td>{{ vm.flavor }}</td>
-          <td>
-            <ul>
-              <li v-for="volume in vm.Volumes" :key="volume.ID">
-                {{ volume.Name }}
-              </li>
-            </ul>
-          </td>
-          <td>{{ vm.Committed }}</td>
+          <td> <button @click="startVM(vm.Name)"> Start</button> </td>
+          <td> <button @click="stopVM(vm.Name)"> Stop</button> </td>
         </tr>
       </tbody>
     </table>
-    <div id="details" v-if="selectedvm !== null">
-      <vm-details :vm="selectedvm"> </vm-details>
-    </div>
     <button @click="showCreateDialog = true">Create VM</button>
     <div v-if="showCreateDialog">
       <h2>Create VM</h2>
@@ -68,7 +59,6 @@
 </template>
 
 <script>
-import VmDetails from "@/views/VmDetails.vue";
 export default {
   data() {
     return {
@@ -82,11 +72,8 @@ export default {
       },
       images: ['ubuntu22.04'],
       flavors: ['small', 'medium', 'large', 'xlarge', '2xlarge'],
+      intervalId: null,
     }
-  },
-
-  components: {
-    "vm-details": VmDetails,
   },
   created() {
     this.fetchVMs();
@@ -104,6 +91,13 @@ export default {
         .catch((error) => {
           console.error("Error fetching vms:", error);
         });
+    },
+    mounted() {
+      this.fetchVMs();
+      this.intervalId = setInterval(this.fetchVMs, 5000); // Fetch VMs every 5 seconds
+    },
+    beforeDestroy() {
+      clearInterval(this.intervalId); // Clear the interval when the component is destroyed
     },
     createVM() {
       fetch("http://master.govno.cloud:6969/api/v1/vms", {
@@ -127,6 +121,30 @@ export default {
         });
         this.newVm = { name: '', image: '', flavor: '' };
         this.showCreateDialog = false;
+    },
+    startVM(vmName) {
+      fetch("http://master.govno.cloud:6969/api/v1/vmstart/" + vmName, {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.vms.push(data);
+        })
+        .catch((error) => {
+          console.error("Error starting vm:", error);
+        });
+    },
+    stopVM(vmName) {
+      fetch("http://master.govno.cloud:6969/api/v1/vmstop/" + vmName, {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.vms.push(data);
+        })
+        .catch((error) => {
+          console.error("Error stopping vm:", error);
+        });
     },
   },
 };

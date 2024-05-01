@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'nodes',
+      name: 'root',
       component: () => import('../views/NodesView.vue')
     },
     {
