@@ -78,7 +78,7 @@ func ListNodesHandler(c *gin.Context) {
 		logrus.Error(err.Error())
 		return
 	}
-	res := []types.NodeStats{}
+	res := []types.Node{}
 	for _, nodePath := range nodesList {
 		nodeString, err := ETCDGet(nodePath)
 		if err != nil {
@@ -93,7 +93,7 @@ func ListNodesHandler(c *gin.Context) {
 			logrus.Error(err.Error())
 			return
 		}
-		res = append(res, node.Stats)
+		res = append(res, node)
 	}
 	c.JSON(200, res)
 }
