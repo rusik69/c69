@@ -66,4 +66,3 @@ rsync:
 	rsync -avz . master.govno.cloud:~/govnocloud
 
 default: get build
-

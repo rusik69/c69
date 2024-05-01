@@ -278,11 +278,11 @@ func ListVMHandler(c *gin.Context) {
 				var tempVM types.VM
 				tempVM.ID = vm.ID
 				tempVM.Name = vm.Name
-				tempVM.IP = vm.IP
+				tempVM.IP = vmsMap[vm.Name].IP
 				tempVM.Node = nodeName
 				tempVM.NodeHostname = node.Host
 				tempVM.NodePort = node.Port
-				tempVM.State = vm.State
+				tempVM.State = vmsMap[vm.Name].State
 				tempVM.Image = vmsMap[vm.Name].Image
 				tempVM.Flavor = vmsMap[vm.Name].Flavor
 				tempVM.Volumes = vmsMap[vm.Name].Volumes

@@ -344,6 +344,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	vm.TailscaleIP = tailscaleIP
 	vm.TailscaleID = tailscaleID
 	vm.KubeConfig = kubeconfig
+	vm.State = "running"
 	return vm, 200, nil
 }
 

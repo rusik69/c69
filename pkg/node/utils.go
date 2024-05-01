@@ -63,21 +63,21 @@ func resizeImage(image string, flavor types.VMFlavor) error {
 func ParseState(state libvirt.DomainState) string {
 	switch state {
 	case libvirt.DOMAIN_NOSTATE:
-		return "NOSTATE"
+		return "nostate"
 	case libvirt.DOMAIN_RUNNING:
-		return "RUNNING"
+		return "running"
 	case libvirt.DOMAIN_BLOCKED:
-		return "BLOCKED"
+		return "blocked"
 	case libvirt.DOMAIN_PAUSED:
-		return "PAUSED"
+		return "paused"
 	case libvirt.DOMAIN_SHUTDOWN:
-		return "SHUTDOWN"
+		return "shutdown"
 	case libvirt.DOMAIN_SHUTOFF:
-		return "SHUTOFF"
+		return "shutoff"
 	case libvirt.DOMAIN_CRASHED:
-		return "CRASHED"
+		return "crashed"
 	case libvirt.DOMAIN_PMSUSPENDED:
-		return "PMSUSPENDED"
+		return "pmsuspended"
 	}
 	return ""
 }

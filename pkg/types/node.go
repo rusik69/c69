@@ -37,7 +37,7 @@ type VM struct {
 	// NodePort is the port of the node.
 	NodePort string `json:"nodeport"`
 	// State is the status of the virtual machine.
-	State string `json:"status"`
+	State string `json:"state"`
 	// Image is the image of the virtual machine.
 	Image string `json:"image"`
 	// Flavor is the flavor of the virtual machine.

@@ -6,12 +6,11 @@
           <th>Name</th>
           <th>ID</th>
           <th>IP</th>
+          <th>TailscaleIP</th>
           <th>Node</th>
           <th>State</th>
           <th>Image</th>
           <th>Flavor</th>
-          <th>Volumes</th>
-          <th>Committed</th>
         </tr>
       </thead>
       <tbody>
@@ -24,8 +23,9 @@
           <td>{{ vm.name }}</td>
           <td>{{ vm.id }}</td>
           <td>{{ vm.ip }}</td>
+          <td>{{ vm.tailscaleip }}</td>
           <td>{{ vm.host }}</td>
-          <td>{{ vm.status }}</td>
+          <td>{{ vm.state }}</td>
           <td>{{ vm.image }}</td>
           <td>{{ vm.flavor }}</td>
           <td>
@@ -115,6 +115,7 @@ export default {
           name: this.newVm.name,
           image: this.newVm.image,
           flavor: this.newVm.flavor,
+          state: "creating",
         }),
       })
         .then((response) => response.json())
