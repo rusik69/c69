@@ -52,6 +52,8 @@ func CreateContainerHandler(c *gin.Context) {
 		if node.Stats.FreeMilliCPUs < containerFlavor.MilliCPUs ||
 			node.Stats.FreeMEM < containerFlavor.Mem {
 			logrus.Println("Not enough resources on node", node.Name)
+			logrus.Println("FreeMilliCPUs", node.Stats.FreeMilliCPUs, "MilliCPUs", containerFlavor.MilliCPUs)
+			logrus.Println("FreeMEM", node.Stats.FreeMEM, "Mem", containerFlavor.Mem)
 			continue
 		}
 		usedNode = node
