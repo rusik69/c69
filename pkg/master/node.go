@@ -54,6 +54,7 @@ func AddNodeHandler(c *gin.Context) {
 	}
 	tempNode.Stats = nodeStats
 	logrus.Println("Adding node", tempNode)
+	logrus.Printf("Node stats: +%v\n", nodeStats)
 	tempNodeBody, err := json.Marshal(tempNode)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
