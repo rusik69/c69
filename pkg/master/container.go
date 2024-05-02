@@ -51,6 +51,7 @@ func CreateContainerHandler(c *gin.Context) {
 	for _, node := range nodes {
 		if node.Stats.FreeMilliCPUs < containerFlavor.MilliCPUs ||
 			node.Stats.FreeMEM < containerFlavor.Mem {
+			logrus.Println("Not enough resources on node", node.Name)
 			continue
 		}
 		usedNode = node
@@ -66,7 +67,7 @@ func CreateContainerHandler(c *gin.Context) {
 	}
 	if !created {
 		c.JSON(500, gin.H{"error": "can't create container"})
-		logrus.Error("can't create container", tempContainer.Name, tempContainer.Image)
+		logrus.Error("can't create container ", tempContainer.Name, " ", tempContainer.Image)
 		return
 	}
 	newContainer.Committed = true
