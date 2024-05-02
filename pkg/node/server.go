@@ -68,6 +68,7 @@ func GetStats() (types.NodeStats, error) {
 	}
 	return types.NodeStats{
 		TotalMilliCPUs: uint64(1024 * numCPUs),
+		FreeMilliCPUs:  uint64(1024 * numCPUs),
 		FreeMEM:        memory.Available / 1024 / 1024,
 		TotalMEM:       memory.Total / 1024 / 1024,
 		FreeDISK:       usage.Free / 1024 / 1024,
