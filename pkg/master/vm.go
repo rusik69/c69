@@ -51,6 +51,7 @@ func CreateVMHandler(c *gin.Context) {
 		if node.Stats.FreeMilliCPUs < vmFlavor.MilliCPUs ||
 			node.Stats.FreeMEM < vmFlavor.RAM ||
 			node.Stats.FreeDISK < vmFlavor.Disk {
+			logrus.Println("Not enough resources on node", node.Name)
 			continue
 		}
 		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name,
