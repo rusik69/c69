@@ -10,7 +10,7 @@ import (
 )
 
 // GenerateAnsibleConfig generates ansible config
-func GenerateAnsibleConfig(nodes []string, master, invFile string) error {
+func GenerateAnsibleConfig(nodes, osds []string, master, invFile string) error {
 	file, err := os.Create(invFile)
 	if err != nil {
 		return err
@@ -36,6 +36,16 @@ func GenerateAnsibleConfig(nodes []string, master, invFile string) error {
 	}
 	for _, node := range nodes {
 		_, err = file.WriteString(node + " ansible_become=true\n")
+		if err != nil {
+			return err
+		}
+	}
+	_, err = file.WriteString("[osds]\n")
+	if err != nil {
+		return err
+	}
+	for _, osd := range osds {
+		_, err = file.WriteString(osd + " ansible_become=true\n")
 		if err != nil {
 			return err
 		}

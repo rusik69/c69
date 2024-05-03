@@ -1,0 +1,10 @@
+---
+- name: add osd to the ceph cluster
+  ansible.builtin.shell: |
+    ceph orch apply osd --all-available-devices
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: ceph
+  become_method: sudo
+  register: ceph_osd

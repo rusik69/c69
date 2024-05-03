@@ -10,9 +10,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var nodes []string
+var nodes, osds []string
 var master, ansibleInventoryFile string
-var key, user, nodesString string
+var key, user, nodesString, osdsString string
 
 var rootCmd = &cobra.Command{
 	Use:   "deploy",
@@ -20,18 +20,24 @@ var rootCmd = &cobra.Command{
 	Long:  `deploy a shitty cloud`,
 	Run: func(cmd *cobra.Command, args []string) {
 		nodes = strings.Split(nodesString, ",")
-		if len(nodes) == 0 || master == "" {
-			logrus.Println("Nodes and master must be specified")
+		osds = strings.Split(osdsString, ",")
+		if len(nodes) == 0 || len(osds) == 0 || master == "" {
+			logrus.Println("Nodes, osds and master must be specified")
 			os.Exit(1)
 		}
 		if nodes[0] == "" {
 			logrus.Println("Nodes must be specified")
 			os.Exit(1)
 		}
+		if osds[0] == "" {
+			logrus.Println("OSDs must be specified")
+			os.Exit(1)
+		}
 		nodesString := strings.Join(nodes, ",")
-		logrus.Println("Deploying govnocloud on nodes", nodesString, "and master", master)
+		osdsString := strings.Join(osds, ",")
+		logrus.Println("Deploying govnocloud on nodes", nodesString, "osds", osds, "and master", master)
 		logrus.Println("Generating Ansible inventory file", ansibleInventoryFile)
-		err := deploy.GenerateAnsibleConfig(nodes, master, ansibleInventoryFile)
+		err := deploy.GenerateAnsibleConfig(nodes, osds, master, ansibleInventoryFile)
 		if err != nil {
 			panic(err)
 		}
@@ -113,6 +119,7 @@ func init() {
 		panic(err)
 	}
 	rootCmd.PersistentFlags().StringVar(&nodesString, "nodes", "", "nodes to deploy")
+	rootCmd.PersistentFlags().StringVar(&osdsString, "osds", "", "osds to deploy")
 	rootCmd.PersistentFlags().StringVar(&master, "master", "", "master to deploy")
 	rootCmd.PersistentFlags().StringVar(&ansibleInventoryFile, "inv", "./deployments/ansible/inventories/deploy_hosts", "ansible inventory file")
 	rootCmd.PersistentFlags().StringVar(&key, "key", filepath.Join(currentUserHomeDir, ".ssh/id_rsa"), "private ssh key path")

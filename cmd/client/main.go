@@ -806,7 +806,7 @@ func init() {
 	k8sClientCmd.AddCommand(k8sStartCmd)
 	k8sClientCmd.AddCommand(k8sStopCmd)
 	k8sClientCmd.AddCommand(k8sGetKubeconfigCmd)
-	rootCmd.PersistentFlags().StringVar(&clientHost, "host", "127.0.0.1", "host to connect to")
+	rootCmd.PersistentFlags().StringVar(&clientHost, "host", "master.govno.cloud", "host to connect to")
 	rootCmd.PersistentFlags().StringVar(&clientPort, "port", "6969", "port to connect to")
 	rootCmd.PersistentFlags().StringVar(&name, "name", "", "name")
 	rootCmd.PersistentFlags().StringVar(&image, "image", "", "image")

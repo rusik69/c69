@@ -52,7 +52,7 @@ test:
 	go test -timeout 40m -v ./...
 
 deploy:
-	bin/govnocloud-deploy-linux-amd64 --master master.govno.cloud --nodes ${DEPLOY_NODES}
+	bin/govnocloud-deploy-linux-amd64 --master master.govno.cloud --nodes ${DEPLOY_NODES} --osds master.govno.cloud
 
 logs:
 	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`

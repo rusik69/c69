@@ -11,3 +11,7 @@
   hosts: nodes
   roles:
     - node
+- name: Run osd role on osd hosts
+  hosts: osds
+  roles:
+    - osd

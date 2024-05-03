@@ -1,6 +1,6 @@
 - name: Install packages
   ansible.builtin.dnf:
-    name: git,make,go,libvirt-devel,make,bash,gcc,git,libvirt,ca-certificates,qemu-img,guestfs-tools,cloud-utils,genisoimage,openssh,livecd-tools,etcd
+    name: git,make,go,libvirt-devel,make,bash,gcc,git,libvirt,ca-certificates,qemu-img,guestfs-tools,cloud-utils,genisoimage,openssh,livecd-tools,etcd,cephadm
     state: present
 - name: Schedule Docker cleanup
   ansible.builtin.cron:
@@ -29,46 +29,22 @@
     src: cleanup.sh
     dest: /usr/local/bin/cleanup.sh
     mode: 0755
-- name: Install NFS packages
-  ansible.builtin.dnf:
-    name:
-      - nfs-utils
-      - rpcbind
-    state: present
-- name: Enable and start services
-  ansible.builtin.systemd:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-  loop:
-    - nfs-server
-    - rpcbind
-
-- name: Configure NFS exports
-  ansible.builtin.template:
-    src: /path/to/your/exports.j2
-    dest: /etc/exports
-    owner: root
-    group: root
-    mode: '0644'
-  notify: restart nfs
-
-- name: Configure RPC bind to listen on specific interface
-  ansible.builtin.lineinfile:
-    path: /etc/sysconfig/nfs
-    regexp: '^RPCBIND_ARGS='
-    line: 'RPCBIND_ARGS="-h tailscale0"'
-    create: yes
-  notify: restart rpcbind
-
-- name: Allow NFS through firewall
-  ansible.posix.firewalld:
-    service: nfs
-    permanent: yes
-    state: enabled
-
 - name: allow govnocloud-master through firewall
   ansible.posix.firewalld:
     port: 6969/tcp
     permanent: yes
     state: enabled
+- name: add ceph user
+  ansible.builtin.user:
+    name: ceph
+    state: present
+    system: yes
+- name: bootstrap ceph
+  ansible.builtin.shell: |
+    cephadm bootstrap --mon-ip {{ ansible_tailscale0.ipv4.address }}
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: ceph
+  become_method: sudo
+  register: ceph_bootstrap

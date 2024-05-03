@@ -22,8 +22,9 @@
         </tr>
       </tbody>
     </table>
-    <button @click = "showUploadDialog = true">Upload</button>
-    
+    <input type="file" ref="fileUpload" @change="handleFileUpload" style="display: none" />
+    <button @click="triggerFileUpload">Upload File</button>
+
   </div>
 </template>
 
@@ -47,7 +48,14 @@ export default {
         .catch(error => {
           console.error('Error fetching files:', error);
         });
-    }
+    },
+    triggerFileUpload() {
+      this.$refs.fileUpload.click();
+    },
+    handleFileUpload() {
+      const file = this.$refs.fileUpload.files[0];
+      
+    },
   }
 }
 </script>
