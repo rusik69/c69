@@ -17,9 +17,13 @@
           <td>{{ file.nodename }}</td>
           <td>{{ file.committed }}</td>
           <td>{{ file.timestamp }}</td>
+          <td> <button @click="downloadFile(file.name)">Download</button> </td>
+          <td> <button @click="removeFile(file.name)">Remove</button> </td>
         </tr>
       </tbody>
     </table>
+    <button @click = "showUploadDialog = true">Upload</button>
+    
   </div>
 </template>
 

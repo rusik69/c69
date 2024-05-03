@@ -13,14 +13,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(nodeStats, nodeName) in nodes" :key="nodeName">
-          <td>{{ nodeName }}</td>
-          <td>{{ nodeStats.total_millicpus }}</td>
-          <td>{{ nodeStats.free_millicpus }}</td>
-          <td>{{ humanize(nodeStats.total_mem) }}</td>
-          <td>{{ humanize(nodeStats.free_mem) }}</td>
-          <td>{{ humanize(nodeStats.total_disk) }}</td>
-          <td>{{ humanize(nodeStats.free_disk) }}</td>
+        <tr v-for="node in nodes" :key="nodeName">
+          <td>{{ node.name }}</td>
+          <td>{{ node.stats.total_millicpus }}</td>
+          <td>{{ node.stats.free_millicpus }}</td>
+          <td>{{ humanize(node.stats.total_mem) }}</td>
+          <td>{{ humanize(node.stats.free_mem) }}</td>
+          <td>{{ humanize(node.stats.total_disk) }}</td>
+          <td>{{ humanize(node.stats.free_disk) }}</td>
         </tr>
       </tbody>
     </table>
@@ -49,7 +49,7 @@ export default {
         });
     },
     humanize(value) {
-      const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+      const units = ['MB', 'GB', 'TB'];
       let index = 0;
       while (value >= 1024 && index < units.length - 1) {
         value /= 1024;

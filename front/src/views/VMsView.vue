@@ -28,8 +28,9 @@
           <td>{{ vm.state }}</td>
           <td>{{ vm.image }}</td>
           <td>{{ vm.flavor }}</td>
-          <td> <button @click="startVM(vm.Name)"> Start</button> </td>
-          <td> <button @click="stopVM(vm.Name)"> Stop</button> </td>
+          <td> <button @click="startVM(vm.name)"> Start</button> </td>
+          <td> <button @click="stopVM(vm.name)"> Stop</button> </td>
+          <td> <button @click="terminateVM(vm.name)">Terminate</button> </td>
         </tr>
       </tbody>
     </table>
@@ -37,7 +38,7 @@
     <div v-if="showCreateDialog">
       <h2>Create VM</h2>
       <label>
-        VM Name:
+        Name:
         <input v-model="newVm.name" type="text" />
       </label>
       <label>
@@ -144,6 +145,18 @@ export default {
         })
         .catch((error) => {
           console.error("Error stopping vm:", error);
+        });
+    },
+    terminateVM(vmName) {
+      fetch("http://master.govno.cloud:6969/api/v1/vm/" + vmName, {
+        method: "DELETE",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.vms = this.vms.filter((v) => v.id !== vm.id);
+        })
+        .catch((error) => {
+          console.error("Error deleting vm:", error);
         });
     },
   },
