@@ -35,7 +35,7 @@ var rootCmd = &cobra.Command{
 		}
 		nodesString := strings.Join(nodes, ",")
 		osdsString := strings.Join(osds, ",")
-		logrus.Println("Deploying govnocloud on nodes", nodesString, "osds", osds, "and master", master)
+		logrus.Println("Deploying govnocloud on nodes", nodesString, "osds", osdsString, "and master", master)
 		logrus.Println("Generating Ansible inventory file", ansibleInventoryFile)
 		err := deploy.GenerateAnsibleConfig(nodes, osds, master, ansibleInventoryFile)
 		if err != nil {
