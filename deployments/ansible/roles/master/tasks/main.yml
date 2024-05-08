@@ -29,11 +29,11 @@
     src: cleanup.sh
     dest: /usr/local/bin/cleanup.sh
     mode: 0755
-- name: allow govnocloud-master through firewall
-  ansible.posix.firewalld:
-    port: 6969/tcp
-    permanent: yes
-    state: enabled
+- name: Allow tcp traffic on port 8080
+  ansible.builtin.ufw:
+    rule: allow
+    port: '6969'
+    proto: tcp
 - name: add ceph user
   ansible.builtin.user:
     name: ceph
