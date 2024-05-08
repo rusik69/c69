@@ -3,6 +3,10 @@
   ansible.builtin.apt:
     name: docker,docker-client,docker-client-latest,docker-common,docker-latest,docker-latest-logrotate,docker-logrotate,docker-engine
     state: absent
+- name: Add Docker GPG apt Key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
 - name: Add Docker Repository
   ansible.builtin.apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu noble stable
