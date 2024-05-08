@@ -22,7 +22,7 @@ get:
 	go get -v ./...
 
 ansible:
-	ansible-playbook -i deployments/ansible/inventories/hosts deployments/ansible/main.yml
+	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
 build:
 	GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-deploy-darwin-arm64 cmd/deploy/main.go
