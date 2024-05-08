@@ -1,6 +1,6 @@
 ---
 - name: install ceph packages
-  ansible.builtin.dnf:
+  ansible.builtin.apt:
     name: ceph
     state: present
 - name: add osd to the ceph cluster
