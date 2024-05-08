@@ -11,6 +11,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: install make
+      run: apt install -y make || true
+    - name: make apt
+      run: make apt
     - name: ansible
       run: make ansible
     - name: build

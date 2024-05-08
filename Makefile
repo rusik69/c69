@@ -15,6 +15,9 @@ export TEST_NODE_PORT := 6969
 export TEST_NODES := node0.govno.cloud:6969
 export DEPLOY_NODES := node0.govno.cloud
 
+apt:
+	apt update
+	apt install -y ansible build-essential git golang libvirt-dev
 tidy:
 	go mod tidy
 
