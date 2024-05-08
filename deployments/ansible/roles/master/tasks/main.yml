@@ -1,6 +1,6 @@
 - name: Install packages
   ansible.builtin.apt:
-    name: git,make,golang,libvirt-dev,make,bash,gcc,git,ca-certificates,qemu-img,guestfs-tools,cloud-utils,genisoimage,openssh,livecd-tools,etcd,cephadm
+    name: git,make,golang,libvirt-dev,make,bash,gcc,git,ca-certificates,guestfs-tools,cloud-utils,genisoimage,openssh,livecd-tools,etcd,cephadm
     state: present
 - name: Schedule Docker cleanup
   ansible.builtin.cron:
