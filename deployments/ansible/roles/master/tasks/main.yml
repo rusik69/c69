@@ -1,3 +1,7 @@
+- name: Add PPA
+  ansible.builtin.apt_repository:
+    repo: ppa:james-page/caracal
+    state: present
 - name: Install packages
   ansible.builtin.apt:
     name: git,make,golang,libvirt-dev,make,bash,gcc,git,ca-certificates,guestfs-tools,cloud-utils,genisoimage,etcd-server,cephadm
