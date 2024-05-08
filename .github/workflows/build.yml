@@ -11,8 +11,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    #- name: ansible
-    #  run: make ansible
+    - name: ansible
+      run: make ansible
     - name: build
       run: make get build
     - name: deploy
