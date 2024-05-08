@@ -1,11 +1,7 @@
 ---
 - name: Install packages
   ansible.builtin.apt:
-    name: qemu-kvm,python3-dev,libxml2-dev,libxslt-dev,gcc,libguestfs-tools,genisoimage,guestfs-tools,ansible,bridge-utils
-    state: present
-- name: Install lxml
-  ansible.builtin.pip:
-    name: lxml
+    name: qemu-kvm,python3-dev,python3-lxml,libxml2-dev,libxslt-dev,gcc,libguestfs-tools,genisoimage,guestfs-tools,ansible,bridge-utils
     state: present
 - name: Start libvirtd
   ansible.builtin.systemd:
