@@ -41,7 +41,7 @@
     system: yes
 - name: bootstrap ceph
   ansible.builtin.shell: |
-    cephadm bootstrap --mon-ip {{ ansible_tailscale0.ipv4.address }}
+    cephadm bootstrap --mon-ip {{ ansible_enp0s25.ipv4.address }}
   args:
     executable: /bin/bash
   become: true
