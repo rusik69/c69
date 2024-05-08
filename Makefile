@@ -5,7 +5,7 @@ SHELL := /bin/bash
 BINARY_NAME=govnocloud
 IMAGE_TAG=$(shell git describe --tags --always)
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
-ORG_PREFIX := master.govno.cloud/loqutus
+ORG_PREFIX := master.govno.cloud:5000/loqutus
 
 export TEST_MASTER_HOST := master.govno.cloud
 export TEST_MASTER_PORT := 6969
