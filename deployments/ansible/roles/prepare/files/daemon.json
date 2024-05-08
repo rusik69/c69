@@ -1,0 +1,3 @@
+{
+    "insecure-registries" : ["master.govno.cloud:5000"]
+}

@@ -1,4 +1,41 @@
 ---
+- name: Remove old Docker versions
+  ansible.builtin.apt:
+    name: docker,docker-client,docker-client-latest,docker-common,docker-latest,docker-latest-logrotate,docker-logrotate,docker-engine
+    state: absent
+- name: Add Docker GPG apt Key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+- name: Add Docker Repository
+  ansible.builtin.apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu noble stable
+    state: present
+- name: Install Docker
+  ansible.builtin.apt:
+    name: docker-ce,docker-ce-cli,containerd.io,docker-compose-plugin,docker-compose
+    state: present
+- name: Add rusik to docker group
+  ansible.builtin.user:
+    name: rusik
+    groups: docker
+    append: yes
+- name: copy docker daemon.json
+  ansible.builtin.copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    mode: 0644
+  register: docker_daemon_json
+- name: restart docker
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+  when: docker_daemon_json.changed
+- name: Start Docker
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: yes
 - name: deploy docker registry
   ansible.builtin.docker_container:
     name: registry
