@@ -1,0 +1,5 @@
+---
+- name: Run prepare role on master
+  hosts: masters
+  roles:
+    - prepare

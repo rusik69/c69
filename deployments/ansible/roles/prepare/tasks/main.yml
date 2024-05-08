@@ -1,0 +1,10 @@
+---
+- name: deploy docker registry
+  ansible.builtin.docker_container:
+    name: registry
+    image: registry:2
+    ports:
+      - "5000:5000"
+    volumes:
+      - /var/lib/registry:/var/lib/registry
+    restart_policy: always

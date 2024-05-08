@@ -13,6 +13,8 @@ jobs:
       uses: actions/checkout@v4
     - name: apt
       run: sudo apt update ; sudo apt install -y make golang ansible libvirt-dev build-essential || true
+    - name: prepare
+      run: make prepare
     - name: build
       run: make get build
     - name: deploy

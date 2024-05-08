@@ -5,7 +5,7 @@ SHELL := /bin/bash
 BINARY_NAME=govnocloud
 IMAGE_TAG=$(shell git describe --tags --always)
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
-ORG_PREFIX := loqutus
+ORG_PREFIX := master.govno.cloud/loqutus
 
 export TEST_MASTER_HOST := master.govno.cloud
 export TEST_MASTER_PORT := 6969
@@ -21,6 +21,8 @@ tidy:
 get:
 	go get -v ./...
 
+prepare:
+	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/prepare.yml
 ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
