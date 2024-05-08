@@ -5,7 +5,7 @@ Description=govnocloud master
 Restart=always
 ExecStart=/usr/local/bin/govnocloud-master
 Environment="MASTER_ETCD_HOST=localhost"
-Environment="MASTER_LISTEN_HOST={{ ansible_tailscale0.ipv4.address }}"
+Environment="MASTER_LISTEN_HOST={{ ansible_enp0s25.ipv4.address }}"
 
 [Install]
 WantedBy=default.target
