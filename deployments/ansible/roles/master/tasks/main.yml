@@ -33,17 +33,6 @@
     src: cleanup.sh
     dest: /usr/local/bin/cleanup.sh
     mode: 0755
-- name: add ceph user
-  ansible.builtin.user:
-    name: ceph
-    state: present
-    system: yes
 - name: bootstrap ceph
   ansible.builtin.shell: |
     cephadm bootstrap --mon-ip {{ ansible_enp0s25.ipv4.address }}
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: ceph
-  become_method: sudo
-  register: ceph_bootstrap
