@@ -13,7 +13,7 @@ export TEST_NODE_NAME := node0
 export TEST_NODE_HOST := node0.govno.cloud
 export TEST_NODE_PORT := 6969
 export TEST_NODES := node0.govno.cloud:6969,node1.govno.cloud:6969
-export DEPLOY_NODES := node0.govno.cloud
+export DEPLOY_NODES := node0.govno.cloud,node1.govno.cloud
 
 tidy:
 	go mod tidy
