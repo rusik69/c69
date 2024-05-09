@@ -26,3 +26,4 @@ front/node_modules
 qodana.yaml
 
 llm/venv/*
+scripts/power/venv/*
