@@ -62,6 +62,7 @@ deploy:
 logs:
 	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`
 	ssh node0.govno.cloud "get_logs.sh"
+	ssh node1.govno.cloud "get_logs.sh"
 
 remotetest:
 	rsync -avz . master.govno.cloud:~/govnocloud

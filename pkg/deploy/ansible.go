@@ -50,7 +50,7 @@ func GenerateAnsibleConfig(nodes, osds []string, master, invFile string) error {
 			return err
 		}
 	}
-	_, err = file.WriteString("[master]\n")
+	_, err = file.WriteString("[masters]\n")
 	if err != nil {
 		return err
 	}
