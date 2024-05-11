@@ -12,7 +12,7 @@ jobs:
             - name: checkout code
               uses: actions/checkout@v4
             - name: apt
-              run: sudo apt update ; sudo apt install -y make golang ansible libvirt-dev build-essential || true
+              run: sudo apt update ; sudo apt install -y make golang ansible libvirt-dev build-essential git || true
             - name: build
               run: make get build
             - name: bootstrap ansible

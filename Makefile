@@ -38,6 +38,8 @@ build:
 	GOARCH=arm64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-master-linux-arm64 cmd/master/main.go
 	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-node-linux-amd64 cmd/node/main.go
 	chmod +x bin/*
+
+builddocker:
 	docker build -t ${ORG_PREFIX}/${BINARY_NAME}-front:${IMAGE_TAG} -f build/Dockerfile-front .
 	docker tag ${ORG_PREFIX}/${BINARY_NAME}-front:${IMAGE_TAG} ${ORG_PREFIX}/${BINARY_NAME}-front:latest
 	docker push ${ORG_PREFIX}/${BINARY_NAME}-front:${IMAGE_TAG}
@@ -50,7 +52,6 @@ build:
 	docker tag ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:${IMAGE_TAG} ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:latest
 	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:${IMAGE_TAG}
 	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:latest
-
 
 buildclient:
 	GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-darwin-arm64 cmd/client/main.go
