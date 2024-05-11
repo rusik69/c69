@@ -1,0 +1,20 @@
+on:
+    push:
+        branches:
+            - main
+        tags-ignore:
+            - '*'
+name: bootstrap
+jobs:
+    bootstrap:
+        runs-on: bootstrapper
+        steps:
+            - name: checkout code
+              uses: actions/checkout@v4
+            - name: apt
+              run: sudo apt update ; sudo apt install -y make golang ansible libvirt-dev build-essential || true
+            - name: build
+              run: make get build
+            - name: bootstrap ansible
+              run: ansible-playbook -i localhost, deployments/ansible/bootstrap.yml
+            
