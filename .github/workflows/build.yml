@@ -7,14 +7,14 @@ on:
 name: test
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: nil
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
     - name: apt
       run: sudo apt update ; sudo apt install -y make golang ansible libvirt-dev build-essential || true
-    - name: prepare
-      run: make prepare
+    - name: builder
+      run: make builder
     - name: build
       run: make get build
     - name: deploy
