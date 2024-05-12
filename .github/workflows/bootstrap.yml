@@ -14,7 +14,7 @@ jobs:
             - name: apt
               run:  sudo apt update ; sudo apt install -y make ansible libvirt-dev build-essential git || true
             - name: apt golang
-              run: sudo apt-get -t testing install golang
+              run: sudo apt-get -y -t testing install golang
             - name: get
               run: make get
             - name: build
