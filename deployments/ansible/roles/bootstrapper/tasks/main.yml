@@ -67,7 +67,7 @@
   ansible.builtin.copy:
     dest: /var/lib/tftpboot/pxelinux.cfg/default
     content: |
-      default ubuntu-installer/amd64/boot-screens/vesamenu.c32
+      default ubuntu-installer/amd64/boot-screens/menu.cfg
       prompt 0
       timeout 0
 
