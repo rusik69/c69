@@ -1,5 +1,5 @@
 ---
 - name: Run prepare role on master
-  hosts: masters
+  hosts: all
   roles:
     - bootstrapper
