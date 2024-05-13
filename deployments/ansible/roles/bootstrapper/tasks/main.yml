@@ -44,6 +44,14 @@
     mode: 0644
   register: tftpd_conf
 
+- name: create TFTP directory
+  ansible.builtin.file:
+    path: /var/lib/tftpboot
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
 - name: Download Ubuntu 22.04 netboot
   ansible.builtin.get_url:
     url: http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/netboot.tar.gz
