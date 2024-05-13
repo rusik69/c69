@@ -26,6 +26,15 @@
     mode: 0644
   register: dhcpd_conf
 
+- name: copy isc-dhcp-server
+  ansible.builtin.copy:
+    src: isc-dhcp-server
+    dest: /etc/default/isc-dhcp-server
+    owner: root
+    group: root
+    mode: 0644
+  register: isc_dhcp_server
+
 - name: Configure TFTP server
   ansible.builtin.copy:
     src: tftpd-hpa
@@ -43,7 +52,7 @@
   loop:
     - isc-dhcp-server
     - tftpd-hpa
-  when: dhcpd_conf.changed or tftpd_conf.changed
+  when: dhcpd_conf.changed or tftpd_conf.changed or isc_dhcp_server.changed
 
 - name: Download Ubuntu 22.04 netboot
   ansible.builtin.get_url:
