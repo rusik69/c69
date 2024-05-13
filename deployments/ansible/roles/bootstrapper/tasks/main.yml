@@ -44,16 +44,6 @@
     mode: 0644
   register: tftpd_conf
 
-- name: Restart DHCP and TFTP servers
-  ansible.builtin.systemd:
-    name: "{{ item }}"
-    state: restarted
-    enabled: yes
-  loop:
-    - isc-dhcp-server
-    - tftpd-hpa
-  when: dhcpd_conf.changed or tftpd_conf.changed or isc_dhcp_server.changed
-
 - name: Download Ubuntu 22.04 netboot
   ansible.builtin.get_url:
     url: http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/netboot.tar.gz
@@ -79,3 +69,13 @@
       menu label ^Install Ubuntu 22.04
       kernel ubuntu-installer/amd64/linux
       append vga=788 initrd=ubuntu-installer/amd64/initrd.gz --- quiet
+
+- name: Restart DHCP and TFTP servers
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  loop:
+    - isc-dhcp-server
+    - tftpd-hpa
+  when: dhcpd_conf.changed or tftpd_conf.changed or isc_dhcp_server.changed
