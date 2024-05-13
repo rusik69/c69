@@ -16,4 +16,4 @@ jobs:
             - name: bootstrap ansible
               run:  ansible-playbook -b -i localhost, deployments/ansible/bootstrapper.yml
             - name: run wol.sh
-              run:  bash deployments/wol.sh
+              run:  wol.sh

@@ -1,0 +1,4 @@
+TFTP_USERNAME="tftp"
+TFTP_DIRECTORY="/var/lib/tftpboot"
+TFTP_ADDRESS="10.0.0.1:69"
+TFTP_OPTIONS="--secure"

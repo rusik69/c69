@@ -3,3 +3,70 @@
   ansible.builtin.apt:
     name: wakeonlan
     state: present
+
+- name: copy wol.sh
+  ansible.builtin.copy:
+    src: wol.sh
+    dest: /usr/local/bin/wol.sh
+    mode: 0755
+
+- name: Install DHCP and TFTP servers
+  ansible.builtin.apt:
+    name:
+      - isc-dhcp-server
+      - tftpd-hpa
+    state: present
+
+- name: Configure DHCP server
+  ansible.builtin.copy:
+    src: dhcpd.conf
+    dest: /etc/dhcp/dhcpd.conf
+    owner: root
+    group: root
+    mode: 0644
+  register: dhcpd_conf
+
+- name: Configure TFTP server
+  ansible.builtin.copy:
+    src: tftpd-hpa
+    dest: /etc/default/tftpd-hpa
+    owner: root
+    group: root
+    mode: 0644
+  register: tftpd_conf
+
+- name: Restart DHCP and TFTP servers
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  loop:
+    - isc-dhcp-server
+    - tftpd-hpa
+  when: dhcpd_conf.changed or tftpd_conf.changed
+
+- name: Download Ubuntu 22.04 netboot
+  ansible.builtin.get_url:
+    url: http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/netboot.tar.gz
+    dest: /tmp/netboot.tar.gz
+
+- name: Extract Ubuntu 22.04 netboot to TFTP directory
+  ansible.builtin.unarchive:
+    src: /tmp/netboot.tar.gz
+    dest: /var/lib/tftpboot/
+    remote_src: yes
+
+- name: Create PXE menu configuration file
+  ansible.builtin.copy:
+    dest: /var/lib/tftpboot/pxelinux.cfg/default
+    content: |
+      default ubuntu-installer/amd64/boot-screens/vesamenu.c32
+      prompt 0
+      timeout 0
+
+      menu title Ubuntu 22.04 PXE Menu
+
+      label ubuntu-22.04
+      menu label ^Install Ubuntu 22.04
+      kernel ubuntu-installer/amd64/linux
+      append vga=788 initrd=ubuntu-installer/amd64/initrd.gz --- quiet
