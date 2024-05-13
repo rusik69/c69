@@ -12,7 +12,7 @@ jobs:
             - name: checkout code
               uses: actions/checkout@v4
             - name: apt
-              run:  sudo apt update ; sudo apt install -y make ansible
+              run:  sudo apt update ; sudo apt install -y make ansible || true
             - name: bootstrap ansible
               run:  ansible-playbook -i localhost, deployments/ansible/bootstrapper.yml
             - name: run wol.sh

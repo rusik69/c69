@@ -3,3 +3,4 @@
   ansible.builtin.apt:
     name: wakeonlan
     state: present
+  become: true
