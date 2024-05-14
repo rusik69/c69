@@ -54,7 +54,6 @@
     fstype: iso9660
     opts: loop
     state: mounted
-  become: true
 
 - name: Copy kernel and initrd
   ansible.builtin.copy:
@@ -63,19 +62,16 @@
   loop:
     - vmlinuz
     - initrd
-  become: true
 
 - name: Install syslinux-common
   ansible.builtin.apt:
     name: syslinux-common
     state: present
-  become: true
 
 - name: Copy ldlinux.c32
   ansible.builtin.copy:
     src: /usr/lib/syslinux/modules/bios/ldlinux.c32
     dest: /srv/tftp/ldlinux.c32
-  become: true
 
 - name: ensure /srv/tftp/pxelinux.cfg exists
   ansible.builtin.file:
@@ -91,13 +87,17 @@
         KERNEL vmlinuz
         INITRD initrd
         APPEND root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso
-  become: true
 
 - name: Install Nginx
   ansible.builtin.apt:
     name: nginx
     state: present
-  become: true
+
+- name: Remove /etc/nginx/sites-enabled/default
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  register: nginx_default
 
 - name: Configure Nginx to serve /srv/tftp
   ansible.builtin.copy:
@@ -111,17 +111,16 @@
           autoindex on;
         }
       }
-  become: true
+  register: nginx_config
 
 - name: Enable Nginx configuration
   ansible.builtin.file:
     src: /etc/nginx/sites-available/tftp
     dest: /etc/nginx/sites-enabled/tftp
     state: link
-  become: true
 
 - name: Restart Nginx
   ansible.builtin.systemd:
     name: nginx
     state: restarted
-  become: true
+  when: nginx_config.changed or nginx_default.changed
