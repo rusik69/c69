@@ -86,7 +86,7 @@
       LABEL install
         KERNEL vmlinuz
         INITRD initrd
-        APPEND root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso
+        APPEND root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall ds=nocloud-net;s=http://10.0.0.1/cloud-init.cfg
 
 - name: Install Nginx
   ansible.builtin.apt:
@@ -124,3 +124,30 @@
     name: nginx
     state: restarted
   when: nginx_config.changed or nginx_default.changed
+
+- name: Enable IP forwarding
+  ansible.builtin.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    state: present
+    reload: yes
+
+- name: Add NAT from eth0 to wlan0
+  ansible.builtin.iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: wlan0
+    source: 10.0.0.0/24
+    jump: MASQUERADE
+
+- name: Create cloud-init configuration file for autoinstall
+  ansible.builtin.copy:
+    dest: /srv/tftp/cloud-init.cfg
+    content: |
+      #cloud-config
+      autoinstall:
+        version: 1
+        identity:
+          hostname: ubuntu-server
+          password: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0
+          username: ubuntu
