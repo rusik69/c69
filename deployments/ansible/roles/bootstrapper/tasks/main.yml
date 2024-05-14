@@ -37,10 +37,10 @@
     path: /srv/tftp
     state: directory
 
-- name: Download pxelinux.0
+- name: Download grubx64.efi
   ansible.builtin.get_url:
-    url: http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/pxelinux.0
-    dest: /srv/tftp/pxelinux.0
+    url: http://archive.ubuntu.com/ubuntu/dists/jammy/main/uefi/grub2-amd64/current/grubx64.efi
+    dest: /srv/tftp/grubx64.efi
 
 - name: Download Ubuntu 20.04.1 Live Server ISO
   ansible.builtin.get_url:
