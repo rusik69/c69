@@ -41,13 +41,13 @@
 
 - name: Download Ubuntu 20.04.1 Live Server ISO
   ansible.builtin.get_url:
-    url: http://releases.ubuntu.com/focal/ubuntu-20.04.1-live-server-amd64.iso
-    dest: /srv/tftp/ubuntu-20.04.1-live-server-amd64.iso
+    url: https://releases.ubuntu.com/focal/ubuntu-20.04.6-live-server-amd64.iso
+    dest: /srv/tftp/ubuntu-20.04.6-live-server-amd64.iso
 
 - name: Mount Ubuntu 20.04.1 Live Server ISO
   ansible.builtin.mount:
     path: /mnt
-    src: /srv/tftp/ubuntu-20.04.1-live-server-amd64.iso
+    src: /srv/tftp/ubuntu-20.04.6-live-server-amd64.iso
     fstype: iso9660
     opts: loop
     state: mounted
@@ -82,5 +82,5 @@
       LABEL install
         KERNEL vmlinuz
         INITRD initrd
-        APPEND root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://releases.ubuntu.com/focal/ubuntu-20.04.1-live-server-amd64.iso
+        APPEND root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://releases.ubuntu.com/focal/ubuntu-20.04.6-live-server-amd64.iso
   become: true
