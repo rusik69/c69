@@ -34,6 +34,11 @@
     state: restarted
   become: true
 
+- name: ensure /srv/tftp exists
+  ansible.builtin.file:
+    path: /srv/tftp
+    state: directory
+
 - name: Download pxelinux.0
   ansible.builtin.get_url:
     url: http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/pxelinux.0
@@ -73,6 +78,11 @@
     src: /usr/lib/syslinux/modules/bios/ldlinux.c32
     dest: /srv/tftp/ldlinux.c32
   become: true
+
+- name: ensure /srv/tftp/pxelinux.cfg exists
+  ansible.builtin.file:
+    path: /srv/tftp/pxelinux.cfg
+    state: directory
 
 - name: Create pxelinux.cfg/default
   ansible.builtin.copy:
