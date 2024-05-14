@@ -79,6 +79,11 @@
     dest: /srv/tftp/ldlinux.c32
   become: true
 
+- name: ensure /srv/tftp/pxelinux.cfg exists
+  ansible.builtin.file:
+    path: /srv/tftp/pxelinux.cfg
+    state: directory
+
 - name: Create pxelinux.cfg/default
   ansible.builtin.copy:
     dest: /srv/tftp/pxelinux.cfg/default
