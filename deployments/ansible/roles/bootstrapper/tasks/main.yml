@@ -90,5 +90,38 @@
       LABEL install
         KERNEL vmlinuz
         INITRD initrd
-        APPEND root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=https://releases.ubuntu.com/22.04/ubuntu-22.04.4-live-server-amd64.iso
+        APPEND root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso
+  become: true
+
+- name: Install Nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+  become: true
+
+- name: Configure Nginx to serve /srv/tftp
+  ansible.builtin.copy:
+    dest: /etc/nginx/sites-available/tftp
+    content: |
+      server {
+        listen 80;
+        server_name _;
+        location / {
+          root /srv/tftp;
+          autoindex on;
+        }
+      }
+  become: true
+
+- name: Enable Nginx configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/tftp
+    dest: /etc/nginx/sites-enabled/tftp
+    state: link
+  become: true
+
+- name: Restart Nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
   become: true
