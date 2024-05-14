@@ -156,6 +156,3 @@
             name: direct
             match:
               ssd: yes
-        late-commands:
-          - echo 'set first_boot_device=hdd' > /target/etc/default/grub.d/50-cloudimg-settings.cfg
-          - 'chroot /target update-grub'
