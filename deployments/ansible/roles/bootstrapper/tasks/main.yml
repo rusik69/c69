@@ -14,7 +14,6 @@
   ansible.builtin.apt:
     name: dnsmasq
     state: present
-  become: true
 
 - name: Configure dnsmasq
   ansible.builtin.copy:
@@ -26,7 +25,6 @@
       dhcp-boot=pxelinux.0
       enable-tftp
       tftp-root=/srv/tftp
-  become: true
 
 - name: Restart dnsmasq
   ansible.builtin.systemd:
