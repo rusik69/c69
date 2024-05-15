@@ -25,7 +25,7 @@
       dhcp-host=28:d2:44:ed:85:f9,10.0.0.2
       dhcp-host=f0:de:f1:67:8c:92,10.0.0.3
       dhcp-host=3c:97:0e:71:77:ab,10.0.0.4
-      dhcp-boot=pxelinux.0
+      dhcp-boot=grubnetx64.efi.signed
       enable-tftp
       tftp-root=/srv/tftp
 
@@ -40,10 +40,10 @@
     path: /srv/tftp
     state: directory
 
-- name: Download pxelinux.0
+- name: Download EFI boot files
   ansible.builtin.get_url:
-    url: http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/pxelinux.0
-    dest: /srv/tftp/pxelinux.0
+    url: http://archive.ubuntu.com/ubuntu/dists/focal/main/uefi/grub2-amd64/current/grubnetx64.efi.signed
+    dest: /srv/tftp/grubnetx64.efi.signed
 
 - name: Download Ubuntu 20.04.1 Live Server ISO
   ansible.builtin.get_url:
@@ -66,30 +66,18 @@
     - vmlinuz
     - initrd
 
-- name: Install syslinux-common
-  ansible.builtin.apt:
-    name: syslinux-common
-    state: present
-
-- name: Copy ldlinux.c32
+- name: Create grub configuration file
   ansible.builtin.copy:
-    src: /usr/lib/syslinux/modules/bios/ldlinux.c32
-    dest: /srv/tftp/ldlinux.c32
-
-- name: ensure /srv/tftp/pxelinux.cfg exists
-  ansible.builtin.file:
-    path: /srv/tftp/pxelinux.cfg
-    state: directory
-
-- name: Create pxelinux.cfg/default
-  ansible.builtin.copy:
-    dest: /srv/tftp/pxelinux.cfg/default
+    dest: /srv/tftp/grub.cfg
     content: |
-      DEFAULT install
-      LABEL install
-        KERNEL vmlinuz
-        INITRD initrd
-        APPEND root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall ds=nocloud-net;s=http://10.0.0.1/ cloud-config-url=http://10.0.0.1/cloud-init.cfg
+      set default="0"
+      set timeout=10
+
+      menuentry "Install Ubuntu" {
+        set gfxpayload=keep
+        linux /vmlinuz root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall ds=nocloud-net;s=http://10.0.0.1/cloud-init.cfg
+        initrd /initrd
+      }
 
 - name: Install Nginx
   ansible.builtin.apt:
