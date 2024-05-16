@@ -66,16 +66,26 @@
     - vmlinuz
     - initrd
 
+- name: ensure /srv/tftp/grub directory exists
+  ansible.builtin.file:
+    path: /srv/tftp/grub
+    state: directory
+
+- name: ensure /srv/tftp/jammy directory exists
+  ansible.builtin.file:
+    path: /srv/tftp/jammy
+    state: directory
+
 - name: Create grub configuration file
   ansible.builtin.copy:
-    dest: /srv/tftp/grub.cfg
+    dest: /srv/tftp/grub/grub.cfg
     content: |
       set default="0"
       set timeout=0
 
       menuentry "Install Ubuntu" {
         set gfxpayload=keep
-        linux /vmlinuz root=/dev/ram0 ramdisk_size=1500000 ip=dhcp url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall ds=nocloud-net;s=http://10.0.0.1/cloud-init.cfg
+        linux /vmlinuz root=/dev/ram0 ramdisk_size=1500000 ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
         initrd /initrd
       }
 
@@ -133,12 +143,17 @@
 
 - name: Create cloud-init configuration file for autoinstall
   ansible.builtin.copy:
-    dest: /srv/tftp/cloud-init.cfg
+    dest: /srv/tftp/jammy/user-data
     content: |
       #cloud-config
       autoinstall:
         version: 1
         identity:
-          hostname: ubuntu-server
+          hostname: govnocloud
           password: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0
           username: ubuntu
+
+- name: Create meta-data file for cloud-init
+  ansible.builtin.file:
+    dest: /srv/tftp/jammy/meta-data
+    state: touch
