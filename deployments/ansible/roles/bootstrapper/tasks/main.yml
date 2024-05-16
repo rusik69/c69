@@ -42,7 +42,7 @@
 
 - name: Download EFI boot files
   ansible.builtin.get_url:
-    url: http://archive.ubuntu.com/ubuntu/dists/focal/main/uefi/grub2-amd64/current/grubnetx64.efi.signed
+    url: http://archive.ubuntu.com/ubuntu/dists/jammy/main/uefi/grub2-amd64/current/grubnetx64.efi.signed
     dest: /srv/tftp/grubnetx64.efi.signed
 
 - name: Download Ubuntu 20.04.1 Live Server ISO
@@ -71,7 +71,7 @@
     dest: /srv/tftp/grub.cfg
     content: |
       set default="0"
-      set timeout=10
+      set timeout=0
 
       menuentry "Install Ubuntu" {
         set gfxpayload=keep
