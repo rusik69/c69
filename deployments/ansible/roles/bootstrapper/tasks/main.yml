@@ -101,20 +101,20 @@
         initrd /initrd
       }
 
-- name: Create PXE menu configuration file
+- name: Create pxelinux.cfg directory
+  ansible.builtin.file:
+    path: /srv/tftp/pxelinux.cfg
+    state: directory
+  become: true
+
+- name: Create PXELINUX default configuration file
   ansible.builtin.copy:
-    dest: /var/lib/tftpboot/pxelinux.cfg/default
+    dest: /srv/tftp/pxelinux.cfg/default
     content: |
-      default ubuntu-installer/amd64/boot-screens/vesamenu.c32
-      prompt 0
-      timeout 0
-
-      menu title Ubuntu 22.04 PXE Menu
-
-      label ubuntu-22.04
-      menu label ^Install Ubuntu 22.04
-      kernel /vmlinuz
-      append root=/dev/ram0 ramdisk_size=1500000 ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
+      DEFAULT linux
+      LABEL linux
+      KERNEL vmlinuz
+      APPEND initrd=initrd.img root=/dev/ram0 ramdisk_size=1500000 ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
 
 - name: Install Nginx
   ansible.builtin.apt:
