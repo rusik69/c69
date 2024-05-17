@@ -8,6 +8,7 @@ name: bootstrap
 jobs:
     bootstrap:
         runs-on: bootstrapper
+        timeout-minutes: 10
         steps:
             - name: checkout code
               uses: actions/checkout@v4

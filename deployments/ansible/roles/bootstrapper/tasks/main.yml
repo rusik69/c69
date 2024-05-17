@@ -123,7 +123,7 @@
       DEFAULT linux
       LABEL linux
       KERNEL vmlinuz
-      APPEND initrd=initrd.img root=/dev/ram0 ramdisk_size=1500000 ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
+      APPEND initrd=initrd root=/dev/ram0 ramdisk_size=1500000 ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
 
 - name: Install Nginx
   ansible.builtin.apt:
