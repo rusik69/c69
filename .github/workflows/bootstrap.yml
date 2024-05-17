@@ -32,3 +32,5 @@ jobs:
                   done
                   echo "Host $ip is up."
                 done
+            - name: run ansible
+              run: make ansible

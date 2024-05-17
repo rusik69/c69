@@ -7,7 +7,7 @@ on:
 name: test
 jobs:
   test:
-    runs-on: nil
+    runs-on: master
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -113,4 +113,7 @@ jobs:
         asset_path: ./bin/govnocloud-deploy-darwin-arm64
         asset_name: govnocloud-deploy-darwin-arm64
         asset_content_type: application/octet-stream
+    - name: suspend
+      run: sudo systemctl suspend
+      if: always()
     timeout-minutes: 60

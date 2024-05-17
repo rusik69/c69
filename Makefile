@@ -21,10 +21,6 @@ tidy:
 get:
 	go get -v ./...
 
-builder:
-	apt update && apt install -y ansible || true
-	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/prepare.yml
-
 ansible:
 	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
