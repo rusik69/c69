@@ -105,7 +105,16 @@
   ansible.builtin.file:
     path: /srv/tftp/pxelinux.cfg
     state: directory
-  become: true
+
+- name: Install syslinux
+  ansible.builtin.apt:
+    name: syslinux
+    state: present
+
+- name: Copy ldlinux.c32 to TFTP root directory
+  ansible.builtin.copy:
+    src: /usr/lib/syslinux/ldlinux.c32
+    dest: /srv/tftp/ldlinux.c32
 
 - name: Create PXELINUX default configuration file
   ansible.builtin.copy:
