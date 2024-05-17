@@ -108,7 +108,7 @@
 
 - name: Install syslinux
   ansible.builtin.apt:
-    name: syslinux
+    name: syslinux-common
     state: present
 
 - name: Copy ldlinux.c32 to TFTP root directory
