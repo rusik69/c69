@@ -25,7 +25,9 @@
       dhcp-host=28:d2:44:ed:85:f9,10.0.0.2
       dhcp-host=f0:de:f1:67:8c:92,10.0.0.3
       dhcp-host=3c:97:0e:71:77:ab,10.0.0.4
-      dhcp-boot=grubnetx64.efi.signed
+      dhcp-match=set:efi-x86_64,option:client-arch,7
+      dhcp-boot=tag:efi-x86_64,grubnetx64.efi.signed
+      dhcp-boot=pxelinux.0
       enable-tftp
       tftp-root=/srv/tftp
 
@@ -40,17 +42,27 @@
     path: /srv/tftp
     state: directory
 
+- name: ensure /srv/tftp/pxelinux.cfg dir exists
+  ansible.builtin.file:
+    path: /srv/tftp/pxelinux.cfg
+    state: directory
+
+- name: Download pxelinux.0
+  ansible.builtin.get_url:
+    url: http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/pxelinux.0
+    dest: /srv/tftp/pxelinux.0
+
 - name: Download EFI boot files
   ansible.builtin.get_url:
     url: http://archive.ubuntu.com/ubuntu/dists/jammy/main/uefi/grub2-amd64/current/grubnetx64.efi.signed
     dest: /srv/tftp/grubnetx64.efi.signed
 
-- name: Download Ubuntu 20.04.1 Live Server ISO
+- name: Download Ubuntu 22.04.4 Live Server ISO
   ansible.builtin.get_url:
     url: https://releases.ubuntu.com/22.04/ubuntu-22.04.4-live-server-amd64.iso
     dest: /srv/tftp/ubuntu-22.04.4-live-server-amd64.iso
 
-- name: Mount Ubuntu 20.04.1 Live Server ISO
+- name: Mount Ubuntu 22.04.4 Live Server ISO
   ansible.builtin.mount:
     path: /mnt
     src: /srv/tftp/ubuntu-22.04.4-live-server-amd64.iso
@@ -88,6 +100,21 @@
         linux /vmlinuz root=/dev/ram0 ramdisk_size=1500000 ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
         initrd /initrd
       }
+
+- name: Create PXE menu configuration file
+  ansible.builtin.copy:
+    dest: /var/lib/tftpboot/pxelinux.cfg/default
+    content: |
+      default ubuntu-installer/amd64/boot-screens/vesamenu.c32
+      prompt 0
+      timeout 0
+
+      menu title Ubuntu 22.04 PXE Menu
+
+      label ubuntu-22.04
+      menu label ^Install Ubuntu 22.04
+      kernel /vmlinuz
+      append root=/dev/ram0 ramdisk_size=1500000 ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
 
 - name: Install Nginx
   ansible.builtin.apt:
