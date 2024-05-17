@@ -113,7 +113,7 @@
 
 - name: Copy ldlinux.c32 to TFTP root directory
   ansible.builtin.copy:
-    src: /usr/lib/syslinux/ldlinux.c32
+    src: /usr/lib/syslinux/modules/bios/ldlinux.c32
     dest: /srv/tftp/ldlinux.c32
 
 - name: Create PXELINUX default configuration file
