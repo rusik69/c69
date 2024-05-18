@@ -22,7 +22,7 @@ get:
 	go get -v ./...
 
 ansible:
-	ansible-playbook -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
+	ansible-playbook -u ubuntu -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
 build:
 	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-deploy-linux-arm cmd/deploy/main.go
