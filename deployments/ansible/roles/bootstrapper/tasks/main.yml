@@ -57,10 +57,10 @@
     url: http://archive.ubuntu.com/ubuntu/dists/jammy/main/uefi/grub2-amd64/current/grubnetx64.efi.signed
     dest: /srv/tftp/grubnetx64.efi.signed
 
-- name: Download Ubuntu 22.04.4 Live Server ISO
+- name: Download Ubuntu 24.04 Live Server ISO
   ansible.builtin.get_url:
     url: https://releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso
-    dest: /srv/tftp/ubuntu-22.04.4-live-server-amd64.iso
+    dest: /srv/tftp/ubuntu-24.04-live-server-amd64.iso
 
 - name: Mount Ubuntu 24.04 Live Server ISO
   ansible.builtin.mount:
