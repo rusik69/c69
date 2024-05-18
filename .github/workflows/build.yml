@@ -75,6 +75,18 @@ jobs:
         asset_path: ./bin/govnocloud-deploy-linux-amd64
         asset_name: govnocloud-deploy-linux-amd64
         asset_content_type: application/octet-stream
+    - name: Suspend node0
+      uses: appleboy/ssh-action@master
+      with:
+        host: node0.govno.cloud
+        username: ubuntu
+        script: sudo systemctl suspend
+    - name: Suspend node1
+      uses: appleboy/ssh-action@master
+      with:
+        host: node1.govno.cloud
+        username: ubuntu
+        script: sudo systemctl suspend
     - name: suspend
       run: sudo systemctl suspend
       if: always()
