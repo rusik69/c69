@@ -59,13 +59,13 @@
 
 - name: Download Ubuntu 22.04.4 Live Server ISO
   ansible.builtin.get_url:
-    url: https://releases.ubuntu.com/22.04/ubuntu-22.04.4-live-server-amd64.iso
+    url: https://releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso
     dest: /srv/tftp/ubuntu-22.04.4-live-server-amd64.iso
 
-- name: Mount Ubuntu 22.04.4 Live Server ISO
+- name: Mount Ubuntu 24.04 Live Server ISO
   ansible.builtin.mount:
     path: /mnt
-    src: /srv/tftp/ubuntu-22.04.4-live-server-amd64.iso
+    src: /srv/tftp/ubuntu-24.04-live-server-amd64.iso
     fstype: iso9660
     opts: loop
     state: mounted
@@ -97,7 +97,7 @@
 
       menuentry "Install Ubuntu" {
         set gfxpayload=keep
-        linux /vmlinuz ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
+        linux /vmlinuz ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-24.04-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
         initrd /initrd
       }
 
@@ -124,7 +124,7 @@
       LABEL linux
       KERNEL vmlinuz
       INITRD initrd
-      APPEND ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-22.04.4-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
+      APPEND ip=dhcp cloud-config-url=/dev/null url=http://10.0.0.1/ubuntu-24.04-live-server-amd64.iso autoinstall "ds=nocloud-net;s=http://10.0.0.1/jammy/"
 
 - name: Install Nginx
   ansible.builtin.apt:
