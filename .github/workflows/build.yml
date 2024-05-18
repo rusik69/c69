@@ -50,24 +50,6 @@ jobs:
         asset_path: ./bin/govnocloud-master-linux-amd64
         asset_name: govnocloud-master-linux-amd64
         asset_content_type: application/octet-stream
-    - name: Upload linux master arm64 binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./bin/govnocloud-master-linux-arm64
-        asset_name: govnocloud-master-linux-arm64
-        asset_content_type: application/octet-stream
-    - name: upload darwin arm64 client
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./bin/govnocloud-client-darwin-arm64
-        asset_name: govnocloud-client-darwin-arm64
-        asset_content_type: application/octet-stream
     - name: upload linux amd64 client
       uses: actions/upload-release-asset@v1
       env:
@@ -76,15 +58,6 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./bin/govnocloud-client-linux-amd64
         asset_name: govnocloud-client-linux-amd64
-        asset_content_type: application/octet-stream
-    - name: upload linux arm64 client
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./bin/govnocloud-client-linux-arm64
-        asset_name: govnocloud-client-linux-arm64
         asset_content_type: application/octet-stream
     - name: upload linux amd64 node
       uses: actions/upload-release-asset@v1
@@ -103,15 +76,6 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./bin/govnocloud-deploy-linux-amd64
         asset_name: govnocloud-deploy-linux-amd64
-        asset_content_type: application/octet-stream
-    - name: upload darwin arm64 deploy
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./bin/govnocloud-deploy-darwin-arm64
-        asset_name: govnocloud-deploy-darwin-arm64
         asset_content_type: application/octet-stream
     - name: suspend
       run: sudo systemctl suspend
