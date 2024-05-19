@@ -85,13 +85,21 @@ var rootCmd = &cobra.Command{
 			}
 		}
 		logrus.Println("Starting govnocloud on master", master)
+		err = deploy.RunSSHCommand(master, key, user, "chmod +x /usr/local/bin/govnocloud-master")
+		if err != nil {
+			panic(err)
+		}
 		err = deploy.RunSSHCommand(master, key, user, "sudo systemctl start govnocloud-master")
 		if err != nil {
 			panic(err)
 		}
 		for _, node := range nodes {
 			logrus.Println("Starting govnocloud on node", node)
-			err := deploy.RunSSHCommand(node, key, user, "sudo systemctl start govnocloud-node")
+			err := deploy.RunSSHCommand(node, key, user, "chmod +x /usr/local/bin/govnocloud-node")
+			if err != nil {
+				panic(err)
+			}
+			err = deploy.RunSSHCommand(node, key, user, "sudo systemctl start govnocloud-node")
 			if err != nil {
 				panic(err)
 			}

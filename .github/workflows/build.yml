@@ -81,12 +81,14 @@ jobs:
         host: node0.govno.cloud
         username: ubuntu
         script: sudo systemctl suspend
+      if: always()
     - name: Suspend node1
       uses: appleboy/ssh-action@master
       with:
         host: node1.govno.cloud
         username: ubuntu
         script: sudo systemctl suspend
+      if: always()
     - name: suspend
       run: sudo systemctl suspend
       if: always()
