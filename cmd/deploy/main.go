@@ -120,7 +120,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&osdsString, "osds", "", "osds to deploy")
 	rootCmd.PersistentFlags().StringVar(&master, "master", "", "master to deploy")
 	rootCmd.PersistentFlags().StringVar(&ansibleInventoryFile, "inv", "./deployments/ansible/inventories/deploy_hosts", "ansible inventory file")
-	rootCmd.PersistentFlags().StringVar(&key, "key", filepath.Join(currentUserHomeDir, ".ssh/id_ed25519"), "private ssh key path")
+	rootCmd.PersistentFlags().StringVar(&key, "key", filepath.Join(currentUserHomeDir, ".ssh/id_rsa"), "private ssh key path")
 	rootCmd.PersistentFlags().StringVar(&user, "user", "root", "ssh user")
 }
 
