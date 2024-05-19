@@ -46,6 +46,11 @@
     type: bridge-slave
     master: bridge0
 
+- name: activate bridge
+  community.general.nmcli:
+    conn_name: bridge0
+    state: up
+
 - name: Define a new libvirt network
   community.libvirt.virt_net:
     command: define
