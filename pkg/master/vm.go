@@ -72,8 +72,6 @@ func CreateVMHandler(c *gin.Context) {
 		newVM.Flavor = tempVM.Flavor
 		newVM.VNCURL = tempVM.VNCURL
 		newVM.NodeHostname = tempVM.NodeHostname
-		newVM.TailscaleID = createdVM.TailscaleID
-		newVM.TailscaleIP = createdVM.TailscaleIP
 		newVM.KubeConfig = createdVM.KubeConfig
 		created = true
 		usedNode = node
@@ -292,8 +290,6 @@ func ListVMHandler(c *gin.Context) {
 				tempVM.Flavor = vmsMap[vm.Name].Flavor
 				tempVM.Volumes = vmsMap[vm.Name].Volumes
 				tempVM.VNCURL = vmsMap[vm.Name].VNCURL
-				tempVM.TailscaleID = vmsMap[vm.Name].TailscaleID
-				tempVM.TailscaleIP = vmsMap[vm.Name].TailscaleIP
 				res = append(res, tempVM)
 			}
 		}

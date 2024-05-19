@@ -29,6 +29,34 @@
           <path>/var/lib/libvirt/images</path>
         </target>
       </pool>
+
+- name: Create bridge connection
+  community.general.nmcli:
+    conn_name: bridge0
+    ifname: bridge0
+    state: present
+    type: bridge
+    autoconnect: yes
+
+- name: Add 'enp0s25' to the bridge
+  community.general.nmcli:
+    conn_name: bridge-slave-enp0s25
+    ifname: enp0s25
+    state: present
+    type: bridge-slave
+    master: bridge0
+
+- name: Define a new libvirt network
+  community.libvirt.virt_net:
+    command: define
+    name: br0
+    xml: |
+      <network>
+        <name>bridge0</name>
+        <forward mode='bridge'/>
+        <bridge name='bridge0'/>
+      </network>
+
 - name: install govnocloud-node service
   ansible.builtin.template:
     src: govnocloud-node.service.j2
@@ -43,13 +71,6 @@
   ansible.builtin.file:
     path: /etc/govnocloud
     state: directory
-    owner: root
-    group: root
-    mode: 0600
-- name: create tailscale token file
-  ansible.builtin.template:
-    src: tailscale_auth_key.j2
-    dest: /etc/govnocloud/tailscale_auth_key
     owner: root
     group: root
     mode: 0600

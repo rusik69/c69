@@ -8,7 +8,6 @@
           <th>Node</th>
           <th>Status</th>
           <th>IP</th>
-          <th>TailscaleIP</th>
         </tr>
       </thead>
       <tbody>
@@ -18,7 +17,6 @@
           <td>{{ k8.vm.host }}</td>
           <td>{{ k8.vm.state }}</td>
           <td>{{ k8.vm.ip }}</td>
-          <td>{{ k8.vm.tailscaleip }}</td>
           <td> <button @click="startK8S(k8.name)">Start</button> </td>
           <td> <button @click="stopK8S(k8.name)">Stop</button> </td>
           <td> <button @click="terminateK8S(k8.name)">Terminate</button> </td>

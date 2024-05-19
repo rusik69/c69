@@ -20,7 +20,7 @@ SSH key auth should be configured on master on nodes using root user, or another
 
 Ansible should be installed on the host used to deploy govnocloud.
 
-All nodes and masters should be connected using tailscale.
+All nodes and masters should be connected using a network switch.
 
 ## Usage
 

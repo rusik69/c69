@@ -262,7 +262,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 				{
 					Source: &libvirtxml.DomainInterfaceSource{
 						Network: &libvirtxml.DomainInterfaceSourceNetwork{
-							Network: "default",
+							Network: "bridge0",
 						},
 					},
 					Model: &libvirtxml.DomainInterfaceModel{
@@ -316,11 +316,6 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	if err != nil {
 		return types.VM{}, 500, err
 	}
-	tailscaleIP, tailscaleID, err := tailscaleGetDeviceInfo(vm.Name)
-	logrus.Println("Tailscale IP", tailscaleIP, "ID", tailscaleID)
-	if err != nil {
-		return types.VM{}, 500, err
-	}
 	var kubeconfig string
 	if vm.Image == "k8s" {
 		err = applyAnsible(ip, "/etc/govnocloud/ansible/k8s.yml", vm.Name)
@@ -331,7 +326,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 		if err != nil {
 			return types.VM{}, 500, err
 		}
-		kubeconfig = strings.Replace(kubeconfig, "127.0.0.1", vm.TailscaleIP, 1)
+		kubeconfig = strings.Replace(kubeconfig, "127.0.0.1", vm.IP, 1)
 	}
 	vncPort := vmXML.Devices.Graphics[0].VNC.Port
 	vncPortString := fmt.Sprintf("%d", vncPort)
@@ -341,8 +336,6 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 	vm.ID = int(id)
 	vm.VNCURL = vncURL
 	vm.IP = ip
-	vm.TailscaleIP = tailscaleIP
-	vm.TailscaleID = tailscaleID
 	vm.KubeConfig = kubeconfig
 	vm.State = "running"
 	return vm, 200, nil
@@ -375,16 +368,6 @@ func DeleteVM(vm types.VM) error {
 	err = domain.Undefine()
 	if err != nil {
 		return fmt.Errorf("failed to undefine domain: %w", err)
-	}
-	_, tailscaleID, err := tailscaleGetDeviceInfo(vm.Name)
-	if err != nil {
-		return fmt.Errorf("failed to get tailscale device info: %w", err)
-	}
-	vm.TailscaleID = tailscaleID
-	logrus.Println("Removing machine from tailscale", vm.TailscaleID)
-	err = tailscaleRemove(vm.TailscaleID)
-	if err != nil {
-		return fmt.Errorf("failed to remove tailscale device: %w", err)
 	}
 	return nil
 }

@@ -1,8 +1,6 @@
 ---
 - name: apply vm role
   hosts: all
-  vars:
-    tailscale_authkey: "{{ lookup('file', '/etc/govnocloud/tailscale_auth_key') }}"
   roles:
     - vm
   

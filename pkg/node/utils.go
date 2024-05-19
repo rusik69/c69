@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net"
 	"net/http"
@@ -260,62 +259,6 @@ func copyFile(src, dst string) error {
 		return err
 	}
 	return nil
-}
-
-// tailscaleRemove removes the vm from tailscale.
-func tailscaleRemove(deviceID string) error {
-	url := fmt.Sprintf("https://api.tailscale.com/api/v2/device/%s", deviceID)
-	req, _ := http.NewRequest("DELETE", url, nil)
-	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleAccessToken)
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-	bodyBytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	if res.StatusCode != http.StatusOK {
-		return errors.New("Failed to remove device " + deviceID + " " + string(bodyBytes))
-	}
-	return nil
-}
-
-type tailscaleDevice struct {
-	ID        string   `json:"id"`
-	Addresses []string `json:"addresses"`
-	Name      string   `json:"name"`
-}
-
-type tailscaleDevices struct {
-	Devices []tailscaleDevice `json:"devices"`
-}
-
-// tailscaleGetDeviceInfo gets the device ip and id from tailscale.
-func tailscaleGetDeviceInfo(deviceName string) (string, string, error) {
-	url := "https://api.tailscale.com/api/v2/tailnet/-/devices"
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("Authorization", "Bearer "+types.NodeEnvInstance.TailscaleAccessToken)
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return "", "", err
-	}
-	if res.StatusCode != http.StatusOK {
-		return "", "", errors.New("Failed to get devices")
-	}
-	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-	var devices tailscaleDevices
-	json.Unmarshal(body, &devices)
-	logrus.Println("Devices")
-	for _, device := range devices.Devices {
-		deviceHostName := strings.Split(device.Name, ".")[0]
-		if deviceHostName == deviceName {
-			return device.Addresses[0], device.ID, nil
-		}
-	}
-	return "", "", errors.New("Tailscale machine not found")
 }
 
 // HealthResponse represents the JSON response from the /health endpoint

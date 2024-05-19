@@ -6,7 +6,6 @@
           <th>Name</th>
           <th>ID</th>
           <th>IP</th>
-          <th>TailscaleIP</th>
           <th>Node</th>
           <th>State</th>
           <th>Image</th>
@@ -23,7 +22,6 @@
           <td>{{ vm.name }}</td>
           <td>{{ vm.id }}</td>
           <td>{{ vm.ip }}</td>
-          <td>{{ vm.tailscaleip }}</td>
           <td>{{ vm.host }}</td>
           <td>{{ vm.state }}</td>
           <td>{{ vm.image }}</td>

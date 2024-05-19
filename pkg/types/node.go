@@ -48,10 +48,6 @@ type VM struct {
 	Committed bool `json:"committed"`
 	// VNCURL is the VNC url of the virtual machine.
 	VNCURL string `json:"vncurl"`
-	// TailscaleIP is the tailscale IP of the virtual machine.
-	TailscaleIP string `json:"tailscaleip"`
-	// TailscaleID is the tailscale ID of the virtual machine.
-	TailscaleID string `json:"tailscaleid"`
 	// KubeConfig is the kubeconfig of the virtual machine.
 	KubeConfig string `json:"kubeconfig"`
 }
@@ -181,8 +177,6 @@ type NodeEnv struct {
 	LibVirtImageDir      string `json:"libvirt_image_dir"`
 	LibVirtBootDir       string `json:"libvirt_boot_dir"`
 	FilesDir             string `json:"files_dir"`
-	TailscaleAuthKey     string `json:"tailscale_auth_key"`
-	TailscaleAccessToken string `json:"tailscale_access_token"`
 }
 
 // NodeEnvInstance is the singleton instance of NodeEnv.
