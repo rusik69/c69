@@ -36,7 +36,8 @@
     ifname: bridge0
     state: present
     type: bridge
-    autoconnect: yes
+    method4: disabled
+    method6: disabled
 
 - name: Add 'enp0s25' to the bridge
   community.general.nmcli:
@@ -45,11 +46,6 @@
     state: present
     type: bridge-slave
     master: bridge0
-
-- name: activate bridge
-  community.general.nmcli:
-    conn_name: bridge0
-    state: up
 
 - name: Define a new libvirt network
   community.libvirt.virt_net:
