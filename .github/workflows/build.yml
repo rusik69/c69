@@ -16,6 +16,7 @@ jobs:
     - name: build
       run: make get build
     - name: deploy
+      run: make deploy
     - name: test
       run: make test
     - name: logs
