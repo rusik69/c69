@@ -1,4 +1,11 @@
 ---
+- name: add ssh key to root
+  ansible.builtin.copy:
+    src: ~/.ssh/id_rsa.pub
+    dest: /root/.ssh/authorized_keys
+    owner: root
+    group: root
+    mode: 0600
 - name: Remove old Docker versions
   ansible.builtin.apt:
     name: docker,docker-client,docker-client-latest,docker-common,docker-latest,docker-latest-logrotate,docker-logrotate,docker-engine

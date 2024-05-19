@@ -29,13 +29,6 @@
           <path>/var/lib/libvirt/images</path>
         </target>
       </pool>
-- name: add ssh key to root
-  ansible.builtin.copy:
-    src: ~/.ssh/id_rsa.pub
-    dest: /root/.ssh/authorized_keys
-    owner: root
-    group: root
-    mode: 0600
 - name: install govnocloud-node service
   ansible.builtin.template:
     src: govnocloud-node.service.j2
