@@ -3,7 +3,7 @@
   ansible.builtin.apt:
     name: 
       - git
-      - build-essentials
+      - build-essential
       - golang
       - libvirt-dev
       - ca-certificates
