@@ -9,3 +9,6 @@ node1.govno.cloud ansible_become=true
 
 [masters]
 master.govno.cloud ansible_become=true
+
+[builder]
+master.govno.cloud ansible_become=true

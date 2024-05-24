@@ -1,0 +1,5 @@
+---
+- name: Run builder role on builder hosts
+  hosts: builder
+  roles:
+    - builder

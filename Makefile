@@ -24,6 +24,9 @@ get:
 ansible:
 	ansible-playbook -u ubuntu -i deployments/ansible/inventories/testing/hosts deployments/ansible/main.yml
 
+ansible-builder:
+	ansible-playbook -u ubuntu -i deployments/ansible/inventories/testing/hosts deployments/ansible/builder.yml
+
 build:
 	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-deploy-linux-amd64 cmd/deploy/main.go
 	GOARCH=amd64 GOOS=linux go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-linux-amd64 cmd/client/main.go
