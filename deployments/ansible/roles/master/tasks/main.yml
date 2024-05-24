@@ -4,7 +4,7 @@
     state: present
 - name: Install packages
   ansible.builtin.apt:
-    name: libvirt,ca-certificates,guestfs-tools,cloud-utils,genisoimage,etcd-server,cephadm
+    name: ca-certificates,guestfs-tools,cloud-utils,genisoimage,etcd-server,cephadm
     state: present
 - name: install govnocloud-master service
   ansible.builtin.template:
