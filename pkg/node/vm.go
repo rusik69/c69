@@ -262,7 +262,7 @@ func CreateVM(vm types.VM) (types.VM, int, error) {
 				{
 					Source: &libvirtxml.DomainInterfaceSource{
 						Network: &libvirtxml.DomainInterfaceSourceNetwork{
-							Network: "virbr0",
+							Network: "default",
 						},
 					},
 					Model: &libvirtxml.DomainInterfaceModel{
