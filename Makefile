@@ -48,6 +48,11 @@ builddocker:
 	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:${IMAGE_TAG}
 	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:latest
 
+cleanup:
+	/usr/local/bin/cleanup.sh
+	ssh node0.govno.cloud "sudo /usr/local/bin/cleanup.sh"
+	ssh node1.govno.cloud "sudo /usr/local/bin/cleanup.sh"
+
 buildclient:
 	GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-darwin-arm64 cmd/client/main.go
 
