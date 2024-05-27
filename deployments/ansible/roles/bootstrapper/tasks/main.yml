@@ -24,6 +24,11 @@
     out_interface: wlan0
     jump: MASQUERADE
 
+- name: ensure /srv/tftp exists
+  ansible.builtin.file:
+    path: /srv/tftp
+    state: directory
+
 - name: Install dnsmasq
   ansible.builtin.apt:
     name: dnsmasq
@@ -44,17 +49,14 @@
       dhcp-boot=pxelinux.0
       enable-tftp
       tftp-root=/srv/tftp
+  register: dnsmasq_config
 
 - name: Restart dnsmasq
   ansible.builtin.systemd:
     name: dnsmasq
     state: restarted
   become: true
-
-- name: ensure /srv/tftp exists
-  ansible.builtin.file:
-    path: /srv/tftp
-    state: directory
+  when: dnsmasq_config.changed
 
 - name: ensure /srv/tftp/pxelinux.cfg dir exists
   ansible.builtin.file:
