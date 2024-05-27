@@ -1,7 +1,7 @@
 ---
 - name: install wakeonlan
   ansible.builtin.apt:
-    name: wakeonlan
+    name: wakeonlan, iptables-persistent
     state: present
 
 - name: copy wol.sh
