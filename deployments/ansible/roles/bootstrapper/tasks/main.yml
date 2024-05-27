@@ -10,6 +10,20 @@
     dest: /usr/local/bin/wol.sh
     mode: 0755
 
+- name: Enable IP forwarding
+  ansible.builtin.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    state: present
+    reload: yes
+
+- name: Enable masquerading on wlan0
+  ansible.builtin.iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: wlan0
+    jump: MASQUERADE
+
 - name: Install dnsmasq
   ansible.builtin.apt:
     name: dnsmasq
