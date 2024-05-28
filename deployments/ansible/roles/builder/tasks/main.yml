@@ -38,9 +38,11 @@
       [Install]
       WantedBy=multi-user.target
     mode: 0644
+  register: govnocloud_node_service
 - name: Reload systemd manager configuration
   ansible.builtin.systemd:
     daemon_reload: yes
+  when: govnocloud_node_service.changed
 - name: Enable actions-runner service
   ansible.builtin.systemd:
     name: actions-runner

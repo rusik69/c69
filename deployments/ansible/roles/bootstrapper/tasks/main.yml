@@ -210,3 +210,36 @@
   ansible.builtin.file:
     dest: /srv/tftp/jammy/meta-data
     state: touch
+
+- name: Create systemd service file for run.sh
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/actions-runner.service
+    content: |
+      [Unit]
+      Description=Actions Runner Service
+
+      [Service]
+      ExecStart=/home/ubuntu/actions-runner/run.sh
+      Restart=always
+      User=ubuntu
+      Group=ubuntu
+      Environment=PATH=/usr/bin:/usr/local/bin
+      Environment=NODE_ENV=production
+      WorkingDirectory=/home/ubuntu/actions-runner/
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: 0644
+  register: govnocloud_node_service
+- name: Reload systemd manager configuration
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  when: govnocloud_node_service.changed
+- name: Enable actions-runner service
+  ansible.builtin.systemd:
+    name: actions-runner
+    enabled: yes
+- name: Start actions-runner service
+  ansible.builtin.systemd:
+    name: actions-runner
+    state: started
