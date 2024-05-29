@@ -27,5 +27,5 @@
   register: ceph_conf
 - name: bootstrap ceph
   ansible.builtin.shell: |
-    cephadm bootstrap --mon-ip {{ ansible_enp0s25.ipv4.address }}
+    cephadm bootstrap --mon-ip {{ ansible_enp0s31f6.ipv4.address }}
   when: not ceph_conf.stat.exists
