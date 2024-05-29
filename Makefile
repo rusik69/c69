@@ -12,8 +12,8 @@ export TEST_MASTER_PORT := 6969
 export TEST_NODE_NAME := node0
 export TEST_NODE_HOST := node0.govno.cloud
 export TEST_NODE_PORT := 6969
-export TEST_NODES := node0.govno.cloud:6969,node1.govno.cloud:6969
-export DEPLOY_NODES := node0.govno.cloud,node1.govno.cloud
+export TEST_NODES := node0.govno.cloud:6969,node1.govno.cloud:6969,node2.govno.cloud:6969
+export DEPLOY_NODES := node0.govno.cloud,node1.govno.cloud,node2.govno.cloud
 
 tidy:
 	go mod tidy
@@ -52,6 +52,7 @@ cleanup:
 	/usr/local/bin/cleanup.sh
 	ssh node0.govno.cloud "sudo /usr/local/bin/cleanup.sh"
 	ssh node1.govno.cloud "sudo /usr/local/bin/cleanup.sh"
+	ssh node2.govno.cloud "sudo /usr/local/bin/cleanup.sh"
 
 buildclient:
 	GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-darwin-arm64 cmd/client/main.go
@@ -66,6 +67,7 @@ logs:
 	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`
 	ssh node0.govno.cloud "get_logs.sh"
 	ssh node1.govno.cloud "get_logs.sh"
+	ssh node2.govno.cloud "get_logs.sh"
 
 remotetest:
 	rsync -avz . master.govno.cloud:~/govnocloud

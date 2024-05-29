@@ -17,11 +17,11 @@
     state: present
     reload: yes
 
-- name: Enable masquerading on wlan0
+- name: Enable masquerading on wlp2s0
   ansible.builtin.iptables:
     table: nat
     chain: POSTROUTING
-    out_interface: wlan0
+    out_interface: wlp2s0
     jump: MASQUERADE
 
 - name: ensure /srv/tftp exists
