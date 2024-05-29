@@ -38,9 +38,9 @@
   ansible.builtin.copy:
     dest: /etc/dnsmasq.d/pxe.conf
     content: |
-      interface=eth0,lo
+      interface=enp0s31f6,lo
       bind-interfaces
-      dhcp-range=eth0,10.0.0.10,10.0.0.200,255.255.255.0
+      dhcp-range=enp0s31f6,10.0.0.10,10.0.0.200,255.255.255.0
       dhcp-host=28:d2:44:ed:85:f9,10.0.0.2
       dhcp-host=f0:de:f1:67:8c:92,10.0.0.3
       dhcp-host=3c:97:0e:71:77:ab,10.0.0.4
