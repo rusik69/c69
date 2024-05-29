@@ -15,7 +15,7 @@ jobs:
             - name: apt
               run:  sudo apt update ; sudo apt install -y make ansible || true
             - name: bootstrap ansible
-              run:  ansible-playbook -b -i localhost, deployments/ansible/bootstrapper.yml
+              run:  ansible-playbook -vvv -b -i localhost, deployments/ansible/bootstrapper.yml
             - name: run wol.sh
               run:  wol.sh
             - name: wait for hosts to get up
