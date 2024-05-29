@@ -49,6 +49,7 @@
       dhcp-boot=pxelinux.0
       enable-tftp
       tftp-root=/srv/tftp
+      server=8.8.8.8
   register: dnsmasq_config
 
 - name: Restart dnsmasq
