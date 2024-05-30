@@ -49,7 +49,7 @@ builddocker:
 	docker push ${ORG_PREFIX}/${BINARY_NAME}-llm-llama3-8b:latest
 
 cleanup:
-	/usr/local/bin/cleanup.sh
+	sudo /usr/local/bin/cleanup.sh
 	ssh node0.govno.cloud "sudo /usr/local/bin/cleanup.sh"
 	ssh node1.govno.cloud "sudo /usr/local/bin/cleanup.sh"
 	ssh node2.govno.cloud "sudo /usr/local/bin/cleanup.sh"
