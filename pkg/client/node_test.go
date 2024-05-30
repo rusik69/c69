@@ -116,8 +116,8 @@ func TestListNodes(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(nodes) != 2 {
-		t.Error("expected 2 nodes, got ", len(nodes))
+	if len(nodes) != 3 {
+		t.Error("expected 3 nodes, got ", len(nodes))
 	}
 }
 
