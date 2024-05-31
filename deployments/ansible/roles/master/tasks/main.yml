@@ -7,11 +7,10 @@
     name: ca-certificates,guestfs-tools,cloud-utils,genisoimage,etcd-server,cephadm,etcd-client
     state: present
 - name: Configure etcd to listen on 10.0.0.1
-  ansible.builtin.lineinfile:
-    path: /etc/default/etcd
-    regexp: '^ETCD_(LISTEN|ADVERTISE)_CLIENT_URLS='
-    line: 'ETCD_\1_CLIENT_URLS=http://10.0.0.1:2379'
-    backrefs: yes
+  ansible.builtin.copy:
+    dest: /etc/default/etcd
+    content: |
+      ETCD__CLIENT_URLS=http://10.0.0.1:2379
   notify: restart etcd
 - name: install govnocloud-master service
   ansible.builtin.template:
