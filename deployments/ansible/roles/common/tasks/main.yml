@@ -41,6 +41,13 @@
     url: https://github.com/flannel-io/flannel/releases/download/v0.25.3/flanneld-amd64
     dest: /usr/local/bin/flanneld
     mode: '0755'
+- name: Create Flannel directory
+  ansible.builtin.file:
+    path: /etc/flannel
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
 - name: Create Flannel configuration
   copy:
     dest: /etc/flannel/net-conf.json
