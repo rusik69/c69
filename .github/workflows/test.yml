@@ -6,6 +6,34 @@ on:
       - '*'
 name: test
 jobs:
+  bootstrap:
+    runs-on: bootstrapper
+    timeout-minutes: 60
+    steps:
+        - name: checkout code
+          uses: actions/checkout@v4
+        - name: apt
+          run:  sudo apt update ; sudo apt install -y make ansible || true
+        - name: bootstrap ansible
+          run:  ansible-playbook -b -i localhost, deployments/ansible/bootstrapper.yml
+        - name: run wol.sh
+          run:  wol.sh
+        - name: wait for hosts to get up
+          run: |
+            for ip in 10.0.0.2 10.0.0.3 10.0.0.4; do
+              timeout=600
+              while ! ping -c1 $ip &>/dev/null; do
+                sleep 1
+                ((timeout--))
+                if [ $timeout -eq 0 ]; then
+                  echo "Host $ip is not responding after 10 minutes. Exiting."
+                  exit 1
+                fi
+              done
+              echo "Host $ip is up."
+            done
+        - name: run ansible on builder
+          run: make ansible-builder
   test:
     runs-on: master
     needs: bootstrap
