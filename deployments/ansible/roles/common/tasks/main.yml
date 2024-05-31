@@ -37,7 +37,7 @@
     name: network-manager
     state: present
 - name: Download Flannel binary
-  ansible.buitin.get_url:
+  ansible.builtin.get_url:
     url: https://github.com/flannel-io/flannel/releases/download/v0.25.3/flanneld-amd64
     dest: /usr/local/bin/flanneld
     mode: '0755'
