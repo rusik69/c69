@@ -36,11 +36,11 @@
   ansible.builtin.apt:
     name: network-manager
     state: present
-- name: Install Flannel
-  apt:
-    name: flannel
-    state: present
-    update_cache: yes
+- name: Download Flannel binary
+  ansible.buitin.get_url:
+    url: https://github.com/flannel-io/flannel/releases/download/v0.25.3/flanneld-amd64
+    dest: /usr/local/bin/flanneld
+    mode: '0755'
 - name: Create Flannel configuration
   copy:
     dest: /etc/flannel/net-conf.json
