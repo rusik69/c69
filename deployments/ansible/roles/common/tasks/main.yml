@@ -68,7 +68,7 @@
       Before=docker.service
 
       [Service]
-      ExecStart=/usr/bin/flanneld --etcd-endpoints=http://master.govno.cloud:2379 --iface=enp0s25
+      ExecStart=/usr/local/bin/flanneld --etcd-endpoints=http://master.govno.cloud:2379 --iface=enp0s25
       ExecReload=/bin/kill -HUP $MAINPID
       Restart=on-failure
       Type=notify
