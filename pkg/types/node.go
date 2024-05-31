@@ -154,23 +154,23 @@ var VMImages = map[string]VMImage{
 		Img:  "jammy-server-cloudimg-amd64.img",
 		URL:  "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img",
 	},
-	"ubuntu 24.04": VMImage{
+	"ubuntu24.04": VMImage{
 		ID:   "2",
 		Type: "ubuntu",
-		Img: "noble-server-cloudimg-amd64.img",
-		URL: "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img",
+		Img:  "noble-server-cloudimg-amd64.img",
+		URL:  "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img",
 	},
 }
 
 type NodeEnv struct {
-	Name                 string `json:"name"`
-	IP                   string `json:"ip"`
-	ListenPort           string `json:"listen_port"`
-	ListenHost           string `json:"listen_host"`
-	LibVirtURI           string `json:"libvirt_socket"`
-	LibVirtImageDir      string `json:"libvirt_image_dir"`
-	LibVirtBootDir       string `json:"libvirt_boot_dir"`
-	FilesDir             string `json:"files_dir"`
+	Name            string `json:"name"`
+	IP              string `json:"ip"`
+	ListenPort      string `json:"listen_port"`
+	ListenHost      string `json:"listen_host"`
+	LibVirtURI      string `json:"libvirt_socket"`
+	LibVirtImageDir string `json:"libvirt_image_dir"`
+	LibVirtBootDir  string `json:"libvirt_boot_dir"`
+	FilesDir        string `json:"files_dir"`
 }
 
 // NodeEnvInstance is the singleton instance of NodeEnv.
