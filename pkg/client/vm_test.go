@@ -8,15 +8,15 @@ import (
 
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
-	vm, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "medium")
+	vm, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu24.04", "medium")
 	if err != nil {
 		t.Error(err)
 	}
 	if vm.Name != "test" {
 		t.Error("expected test, got ", vm.Name)
 	}
-	if vm.Image != "ubuntu22.04" {
-		t.Error("expected ubuntu22.04, got ", vm.Image)
+	if vm.Image != "ubuntu24.04" {
+		t.Error("expected ubuntu24.04, got ", vm.Image)
 	}
 	if vm.Flavor != "medium" {
 		t.Error("expected medium, got ", vm.Flavor)
