@@ -8,6 +8,7 @@ name: test
 jobs:
   test:
     runs-on: master
+    needs: bootstrap
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
