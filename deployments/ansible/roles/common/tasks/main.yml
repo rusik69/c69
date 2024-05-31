@@ -36,3 +36,36 @@
   ansible.builtin.apt:
     name: network-manager
     state: present
+- name: Install Flannel
+  apt:
+    name: flannel
+    state: present
+    update_cache: yes
+- name: Create Flannel configuration
+  copy:
+    dest: /etc/flannel/net-conf.json
+    content: |
+      {
+        "Network": "10.244.0.0/16",
+        "Backend": {
+          "Type": "vxlan"
+        }
+      }
+- name: Create Flannel service file
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/flanneld.service
+    content: |
+      [Unit]
+      Description=Flannel
+      After=network.target
+      Before=docker.service
+
+      [Service]
+      ExecStart=/usr/bin/flanneld --etcd-endpoints=http://master.govno.cloud:2379 --iface=enp0s25
+      ExecReload=/bin/kill -HUP $MAINPID
+      Restart=on-failure
+      Type=notify
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: reload and restart flanneld

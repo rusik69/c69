@@ -1,0 +1,5 @@
+- name: reload and restart flanneld
+  ansible.builtin.systemd:
+    name: flanneld
+    state: restarted
+    daemon_reload: yes
