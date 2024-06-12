@@ -76,7 +76,7 @@
 
 - name: Download Ubuntu 24.04 Live Server ISO
   ansible.builtin.get_url:
-    url: https://releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso
+    url: http://releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso
     dest: /srv/tftp/ubuntu-24.04-live-server-amd64.iso
 
 - name: Mount Ubuntu 24.04 Live Server ISO
