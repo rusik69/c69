@@ -4,13 +4,8 @@
     state: present
 - name: Install packages
   ansible.builtin.apt:
-    name: ca-certificates,guestfs-tools,cloud-utils,genisoimage,etcd-server,cephadm,etcd-client
+    name: ca-certificates,guestfs-tools,cloud-utils,genisoimage,cephadm
     state: present
-- name: Configure etcd to listen on 10.0.0.1
-  ansible.builtin.copy:
-    dest: /etc/default/etcd
-    content: |
-      ETCD__CLIENT_URLS=http://10.0.0.1:2379
   notify: restart etcd
 - name: install govnocloud-master service
   ansible.builtin.template:

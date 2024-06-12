@@ -244,3 +244,12 @@
   ansible.builtin.systemd:
     name: actions-runner
     state: started
+- name: Install etcd
+  ansible.builtin.apt:
+    name: etcd-server,etcd-client
+    state: present
+- name: Configure etcd to listen on 10.0.0.1
+  ansible.builtin.copy:
+    dest: /etc/default/etcd
+    content: |
+      ETCD_CLIENT_URLS=http://10.0.0.1:2379
