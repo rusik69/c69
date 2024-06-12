@@ -50,9 +50,9 @@ builddocker:
 
 cleanup:
 	sudo /usr/local/bin/cleanup.sh
-	ssh node0.govno.cloud "sudo /usr/local/bin/cleanup.sh"
-	ssh node1.govno.cloud "sudo /usr/local/bin/cleanup.sh"
-	ssh node2.govno.cloud "sudo /usr/local/bin/cleanup.sh"
+	ssh ubuntu@node0.govno.cloud "sudo /usr/local/bin/cleanup.sh"
+	ssh ubuntu@node1.govno.cloud "sudo /usr/local/bin/cleanup.sh"
+	ssh ubuntu@node2.govno.cloud "sudo /usr/local/bin/cleanup.sh"
 
 buildclient:
 	GOARCH=arm64 GOOS=darwin go build -ldflags "-X main.version=$(GIT_COMMIT)" -o bin/${BINARY_NAME}-client-darwin-arm64 cmd/client/main.go
@@ -65,9 +65,9 @@ deploy:
 
 logs:
 	journalctl _SYSTEMD_INVOCATION_ID=`systemctl show -p InvocationID --value govnocloud-master.service`
-	ssh node0.govno.cloud "get_logs.sh"
-	ssh node1.govno.cloud "get_logs.sh"
-	ssh node2.govno.cloud "get_logs.sh"
+	ssh ubuntu@node0.govno.cloud "get_logs.sh"
+	ssh ubuntu@node1.govno.cloud "get_logs.sh"
+	ssh ubuntu@node2.govno.cloud "get_logs.sh"
 
 remotetest:
 	rsync -avz . master.govno.cloud:~/govnocloud
