@@ -232,24 +232,36 @@
       WantedBy=multi-user.target
     mode: 0644
   register: govnocloud_actions_service
+
 - name: Reload systemd manager configuration
   ansible.builtin.systemd:
     daemon_reload: yes
   when: govnocloud_actions_service.changed
+
 - name: Enable actions-runner service
   ansible.builtin.systemd:
     name: actions-runner
     enabled: yes
+
 - name: Start actions-runner service
   ansible.builtin.systemd:
     name: actions-runner
     state: started
+
 - name: Install etcd
   ansible.builtin.apt:
     name: etcd-server,etcd-client
     state: present
+
 - name: Configure etcd to listen on 10.0.0.1
   ansible.builtin.copy:
     dest: /etc/default/etcd
     content: |
       ETCD_CLIENT_URLS=http://10.0.0.1:2379
+  notify: restart etcd
+
+- name: start etcd
+  ansible.builtin.systemd:
+    name: etcd
+    state: started
+    enabled: yes

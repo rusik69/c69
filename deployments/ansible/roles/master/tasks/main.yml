@@ -17,11 +17,6 @@
   ansible.builtin.systemd:
     daemon_reload: yes
   when: govnocloud_master_service.changed
-- name: start etcd
-  ansible.builtin.systemd:
-    name: etcd
-    state: started
-    enabled: yes
 - name: Check if /etc/ceph/ceph.conf exists
   ansible.builtin.stat:
     path: /etc/ceph/ceph.conf

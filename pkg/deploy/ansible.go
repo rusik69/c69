@@ -68,8 +68,8 @@ func GenerateAnsibleConfig(nodes, osds []string, master, invFile string) error {
 }
 
 // RunAnsible runs ansible
-func RunAnsible(invFile string) error {
-	cmd := exec.Command("ansible-playbook", "-i", invFile, "deployments/ansible/main.yml")
+func RunAnsible(invFile, user, key string) error {
+	cmd := exec.Command("ansible-playbook", "-i", invFile, "-u", user, "--private-key="+key, "deployments/ansible/main.yml")
 	cmd.Env = append(cmd.Env, "ANSIBLE_HOST_KEY_CHECKING=False")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {

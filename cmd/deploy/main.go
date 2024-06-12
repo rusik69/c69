@@ -40,7 +40,7 @@ var rootCmd = &cobra.Command{
 			panic(err)
 		}
 		logrus.Println("Running Ansible on inventory file", ansibleInventoryFile)
-		err = deploy.RunAnsible(ansibleInventoryFile)
+		err = deploy.RunAnsible(ansibleInventoryFile, user, key)
 		if err != nil {
 			panic(err)
 		}
