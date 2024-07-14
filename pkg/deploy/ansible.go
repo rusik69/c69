@@ -73,7 +73,7 @@ func RunAnsible(invFile, user, key string) error {
 	cmd.Env = append(cmd.Env, "ANSIBLE_HOST_KEY_CHECKING=False")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		panic(err)
+		logrus.Panic(err)
 	}
 	cmd.Stderr = cmd.Stdout
 	if err := cmd.Start(); err != nil {

@@ -37,77 +37,77 @@ var rootCmd = &cobra.Command{
 		logrus.Println("Generating Ansible inventory file", ansibleInventoryFile)
 		err := deploy.GenerateAnsibleConfig(nodes, osds, master, ansibleInventoryFile)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		logrus.Println("Running Ansible on inventory file", ansibleInventoryFile)
 		err = deploy.RunAnsible(ansibleInventoryFile, user, key)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		for _, node := range nodes {
 			logrus.Println("Stopping govnocloud on node", node)
 			err := deploy.RunSSHCommand(node, key, user, "sudo systemctl stop govnocloud-node; cleanup.sh")
 			if err != nil {
-				panic(err)
+				logrus.Panic(err)
 			}
 		}
 		logrus.Println("Stopping govnocloud on master", master)
 		err = deploy.RunSSHCommand(master, key, user, "sudo systemctl stop govnocloud-master; cleanup.sh")
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		logrus.Println("Running cleanup.sh on master", master)
 		err = deploy.RunSSHCommand(master, key, user, "/usr/local/bin/cleanup.sh")
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		for _, node := range nodes {
 			logrus.Println("Running cleanup.sh on node", node)
 			err := deploy.RunSSHCommand(node, key, user, "/usr/local/bin/cleanup.sh")
 			if err != nil {
-				panic(err)
+				logrus.Panic(err)
 			}
 		}
 		logrus.Println("Copying govnocloud-master-linux-amd64 to master", master)
 		err = deploy.CopyFile(master, key, user, "bin/govnocloud-master-linux-amd64", "/usr/local/bin/govnocloud-master")
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		for _, node := range nodes {
 			logrus.Println("Copying govnocloud-node-linux-amd64 to node", node)
 			err := deploy.CopyFile(node, key, user, "bin/govnocloud-node-linux-amd64", "/usr/local/bin/govnocloud-node")
 			if err != nil {
-				panic(err)
+				logrus.Panic(err)
 			}
 			err = deploy.SyncDir(node, user, "deployments/ansible", "/var/lib/libvirt/")
 			if err != nil {
-				panic(err)
+				logrus.Panic(err)
 			}
 		}
 		logrus.Println("Starting govnocloud on master", master)
 		err = deploy.RunSSHCommand(master, key, user, "chmod +x /usr/local/bin/govnocloud-master")
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		err = deploy.RunSSHCommand(master, key, user, "sudo systemctl start govnocloud-master")
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		for _, node := range nodes {
 			logrus.Println("Starting govnocloud on node", node)
 			err := deploy.RunSSHCommand(node, key, user, "chmod +x /usr/local/bin/govnocloud-node")
 			if err != nil {
-				panic(err)
+				logrus.Panic(err)
 			}
 			err = deploy.RunSSHCommand(node, key, user, "sudo systemctl start govnocloud-node")
 			if err != nil {
-				panic(err)
+				logrus.Panic(err)
 			}
 		}
 		logrus.Println("Starting govnocloud front on master", master)
 		err = deploy.RunSSHCommand(master, key, user, "docker stop govnocloud-front; docker rm govnocloud-front;docker pull loqutus/govnocloud-front:latest; docker run --name govnocloud-front -d -p 8080:80 loqutus/govnocloud-front:latest")
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -122,7 +122,7 @@ func Execute() {
 func init() {
 	currentUserHomeDir, err := os.UserHomeDir()
 	if err != nil {
-		panic(err)
+		logrus.Panic(err)
 	}
 	rootCmd.PersistentFlags().StringVar(&nodesString, "nodes", "", "nodes to deploy")
 	rootCmd.PersistentFlags().StringVar(&osdsString, "osds", "", "osds to deploy")

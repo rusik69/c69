@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/rusik69/govnocloud/pkg/client"
+	"github.com/sirupsen/logrus"
 )
 
 var tempFileName string
@@ -60,12 +61,12 @@ func UploadFiles() {
 		defer os.Remove(tempFile.Name())
 		_, err := tempFile.WriteString("test")
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		tempFileName = tempFile.Name()
 		err = client.UploadFile(masterHost, masterPort, tempFileName)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	}
 }

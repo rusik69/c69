@@ -25,7 +25,7 @@ var rootCmd = &cobra.Command{
 		envInstance, err := node.ParseEnv()
 		if err != nil {
 			logrus.Error(err.Error())
-			panic(err)
+			logrus.Panic(err)
 		}
 		types.NodeEnvInstance = envInstance
 		logrus.Println("Node environment is parsed")
@@ -37,24 +37,24 @@ var rootCmd = &cobra.Command{
 		node.LibvirtConnection, err = node.VMConnect()
 		if err != nil {
 			logrus.Error(err.Error())
-			panic(err)
+			logrus.Panic(err)
 		}
 		defer node.LibvirtConnection.Close()
 		node.DockerConnection, err = node.ContainerConnect()
 		defer node.DockerConnection.Close()
 		if err != nil {
 			logrus.Error(err.Error())
-			panic(err)
+			logrus.Panic(err)
 		}
 		err = node.CreateSSHKey()
 		if err != nil {
 			logrus.Error(err.Error())
-			panic(err)
+			logrus.Panic(err)
 		}
 		err = node.DownloadImages()
 		if err != nil {
 			logrus.Error(err.Error())
-			panic(err)
+			logrus.Panic(err)
 		}
 		node.Serve()
 	},

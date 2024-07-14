@@ -26,7 +26,7 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		envInstance, err := master.ParseEnv()
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		types.MasterEnvInstance = envInstance
 		logrus.Println("Master environment is parsed")
@@ -39,7 +39,7 @@ var rootCmd = &cobra.Command{
 			types.MasterEnvInstance.ETCDPort, types.MasterEnvInstance.ETCDUser,
 			types.MasterEnvInstance.ETCDPass)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		defer master.ETCDClient.Close()
 		logrus.Println("ETCD is connected at " + types.MasterEnvInstance.ETCDHost + ":" + types.MasterEnvInstance.ETCDPort)

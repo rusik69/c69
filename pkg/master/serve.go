@@ -58,6 +58,6 @@ func Serve() {
 	logrus.Println("Master is listening on port " + string(types.MasterEnvInstance.ListenPort))
 	err := r.Run(types.MasterEnvInstance.ListenHost + ":" + types.MasterEnvInstance.ListenPort)
 	if err != nil {
-		panic(err)
+		logrus.Panic(err)
 	}
 }

@@ -38,7 +38,7 @@ func Serve() {
 	logrus.Println("Node is listening on port " + string(types.NodeEnvInstance.ListenPort))
 	err := r.Run(types.NodeEnvInstance.ListenHost + ":" + string(types.NodeEnvInstance.ListenPort))
 	if err != nil {
-		panic(err)
+		logrus.Panic(err)
 	}
 }
 

@@ -139,7 +139,7 @@ func PrepareImage(image, hostName string) error {
 
 // wait for the vm to be up
 func waitForVMUp(domain *libvirt.Domain) (string, error) {
-	logrus.Println("Waiting for VM to be up")
+	logrus.Println("Waiting for VM to get up")
 	count := 0
 	for {
 		if count == 120 {

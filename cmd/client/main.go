@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/rusik69/govnocloud/pkg/client"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -68,7 +69,7 @@ var k8sCreateCmd = &cobra.Command{
 		}
 		id, err := client.CreateK8S(clientHost, clientPort, name, flavor)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println("K8S cluster created with id " + fmt.Sprint(id))
 	},
@@ -85,7 +86,7 @@ var k8sDeleteCmd = &cobra.Command{
 		}
 		err := client.DeleteK8S(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -101,7 +102,7 @@ var k8sGetCmd = &cobra.Command{
 		}
 		k8s, err := client.GetK8S(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(
 			"ID: " + fmt.Sprint(k8s.ID) + "\n" +
@@ -120,7 +121,7 @@ var k8sListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		k8sList, err := client.ListK8S(clientHost, clientPort)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(k8sList)
 	},
@@ -137,7 +138,7 @@ var k8sStopCmd = &cobra.Command{
 		}
 		err := client.StopK8S(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -153,7 +154,7 @@ var k8sStartCmd = &cobra.Command{
 		}
 		err := client.StartK8S(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -169,7 +170,7 @@ var k8sGetKubeconfigCmd = &cobra.Command{
 		}
 		kubeconfig, err := client.GetKubeconfig(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(kubeconfig)
 	},
@@ -228,18 +229,18 @@ var sshNodeCmd = &cobra.Command{
 		if key == "" {
 			homeDir, err := os.UserHomeDir()
 			if err != nil {
-				panic(err)
+				logrus.Panic(err)
 			}
 			keyPath := filepath.Join(homeDir, ".ssh/id_rsa")
 			key = keyPath
 		}
 		node, err := client.GetNode(clientHost, clientPort, nodeName)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		err = client.RunSSH(node.Host, key, user, "")
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -257,18 +258,18 @@ var sshVMCmd = &cobra.Command{
 		if key == "" {
 			homeDir, err := os.UserHomeDir()
 			if err != nil {
-				panic(err)
+				logrus.Panic(err)
 			}
 			keyPath := filepath.Join(homeDir, ".ssh/id_rsa")
 			key = keyPath
 		}
 		vm, err := client.GetVM(clientHost, clientPort, vmName)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		err = client.RunSSH(vm.IP, key, user, vm.NodeHostname)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -290,7 +291,7 @@ var nodeAddCmd = &cobra.Command{
 		}
 		err := client.AddNode(clientHost, clientPort, name, nodehost, nodeport)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -306,7 +307,7 @@ var nodeDeleteCmd = &cobra.Command{
 		}
 		err := client.DeleteNode(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -319,7 +320,7 @@ var nodeListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		nodes, err := client.ListNodes(clientHost, clientPort)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(nodes)
 	},
@@ -336,7 +337,7 @@ var nodeGetCmd = &cobra.Command{
 		}
 		node, err := client.GetNode(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(
 			"Name: " + node.Name + "\n" +
@@ -363,7 +364,7 @@ var vmCreateCmd = &cobra.Command{
 		}
 		id, err := client.CreateVM(clientHost, clientPort, name, image, flavor)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println("VM created with id " + fmt.Sprint(id))
 	},
@@ -383,7 +384,7 @@ var llmCreateCmd = &cobra.Command{
 		}
 		id, err := client.CreateLLM(clientHost, clientPort, name, model)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println("LLM created with id " + fmt.Sprint(id))
 	},
@@ -400,7 +401,7 @@ var llmDeleteCmd = &cobra.Command{
 		}
 		err := client.DeleteLLM(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -416,7 +417,7 @@ var llmGetCmd = &cobra.Command{
 		}
 		llm, err := client.GetLLM(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(
 			"Name: " + llm.Name + "\n" +
@@ -433,7 +434,7 @@ var llmListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		llms, err := client.ListLLMs(clientHost, clientPort)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(llms)
 	},
@@ -450,7 +451,7 @@ var llmStopCmd = &cobra.Command{
 		}
 		err := client.StopLLM(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -466,7 +467,7 @@ var llmStartCmd = &cobra.Command{
 		}
 		err := client.StartLLM(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -485,7 +486,7 @@ var llmGenerateCmd = &cobra.Command{
 		}
 		res, err := client.GenerateLLM(clientHost, clientPort, name, input)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(res)
 	},
@@ -502,7 +503,7 @@ var vmDeleteCmd = &cobra.Command{
 		}
 		err := client.DeleteVM(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -517,7 +518,7 @@ var vmGetCmd = &cobra.Command{
 		}
 		vm, err := client.GetVM(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(
 			"ID: " + fmt.Sprint(vm.ID) + "\n" +
@@ -539,7 +540,7 @@ var vmListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		vms, err := client.ListVMs(clientHost, clientPort)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(vms)
 	},
@@ -556,7 +557,7 @@ var vmStopCmd = &cobra.Command{
 		}
 		err := client.StopVM(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -572,7 +573,7 @@ var vmStartCmd = &cobra.Command{
 		}
 		err := client.StartVM(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -594,7 +595,7 @@ var containerCreateCmd = &cobra.Command{
 		}
 		id, err := client.CreateContainer(clientHost, clientPort, name, image, flavor)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println("Container created with id " + fmt.Sprint(id))
 	},
@@ -611,7 +612,7 @@ var containerDeleteCmd = &cobra.Command{
 		}
 		err := client.DeleteContainer(clientHost, clientPort, id)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -627,7 +628,7 @@ var containerGetCmd = &cobra.Command{
 		}
 		container, err := client.GetContainer(clientHost, clientPort, id)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(
 			"ID: " + fmt.Sprint(container.ID) + "\n" +
@@ -648,7 +649,7 @@ var containerListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		containers, err := client.ListContainers(clientHost, clientPort)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Printf("| %-10s | %-10s | %-16s | %-5s | %-7s | %-20s |\n", "ID", "NAME", "IP", "Host", "Status", "Image")
 		fmt.Println("------------------------------------------------------------------------------------------------------------------------")
@@ -669,7 +670,7 @@ var containerStopCmd = &cobra.Command{
 		}
 		err := client.StopContainer(clientHost, clientPort, id)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -685,7 +686,7 @@ var containerStartCmd = &cobra.Command{
 		}
 		err := client.StartContainer(clientHost, clientPort, id)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -702,7 +703,7 @@ var fileUploadCmd = &cobra.Command{
 		}
 		err := client.UploadFile(clientHost, clientPort, *srcPtr)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -718,7 +719,7 @@ var fileDownloadCmd = &cobra.Command{
 		}
 		err := client.DownloadFile(clientHost, clientPort, src)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -734,7 +735,7 @@ var fileDeleteCmd = &cobra.Command{
 		}
 		err := client.DeleteFile(clientHost, clientPort, name)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 	},
 }
@@ -747,7 +748,7 @@ var fileListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		files, err := client.ListFiles(clientHost, clientPort)
 		if err != nil {
-			panic(err)
+			logrus.Panic(err)
 		}
 		fmt.Println(files)
 	},
