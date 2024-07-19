@@ -50,6 +50,8 @@ type VM struct {
 	VNCURL string `json:"vncurl"`
 	// KubeConfig is the kubeconfig of the virtual machine.
 	KubeConfig string `json:"kubeconfig"`
+	// Type is the type of the virtual machine.
+	Type string `json:"type"`
 }
 
 // Flavor represents a vm flavor.

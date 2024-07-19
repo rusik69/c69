@@ -1,10 +1,6 @@
-- name: Add PPA
-  ansible.builtin.apt_repository:
-    repo: ppa:james-page/caracal
-    state: present
 - name: Install packages
   ansible.builtin.apt:
-    name: ca-certificates,guestfs-tools,cloud-utils,genisoimage,cephadm
+    name: ca-certificates,guestfs-tools,cloud-utils,genisoimage
     state: present
   notify: restart etcd
 - name: install govnocloud-master service
@@ -17,11 +13,9 @@
   ansible.builtin.systemd:
     daemon_reload: yes
   when: govnocloud_master_service.changed
-- name: Check if /etc/ceph/ceph.conf exists
-  ansible.builtin.stat:
-    path: /etc/ceph/ceph.conf
-  register: ceph_conf
-- name: bootstrap ceph
-  ansible.builtin.shell: |
-    cephadm bootstrap --mon-ip {{ ansible_enp0s31f6.ipv4.address }}
-  when: not ceph_conf.stat.exists
+- name: include ceph tasks
+  include_tasks: ceph.yml
+- name: include prometheus tasks
+  include_tasks: prometheus.yml
+- name: include grafana
+  include_tasks: grafana.yml

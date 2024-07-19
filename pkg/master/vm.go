@@ -73,6 +73,7 @@ func CreateVMHandler(c *gin.Context) {
 		newVM.VNCURL = tempVM.VNCURL
 		newVM.NodeHostname = tempVM.NodeHostname
 		newVM.KubeConfig = createdVM.KubeConfig
+		newVM.Type = tempVM.Type
 		created = true
 		usedNode = node
 		break

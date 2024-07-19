@@ -41,6 +41,7 @@ func CreateK8SHandler(c *gin.Context) {
 		Name:   tempK8S.Name + "-k8s",
 		Flavor: vmFlavorName,
 		Image:  "k8s",
+		Type:   "k8s",
 	}
 	newVM, err := client.CreateVM(types.MasterEnvInstance.ListenHost, types.MasterEnvInstance.ListenPort,
 		vm.Name, vm.Image, vm.Flavor)

@@ -1,0 +1,10 @@
+- name: Install Node Exporter
+  ansible.builtin.apt:
+    name: prometheus-node-exporter
+    state: present
+
+- name: Ensure Node Exporter service is started and enabled
+  ansible.builtin.systemd:
+    name: prometheus-node-exporter
+    state: started
+    enabled: yes

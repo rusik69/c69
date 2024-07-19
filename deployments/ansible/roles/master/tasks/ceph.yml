@@ -1,0 +1,16 @@
+- name: Add PPA
+  ansible.builtin.apt_repository:
+    repo: ppa:james-page/caracal
+    state: present
+- name: install cephadm
+  ansible.builtin.apt:
+    name: cephadm
+    state: present
+- name: Check if /etc/ceph/ceph.conf exists
+  ansible.builtin.stat:
+    path: /etc/ceph/ceph.conf
+  register: ceph_conf
+- name: bootstrap ceph
+  ansible.builtin.shell: |
+    cephadm bootstrap --mon-ip {{ ansible_enp0s31f6.ipv4.address }}
+  when: not ceph_conf.stat.exists
