@@ -284,4 +284,9 @@ var DBTypes = map[string]DBType{
 		ContainerFlavor: "medium",
 		Image:           "docker.io/postgres:16",
 	},
+	"clickhouse": DBType{
+		ID:              2,
+		ContainerFlavor: "medium",
+		Image:           "docker.io/clickhouse/clickhouse-server:24.6-alpine",
+	},
 }
