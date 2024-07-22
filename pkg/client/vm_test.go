@@ -8,7 +8,7 @@ import (
 
 // TestCreateVM tests the CreateVM function.
 func TestCreateVM(t *testing.T) {
-	vm, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu24.04", "medium")
+	vm, err := client.CreateVM(masterHost, masterPort, "test", "ubuntu22.04", "medium")
 	if err != nil {
 		t.Error(err)
 	}

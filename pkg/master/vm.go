@@ -59,7 +59,7 @@ func CreateVMHandler(c *gin.Context) {
 		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name,
 			tempVM.Image, tempVM.Flavor)
 		if err != nil {
-			logrus.Error("can't create vm on node", node.Name)
+			logrus.Error("can't create vm on node: ", node.Name)
 			logrus.Error(err.Error())
 			continue
 		}
