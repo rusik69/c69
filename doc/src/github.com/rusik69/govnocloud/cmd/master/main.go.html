@@ -1,0 +1,141 @@
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#375EAB"/>
+
+  <title>src/github.com/rusik69/govnocloud/cmd/master/main.go - GoPages</title>
+
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css"/>
+
+<script>window.initFuncs = [];</script>
+<script src="/lib/godoc/jquery.js" defer=""></script>
+
+
+
+
+<script>var goVersion = "go1.22.4";</script>
+<script src="/lib/godoc/godocs.js" defer=""></script>
+
+</head>
+<body>
+
+<div id="lowframe" style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages | Auto-generated docs</a></div>
+<div class="top-heading" id="heading-narrow"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages</a></div>
+<a href="#" id="menu-button"><span id="menu-button-arrow">▽</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Source file
+    <a href="/src">src</a>/<a href="/src/github.com">github.com</a>/<a href="/src/github.com/rusik69">rusik69</a>/<a href="/src/github.com/rusik69/govnocloud">govnocloud</a>/<a href="/src/github.com/rusik69/govnocloud/cmd">cmd</a>/<a href="/src/github.com/rusik69/govnocloud/cmd/master">master</a>/<span class="text-muted">main.go</span>
+  </h1>
+
+
+
+
+
+  <h2>
+    Documentation: <a href="/pkg/github.com/rusik69/govnocloud/cmd/master">github.com/rusik69/govnocloud/cmd/master</a>
+  </h2>
+
+
+
+<div id="nav"></div>
+
+
+<script type="text/javascript">document.ANALYSIS_DATA = null;</script>
+<pre><span id="L1" class="ln">     1  </span><span class="comment">/*
+<span id="L2" class="ln">     2  </span>Copyright © 2023 NAME HERE &lt;EMAIL ADDRESS&gt;
+<span id="L3" class="ln">     3  </span>*/</span>
+<span id="L4" class="ln">     4  </span>package main
+<span id="L5" class="ln">     5  </span>
+<span id="L6" class="ln">     6  </span>import (
+<span id="L7" class="ln">     7  </span>	&#34;fmt&#34;
+<span id="L8" class="ln">     8  </span>	&#34;os&#34;
+<span id="L9" class="ln">     9  </span>	&#34;runtime&#34;
+<span id="L10" class="ln">    10  </span>	&#34;strings&#34;
+<span id="L11" class="ln">    11  </span>
+<span id="L12" class="ln">    12  </span>	&#34;github.com/gin-gonic/gin&#34;
+<span id="L13" class="ln">    13  </span>	&#34;github.com/rusik69/govnocloud/pkg/master&#34;
+<span id="L14" class="ln">    14  </span>	&#34;github.com/rusik69/govnocloud/pkg/types&#34;
+<span id="L15" class="ln">    15  </span>	&#34;github.com/sirupsen/logrus&#34;
+<span id="L16" class="ln">    16  </span>	&#34;github.com/spf13/cobra&#34;
+<span id="L17" class="ln">    17  </span>)
+<span id="L18" class="ln">    18  </span>
+<span id="L19" class="ln">    19  </span><span class="comment">// rootCmd represents the base command when called without any subcommands</span>
+<span id="L20" class="ln">    20  </span>var rootCmd = &amp;cobra.Command{
+<span id="L21" class="ln">    21  </span>	Use:   &#34;govnocloud&#34;,
+<span id="L22" class="ln">    22  </span>	Short: &#34;govnocloud is a shitty cloud&#34;,
+<span id="L23" class="ln">    23  </span>	Long:  `govnocloud is a shitty cloud`,
+<span id="L24" class="ln">    24  </span>	<span class="comment">// Uncomment the following line if your bare application</span>
+<span id="L25" class="ln">    25  </span>	<span class="comment">// has an action associated with it:</span>
+<span id="L26" class="ln">    26  </span>	Run: func(cmd *cobra.Command, args []string) {
+<span id="L27" class="ln">    27  </span>		envInstance, err := master.ParseEnv()
+<span id="L28" class="ln">    28  </span>		if err != nil {
+<span id="L29" class="ln">    29  </span>			logrus.Panic(err)
+<span id="L30" class="ln">    30  </span>		}
+<span id="L31" class="ln">    31  </span>		types.MasterEnvInstance = envInstance
+<span id="L32" class="ln">    32  </span>		logrus.Println(&#34;Master environment is parsed&#34;)
+<span id="L33" class="ln">    33  </span>		logrus.Println(&#34;ETCD host is &#34; + types.MasterEnvInstance.ETCDHost)
+<span id="L34" class="ln">    34  </span>		logrus.Println(&#34;ETCD port is &#34; + types.MasterEnvInstance.ETCDPort)
+<span id="L35" class="ln">    35  </span>		logrus.Println(&#34;ETCD user is &#34; + types.MasterEnvInstance.ETCDUser)
+<span id="L36" class="ln">    36  </span>		logrus.Println(&#34;ETCD pass is &#34; + types.MasterEnvInstance.ETCDPass)
+<span id="L37" class="ln">    37  </span>		logrus.Println(&#34;Listen port is &#34; + types.MasterEnvInstance.ListenPort)
+<span id="L38" class="ln">    38  </span>		master.ETCDClient, err = master.ETCDConnect(types.MasterEnvInstance.ETCDHost,
+<span id="L39" class="ln">    39  </span>			types.MasterEnvInstance.ETCDPort, types.MasterEnvInstance.ETCDUser,
+<span id="L40" class="ln">    40  </span>			types.MasterEnvInstance.ETCDPass)
+<span id="L41" class="ln">    41  </span>		if err != nil {
+<span id="L42" class="ln">    42  </span>			logrus.Panic(err)
+<span id="L43" class="ln">    43  </span>		}
+<span id="L44" class="ln">    44  </span>		defer master.ETCDClient.Close()
+<span id="L45" class="ln">    45  </span>		logrus.Println(&#34;ETCD is connected at &#34; + types.MasterEnvInstance.ETCDHost + &#34;:&#34; + types.MasterEnvInstance.ETCDPort)
+<span id="L46" class="ln">    46  </span>		master.Serve()
+<span id="L47" class="ln">    47  </span>	},
+<span id="L48" class="ln">    48  </span>}
+<span id="L49" class="ln">    49  </span>
+<span id="L50" class="ln">    50  </span><span class="comment">// Execute adds all child commands to the root command and sets flags appropriately.</span>
+<span id="L51" class="ln">    51  </span><span class="comment">// This is called by main.main(). It only needs to happen once to the rootCmd.</span>
+<span id="L52" class="ln">    52  </span>func Execute() {
+<span id="L53" class="ln">    53  </span>	err := rootCmd.Execute()
+<span id="L54" class="ln">    54  </span>	if err != nil {
+<span id="L55" class="ln">    55  </span>		os.Exit(1)
+<span id="L56" class="ln">    56  </span>	}
+<span id="L57" class="ln">    57  </span>}
+<span id="L58" class="ln">    58  </span>
+<span id="L59" class="ln">    59  </span>func init() {
+<span id="L60" class="ln">    60  </span>	logrus.SetFormatter(&amp;logrus.JSONFormatter{
+<span id="L61" class="ln">    61  </span>		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
+<span id="L62" class="ln">    62  </span>			filename := strings.Split(f.File, &#34;/&#34;)
+<span id="L63" class="ln">    63  </span>			return fmt.Sprintf(&#34;%s:%d&#34;, filename[len(filename)-1], f.Line), &#34;&#34;
+<span id="L64" class="ln">    64  </span>		},
+<span id="L65" class="ln">    65  </span>	})
+<span id="L66" class="ln">    66  </span>	gin.DefaultWriter = logrus.StandardLogger().Writer()
+<span id="L67" class="ln">    67  </span>	gin.DefaultErrorWriter = logrus.StandardLogger().Writer()
+<span id="L68" class="ln">    68  </span>}
+<span id="L69" class="ln">    69  </span>
+<span id="L70" class="ln">    70  </span>func main() {
+<span id="L71" class="ln">    71  </span>	Execute()
+<span id="L72" class="ln">    72  </span>}
+<span id="L73" class="ln">    73  </span>
+</pre><p></p>
+
+<div id="footer">
+Build version go1.22.4.<br/>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+
+</body></html>

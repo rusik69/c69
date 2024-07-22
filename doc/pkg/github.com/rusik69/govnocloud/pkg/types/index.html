@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>types - GoPages</title>
+
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="/lib/godoc/jquery.js" defer></script>
+
+
+
+
+<script>var goVersion = "go1.22.4";</script>
+<script src="/lib/godoc/godocs.js" defer></script>
+
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages | Auto-generated docs</a></div>
+<div class="top-heading" id="heading-narrow"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages</a></div>
+<a href="#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package types
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/rusik69/govnocloud/pkg/types"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="#pkg-variables">Variables</a></dd>
+			
+			
+			
+				
+				<dd><a href="#Container">type Container</a></dd>
+				
+				
+			
+				
+				<dd><a href="#ContainerFlavor">type ContainerFlavor</a></dd>
+				
+				
+			
+				
+				<dd><a href="#DB">type DB</a></dd>
+				
+				
+			
+				
+				<dd><a href="#DBType">type DBType</a></dd>
+				
+				
+			
+				
+				<dd><a href="#File">type File</a></dd>
+				
+				
+			
+				
+				<dd><a href="#K8S">type K8S</a></dd>
+				
+				
+			
+				
+				<dd><a href="#LLM">type LLM</a></dd>
+				
+				
+			
+				
+				<dd><a href="#LLMModel">type LLMModel</a></dd>
+				
+				
+			
+				
+				<dd><a href="#MasterEnv">type MasterEnv</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Node">type Node</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NodeEnv">type NodeEnv</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NodeStats">type NodeStats</a></dd>
+				
+				
+			
+				
+				<dd><a href="#VM">type VM</a></dd>
+				
+				
+			
+				
+				<dd><a href="#VMFlavor">type VMFlavor</a></dd>
+				
+				
+			
+				
+				<dd><a href="#VMImage">type VMImage</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Volume">type Volume</a></dd>
+				
+				
+			
+				
+				<dd><a href="#WEBEnv">type WEBEnv</a></dd>
+				
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/types/master.go.html">master.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html">node.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/types/web.go.html">web.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				
+				<pre>var <span id="ContainerFlavors">ContainerFlavors</span> = map[<a href="https://pkg.go.dev/builtin/#string">string</a>]<a href="#ContainerFlavor">ContainerFlavor</a>{
+    &#34;small&#34;: <a href="#ContainerFlavor">ContainerFlavor</a>{
+        <a href="#ContainerFlavor.ID">ID</a>:        0,
+        <a href="#ContainerFlavor.MilliCPUs">MilliCPUs</a>: 256,
+        <a href="#ContainerFlavor.Mem">Mem</a>:       512,
+    },
+    &#34;medium&#34;: <a href="#ContainerFlavor">ContainerFlavor</a>{
+        <a href="#ContainerFlavor.ID">ID</a>:        1,
+        <a href="#ContainerFlavor.MilliCPUs">MilliCPUs</a>: 512,
+        <a href="#ContainerFlavor.Mem">Mem</a>:       1024,
+    },
+    &#34;large&#34;: <a href="#ContainerFlavor">ContainerFlavor</a>{
+        <a href="#ContainerFlavor.ID">ID</a>:        2,
+        <a href="#ContainerFlavor.MilliCPUs">MilliCPUs</a>: 1024,
+        <a href="#ContainerFlavor.Mem">Mem</a>:       2048,
+    },
+    &#34;xlarge&#34;: <a href="#ContainerFlavor">ContainerFlavor</a>{
+        <a href="#ContainerFlavor.ID">ID</a>:        3,
+        <a href="#ContainerFlavor.MilliCPUs">MilliCPUs</a>: 2048,
+        <a href="#ContainerFlavor.Mem">Mem</a>:       4096,
+    },
+    &#34;2xlarge&#34;: <a href="#ContainerFlavor">ContainerFlavor</a>{
+        <a href="#ContainerFlavor.ID">ID</a>:        4,
+        <a href="#ContainerFlavor.MilliCPUs">MilliCPUs</a>: 4096,
+        <a href="#ContainerFlavor.Mem">Mem</a>:       8192,
+    },
+}</pre>
+			
+				<p>DBTypes represents the types of database instances.
+
+				<pre>var <span id="DBTypes">DBTypes</span> = map[<a href="https://pkg.go.dev/builtin/#string">string</a>]<a href="#DBType">DBType</a>{
+    &#34;mysql&#34;: <a href="#DBType">DBType</a>{
+        <a href="#DBType.ID">ID</a>:              0,
+        <a href="#DBType.ContainerFlavor">ContainerFlavor</a>: &#34;medium&#34;,
+        <a href="#DBType.Image">Image</a>:           &#34;docker.io/mysql:8&#34;,
+    },
+    &#34;postgres&#34;: <a href="#DBType">DBType</a>{
+        <a href="#DBType.ID">ID</a>:              1,
+        <a href="#DBType.ContainerFlavor">ContainerFlavor</a>: &#34;medium&#34;,
+        <a href="#DBType.Image">Image</a>:           &#34;docker.io/postgres:16&#34;,
+    },
+    &#34;clickhouse&#34;: <a href="#DBType">DBType</a>{
+        <a href="#DBType.ID">ID</a>:              2,
+        <a href="#DBType.ContainerFlavor">ContainerFlavor</a>: &#34;medium&#34;,
+        <a href="#DBType.Image">Image</a>:           &#34;docker.io/clickhouse/clickhouse-server:24.6-alpine&#34;,
+    },
+}</pre>
+			
+				<p>LLMModels represents the flavors of llm instances.
+
+				<pre>var <span id="LLMModels">LLMModels</span> = map[<a href="https://pkg.go.dev/builtin/#string">string</a>]<a href="#LLMModel">LLMModel</a>{
+    &#34;phi3&#34;: <a href="#LLMModel">LLMModel</a>{
+        <a href="#LLMModel.ID">ID</a>:              0,
+        <a href="#LLMModel.ContainerFlavor">ContainerFlavor</a>: &#34;xlarge&#34;,
+        <a href="#LLMModel.Image">Image</a>:           &#34;docker.io/loqutus/govnocloud-llm-phi3&#34;,
+    },
+    &#34;llama3-8b&#34;: <a href="#LLMModel">LLMModel</a>{
+        <a href="#LLMModel.ID">ID</a>:              1,
+        <a href="#LLMModel.ContainerFlavor">ContainerFlavor</a>: &#34;2xlarge&#34;,
+        <a href="#LLMModel.Image">Image</a>:           &#34;docker.io/loqutus/govnocloud-llm-llama3-8b&#34;,
+    },
+}</pre>
+			
+				
+				<pre>var <span id="VMFlavors">VMFlavors</span> = map[<a href="https://pkg.go.dev/builtin/#string">string</a>]<a href="#VMFlavor">VMFlavor</a>{
+    &#34;small&#34;: <a href="#VMFlavor">VMFlavor</a>{
+        <a href="#VMFlavor.ID">ID</a>:        0,
+        <a href="#VMFlavor.MilliCPUs">MilliCPUs</a>: 512,
+        <a href="#VMFlavor.RAM">RAM</a>:       1024,
+        <a href="#VMFlavor.Disk">Disk</a>:      8,
+    },
+    &#34;medium&#34;: <a href="#VMFlavor">VMFlavor</a>{
+        <a href="#VMFlavor.ID">ID</a>:        1,
+        <a href="#VMFlavor.MilliCPUs">MilliCPUs</a>: 1024,
+        <a href="#VMFlavor.RAM">RAM</a>:       2048,
+        <a href="#VMFlavor.Disk">Disk</a>:      8,
+    },
+    &#34;large&#34;: <a href="#VMFlavor">VMFlavor</a>{
+        <a href="#VMFlavor.ID">ID</a>:        2,
+        <a href="#VMFlavor.MilliCPUs">MilliCPUs</a>: 2048,
+        <a href="#VMFlavor.RAM">RAM</a>:       4096,
+        <a href="#VMFlavor.Disk">Disk</a>:      16,
+    },
+    &#34;xlarge&#34;: <a href="#VMFlavor">VMFlavor</a>{
+        <a href="#VMFlavor.ID">ID</a>:        3,
+        <a href="#VMFlavor.MilliCPUs">MilliCPUs</a>: 4096,
+        <a href="#VMFlavor.RAM">RAM</a>:       8192,
+        <a href="#VMFlavor.Disk">Disk</a>:      32,
+    },
+}</pre>
+			
+				
+				<pre>var <span id="VMImages">VMImages</span> = map[<a href="https://pkg.go.dev/builtin/#string">string</a>]<a href="#VMImage">VMImage</a>{
+    &#34;ubuntu22.04&#34;: <a href="#VMImage">VMImage</a>{
+        <a href="#VMImage.ID">ID</a>:   &#34;0&#34;,
+        <a href="#VMImage.Type">Type</a>: &#34;ubuntu&#34;,
+        <a href="#VMImage.Img">Img</a>:  &#34;jammy-server-cloudimg-amd64.img&#34;,
+        <a href="#VMImage.URL">URL</a>:  &#34;https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img&#34;,
+    },
+    &#34;k8s&#34;: <a href="#VMImage">VMImage</a>{
+        <a href="#VMImage.ID">ID</a>:   &#34;1&#34;,
+        <a href="#VMImage.Type">Type</a>: &#34;ubuntu&#34;,
+        <a href="#VMImage.Img">Img</a>:  &#34;jammy-server-cloudimg-amd64.img&#34;,
+        <a href="#VMImage.URL">URL</a>:  &#34;https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img&#34;,
+    },
+    &#34;ubuntu24.04&#34;: <a href="#VMImage">VMImage</a>{
+        <a href="#VMImage.ID">ID</a>:   &#34;2&#34;,
+        <a href="#VMImage.Type">Type</a>: &#34;ubuntu&#34;,
+        <a href="#VMImage.Img">Img</a>:  &#34;noble-server-cloudimg-amd64.img&#34;,
+        <a href="#VMImage.URL">URL</a>:  &#34;https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img&#34;,
+    },
+}</pre>
+			
+		
+		
+		
+			
+			
+			<h2 id="Container">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L4">Container</a>
+				<a class="permalink" href="#Container">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Container represents a container.
+
+			<pre>type Container struct {
+<span id="Container.ID"></span>    <span class="comment">// ID is the ID of the container.</span>
+    ID <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;id&#34;`
+<span id="Container.Name"></span>    <span class="comment">// Name is the name of the container.</span>
+    Name <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+<span id="Container.Image"></span>    <span class="comment">// Image is the image of the container.</span>
+    Image <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;image&#34;`
+<span id="Container.State"></span>    <span class="comment">// State is the state of the container.</span>
+    State <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;state&#34;`
+<span id="Container.IP"></span>    <span class="comment">// IP is the IP address of the container.</span>
+    IP <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;ip&#34;`
+<span id="Container.Node"></span>    <span class="comment">// Node is the host of the container.</span>
+    Node <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;host&#34;`
+<span id="Container.Volumes"></span>    <span class="comment">// Volumes is the volumes of the container.</span>
+    Volumes []<a href="#Volume">Volume</a> `json:&#34;volumes&#34;`
+<span id="Container.Committed"></span>    <span class="comment">// Committed is the committed status of the container.</span>
+    Committed <a href="https://pkg.go.dev/builtin/#bool">bool</a> `json:&#34;committed&#34;`
+<span id="Container.Flavor"></span>    <span class="comment">// Flavor is the flavor of the container.</span>
+    Flavor <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;flavor&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="ContainerFlavor">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L96">ContainerFlavor</a>
+				<a class="permalink" href="#ContainerFlavor">&#xb6;</a>
+				
+				
+			</h2>
+			
+			<pre>type ContainerFlavor struct {
+<span id="ContainerFlavor.ID"></span>    <span class="comment">// ID is the ID of the flavor.</span>
+    ID <a href="https://pkg.go.dev/builtin/#int">int</a> `json:&#34;id&#34;`
+<span id="ContainerFlavor.MilliCPUs"></span>    <span class="comment">// MilliCPUs is the number of MilliCPUs of the flavor.</span>
+    MilliCPUs <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;millicpus&#34;`
+<span id="ContainerFlavor.Mem"></span>    <span class="comment">// Mem is the Mem of the flavor.</span>
+    Mem <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;ram&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="DB">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L254">DB</a>
+				<a class="permalink" href="#DB">&#xb6;</a>
+				
+				
+			</h2>
+			<p>DB represents a database instance.
+
+			<pre>type DB struct {
+<span id="DB.ID"></span>    <span class="comment">// ID is the ID of the database instance.</span>
+    ID <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;id&#34;`
+<span id="DB.Name"></span>    <span class="comment">// Name is the name of the database instance.</span>
+    Name <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+<span id="DB.Type"></span>    <span class="comment">// Type is the type of the database instance.</span>
+    Type <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;type&#34;`
+<span id="DB.Container"></span>    <span class="comment">// Container is the container of the database instance.</span>
+    Container <a href="#Container">Container</a> `json:&#34;container&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="DBType">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L266">DBType</a>
+				<a class="permalink" href="#DBType">&#xb6;</a>
+				
+				
+			</h2>
+			<p>DBType represents a database type.
+
+			<pre>type DBType struct {
+<span id="DBType.ID"></span>    <span class="comment">// ID is the ID of the database type.</span>
+    ID <a href="https://pkg.go.dev/builtin/#int">int</a> `json:&#34;id&#34;`
+<span id="DBType.ContainerFlavor"></span>    <span class="comment">// ContainerFlavor is the container flavor of the database type.</span>
+    ContainerFlavor <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;container_flavor&#34;`
+<span id="DBType.Image"></span>    <span class="comment">// Image is the image of the database type.</span>
+    Image <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;image&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="File">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/master.go.html#L32">File</a>
+				<a class="permalink" href="#File">&#xb6;</a>
+				
+				
+			</h2>
+			<p>File represents a file.
+
+			<pre>type File struct {
+<span id="File.Name"></span>    <span class="comment">// Name is the name of the file.</span>
+    Name <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+<span id="File.Size"></span>    <span class="comment">// Size is the size of the file.</span>
+    Size <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;size&#34;`
+<span id="File.NodeHost"></span>    <span class="comment">// NodeHost is the node of the file.</span>
+    NodeHost <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;nodehost&#34;`
+<span id="File.NodePort"></span>    <span class="comment">// NodePort is the node of the file.</span>
+    NodePort <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;nodeport&#34;`
+<span id="File.NodeName"></span>    <span class="comment">// NodeName is the node of the file.</span>
+    NodeName <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;nodename&#34;`
+<span id="File.Committed"></span>    <span class="comment">// Committed is the committed status of the file.</span>
+    Committed <a href="https://pkg.go.dev/builtin/#bool">bool</a> `json:&#34;committed&#34;`
+<span id="File.Timestamp"></span>    <span class="comment">// Timestamp is the timestamp of the file.</span>
+    Timestamp <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;timestamp&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="K8S">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L204">K8S</a>
+				<a class="permalink" href="#K8S">&#xb6;</a>
+				
+				
+			</h2>
+			<p>K8S represents a k8s cluster.
+
+			<pre>type K8S struct {
+<span id="K8S.ID"></span>    <span class="comment">// ID is the ID of the k8s cluster.</span>
+    ID <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;id&#34;`
+<span id="K8S.Name"></span>    <span class="comment">// Name is the name of the k8s cluster.</span>
+    Name <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+    <span class="comment">// Vm is the virtual machine of the k8s cluster.</span>
+<span id="K8S.VM"></span>    VM <a href="#VM">VM</a> `json:&#34;vm&#34;`
+<span id="K8S.Flavor"></span>    <span class="comment">// Flavor is the flavor of the k8s cluster.</span>
+    Flavor <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;flavor&#34;`
+<span id="K8S.Kubeconfig"></span>    <span class="comment">// Kubeconfig is the kubeconfig of the k8s cluster.</span>
+    Kubeconfig <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;kubeconfig&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="LLM">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L218">LLM</a>
+				<a class="permalink" href="#LLM">&#xb6;</a>
+				
+				
+			</h2>
+			<p>LLM represents an llm instance.
+
+			<pre>type LLM struct {
+<span id="LLM.ID"></span>    <span class="comment">// ID is the ID of the llm instance.</span>
+    ID <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;id&#34;`
+<span id="LLM.Name"></span>    <span class="comment">// Name is the name of the llm instance.</span>
+    Name <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+<span id="LLM.Model"></span>    <span class="comment">// Model is the flavor of the llm instance.</span>
+    Model <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;model&#34;`
+<span id="LLM.Container"></span>    <span class="comment">// Container is the container of the llm instance.</span>
+    Container <a href="#Container">Container</a> `json:&#34;container&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="LLMModel">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L230">LLMModel</a>
+				<a class="permalink" href="#LLMModel">&#xb6;</a>
+				
+				
+			</h2>
+			<p>LLMModel represents a llm flavor.
+
+			<pre>type LLMModel struct {
+<span id="LLMModel.ID"></span>    <span class="comment">// ID is the ID of the flavor.</span>
+    ID <a href="https://pkg.go.dev/builtin/#int">int</a> `json:&#34;id&#34;`
+    <span class="comment">// ContainerFlavorName is the container flavor of the llm flavor.</span>
+<span id="LLMModel.ContainerFlavor"></span>    ContainerFlavor <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;container_flavor&#34;`
+<span id="LLMModel.Image"></span>    <span class="comment">// Image is the image of the llm flavor.</span>
+    Image <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;image&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="MasterEnv">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/master.go.html#L4">MasterEnv</a>
+				<a class="permalink" href="#MasterEnv">&#xb6;</a>
+				
+				
+			</h2>
+			<p>MasterEnv represents the master environment.
+
+			<pre>type MasterEnv struct {
+<span id="MasterEnv.ETCDHost"></span>    <span class="comment">// ETCDHost is the host of the etcd.</span>
+    ETCDHost <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;etcd_url&#34;`
+<span id="MasterEnv.ETCDPort"></span>    <span class="comment">// ETCDPort is the port of the etcd.</span>
+    ETCDPort <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;etcd_port&#34;`
+<span id="MasterEnv.ETCDUser"></span>    <span class="comment">// ETCDUser is the user of the etcd.</span>
+    ETCDUser <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;etcd_user&#34;`
+<span id="MasterEnv.ETCDPass"></span>    <span class="comment">// ETCDPass is the password of the etcd.</span>
+    ETCDPass <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;etcd_pass&#34;`
+<span id="MasterEnv.ListenPort"></span>    <span class="comment">// ListenPort is the port of the master.</span>
+    ListenPort <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;port&#34;`
+<span id="MasterEnv.ListenHost"></span>    <span class="comment">// ListenHost is the IP of the master.</span>
+    ListenHost <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;ip&#34;`
+}
+</pre>
+
+			
+
+			
+				<p>MasterEnvInstance is the singleton instance of MasterEnv.
+
+				<pre>var <span id="MasterEnvInstance">MasterEnvInstance</span> *<a href="#MasterEnv">MasterEnv</a></pre>
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Node">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/master.go.html#L20">Node</a>
+				<a class="permalink" href="#Node">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Node represents a node.
+
+			<pre>type Node struct {
+<span id="Node.Name"></span>    <span class="comment">// Name is the name of the node.</span>
+    Name <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+<span id="Node.Host"></span>    <span class="comment">// Host is the Host address of the node.</span>
+    Host <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;ip&#34;`
+<span id="Node.Port"></span>    <span class="comment">// Port is the port of the node.</span>
+    Port <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;port&#34;`
+<span id="Node.Stats"></span>    <span class="comment">// Stats is the stats of the node.</span>
+    Stats <a href="#NodeStats">NodeStats</a> `json:&#34;stats&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NodeEnv">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L167">NodeEnv</a>
+				<a class="permalink" href="#NodeEnv">&#xb6;</a>
+				
+				
+			</h2>
+			
+			<pre>type NodeEnv struct {
+<span id="NodeEnv.Name"></span>    Name            <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+<span id="NodeEnv.IP"></span>    IP              <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;ip&#34;`
+<span id="NodeEnv.ListenPort"></span>    ListenPort      <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;listen_port&#34;`
+<span id="NodeEnv.ListenHost"></span>    ListenHost      <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;listen_host&#34;`
+<span id="NodeEnv.LibVirtURI"></span>    LibVirtURI      <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;libvirt_socket&#34;`
+<span id="NodeEnv.LibVirtImageDir"></span>    LibVirtImageDir <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;libvirt_image_dir&#34;`
+<span id="NodeEnv.LibVirtBootDir"></span>    LibVirtBootDir  <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;libvirt_boot_dir&#34;`
+<span id="NodeEnv.FilesDir"></span>    FilesDir        <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;files_dir&#34;`
+}
+</pre>
+
+			
+
+			
+				<p>NodeEnvInstance is the singleton instance of NodeEnv.
+
+				<pre>var <span id="NodeEnvInstance">NodeEnvInstance</span> *<a href="#NodeEnv">NodeEnv</a></pre>
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NodeStats">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L182">NodeStats</a>
+				<a class="permalink" href="#NodeStats">&#xb6;</a>
+				
+				
+			</h2>
+			<p>NodeStats represents the stats.
+
+			<pre>type NodeStats struct {
+<span id="NodeStats.TotalMilliCPUs"></span>    TotalMilliCPUs <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;total_millicpus&#34;`
+<span id="NodeStats.FreeMilliCPUs"></span>    FreeMilliCPUs  <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;free_millicpus&#34;`
+<span id="NodeStats.TotalMEM"></span>    TotalMEM       <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;total_mem&#34;`
+<span id="NodeStats.FreeMEM"></span>    FreeMEM        <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;free_mem&#34;`
+<span id="NodeStats.TotalDISK"></span>    TotalDISK      <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;total_disk&#34;`
+<span id="NodeStats.FreeDISK"></span>    FreeDISK       <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;free_disk&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="VM">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L26">VM</a>
+				<a class="permalink" href="#VM">&#xb6;</a>
+				
+				
+			</h2>
+			<p>VM represents a virtual machine.
+
+			<pre>type VM struct {
+<span id="VM.ID"></span>    <span class="comment">// ID is the ID of the virtual machine.</span>
+    ID <a href="https://pkg.go.dev/builtin/#int">int</a> `json:&#34;id&#34;`
+<span id="VM.Name"></span>    <span class="comment">// Name is the name of the virtual machine.</span>
+    Name <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+<span id="VM.IP"></span>    <span class="comment">// IP is the IP address of the virtual machine.</span>
+    IP <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;ip&#34;`
+<span id="VM.Node"></span>    <span class="comment">// Node is the host of the virtual machine.</span>
+    Node <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;host&#34;`
+<span id="VM.NodeHostname"></span>    <span class="comment">// NodeHostname is the hostname of the node.</span>
+    NodeHostname <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;nodehostname&#34;`
+<span id="VM.NodePort"></span>    <span class="comment">// NodePort is the port of the node.</span>
+    NodePort <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;nodeport&#34;`
+<span id="VM.State"></span>    <span class="comment">// State is the status of the virtual machine.</span>
+    State <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;state&#34;`
+<span id="VM.Image"></span>    <span class="comment">// Image is the image of the virtual machine.</span>
+    Image <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;image&#34;`
+<span id="VM.Flavor"></span>    <span class="comment">// Flavor is the flavor of the virtual machine.</span>
+    Flavor <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;flavor&#34;`
+<span id="VM.Volumes"></span>    <span class="comment">// Volumes is the volumes of the virtual machine.</span>
+    Volumes []<a href="#Volume">Volume</a> `json:&#34;volumes&#34;`
+<span id="VM.Committed"></span>    <span class="comment">// Committed is the committed status of the virtual machine.</span>
+    Committed <a href="https://pkg.go.dev/builtin/#bool">bool</a> `json:&#34;committed&#34;`
+<span id="VM.VNCURL"></span>    <span class="comment">// VNCURL is the VNC url of the virtual machine.</span>
+    VNCURL <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;vncurl&#34;`
+<span id="VM.KubeConfig"></span>    <span class="comment">// KubeConfig is the kubeconfig of the virtual machine.</span>
+    KubeConfig <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;kubeconfig&#34;`
+<span id="VM.Type"></span>    <span class="comment">// Type is the type of the virtual machine.</span>
+    Type <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;type&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="VMFlavor">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L58">VMFlavor</a>
+				<a class="permalink" href="#VMFlavor">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Flavor represents a vm flavor.
+
+			<pre>type VMFlavor struct {
+<span id="VMFlavor.ID"></span>    <span class="comment">// ID is the ID of the flavor.</span>
+    ID <a href="https://pkg.go.dev/builtin/#int">int</a> `json:&#34;id&#34;`
+<span id="VMFlavor.MilliCPUs"></span>    <span class="comment">// MilliCPUs is the number of MilliCPUs of the flavor.</span>
+    MilliCPUs <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;millicpus&#34;`
+<span id="VMFlavor.RAM"></span>    <span class="comment">// RAM is the RAM of the flavor.</span>
+    RAM <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;ram&#34;`
+<span id="VMFlavor.Disk"></span>    <span class="comment">// Disk is the disk of the flavor.</span>
+    Disk <a href="https://pkg.go.dev/builtin/#uint64">uint64</a> `json:&#34;disk&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="VMImage">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L133">VMImage</a>
+				<a class="permalink" href="#VMImage">&#xb6;</a>
+				
+				
+			</h2>
+			
+			<pre>type VMImage struct {
+<span id="VMImage.ID"></span>    <span class="comment">// ID is the ID of the image.</span>
+    ID <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;id&#34;`
+    <span class="comment">// Name is the name of the image.</span>
+<span id="VMImage.Img"></span>    Img <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;img&#34;`
+<span id="VMImage.URL"></span>    <span class="comment">// URL is the URL of the image.</span>
+    URL <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;url&#34;`
+<span id="VMImage.UserDataFile"></span>    <span class="comment">// UserDataFile is the cloud init file of the image.</span>
+    UserDataFile <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;cloudinitfile&#34;`
+<span id="VMImage.Type"></span>    <span class="comment">// Type is the type of the image.</span>
+    Type <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;type&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Volume">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/node.go.html#L192">Volume</a>
+				<a class="permalink" href="#Volume">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Volume represents a volume.
+
+			<pre>type Volume struct {
+<span id="Volume.ID"></span>    <span class="comment">// ID is the ID of the volume.</span>
+    ID <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;id&#34;`
+<span id="Volume.Name"></span>    <span class="comment">// Name is the name of the volume.</span>
+    Name <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;name&#34;`
+<span id="Volume.Path"></span>    <span class="comment">// Path is the path of the volume.</span>
+    Path <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;path&#34;`
+<span id="Volume.Size"></span>    <span class="comment">// Size is the size of the volume.</span>
+    Size <a href="https://pkg.go.dev/builtin/#int64">int64</a> `json:&#34;size&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="WEBEnv">type <a href="/src/github.com/rusik69/govnocloud/pkg/types/web.go.html#L4">WEBEnv</a>
+				<a class="permalink" href="#WEBEnv">&#xb6;</a>
+				
+				
+			</h2>
+			<p>WEBEnv is the environment of the web server.
+
+			<pre>type WEBEnv struct {
+<span id="WEBEnv.Port"></span>    <span class="comment">// Port is the port of the web server.</span>
+    Port <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;port&#34;`
+<span id="WEBEnv.MasterHost"></span>    <span class="comment">// MasterHost is the host of the master node.</span>
+    MasterHost <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;master_host&#34;`
+<span id="WEBEnv.MasterPort"></span>    <span class="comment">// MasterPort is the port of the master node.</span>
+    MasterPort <a href="https://pkg.go.dev/builtin/#string">string</a> `json:&#34;master_port&#34;`
+}
+</pre>
+
+			
+
+			
+				<p>WEBEnvInstance is the singleton instance of WEBEnv.
+
+				<pre>var <span id="WEBEnvInstance">WEBEnvInstance</span> *<a href="#WEBEnv">WEBEnv</a></pre>
+			
+
+			
+			
+			
+
+			
+
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.22.4.<br>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

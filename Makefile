@@ -76,4 +76,7 @@ remotetest:
 rsync:
 	rsync -avz . master.govno.cloud:~/govnocloud
 
+doc:
+	gopages -internal -out doc
+
 default: get build

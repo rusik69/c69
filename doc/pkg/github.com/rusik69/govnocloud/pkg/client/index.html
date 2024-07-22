@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>client - GoPages</title>
+
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="/lib/godoc/jquery.js" defer></script>
+
+
+
+
+<script>var goVersion = "go1.22.4";</script>
+<script src="/lib/godoc/godocs.js" defer></script>
+
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages | Auto-generated docs</a></div>
+<div class="top-heading" id="heading-narrow"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages</a></div>
+<a href="#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package client
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/rusik69/govnocloud/pkg/client"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#AddNode">func AddNode(host, port, name, nodeHost, nodePort string) error</a></dd>
+			
+				
+				<dd><a href="#CreateContainer">func CreateContainer(host, port, name, image, flavor string) (types.Container, error)</a></dd>
+			
+				
+				<dd><a href="#CreateDB">func CreateDB(host, port, name, dbType string) (types.DB, error)</a></dd>
+			
+				
+				<dd><a href="#CreateK8S">func CreateK8S(host, port, name, flavor string) (types.K8S, error)</a></dd>
+			
+				
+				<dd><a href="#CreateLLM">func CreateLLM(host, port, name, model string) (types.LLM, error)</a></dd>
+			
+				
+				<dd><a href="#CreateVM">func CreateVM(host, port, name, image, flavor string) (types.VM, error)</a></dd>
+			
+				
+				<dd><a href="#DeleteContainer">func DeleteContainer(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#DeleteDB">func DeleteDB(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#DeleteFile">func DeleteFile(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#DeleteK8S">func DeleteK8S(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#DeleteLLM">func DeleteLLM(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#DeleteNode">func DeleteNode(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#DeleteVM">func DeleteVM(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#DownloadFile">func DownloadFile(masterHost, masterPort, fileName string) error</a></dd>
+			
+				
+				<dd><a href="#GenerateLLM">func GenerateLLM(host, port, name, input string) (string, error)</a></dd>
+			
+				
+				<dd><a href="#GetContainer">func GetContainer(host, port, name string) (types.Container, error)</a></dd>
+			
+				
+				<dd><a href="#GetDB">func GetDB(host, port, name string) (types.DB, error)</a></dd>
+			
+				
+				<dd><a href="#GetK8S">func GetK8S(host, port, name string) (types.K8S, error)</a></dd>
+			
+				
+				<dd><a href="#GetKubeconfig">func GetKubeconfig(host, port, name string) (string, error)</a></dd>
+			
+				
+				<dd><a href="#GetLLM">func GetLLM(host, port, name string) (types.LLM, error)</a></dd>
+			
+				
+				<dd><a href="#GetNode">func GetNode(host, port, name string) (types.Node, error)</a></dd>
+			
+				
+				<dd><a href="#GetNodeStats">func GetNodeStats(host, port string) (types.NodeStats, error)</a></dd>
+			
+				
+				<dd><a href="#GetVM">func GetVM(host, port, name string) (types.VM, error)</a></dd>
+			
+				
+				<dd><a href="#ListContainers">func ListContainers(host, port string) ([]types.Container, error)</a></dd>
+			
+				
+				<dd><a href="#ListDBs">func ListDBs(host, port string) ([]types.DB, error)</a></dd>
+			
+				
+				<dd><a href="#ListFiles">func ListFiles(masterHost, masterPort string) ([]types.File, error)</a></dd>
+			
+				
+				<dd><a href="#ListK8S">func ListK8S(host, port string) ([]types.K8S, error)</a></dd>
+			
+				
+				<dd><a href="#ListLLMs">func ListLLMs(host, port string) ([]types.LLM, error)</a></dd>
+			
+				
+				<dd><a href="#ListNodes">func ListNodes(host, port string) ([]types.Node, error)</a></dd>
+			
+				
+				<dd><a href="#ListVMs">func ListVMs(host, port string) ([]types.VM, error)</a></dd>
+			
+				
+				<dd><a href="#RunSSH">func RunSSH(host, keyPath, user, proxyHost string) error</a></dd>
+			
+				
+				<dd><a href="#StartContainer">func StartContainer(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StartDB">func StartDB(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StartK8S">func StartK8S(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StartLLM">func StartLLM(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StartVM">func StartVM(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StopContainer">func StopContainer(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StopDB">func StopDB(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StopK8S">func StopK8S(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StopLLM">func StopLLM(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#StopVM">func StopVM(host, port, name string) error</a></dd>
+			
+				
+				<dd><a href="#UploadFile">func UploadFile(masterHost, masterPort, sourcePath string) error</a></dd>
+			
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/client/container.go.html">container.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/client/db.go.html">db.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/client/file.go.html">file.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/client/k8s.go.html">k8s.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/client/llm.go.html">llm.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/client/node.go.html">node.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/client/ssh.go.html">ssh.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/client/vm.go.html">vm.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+			
+			
+			<h2 id="AddNode">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/node.go.html#L14">AddNode</a>
+				<a class="permalink" href="#AddNode">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func AddNode(host, port, name, nodeHost, nodePort <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>AddNode adds a host.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateContainer">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/container.go.html#L14">CreateContainer</a>
+				<a class="permalink" href="#CreateContainer">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateContainer(host, port, name, image, flavor <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#Container">Container</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>CreateContainer creates a container.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateDB">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/db.go.html#L14">CreateDB</a>
+				<a class="permalink" href="#CreateDB">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateDB(host, port, name, dbType <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#DB">DB</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>CreateDB creates a database.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateK8S">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/k8s.go.html#L15">CreateK8S</a>
+				<a class="permalink" href="#CreateK8S">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateK8S(host, port, name, flavor <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#K8S">K8S</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>CreateK8S creates a k8s cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/llm.go.html#L14">CreateLLM</a>
+				<a class="permalink" href="#CreateLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateLLM(host, port, name, model <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#LLM">LLM</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>CreateLLM creates a llm cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateVM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/vm.go.html#L14">CreateVM</a>
+				<a class="permalink" href="#CreateVM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateVM(host, port, name, image, flavor <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#VM">VM</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>CreateVM creates a vm.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteContainer">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/container.go.html#L129">DeleteContainer</a>
+				<a class="permalink" href="#DeleteContainer">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteContainer(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DeleteContainer deletes a container.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteDB">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/db.go.html#L68">DeleteDB</a>
+				<a class="permalink" href="#DeleteDB">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteDB(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DeleteDB deletes a database.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteFile">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/file.go.html#L129">DeleteFile</a>
+				<a class="permalink" href="#DeleteFile">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteFile(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DeleteFile deletes a file.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteK8S">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/k8s.go.html#L69">DeleteK8S</a>
+				<a class="permalink" href="#DeleteK8S">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteK8S(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DeleteK8S deletes a k8s cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/llm.go.html#L68">DeleteLLM</a>
+				<a class="permalink" href="#DeleteLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteLLM(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DeleteLLM deletes a llm cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteNode">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/node.go.html#L41">DeleteNode</a>
+				<a class="permalink" href="#DeleteNode">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteNode(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DeleteNode deletes a node.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteVM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/vm.go.html#L46">DeleteVM</a>
+				<a class="permalink" href="#DeleteVM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteVM(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DeleteVM deletes a vm.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DownloadFile">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/file.go.html#L94">DownloadFile</a>
+				<a class="permalink" href="#DownloadFile">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DownloadFile(masterHost, masterPort, fileName <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DownloadFile downloads a file.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GenerateLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/llm.go.html#L149">GenerateLLM</a>
+				<a class="permalink" href="#GenerateLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GenerateLLM(host, port, name, input <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="https://pkg.go.dev/builtin/#string">string</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GenerateLLM generates a response from llm.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetContainer">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/container.go.html#L104">GetContainer</a>
+				<a class="permalink" href="#GetContainer">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetContainer(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#Container">Container</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetContainer gets a container.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetDB">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/db.go.html#L45">GetDB</a>
+				<a class="permalink" href="#GetDB">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetDB(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#DB">DB</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetDB gets a database.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetK8S">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/k8s.go.html#L46">GetK8S</a>
+				<a class="permalink" href="#GetK8S">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetK8S(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#K8S">K8S</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetK8S gets a k8s cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetKubeconfig">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/k8s.go.html#L150">GetKubeconfig</a>
+				<a class="permalink" href="#GetKubeconfig">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetKubeconfig(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="https://pkg.go.dev/builtin/#string">string</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetKubeconfig gets the kubeconfig of a k8s cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/llm.go.html#L45">GetLLM</a>
+				<a class="permalink" href="#GetLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetLLM(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#LLM">LLM</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetLLM gets a llm cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetNode">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/node.go.html#L79">GetNode</a>
+				<a class="permalink" href="#GetNode">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetNode(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#Node">Node</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetNode gets a node.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetNodeStats">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/node.go.html#L95">GetNodeStats</a>
+				<a class="permalink" href="#GetNodeStats">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetNodeStats(host, port <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#NodeStats">NodeStats</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetNodeStats gets a node stats.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetVM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/vm.go.html#L117">GetVM</a>
+				<a class="permalink" href="#GetVM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetVM(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#VM">VM</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetVM gets a vm.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListContainers">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/container.go.html#L81">ListContainers</a>
+				<a class="permalink" href="#ListContainers">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListContainers(host, port <a href="https://pkg.go.dev/builtin/#string">string</a>) ([]<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#Container">Container</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ListContainers lists containers.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListDBs">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/db.go.html#L90">ListDBs</a>
+				<a class="permalink" href="#ListDBs">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListDBs(host, port <a href="https://pkg.go.dev/builtin/#string">string</a>) ([]<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#DB">DB</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ListDBs lists databases.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListFiles">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/file.go.html#L151">ListFiles</a>
+				<a class="permalink" href="#ListFiles">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListFiles(masterHost, masterPort <a href="https://pkg.go.dev/builtin/#string">string</a>) ([]<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#File">File</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ListFiles lists files.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListK8S">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/k8s.go.html#L91">ListK8S</a>
+				<a class="permalink" href="#ListK8S">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListK8S(host, port <a href="https://pkg.go.dev/builtin/#string">string</a>) ([]<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#K8S">K8S</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ListK8S lists k8s clusters.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListLLMs">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/llm.go.html#L90">ListLLMs</a>
+				<a class="permalink" href="#ListLLMs">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListLLMs(host, port <a href="https://pkg.go.dev/builtin/#string">string</a>) ([]<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#LLM">LLM</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ListLLMs lists all llm clusters.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListNodes">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/node.go.html#L63">ListNodes</a>
+				<a class="permalink" href="#ListNodes">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListNodes(host, port <a href="https://pkg.go.dev/builtin/#string">string</a>) ([]<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#Node">Node</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ListNodes lists nodes.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListVMs">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/vm.go.html#L104">ListVMs</a>
+				<a class="permalink" href="#ListVMs">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListVMs(host, port <a href="https://pkg.go.dev/builtin/#string">string</a>) ([]<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#VM">VM</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ListVMs lists vms.
+
+			
+			
+
+		
+			
+			
+			<h2 id="RunSSH">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/ssh.go.html#L13">RunSSH</a>
+				<a class="permalink" href="#RunSSH">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func RunSSH(host, keyPath, user, proxyHost <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>RunSSH runs ssh to a node or a vm
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartContainer">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/container.go.html#L45">StartContainer</a>
+				<a class="permalink" href="#StartContainer">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartContainer(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StartContainer starts a container.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartDB">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/db.go.html#L113">StartDB</a>
+				<a class="permalink" href="#StartDB">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartDB(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StartDB starts a database.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartK8S">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/k8s.go.html#L114">StartK8S</a>
+				<a class="permalink" href="#StartK8S">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartK8S(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StartK8S starts a k8s cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/llm.go.html#L113">StartLLM</a>
+				<a class="permalink" href="#StartLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartLLM(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StartLLM starts a llm cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartVM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/vm.go.html#L68">StartVM</a>
+				<a class="permalink" href="#StartVM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartVM(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StartVM starts a vm.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopContainer">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/container.go.html#L63">StopContainer</a>
+				<a class="permalink" href="#StopContainer">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopContainer(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StopContainer stops a container.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopDB">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/db.go.html#L131">StopDB</a>
+				<a class="permalink" href="#StopDB">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopDB(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StopDB stops a database.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopK8S">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/k8s.go.html#L132">StopK8S</a>
+				<a class="permalink" href="#StopK8S">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopK8S(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StopK8S stops a k8s cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/llm.go.html#L131">StopLLM</a>
+				<a class="permalink" href="#StopLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopLLM(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StopLLM stops a llm cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopVM">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/vm.go.html#L86">StopVM</a>
+				<a class="permalink" href="#StopVM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopVM(host, port, name <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StopVM stops a vm.
+
+			
+			
+
+		
+			
+			
+			<h2 id="UploadFile">func <a href="/src/github.com/rusik69/govnocloud/pkg/client/file.go.html#L17">UploadFile</a>
+				<a class="permalink" href="#UploadFile">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func UploadFile(masterHost, masterPort, sourcePath <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>UploadFile uploads a file.
+
+			
+			
+
+		
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.22.4.<br>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

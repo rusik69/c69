@@ -1,0 +1,461 @@
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#375EAB"/>
+
+  <title>src/github.com/rusik69/govnocloud/pkg/master/vm.go - GoPages</title>
+
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css"/>
+
+<script>window.initFuncs = [];</script>
+<script src="/lib/godoc/jquery.js" defer=""></script>
+
+
+
+
+<script>var goVersion = "go1.22.4";</script>
+<script src="/lib/godoc/godocs.js" defer=""></script>
+
+</head>
+<body>
+
+<div id="lowframe" style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages | Auto-generated docs</a></div>
+<div class="top-heading" id="heading-narrow"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages</a></div>
+<a href="#" id="menu-button"><span id="menu-button-arrow">▽</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Source file
+    <a href="/src">src</a>/<a href="/src/github.com">github.com</a>/<a href="/src/github.com/rusik69">rusik69</a>/<a href="/src/github.com/rusik69/govnocloud">govnocloud</a>/<a href="/src/github.com/rusik69/govnocloud/pkg">pkg</a>/<a href="/src/github.com/rusik69/govnocloud/pkg/master">master</a>/<span class="text-muted">vm.go</span>
+  </h1>
+
+
+
+
+
+  <h2>
+    Documentation: <a href="/pkg/github.com/rusik69/govnocloud/pkg/master">github.com/rusik69/govnocloud/pkg/master</a>
+  </h2>
+
+
+
+<div id="nav"></div>
+
+
+<script type="text/javascript">document.ANALYSIS_DATA = null;</script>
+<pre><span id="L1" class="ln">     1  </span>package master
+<span id="L2" class="ln">     2  </span>
+<span id="L3" class="ln">     3  </span>import (
+<span id="L4" class="ln">     4  </span>	&#34;encoding/json&#34;
+<span id="L5" class="ln">     5  </span>
+<span id="L6" class="ln">     6  </span>	&#34;github.com/gin-gonic/gin&#34;
+<span id="L7" class="ln">     7  </span>	&#34;github.com/rusik69/govnocloud/pkg/client&#34;
+<span id="L8" class="ln">     8  </span>	&#34;github.com/rusik69/govnocloud/pkg/types&#34;
+<span id="L9" class="ln">     9  </span>	&#34;github.com/sirupsen/logrus&#34;
+<span id="L10" class="ln">    10  </span>)
+<span id="L11" class="ln">    11  </span>
+<span id="L12" class="ln">    12  </span><span class="comment">// CreateVMHandler handles the create vm request.</span>
+<span id="L13" class="ln">    13  </span>func CreateVMHandler(c *gin.Context) {
+<span id="L14" class="ln">    14  </span>	body := c.Request.Body
+<span id="L15" class="ln">    15  </span>	defer body.Close()
+<span id="L16" class="ln">    16  </span>	var tempVM types.VM
+<span id="L17" class="ln">    17  </span>	if err := c.ShouldBindJSON(&amp;tempVM); err != nil {
+<span id="L18" class="ln">    18  </span>		c.JSON(400, gin.H{&#34;error&#34;: err.Error()})
+<span id="L19" class="ln">    19  </span>		logrus.Error(err.Error())
+<span id="L20" class="ln">    20  </span>		return
+<span id="L21" class="ln">    21  </span>	}
+<span id="L22" class="ln">    22  </span>	if tempVM.Name == &#34;&#34; || tempVM.Image == &#34;&#34; || tempVM.Flavor == &#34;&#34; {
+<span id="L23" class="ln">    23  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;name, image or flavor is empty&#34;})
+<span id="L24" class="ln">    24  </span>		logrus.Error(&#34;name, image or flavor is empty&#34;)
+<span id="L25" class="ln">    25  </span>		return
+<span id="L26" class="ln">    26  </span>	}
+<span id="L27" class="ln">    27  </span>	vmFlavorName := tempVM.Flavor
+<span id="L28" class="ln">    28  </span>	logrus.Println(&#34;Creating VM&#34;, tempVM)
+<span id="L29" class="ln">    29  </span>	vmInfoString, err := ETCDGet(&#34;/vms/&#34; + tempVM.Name)
+<span id="L30" class="ln">    30  </span>	if err != nil {
+<span id="L31" class="ln">    31  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L32" class="ln">    32  </span>		logrus.Error(err.Error())
+<span id="L33" class="ln">    33  </span>		return
+<span id="L34" class="ln">    34  </span>	}
+<span id="L35" class="ln">    35  </span>	if vmInfoString != &#34;&#34; {
+<span id="L36" class="ln">    36  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;vm with this name already exists&#34;})
+<span id="L37" class="ln">    37  </span>		logrus.Error(&#34;vm with this name already exists&#34;)
+<span id="L38" class="ln">    38  </span>		return
+<span id="L39" class="ln">    39  </span>	}
+<span id="L40" class="ln">    40  </span>	created := false
+<span id="L41" class="ln">    41  </span>	var newVM types.VM
+<span id="L42" class="ln">    42  </span>	nodes, err := GetNodes()
+<span id="L43" class="ln">    43  </span>	if err != nil {
+<span id="L44" class="ln">    44  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L45" class="ln">    45  </span>		logrus.Error(err.Error())
+<span id="L46" class="ln">    46  </span>		return
+<span id="L47" class="ln">    47  </span>	}
+<span id="L48" class="ln">    48  </span>	vmFlavor := types.VMFlavors[vmFlavorName]
+<span id="L49" class="ln">    49  </span>	usedNode := types.Node{}
+<span id="L50" class="ln">    50  </span>	for _, node := range nodes {
+<span id="L51" class="ln">    51  </span>		if node.Stats.FreeMilliCPUs &lt; vmFlavor.MilliCPUs ||
+<span id="L52" class="ln">    52  </span>			node.Stats.FreeMEM &lt; vmFlavor.RAM ||
+<span id="L53" class="ln">    53  </span>			node.Stats.FreeDISK &lt; vmFlavor.Disk {
+<span id="L54" class="ln">    54  </span>			logrus.Println(&#34;Not enough resources on node&#34;, node.Name)
+<span id="L55" class="ln">    55  </span>			logrus.Println(&#34;FreeMilliCPUs&#34;, node.Stats.FreeMilliCPUs, &#34;MilliCPUs&#34;, vmFlavor.MilliCPUs)
+<span id="L56" class="ln">    56  </span>			logrus.Println(&#34;FreeMEM&#34;, node.Stats.FreeMEM, &#34;Mem&#34;, vmFlavor.RAM)
+<span id="L57" class="ln">    57  </span>			continue
+<span id="L58" class="ln">    58  </span>		}
+<span id="L59" class="ln">    59  </span>		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name,
+<span id="L60" class="ln">    60  </span>			tempVM.Image, tempVM.Flavor)
+<span id="L61" class="ln">    61  </span>		if err != nil {
+<span id="L62" class="ln">    62  </span>			logrus.Error(&#34;can&#39;t create vm on node: &#34;, node.Name)
+<span id="L63" class="ln">    63  </span>			logrus.Error(err.Error())
+<span id="L64" class="ln">    64  </span>			continue
+<span id="L65" class="ln">    65  </span>		}
+<span id="L66" class="ln">    66  </span>		newVM.ID = createdVM.ID
+<span id="L67" class="ln">    67  </span>		newVM.IP = createdVM.IP
+<span id="L68" class="ln">    68  </span>		newVM.State = createdVM.State
+<span id="L69" class="ln">    69  </span>		newVM.Node = node.Name
+<span id="L70" class="ln">    70  </span>		newVM.Name = tempVM.Name
+<span id="L71" class="ln">    71  </span>		newVM.Image = tempVM.Image
+<span id="L72" class="ln">    72  </span>		newVM.Flavor = tempVM.Flavor
+<span id="L73" class="ln">    73  </span>		newVM.VNCURL = tempVM.VNCURL
+<span id="L74" class="ln">    74  </span>		newVM.NodeHostname = tempVM.NodeHostname
+<span id="L75" class="ln">    75  </span>		newVM.KubeConfig = createdVM.KubeConfig
+<span id="L76" class="ln">    76  </span>		newVM.Type = tempVM.Type
+<span id="L77" class="ln">    77  </span>		created = true
+<span id="L78" class="ln">    78  </span>		usedNode = node
+<span id="L79" class="ln">    79  </span>		break
+<span id="L80" class="ln">    80  </span>	}
+<span id="L81" class="ln">    81  </span>	if !created {
+<span id="L82" class="ln">    82  </span>		c.JSON(500, gin.H{&#34;error&#34;: &#34;vm was not created&#34;})
+<span id="L83" class="ln">    83  </span>		logrus.Error(&#34;vm was not created&#34;)
+<span id="L84" class="ln">    84  </span>		return
+<span id="L85" class="ln">    85  </span>	}
+<span id="L86" class="ln">    86  </span>	newVM.Committed = true
+<span id="L87" class="ln">    87  </span>	newVmstring, err := json.Marshal(newVM)
+<span id="L88" class="ln">    88  </span>	if err != nil {
+<span id="L89" class="ln">    89  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L90" class="ln">    90  </span>		logrus.Error(err.Error())
+<span id="L91" class="ln">    91  </span>		return
+<span id="L92" class="ln">    92  </span>	}
+<span id="L93" class="ln">    93  </span>	err = ETCDPut(&#34;/vms/&#34;+newVM.Name, string(newVmstring))
+<span id="L94" class="ln">    94  </span>	if err != nil {
+<span id="L95" class="ln">    95  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L96" class="ln">    96  </span>		logrus.Error(err.Error())
+<span id="L97" class="ln">    97  </span>		return
+<span id="L98" class="ln">    98  </span>	}
+<span id="L99" class="ln">    99  </span>	usedNode.Stats.FreeMilliCPUs -= vmFlavor.MilliCPUs
+<span id="L100" class="ln">   100  </span>	usedNode.Stats.FreeMEM -= vmFlavor.RAM * 1024 * 1024
+<span id="L101" class="ln">   101  </span>	usedNode.Stats.FreeDISK -= vmFlavor.Disk * 1024 * 1024 * 1024
+<span id="L102" class="ln">   102  </span>	nodeString, err := json.Marshal(usedNode)
+<span id="L103" class="ln">   103  </span>	if err != nil {
+<span id="L104" class="ln">   104  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L105" class="ln">   105  </span>		logrus.Error(err.Error())
+<span id="L106" class="ln">   106  </span>		return
+<span id="L107" class="ln">   107  </span>	}
+<span id="L108" class="ln">   108  </span>	err = ETCDPut(&#34;/nodes/&#34;+usedNode.Name, string(nodeString))
+<span id="L109" class="ln">   109  </span>	if err != nil {
+<span id="L110" class="ln">   110  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L111" class="ln">   111  </span>		logrus.Error(err.Error())
+<span id="L112" class="ln">   112  </span>		return
+<span id="L113" class="ln">   113  </span>	}
+<span id="L114" class="ln">   114  </span>	c.JSON(200, newVM)
+<span id="L115" class="ln">   115  </span>}
+<span id="L116" class="ln">   116  </span>
+<span id="L117" class="ln">   117  </span><span class="comment">// DeleteVMHandler handles the delete request.</span>
+<span id="L118" class="ln">   118  </span>func DeleteVMHandler(c *gin.Context) {
+<span id="L119" class="ln">   119  </span>	name := c.Param(&#34;name&#34;)
+<span id="L120" class="ln">   120  </span>	if name == &#34;&#34; {
+<span id="L121" class="ln">   121  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;name is empty&#34;})
+<span id="L122" class="ln">   122  </span>		logrus.Error(&#34;name is empty&#34;)
+<span id="L123" class="ln">   123  </span>		return
+<span id="L124" class="ln">   124  </span>	}
+<span id="L125" class="ln">   125  </span>	vmInfoString, err := ETCDGet(&#34;/vms/&#34; + name)
+<span id="L126" class="ln">   126  </span>	if err != nil {
+<span id="L127" class="ln">   127  </span>		c.JSON(400, gin.H{&#34;error&#34;: err.Error()})
+<span id="L128" class="ln">   128  </span>		logrus.Error(err.Error())
+<span id="L129" class="ln">   129  </span>		return
+<span id="L130" class="ln">   130  </span>	}
+<span id="L131" class="ln">   131  </span>	if vmInfoString == &#34;&#34; {
+<span id="L132" class="ln">   132  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;vm with this name does not exist&#34;})
+<span id="L133" class="ln">   133  </span>		logrus.Error(&#34;vm with this name does not exist&#34;)
+<span id="L134" class="ln">   134  </span>		return
+<span id="L135" class="ln">   135  </span>	}
+<span id="L136" class="ln">   136  </span>	logrus.Printf(&#34;Deleting VM %s\n&#34;, name)
+<span id="L137" class="ln">   137  </span>	var vmInfo types.VM
+<span id="L138" class="ln">   138  </span>	err = json.Unmarshal([]byte(vmInfoString), &amp;vmInfo)
+<span id="L139" class="ln">   139  </span>	if err != nil {
+<span id="L140" class="ln">   140  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L141" class="ln">   141  </span>		logrus.Error(err.Error())
+<span id="L142" class="ln">   142  </span>		return
+<span id="L143" class="ln">   143  </span>	}
+<span id="L144" class="ln">   144  </span>	deleted := false
+<span id="L145" class="ln">   145  </span>	nodes, err := GetNodes()
+<span id="L146" class="ln">   146  </span>	if err != nil {
+<span id="L147" class="ln">   147  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L148" class="ln">   148  </span>		logrus.Error(err.Error())
+<span id="L149" class="ln">   149  </span>		return
+<span id="L150" class="ln">   150  </span>	}
+<span id="L151" class="ln">   151  </span>	foundNode := types.Node{}
+<span id="L152" class="ln">   152  </span>	for _, node := range nodes {
+<span id="L153" class="ln">   153  </span>		if node.Name == vmInfo.Node {
+<span id="L154" class="ln">   154  </span>			err = client.DeleteVM(node.Host, node.Port, vmInfo.Name)
+<span id="L155" class="ln">   155  </span>			if err != nil {
+<span id="L156" class="ln">   156  </span>				logrus.Error(err.Error())
+<span id="L157" class="ln">   157  </span>				c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L158" class="ln">   158  </span>				return
+<span id="L159" class="ln">   159  </span>			}
+<span id="L160" class="ln">   160  </span>			deleted = true
+<span id="L161" class="ln">   161  </span>			foundNode = node
+<span id="L162" class="ln">   162  </span>		}
+<span id="L163" class="ln">   163  </span>	}
+<span id="L164" class="ln">   164  </span>	if !deleted {
+<span id="L165" class="ln">   165  </span>		c.JSON(500, gin.H{&#34;error&#34;: &#34;vm was not deleted&#34;})
+<span id="L166" class="ln">   166  </span>		logrus.Error(&#34;vm was not deleted&#34;)
+<span id="L167" class="ln">   167  </span>		return
+<span id="L168" class="ln">   168  </span>	}
+<span id="L169" class="ln">   169  </span>	err = ETCDDelete(&#34;/vms/&#34; + name)
+<span id="L170" class="ln">   170  </span>	if err != nil {
+<span id="L171" class="ln">   171  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L172" class="ln">   172  </span>		logrus.Error(err.Error())
+<span id="L173" class="ln">   173  </span>		return
+<span id="L174" class="ln">   174  </span>	}
+<span id="L175" class="ln">   175  </span>	foundNode.Stats.FreeMilliCPUs += types.VMFlavors[vmInfo.Flavor].MilliCPUs
+<span id="L176" class="ln">   176  </span>	foundNode.Stats.FreeMEM += types.VMFlavors[vmInfo.Flavor].RAM * 1024 * 1024
+<span id="L177" class="ln">   177  </span>	foundNode.Stats.FreeDISK += types.VMFlavors[vmInfo.Flavor].Disk * 1024 * 1024
+<span id="L178" class="ln">   178  </span>	nodeString, err := json.Marshal(foundNode)
+<span id="L179" class="ln">   179  </span>	if err != nil {
+<span id="L180" class="ln">   180  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L181" class="ln">   181  </span>		logrus.Error(err.Error())
+<span id="L182" class="ln">   182  </span>		return
+<span id="L183" class="ln">   183  </span>	}
+<span id="L184" class="ln">   184  </span>	err = ETCDPut(&#34;/nodes/&#34;+foundNode.Name, string(nodeString))
+<span id="L185" class="ln">   185  </span>	if err != nil {
+<span id="L186" class="ln">   186  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L187" class="ln">   187  </span>		logrus.Error(err.Error())
+<span id="L188" class="ln">   188  </span>		return
+<span id="L189" class="ln">   189  </span>	}
+<span id="L190" class="ln">   190  </span>	c.JSON(200, gin.H{&#34;status&#34;: &#34;ok&#34;})
+<span id="L191" class="ln">   191  </span>}
+<span id="L192" class="ln">   192  </span>
+<span id="L193" class="ln">   193  </span><span class="comment">// GetVMHandler handles the get vm info request.</span>
+<span id="L194" class="ln">   194  </span>func GetVMHandler(c *gin.Context) {
+<span id="L195" class="ln">   195  </span>	body := c.Request.Body
+<span id="L196" class="ln">   196  </span>	defer body.Close()
+<span id="L197" class="ln">   197  </span>	name := c.Param(&#34;name&#34;)
+<span id="L198" class="ln">   198  </span>	if name == &#34;&#34; {
+<span id="L199" class="ln">   199  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;name is empty&#34;})
+<span id="L200" class="ln">   200  </span>		logrus.Error(&#34;name is empty&#34;)
+<span id="L201" class="ln">   201  </span>		return
+<span id="L202" class="ln">   202  </span>	}
+<span id="L203" class="ln">   203  </span>	logrus.Printf(&#34;Getting VM %s\n&#34;, name)
+<span id="L204" class="ln">   204  </span>	vmInfoString, err := ETCDGet(&#34;/vms/&#34; + name)
+<span id="L205" class="ln">   205  </span>	if err != nil {
+<span id="L206" class="ln">   206  </span>		c.JSON(400, gin.H{&#34;error&#34;: err.Error()})
+<span id="L207" class="ln">   207  </span>		logrus.Error(err.Error())
+<span id="L208" class="ln">   208  </span>		return
+<span id="L209" class="ln">   209  </span>	}
+<span id="L210" class="ln">   210  </span>	if vmInfoString == &#34;&#34; {
+<span id="L211" class="ln">   211  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;vm with this name does not exist&#34;})
+<span id="L212" class="ln">   212  </span>		logrus.Error(&#34;vm with this name does not exist&#34;)
+<span id="L213" class="ln">   213  </span>		return
+<span id="L214" class="ln">   214  </span>	}
+<span id="L215" class="ln">   215  </span>	var vmInfo types.VM
+<span id="L216" class="ln">   216  </span>	err = json.Unmarshal([]byte(vmInfoString), &amp;vmInfo)
+<span id="L217" class="ln">   217  </span>	if err != nil {
+<span id="L218" class="ln">   218  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L219" class="ln">   219  </span>		logrus.Error(err.Error())
+<span id="L220" class="ln">   220  </span>		return
+<span id="L221" class="ln">   221  </span>	}
+<span id="L222" class="ln">   222  </span>	c.JSON(200, vmInfo)
+<span id="L223" class="ln">   223  </span>}
+<span id="L224" class="ln">   224  </span>
+<span id="L225" class="ln">   225  </span><span class="comment">// ListVMHandler handles the list vm request.</span>
+<span id="L226" class="ln">   226  </span>func ListVMHandler(c *gin.Context) {
+<span id="L227" class="ln">   227  </span>	logrus.Println(&#34;Listing VMs&#34;)
+<span id="L228" class="ln">   228  </span>	vmsList, err := ETCDList(&#34;/vms/&#34;)
+<span id="L229" class="ln">   229  </span>	if err != nil {
+<span id="L230" class="ln">   230  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L231" class="ln">   231  </span>		logrus.Error(err.Error())
+<span id="L232" class="ln">   232  </span>		return
+<span id="L233" class="ln">   233  </span>	}
+<span id="L234" class="ln">   234  </span>	vmsMap := map[string]types.VM{}
+<span id="L235" class="ln">   235  </span>	for _, vmName := range vmsList {
+<span id="L236" class="ln">   236  </span>		vmString, err := ETCDGet(vmName)
+<span id="L237" class="ln">   237  </span>		if err != nil {
+<span id="L238" class="ln">   238  </span>			c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L239" class="ln">   239  </span>			logrus.Error(err.Error())
+<span id="L240" class="ln">   240  </span>			return
+<span id="L241" class="ln">   241  </span>		}
+<span id="L242" class="ln">   242  </span>		var vm types.VM
+<span id="L243" class="ln">   243  </span>		err = json.Unmarshal([]byte(vmString), &amp;vm)
+<span id="L244" class="ln">   244  </span>		if err != nil {
+<span id="L245" class="ln">   245  </span>			c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L246" class="ln">   246  </span>			logrus.Error(err.Error())
+<span id="L247" class="ln">   247  </span>			return
+<span id="L248" class="ln">   248  </span>		}
+<span id="L249" class="ln">   249  </span>		vmsMap[vm.Name] = vm
+<span id="L250" class="ln">   250  </span>	}
+<span id="L251" class="ln">   251  </span>	var res []types.VM
+<span id="L252" class="ln">   252  </span>	nodes, err := ETCDList(&#34;/nodes/&#34;)
+<span id="L253" class="ln">   253  </span>	if err != nil {
+<span id="L254" class="ln">   254  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L255" class="ln">   255  </span>		logrus.Error(err.Error())
+<span id="L256" class="ln">   256  </span>		return
+<span id="L257" class="ln">   257  </span>	}
+<span id="L258" class="ln">   258  </span>	for _, nodeName := range nodes {
+<span id="L259" class="ln">   259  </span>		logrus.Println(&#34;Node&#34;, nodeName)
+<span id="L260" class="ln">   260  </span>		nodeString, err := ETCDGet(nodeName)
+<span id="L261" class="ln">   261  </span>		if err != nil {
+<span id="L262" class="ln">   262  </span>			c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L263" class="ln">   263  </span>			logrus.Error(err.Error())
+<span id="L264" class="ln">   264  </span>			return
+<span id="L265" class="ln">   265  </span>		}
+<span id="L266" class="ln">   266  </span>		var node types.Node
+<span id="L267" class="ln">   267  </span>		err = json.Unmarshal([]byte(nodeString), &amp;node)
+<span id="L268" class="ln">   268  </span>		if err != nil {
+<span id="L269" class="ln">   269  </span>			c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L270" class="ln">   270  </span>			logrus.Error(err.Error())
+<span id="L271" class="ln">   271  </span>			return
+<span id="L272" class="ln">   272  </span>		}
+<span id="L273" class="ln">   273  </span>		nodeVMS, err := client.ListVMs(node.Host, node.Port)
+<span id="L274" class="ln">   274  </span>		if err != nil {
+<span id="L275" class="ln">   275  </span>			c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L276" class="ln">   276  </span>			logrus.Error(&#34;ListVMs error&#34;)
+<span id="L277" class="ln">   277  </span>			logrus.Error(err.Error())
+<span id="L278" class="ln">   278  </span>			return
+<span id="L279" class="ln">   279  </span>		}
+<span id="L280" class="ln">   280  </span>		for _, vm := range nodeVMS {
+<span id="L281" class="ln">   281  </span>			if vmsMap[vm.Name].Name == vm.Name {
+<span id="L282" class="ln">   282  </span>				var tempVM types.VM
+<span id="L283" class="ln">   283  </span>				tempVM.ID = vm.ID
+<span id="L284" class="ln">   284  </span>				tempVM.Name = vm.Name
+<span id="L285" class="ln">   285  </span>				tempVM.IP = vmsMap[vm.Name].IP
+<span id="L286" class="ln">   286  </span>				tempVM.Node = nodeName
+<span id="L287" class="ln">   287  </span>				tempVM.NodeHostname = node.Host
+<span id="L288" class="ln">   288  </span>				tempVM.NodePort = node.Port
+<span id="L289" class="ln">   289  </span>				tempVM.State = vmsMap[vm.Name].State
+<span id="L290" class="ln">   290  </span>				tempVM.Image = vmsMap[vm.Name].Image
+<span id="L291" class="ln">   291  </span>				tempVM.Flavor = vmsMap[vm.Name].Flavor
+<span id="L292" class="ln">   292  </span>				tempVM.Volumes = vmsMap[vm.Name].Volumes
+<span id="L293" class="ln">   293  </span>				tempVM.VNCURL = vmsMap[vm.Name].VNCURL
+<span id="L294" class="ln">   294  </span>				res = append(res, tempVM)
+<span id="L295" class="ln">   295  </span>			}
+<span id="L296" class="ln">   296  </span>		}
+<span id="L297" class="ln">   297  </span>	}
+<span id="L298" class="ln">   298  </span>	logrus.Println(res)
+<span id="L299" class="ln">   299  </span>	c.JSON(200, res)
+<span id="L300" class="ln">   300  </span>}
+<span id="L301" class="ln">   301  </span>
+<span id="L302" class="ln">   302  </span><span class="comment">// StartVMHandler handles the start vm request.</span>
+<span id="L303" class="ln">   303  </span>func StartVMHandler(c *gin.Context) {
+<span id="L304" class="ln">   304  </span>	name := c.Param(&#34;name&#34;)
+<span id="L305" class="ln">   305  </span>	if name == &#34;&#34; {
+<span id="L306" class="ln">   306  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;name is empty&#34;})
+<span id="L307" class="ln">   307  </span>		logrus.Error(&#34;name is empty&#34;)
+<span id="L308" class="ln">   308  </span>		return
+<span id="L309" class="ln">   309  </span>	}
+<span id="L310" class="ln">   310  </span>	logrus.Printf(&#34;Starting VM %s\n&#34;, name)
+<span id="L311" class="ln">   311  </span>	vmInfoString, err := ETCDGet(&#34;/vms/&#34; + name)
+<span id="L312" class="ln">   312  </span>	if err != nil {
+<span id="L313" class="ln">   313  </span>		c.JSON(400, gin.H{&#34;error&#34;: err.Error()})
+<span id="L314" class="ln">   314  </span>		logrus.Error(err.Error())
+<span id="L315" class="ln">   315  </span>		return
+<span id="L316" class="ln">   316  </span>	}
+<span id="L317" class="ln">   317  </span>	if vmInfoString == &#34;&#34; {
+<span id="L318" class="ln">   318  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;vm with this name does not exist&#34;})
+<span id="L319" class="ln">   319  </span>		logrus.Error(&#34;vm with this name does not exist&#34;)
+<span id="L320" class="ln">   320  </span>		return
+<span id="L321" class="ln">   321  </span>	}
+<span id="L322" class="ln">   322  </span>	var vmInfo types.VM
+<span id="L323" class="ln">   323  </span>	err = json.Unmarshal([]byte(vmInfoString), &amp;vmInfo)
+<span id="L324" class="ln">   324  </span>	if err != nil {
+<span id="L325" class="ln">   325  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L326" class="ln">   326  </span>		logrus.Error(err.Error())
+<span id="L327" class="ln">   327  </span>		return
+<span id="L328" class="ln">   328  </span>	}
+<span id="L329" class="ln">   329  </span>	nodes, err := GetNodes()
+<span id="L330" class="ln">   330  </span>	if err != nil {
+<span id="L331" class="ln">   331  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L332" class="ln">   332  </span>		logrus.Error(err.Error())
+<span id="L333" class="ln">   333  </span>		return
+<span id="L334" class="ln">   334  </span>	}
+<span id="L335" class="ln">   335  </span>	for _, node := range nodes {
+<span id="L336" class="ln">   336  </span>		if node.Host == vmInfo.Node {
+<span id="L337" class="ln">   337  </span>			err = client.StartVM(node.Host, node.Port, vmInfo.Name)
+<span id="L338" class="ln">   338  </span>			if err != nil {
+<span id="L339" class="ln">   339  </span>				logrus.Error(err.Error())
+<span id="L340" class="ln">   340  </span>				c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L341" class="ln">   341  </span>				break
+<span id="L342" class="ln">   342  </span>			}
+<span id="L343" class="ln">   343  </span>		}
+<span id="L344" class="ln">   344  </span>	}
+<span id="L345" class="ln">   345  </span>	c.JSON(200, gin.H{&#34;status&#34;: &#34;ok&#34;})
+<span id="L346" class="ln">   346  </span>}
+<span id="L347" class="ln">   347  </span>
+<span id="L348" class="ln">   348  </span><span class="comment">// StopVMHandler handles the stop vm request.</span>
+<span id="L349" class="ln">   349  </span>func StopVMHandler(c *gin.Context) {
+<span id="L350" class="ln">   350  </span>	name := c.Param(&#34;name&#34;)
+<span id="L351" class="ln">   351  </span>	if name == &#34;&#34; {
+<span id="L352" class="ln">   352  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;name is empty&#34;})
+<span id="L353" class="ln">   353  </span>		logrus.Error(&#34;name is empty&#34;)
+<span id="L354" class="ln">   354  </span>		return
+<span id="L355" class="ln">   355  </span>	}
+<span id="L356" class="ln">   356  </span>	logrus.Printf(&#34;Stopping VM %s\n&#34;, name)
+<span id="L357" class="ln">   357  </span>	vmInfoString, err := ETCDGet(&#34;/vms/&#34; + name)
+<span id="L358" class="ln">   358  </span>	if err != nil {
+<span id="L359" class="ln">   359  </span>		c.JSON(400, gin.H{&#34;error&#34;: err.Error()})
+<span id="L360" class="ln">   360  </span>		logrus.Error(err.Error())
+<span id="L361" class="ln">   361  </span>		return
+<span id="L362" class="ln">   362  </span>	}
+<span id="L363" class="ln">   363  </span>	if vmInfoString == &#34;&#34; {
+<span id="L364" class="ln">   364  </span>		c.JSON(400, gin.H{&#34;error&#34;: &#34;vm with this name does not exist&#34;})
+<span id="L365" class="ln">   365  </span>		logrus.Error(&#34;vm with this name does not exist&#34;)
+<span id="L366" class="ln">   366  </span>		return
+<span id="L367" class="ln">   367  </span>	}
+<span id="L368" class="ln">   368  </span>	var vmInfo types.VM
+<span id="L369" class="ln">   369  </span>	err = json.Unmarshal([]byte(vmInfoString), &amp;vmInfo)
+<span id="L370" class="ln">   370  </span>	if err != nil {
+<span id="L371" class="ln">   371  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L372" class="ln">   372  </span>		logrus.Error(err.Error())
+<span id="L373" class="ln">   373  </span>		return
+<span id="L374" class="ln">   374  </span>	}
+<span id="L375" class="ln">   375  </span>	nodes, err := GetNodes()
+<span id="L376" class="ln">   376  </span>	if err != nil {
+<span id="L377" class="ln">   377  </span>		c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L378" class="ln">   378  </span>		logrus.Error(err.Error())
+<span id="L379" class="ln">   379  </span>		return
+<span id="L380" class="ln">   380  </span>	}
+<span id="L381" class="ln">   381  </span>	for _, node := range nodes {
+<span id="L382" class="ln">   382  </span>		if node.Host == vmInfo.Node {
+<span id="L383" class="ln">   383  </span>			err = client.StopVM(node.Host, node.Port, vmInfo.Name)
+<span id="L384" class="ln">   384  </span>			if err != nil {
+<span id="L385" class="ln">   385  </span>				logrus.Error(err.Error())
+<span id="L386" class="ln">   386  </span>				c.JSON(500, gin.H{&#34;error&#34;: err.Error()})
+<span id="L387" class="ln">   387  </span>				break
+<span id="L388" class="ln">   388  </span>			}
+<span id="L389" class="ln">   389  </span>		}
+<span id="L390" class="ln">   390  </span>	}
+<span id="L391" class="ln">   391  </span>	c.JSON(200, gin.H{&#34;status&#34;: &#34;ok&#34;})
+<span id="L392" class="ln">   392  </span>}
+<span id="L393" class="ln">   393  </span>
+</pre><p></p>
+
+<div id="footer">
+Build version go1.22.4.<br/>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+
+</body></html>

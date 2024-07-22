@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>master - GoPages</title>
+
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="/lib/godoc/jquery.js" defer></script>
+
+
+
+
+<script>var goVersion = "go1.22.4";</script>
+<script src="/lib/godoc/godocs.js" defer></script>
+
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages | Auto-generated docs</a></div>
+<div class="top-heading" id="heading-narrow"><a href="/pkg/github.com/rusik69/govnocloud/">GoPages</a></div>
+<a href="#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package master
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/rusik69/govnocloud/pkg/master"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="#pkg-variables">Variables</a></dd>
+			
+			
+				
+				<dd><a href="#AddNodeHandler">func AddNodeHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#CommitFileHandler">func CommitFileHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#CreateContainerHandler">func CreateContainerHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#CreateDBHandler">func CreateDBHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#CreateK8SHandler">func CreateK8SHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#CreateLLMHandler">func CreateLLMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#CreateVMHandler">func CreateVMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#DeleteContainerHandler">func DeleteContainerHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#DeleteDBHandler">func DeleteDBHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#DeleteFileHandler">func DeleteFileHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#DeleteK8SHandler">func DeleteK8SHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#DeleteLLM">func DeleteLLM(llm types.LLM) error</a></dd>
+			
+				
+				<dd><a href="#DeleteLLMHandler">func DeleteLLMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#DeleteNodeHandler">func DeleteNodeHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#DeleteVMHandler">func DeleteVMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ETCDConnect">func ETCDConnect(host, port, user, pass string) (*clientv3.Client, error)</a></dd>
+			
+				
+				<dd><a href="#ETCDDelete">func ETCDDelete(key string) error</a></dd>
+			
+				
+				<dd><a href="#ETCDGet">func ETCDGet(key string) (string, error)</a></dd>
+			
+				
+				<dd><a href="#ETCDList">func ETCDList(key string) ([]string, error)</a></dd>
+			
+				
+				<dd><a href="#ETCDPut">func ETCDPut(key, value string) error</a></dd>
+			
+				
+				<dd><a href="#GenerateLLM">func GenerateLLM(llm types.LLM, input string) (string, error)</a></dd>
+			
+				
+				<dd><a href="#GenerateLLMHandler">func GenerateLLMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#GetContainerHandler">func GetContainerHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#GetDBHandler">func GetDBHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#GetFileHandler">func GetFileHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#GetK8SHandler">func GetK8SHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#GetK8SKubeconfigHandler">func GetK8SKubeconfigHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#GetLLMHandler">func GetLLMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#GetNode">func GetNode(name string) (types.Node, error)</a></dd>
+			
+				
+				<dd><a href="#GetNodeHandler">func GetNodeHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#GetNodes">func GetNodes() ([]types.Node, error)</a></dd>
+			
+				
+				<dd><a href="#GetVMHandler">func GetVMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ListContainerHandler">func ListContainerHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ListDBsHandler">func ListDBsHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ListFilesHandler">func ListFilesHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ListK8SHandler">func ListK8SHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ListLLMs">func ListLLMs() ([]string, error)</a></dd>
+			
+				
+				<dd><a href="#ListLLMsHandler">func ListLLMsHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ListNodesHandler">func ListNodesHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ListVMHandler">func ListVMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#ParseEnv">func ParseEnv() (*types.MasterEnv, error)</a></dd>
+			
+				
+				<dd><a href="#Serve">func Serve()</a></dd>
+			
+				
+				<dd><a href="#StartContainerHandler">func StartContainerHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StartDBHandler">func StartDBHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StartK8SHandler">func StartK8SHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StartLLM">func StartLLM(llm types.LLM) error</a></dd>
+			
+				
+				<dd><a href="#StartLLMHandler">func StartLLMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StartVMHandler">func StartVMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StopContainerHandler">func StopContainerHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StopDBHandler">func StopDBHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StopK8SHandler">func StopK8SHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StopLLM">func StopLLM(llm types.LLM) error</a></dd>
+			
+				
+				<dd><a href="#StopLLMHandler">func StopLLMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#StopVMHandler">func StopVMHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#UploadFileHandler">func UploadFileHandler(c *gin.Context)</a></dd>
+			
+				
+				<dd><a href="#chooseNodeForFile">func chooseNodeForFile(file types.File) (types.Node, error)</a></dd>
+			
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/container.go.html">container.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/db.go.html">db.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/env.go.html">env.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/etcd.go.html">etcd.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/file.go.html">file.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/k8s.go.html">k8s.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html">llm.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/node.go.html">node.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/serve.go.html">serve.go</a>
+			
+				<a href="/src/github.com/rusik69/govnocloud/pkg/master/vm.go.html">vm.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<p>ETCDClient is the database connection.
+
+				<pre>var <span id="ETCDClient">ETCDClient</span> *<a href="https://pkg.go.dev/go.etcd.io/etcd/client/v3/">clientv3</a>.<a href="https://pkg.go.dev/go.etcd.io/etcd/client/v3/#Client">Client</a></pre>
+			
+		
+		
+			
+			
+			<h2 id="AddNodeHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/node.go.html#L15">AddNodeHandler</a>
+				<a class="permalink" href="#AddNodeHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func AddNodeHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>AddNodeHandler handles the add node request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CommitFileHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/file.go.html#L67">CommitFileHandler</a>
+				<a class="permalink" href="#CommitFileHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CommitFileHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>CommitFileHandler handles the commit file request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateContainerHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/container.go.html#L14">CreateContainerHandler</a>
+				<a class="permalink" href="#CreateContainerHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateContainerHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>CreateContainerHandler handles the create container request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateDBHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/db.go.html#L13">CreateDBHandler</a>
+				<a class="permalink" href="#CreateDBHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateDBHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>CreateDBHandler handles the create DB request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateK8SHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/k8s.go.html#L13">CreateK8SHandler</a>
+				<a class="permalink" href="#CreateK8SHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateK8SHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>CreateK8SHandler creates a k8s cluster
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateLLMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L17">CreateLLMHandler</a>
+				<a class="permalink" href="#CreateLLMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateLLMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>CreateLLMHandler handles the create LLM request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="CreateVMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/vm.go.html#L13">CreateVMHandler</a>
+				<a class="permalink" href="#CreateVMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateVMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>CreateVMHandler handles the create vm request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteContainerHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/container.go.html#L109">DeleteContainerHandler</a>
+				<a class="permalink" href="#DeleteContainerHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteContainerHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>DeleteContainerHandler handles the delete container request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteDBHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/db.go.html#L83">DeleteDBHandler</a>
+				<a class="permalink" href="#DeleteDBHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteDBHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>DeleteDBHandler handles the delete DB request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteFileHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/file.go.html#L110">DeleteFileHandler</a>
+				<a class="permalink" href="#DeleteFileHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteFileHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>DeleteFileHandler handles the delete file request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteK8SHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/k8s.go.html#L126">DeleteK8SHandler</a>
+				<a class="permalink" href="#DeleteK8SHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteK8SHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>DeleteK8SHandler deletes a k8s cluster
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L138">DeleteLLM</a>
+				<a class="permalink" href="#DeleteLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteLLM(llm <a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#LLM">LLM</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>DeleteLLM deletes a llm cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteLLMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L96">DeleteLLMHandler</a>
+				<a class="permalink" href="#DeleteLLMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteLLMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>DeleteLLMHandler handles the delete LLM request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteNodeHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/node.go.html#L133">DeleteNodeHandler</a>
+				<a class="permalink" href="#DeleteNodeHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteNodeHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>DeleteNodeHandler handles the delete node request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteVMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/vm.go.html#L118">DeleteVMHandler</a>
+				<a class="permalink" href="#DeleteVMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteVMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>DeleteVMHandler handles the delete request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ETCDConnect">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/etcd.go.html#L14">ETCDConnect</a>
+				<a class="permalink" href="#ETCDConnect">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ETCDConnect(host, port, user, pass <a href="https://pkg.go.dev/builtin/#string">string</a>) (*<a href="https://pkg.go.dev/go.etcd.io/etcd/client/v3/">clientv3</a>.<a href="https://pkg.go.dev/go.etcd.io/etcd/client/v3/#Client">Client</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ETCDConnect connects to the database.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ETCDDelete">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/etcd.go.html#L74">ETCDDelete</a>
+				<a class="permalink" href="#ETCDDelete">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ETCDDelete(key <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>ETCDDelete deletes the key.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ETCDGet">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/etcd.go.html#L37">ETCDGet</a>
+				<a class="permalink" href="#ETCDGet">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ETCDGet(key <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="https://pkg.go.dev/builtin/#string">string</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ETCDGet gets the value of the key.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ETCDList">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/etcd.go.html#L59">ETCDList</a>
+				<a class="permalink" href="#ETCDList">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ETCDList(key <a href="https://pkg.go.dev/builtin/#string">string</a>) ([]<a href="https://pkg.go.dev/builtin/#string">string</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ETCEList lists the keys.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ETCDPut">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/etcd.go.html#L51">ETCDPut</a>
+				<a class="permalink" href="#ETCDPut">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ETCDPut(key, value <a href="https://pkg.go.dev/builtin/#string">string</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>ETCDPut puts the value of the key.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GenerateLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L321">GenerateLLM</a>
+				<a class="permalink" href="#GenerateLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GenerateLLM(llm <a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#LLM">LLM</a>, input <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="https://pkg.go.dev/builtin/#string">string</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GenerateLLM gets a response from llm.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GenerateLLMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L276">GenerateLLMHandler</a>
+				<a class="permalink" href="#GenerateLLMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GenerateLLMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GenerateLLMHandler handles the generate LLM request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetContainerHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/container.go.html#L210">GetContainerHandler</a>
+				<a class="permalink" href="#GetContainerHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetContainerHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GetContainerHandler handles the get container request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetDBHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/db.go.html#L59">GetDBHandler</a>
+				<a class="permalink" href="#GetDBHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetDBHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GetDBHandler handles the get DB request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetFileHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/file.go.html#L186">GetFileHandler</a>
+				<a class="permalink" href="#GetFileHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetFileHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GetFileHandler handles the get file request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetK8SHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/k8s.go.html#L70">GetK8SHandler</a>
+				<a class="permalink" href="#GetK8SHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetK8SHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GetK8SHandler gets a k8s cluster
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetK8SKubeconfigHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/k8s.go.html#L100">GetK8SKubeconfigHandler</a>
+				<a class="permalink" href="#GetK8SKubeconfigHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetK8SKubeconfigHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GetK8SKubeconfigHandler gets a k8s cluster kubeconfig
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetLLMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L71">GetLLMHandler</a>
+				<a class="permalink" href="#GetLLMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetLLMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GetLLMHandler handles the get LLM request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetNode">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/etcd.go.html#L110">GetNode</a>
+				<a class="permalink" href="#GetNode">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetNode(name <a href="https://pkg.go.dev/builtin/#string">string</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#Node">Node</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetNode gets the node from the database.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetNodeHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/node.go.html#L103">GetNodeHandler</a>
+				<a class="permalink" href="#GetNodeHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetNodeHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GetNodeHandler handles the get node request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetNodes">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/etcd.go.html#L85">GetNodes</a>
+				<a class="permalink" href="#GetNodes">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetNodes() ([]<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#Node">Node</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>GetNodes gets the nodes from the database.
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetVMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/vm.go.html#L194">GetVMHandler</a>
+				<a class="permalink" href="#GetVMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GetVMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>GetVMHandler handles the get vm info request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListContainerHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/container.go.html#L183">ListContainerHandler</a>
+				<a class="permalink" href="#ListContainerHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListContainerHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>ListContainerHandler handles the list container request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListDBsHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/db.go.html#L113">ListDBsHandler</a>
+				<a class="permalink" href="#ListDBsHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListDBsHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>ListDBsHandler handles the list DBs request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListFilesHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/file.go.html#L158">ListFilesHandler</a>
+				<a class="permalink" href="#ListFilesHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListFilesHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>ListFilesHandler handles the list files request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListK8SHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/k8s.go.html#L163">ListK8SHandler</a>
+				<a class="permalink" href="#ListK8SHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListK8SHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>ListK8SHandler lists k8s clusters
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListLLMs">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L177">ListLLMs</a>
+				<a class="permalink" href="#ListLLMs">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListLLMs() ([]<a href="https://pkg.go.dev/builtin/#string">string</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ListLLMs lists all llm clusters.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListLLMsHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L148">ListLLMsHandler</a>
+				<a class="permalink" href="#ListLLMsHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListLLMsHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>ListLLMsHandler handles the list LLMs request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListNodesHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/node.go.html#L74">ListNodesHandler</a>
+				<a class="permalink" href="#ListNodesHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListNodesHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>ListNodesHandler handles the list nodes request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ListVMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/vm.go.html#L226">ListVMHandler</a>
+				<a class="permalink" href="#ListVMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ListVMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>ListVMHandler handles the list vm request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="ParseEnv">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/env.go.html#L10">ParseEnv</a>
+				<a class="permalink" href="#ParseEnv">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ParseEnv() (*<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#MasterEnv">MasterEnv</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>ParseEnv parses the master environment.
+
+			
+			
+
+		
+			
+			
+			<h2 id="Serve">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/serve.go.html#L11">Serve</a>
+				<a class="permalink" href="#Serve">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func Serve()</pre>
+			<p>Serve starts the server.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartContainerHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/container.go.html#L239">StartContainerHandler</a>
+				<a class="permalink" href="#StartContainerHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartContainerHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StartContainerHandler handles the start container request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartDBHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/db.go.html#L143">StartDBHandler</a>
+				<a class="permalink" href="#StartDBHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartDBHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StartDBHandler handles the start DB request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartK8SHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/k8s.go.html#L188">StartK8SHandler</a>
+				<a class="permalink" href="#StartK8SHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartK8SHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StartK8SHandler starts a k8s cluster
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L222">StartLLM</a>
+				<a class="permalink" href="#StartLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartLLM(llm <a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#LLM">LLM</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StartLLM starts a llm cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartLLMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L186">StartLLMHandler</a>
+				<a class="permalink" href="#StartLLMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartLLMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StartLLMHandler handles the start LLM request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StartVMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/vm.go.html#L303">StartVMHandler</a>
+				<a class="permalink" href="#StartVMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StartVMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StartVMHandler handles the start vm request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopContainerHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/container.go.html#L303">StopContainerHandler</a>
+				<a class="permalink" href="#StopContainerHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopContainerHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StopContainerHandler handles the stop container request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopDBHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/db.go.html#L174">StopDBHandler</a>
+				<a class="permalink" href="#StopDBHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopDBHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StopDBHandler handles the stop DB request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopK8SHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/k8s.go.html#L214">StopK8SHandler</a>
+				<a class="permalink" href="#StopK8SHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopK8SHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StopK8SHandler stops a k8s cluster
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopLLM">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L231">StopLLM</a>
+				<a class="permalink" href="#StopLLM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopLLM(llm <a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#LLM">LLM</a>) <a href="https://pkg.go.dev/builtin/#error">error</a></pre>
+			<p>StopLLM stops a llm cluster.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopLLMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/llm.go.html#L240">StopLLMHandler</a>
+				<a class="permalink" href="#StopLLMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopLLMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StopLLMHandler handles the stop LLM request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="StopVMHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/vm.go.html#L349">StopVMHandler</a>
+				<a class="permalink" href="#StopVMHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func StopVMHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>StopVMHandler handles the stop vm request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="UploadFileHandler">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/file.go.html#L15">UploadFileHandler</a>
+				<a class="permalink" href="#UploadFileHandler">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func UploadFileHandler(c *<a href="https://pkg.go.dev/github.com/gin-gonic/gin/">gin</a>.<a href="https://pkg.go.dev/github.com/gin-gonic/gin/#Context">Context</a>)</pre>
+			<p>UploadFileHandler handles the post file request.
+
+			
+			
+
+		
+			
+			
+			<h2 id="chooseNodeForFile">func <a href="/src/github.com/rusik69/govnocloud/pkg/master/file.go.html#L215">chooseNodeForFile</a>
+				<a class="permalink" href="#chooseNodeForFile">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func chooseNodeForFile(file <a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#File">File</a>) (<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/">types</a>.<a href="/pkg/github.com/rusik69/govnocloud/pkg/types/#Node">Node</a>, <a href="https://pkg.go.dev/builtin/#error">error</a>)</pre>
+			<p>chooseNodeForFile chooses the node for file.
+
+			
+			
+
+		
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.22.4.<br>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>
