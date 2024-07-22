@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
+set -x
 
-ssh node0.rusik69.lol "sudo systemctl suspend"
-ssh node1.rusik69.lol "sudo systemctl suspend"
-ssh node2.rusik69.lol "sudo systemctl suspend"
+ssh ubuntu@node0.rusik69.lol "sudo systemctl suspend"
+ssh ubuntu@node1.rusik69.lol "sudo systemctl suspend"
+ssh ubuntu@node2.rusik69.lol "sudo systemctl suspend"
