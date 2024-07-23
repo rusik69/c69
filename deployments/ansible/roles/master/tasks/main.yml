@@ -18,5 +18,3 @@
   include_tasks: prometheus.yml
 - name: include grafana
   include_tasks: grafana.yml
-- name: include etcd
-  include_tasks: etcd.yml
