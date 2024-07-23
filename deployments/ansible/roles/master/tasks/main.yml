@@ -2,7 +2,6 @@
   ansible.builtin.apt:
     name: ca-certificates,guestfs-tools,cloud-utils,genisoimage
     state: present
-  notify: restart etcd
 - name: install govnocloud-master service
   ansible.builtin.template:
     src: govnocloud-master.service.j2
@@ -19,3 +18,5 @@
   include_tasks: prometheus.yml
 - name: include grafana
   include_tasks: grafana.yml
+- name: include etcd
+  include_tasks: etcd.yml

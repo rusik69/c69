@@ -1,0 +1,21 @@
+---
+- name: install etcd package
+  ansible.builtin.apt:
+    name: etcd
+    state: present
+- name: copy etcd config
+  ansible.builtin.template:
+    src: etcd.conf.j2
+    dest: /etc/etcd/etcd.conf
+    mode: 0644
+  register: etcd_config
+- name: reload etcd
+  ansible.builtin.systemd:
+    name: etcd
+    daemon_reload: yes
+  when: etcd_config.changed
+- name: start etcd
+  ansible.builtin.systemd:
+    name: etcd
+    state: started
+    enabled: yes
