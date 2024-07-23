@@ -5,8 +5,8 @@ import (
 	"errors"
 	"io"
 
-	dockertypes "github.com/docker/docker/api/types"
 	dockercontainer "github.com/docker/docker/api/types/container"
+	dockerimage "github.com/docker/docker/api/types/image"
 	dockerclient "github.com/docker/docker/client"
 	"github.com/gin-gonic/gin"
 	"github.com/rusik69/govnocloud/pkg/types"
@@ -145,8 +145,7 @@ func ContainerConnect() (*dockerclient.Client, error) {
 // CreateContainer creates a container.
 func CreateContainer(c types.Container) (types.Container, error) {
 	ctx := context.Background()
-	pullOptions := dockertypes.ImagePullOptions{}
-	reader, err := DockerConnection.ImagePull(ctx, c.Image, pullOptions)
+	reader, err := DockerConnection.ImagePull(ctx, c.Image, dockerimage.PullOptions{})
 	if err != nil {
 		return types.Container{}, err
 	}
@@ -187,7 +186,7 @@ func CreateContainer(c types.Container) (types.Container, error) {
 // DeleteContainer deletes a container.
 func DeleteContainer(c types.Container) error {
 	ctx := context.Background()
-	err := DockerConnection.ContainerRemove(ctx, c.ID, dockertypes.ContainerRemoveOptions{})
+	err := DockerConnection.ContainerRemove(ctx, c.ID, dockercontainer.RemoveOptions{})
 	if err != nil {
 		return err
 	}
@@ -197,7 +196,7 @@ func DeleteContainer(c types.Container) error {
 // StartContainer starts a container.
 func StartContainer(c types.Container) error {
 	ctx := context.Background()
-	err := DockerConnection.ContainerStart(ctx, c.ID, dockertypes.ContainerStartOptions{})
+	err := DockerConnection.ContainerStart(ctx, c.ID, dockercontainer.StartOptions{})
 	if err != nil {
 		return err
 	}
@@ -230,7 +229,7 @@ func GetContainer(c types.Container) (types.Container, error) {
 // FindContainerByName finds a container by name.
 func FindContainerByName(name string) (types.Container, error) {
 	ctx := context.Background()
-	containers, err := DockerConnection.ContainerList(ctx, dockertypes.ContainerListOptions{})
+	containers, err := DockerConnection.ContainerList(ctx, dockercontainer.ListOptions{})
 	if err != nil {
 		return types.Container{}, err
 	}
@@ -252,7 +251,7 @@ func FindContainerByName(name string) (types.Container, error) {
 // ListContainers lists containers.
 func ListContainers() ([]types.Container, error) {
 	ctx := context.Background()
-	containers, err := DockerConnection.ContainerList(ctx, dockertypes.ContainerListOptions{})
+	containers, err := DockerConnection.ContainerList(ctx, dockercontainer.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
