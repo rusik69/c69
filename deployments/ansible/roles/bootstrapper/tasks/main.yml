@@ -256,7 +256,7 @@
 
 - name: install etcd package
   ansible.builtin.apt:
-    name: etcd
+    name: etcd-server
     state: present
 - name: copy etcd config
   ansible.builtin.template:
