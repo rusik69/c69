@@ -258,6 +258,10 @@
   ansible.builtin.apt:
     name: etcd-server
     state: present
+- name: ensure etcd directory exists
+  ansible.builtin.file:
+    path: /etc/etcd
+    state: directory
 - name: copy etcd config
   ansible.builtin.template:
     src: etcd.conf.j2
