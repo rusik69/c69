@@ -265,7 +265,7 @@
 - name: copy etcd config
   ansible.builtin.template:
     src: etcd.conf.j2
-    dest: /etc/etcd/etcd.conf
+    dest: /etc/default/etcd
     mode: 0644
   register: etcd_config
 - name: reload etcd
