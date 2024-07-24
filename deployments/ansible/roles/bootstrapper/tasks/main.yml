@@ -249,11 +249,6 @@
     name: actions-runner
     enabled: yes
 
-- name: Start actions-runner service
-  ansible.builtin.systemd:
-    name: actions-runner
-    state: started
-
 - name: install etcd package
   ansible.builtin.apt:
     name: etcd-server
