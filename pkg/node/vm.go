@@ -1,12 +1,14 @@
 package node
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"encoding/xml"
 
@@ -24,8 +26,14 @@ var LibvirtConnection *libvirt.Connect
 // VMConnect connects to the libvirt daemon.
 func VMConnect() (*libvirt.Connect, error) {
 	logrus.Println("Connecting to libvirt daemon at", types.NodeEnvInstance.LibVirtURI)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
 	conn, err := libvirt.NewConnect(types.NodeEnvInstance.LibVirtURI)
 	if err != nil {
+		if ctx.Err() == context.DeadlineExceeded {
+			logrus.Error("Connection to libvirt daemon timed out")
+			return nil, errors.New("connection to libvirt daemon timed out")
+		}
 		return nil, err
 	}
 	return conn, nil
