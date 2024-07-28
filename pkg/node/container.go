@@ -135,6 +135,7 @@ func ListContainersHandler(c *gin.Context) {
 
 // ContainerConnect connects to the container daemon.
 func ContainerConnect() (*dockerclient.Client, error) {
+	logrus.Println("Connecting to docker")
 	cli, err := dockerclient.NewClientWithOpts(dockerclient.FromEnv)
 	if err != nil {
 		return nil, err
