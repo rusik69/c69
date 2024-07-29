@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
@@ -21,7 +22,15 @@ func CreateDB(host, port, name, dbType string) (types.DB, error) {
 	if err != nil {
 		return types.DB{}, err
 	}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return types.DB{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return types.DB{}, err
 	}
@@ -44,7 +53,15 @@ func CreateDB(host, port, name, dbType string) (types.DB, error) {
 // GetDB gets a database.
 func GetDB(host, port, name string) (types.DB, error) {
 	url := "http://" + host + ":" + port + "/api/v1/db/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return types.DB{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return types.DB{}, err
 	}
@@ -67,11 +84,15 @@ func GetDB(host, port, name string) (types.DB, error) {
 // DeleteDB deletes a database.
 func DeleteDB(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/db/" + name
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
 	}
-	resp, err := http.DefaultClient.Do(req)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -89,7 +110,15 @@ func DeleteDB(host, port, name string) error {
 // ListDBs lists databases.
 func ListDBs(host, port string) ([]types.DB, error) {
 	url := "http://" + host + ":" + port + "/api/v1/db"
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return []types.DB{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return []types.DB{}, err
 	}
@@ -112,7 +141,15 @@ func ListDBs(host, port string) ([]types.DB, error) {
 // StartDB starts a database.
 func StartDB(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/dbstart/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -130,7 +167,15 @@ func StartDB(host, port, name string) error {
 // StopDB stops a database.
 func StopDB(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/dbstop/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 300 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}

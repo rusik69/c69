@@ -2,10 +2,12 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
@@ -22,7 +24,15 @@ func CreateVM(host, port, name, image, flavor string) (types.VM, error) {
 	if err != nil {
 		return types.VM{}, err
 	}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
+	client := &http.Client{
+		Timeout: 300 * time.Second,
+	}
+	req, err := http.NewRequestWithContext(context.Background(), "POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return types.VM{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return types.VM{}, err
 	}
@@ -45,11 +55,15 @@ func CreateVM(host, port, name, image, flavor string) (types.VM, error) {
 // DeleteVM deletes a vm.
 func DeleteVM(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/vm/" + name
-	req, err := http.NewRequest("DELETE", url, nil)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequestWithContext(context.Background(), "DELETE", url, nil)
 	if err != nil {
 		return err
 	}
-	resp, err := http.DefaultClient.Do(req)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -67,7 +81,15 @@ func DeleteVM(host, port, name string) error {
 // StartVM starts a vm.
 func StartVM(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/vmstart/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequestWithContext(context.Background(), "GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -85,7 +107,15 @@ func StartVM(host, port, name string) error {
 // StopVM stops a vm.
 func StopVM(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/vmstop/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequestWithContext(context.Background(), "GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -103,7 +133,15 @@ func StopVM(host, port, name string) error {
 // ListVMs lists vms.
 func ListVMs(host, port string) ([]types.VM, error) {
 	url := "http://" + host + ":" + port + "/api/v1/vms"
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequestWithContext(context.Background(), "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +155,15 @@ func ListVMs(host, port string) ([]types.VM, error) {
 func GetVM(host, port, name string) (types.VM, error) {
 	vm := types.VM{}
 	url := "http://" + host + ":" + port + "/api/v1/vm/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequestWithContext(context.Background(), "GET", url, nil)
+	if err != nil {
+		return vm, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return vm, err
 	}

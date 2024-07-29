@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
@@ -22,7 +23,15 @@ func CreateContainer(host, port, name, image, flavor string) (types.Container, e
 	if err != nil {
 		return types.Container{}, err
 	}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return types.Container{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return types.Container{}, err
 	}
@@ -44,7 +53,14 @@ func CreateContainer(host, port, name, image, flavor string) (types.Container, e
 // StartContainer starts a container.
 func StartContainer(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/containerstart/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -62,7 +78,14 @@ func StartContainer(host, port, name string) error {
 // StopContainer stops a container.
 func StopContainer(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/containerstop/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -80,7 +103,14 @@ func StopContainer(host, port, name string) error {
 // ListContainers lists containers.
 func ListContainers(host, port string) ([]types.Container, error) {
 	url := "http://" + host + ":" + port + "/api/v1/containers"
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +136,14 @@ func GetContainer(host, port, name string) (types.Container, error) {
 		ID: name,
 	}
 	url := "http://" + host + ":" + port + "/api/v1/container/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return container, err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return container, err
 	}
@@ -128,11 +165,15 @@ func GetContainer(host, port, name string) (types.Container, error) {
 // DeleteContainer deletes a container.
 func DeleteContainer(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/container/" + name
+	client := &http.Client{
+		Timeout: 300 * time.Second,
+	}
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
 	}
-	resp, err := http.DefaultClient.Do(req)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}

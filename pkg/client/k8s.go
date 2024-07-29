@@ -7,6 +7,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/rusik69/govnocloud/pkg/types"
 )
@@ -22,7 +23,15 @@ func CreateK8S(host, port, name, flavor string) (types.K8S, error) {
 	if err != nil {
 		return types.K8S{}, err
 	}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
+	client := &http.Client{
+		Timeout: 300 * time.Second,
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return types.K8S{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return types.K8S{}, err
 	}
@@ -45,7 +54,14 @@ func CreateK8S(host, port, name, flavor string) (types.K8S, error) {
 // GetK8S gets a k8s cluster.
 func GetK8S(host, port, name string) (types.K8S, error) {
 	url := "http://" + host + ":" + port + "/api/v1/k8s/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return types.K8S{}, err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return types.K8S{}, err
 	}
@@ -72,7 +88,11 @@ func DeleteK8S(host, port, name string) error {
 	if err != nil {
 		return err
 	}
-	resp, err := http.DefaultClient.Do(req)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -90,7 +110,14 @@ func DeleteK8S(host, port, name string) error {
 // ListK8S lists k8s clusters.
 func ListK8S(host, port string) ([]types.K8S, error) {
 	url := "http://" + host + ":" + port + "/api/v1/k8s"
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return []types.K8S{}, err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return []types.K8S{}, err
 	}
@@ -113,7 +140,14 @@ func ListK8S(host, port string) ([]types.K8S, error) {
 // StartK8S starts a k8s cluster.
 func StartK8S(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/k8sstart/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -131,7 +165,14 @@ func StartK8S(host, port, name string) error {
 // StopK8S stops a k8s cluster.
 func StopK8S(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/k8sstop/" + name
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -149,7 +190,14 @@ func StopK8S(host, port, name string) error {
 // GetKubeconfig gets the kubeconfig of a k8s cluster.
 func GetKubeconfig(host, port, name string) (string, error) {
 	url := "http://" + host + ":" + port + "/api/v1/k8s/" + name + "/kubeconfig"
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
 	}

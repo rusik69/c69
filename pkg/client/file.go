@@ -35,7 +35,15 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	if err != nil {
 		return err
 	}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(tempFileBody))
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(tempFileBody))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -57,12 +65,15 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 		return err
 	}
 	url = "http://" + node.Host + ":" + node.Port + "/api/v1/file/" + fileName
-	req, err := http.NewRequest("POST", url, file)
+	client2 := &http.Client{
+		Timeout: 600 * time.Second,
+	}
+	req, err = http.NewRequest("PUT", url, file)
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Content-Type", "application/octet-stream")
-	resp, err = http.DefaultClient.Do(req)
+	resp, err = client2.Do(req)
 	if err != nil {
 		return err
 	}
@@ -75,7 +86,14 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 		return errors.New(string(bodyText))
 	}
 	url = "http://" + masterHost + ":" + masterPort + "/api/v1/filecommit/" + fileName
-	resp, err = http.Get(url)
+	client3 := &http.Client{
+		Timeout: 300 * time.Second,
+	}
+	req, err = http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err = client3.Do(req)
 	if err != nil {
 		return err
 	}
@@ -93,7 +111,15 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 // DownloadFile downloads a file.
 func DownloadFile(masterHost, masterPort, fileName string) error {
 	url := "http://" + masterHost + ":" + masterPort + "/api/v1/file/" + fileName
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -108,7 +134,15 @@ func DownloadFile(masterHost, masterPort, fileName string) error {
 		return err
 	}
 	url = "http://" + file.NodeHost + ":" + file.NodePort + "/api/v1/file/" + fileName
-	resp, err = http.Get(url)
+	client2 := &http.Client{
+		Timeout: 600 * time.Second,
+	}
+	req, err = http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "binary/octet-stream")
+	resp, err = client2.Do(req)
 	if err != nil {
 		return err
 	}
@@ -128,11 +162,15 @@ func DownloadFile(masterHost, masterPort, fileName string) error {
 // DeleteFile deletes a file.
 func DeleteFile(host, port, name string) error {
 	url := "http://" + host + ":" + port + "/api/v1/file/" + name
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
 	}
-	resp, err := http.DefaultClient.Do(req)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -150,7 +188,15 @@ func DeleteFile(host, port, name string) error {
 // ListFiles lists files.
 func ListFiles(masterHost, masterPort string) ([]types.File, error) {
 	url := "http://" + masterHost + ":" + masterPort + "/api/v1/files"
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
