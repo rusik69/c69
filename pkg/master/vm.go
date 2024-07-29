@@ -56,6 +56,7 @@ func CreateVMHandler(c *gin.Context) {
 			logrus.Println("FreeMEM", node.Stats.FreeMEM, "Mem", vmFlavor.RAM)
 			continue
 		}
+		logrus.Println("Creating VM on node", node.Name)
 		createdVM, err := client.CreateVM(node.Host, node.Port, tempVM.Name,
 			tempVM.Image, tempVM.Flavor)
 		if err != nil {
