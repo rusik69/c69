@@ -19,3 +19,4 @@ sudo virsh undefine test1-k8s || true
 for i in $(sudo ls /var/lib/libvirt/images/); do
 	sudo rm /var/lib/libvirt/images/$i 
 done
+rm /mnt/* -rf
