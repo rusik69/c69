@@ -40,7 +40,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	}
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(tempFileBody))
 	if err != nil {
-		return err
+		return errors.New("error creating post request to master")
 	}
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := client.Do(req)
@@ -75,7 +75,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	req.Header.Set("Content-Type", "application/octet-stream")
 	resp, err = client2.Do(req)
 	if err != nil {
-		return err
+		return errors.New("error uploading file to node")
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
@@ -95,7 +95,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	}
 	resp, err = client3.Do(req)
 	if err != nil {
-		return err
+		return errors.New("error committing file")
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
