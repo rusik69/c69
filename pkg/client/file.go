@@ -40,25 +40,25 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	}
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(tempFileBody))
 	if err != nil {
-		return errors.New("error creating post request to master")
+		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
-		return errors.New("error posting file to master")
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		bodyText, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return errors.New("error reading body")
+			return err
 		}
 		return errors.New(string(bodyText))
 	}
 	var node types.Node
 	bodyText, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return errors.New("error reading body")
+		return err
 	}
 	err = json.Unmarshal(bodyText, &node)
 	if err != nil {
@@ -70,12 +70,12 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	}
 	req, err = http.NewRequest("POST", url, file)
 	if err != nil {
-		return errors.New("error creating put request to node")
+		return err
 	}
 	req.Header.Set("Content-Type", "application/octet-stream")
 	resp, err = client2.Do(req)
 	if err != nil {
-		return errors.New("error uploading file to node")
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
@@ -83,7 +83,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 		if err != nil {
 			return err
 		}
-		return errors.New("node upload body: " + string(bodyText))
+		return errors.New(string(bodyText))
 	}
 	url = "http://" + masterHost + ":" + masterPort + "/api/v1/filecommit/" + fileName
 	client3 := &http.Client{
@@ -95,15 +95,15 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	}
 	resp, err = client3.Do(req)
 	if err != nil {
-		return errors.New("error committing file")
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		bodyText, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return errors.New("error reading body")
+			return err
 		}
-		return errors.New("filecommit body: " + string(bodyText))
+		return errors.New(string(bodyText))
 	}
 	return nil
 }
