@@ -45,20 +45,20 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
-		return err
+		return errors.New("error posting file to master")
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		bodyText, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return err
+			return errors.New("error reading body")
 		}
 		return errors.New(string(bodyText))
 	}
 	var node types.Node
 	bodyText, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return err
+		return errors.New("error reading body")
 	}
 	err = json.Unmarshal(bodyText, &node)
 	if err != nil {
@@ -68,9 +68,9 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	client2 := &http.Client{
 		Timeout: 600 * time.Second,
 	}
-	req, err = http.NewRequest("PUT", url, file)
+	req, err = http.NewRequest("POST", url, file)
 	if err != nil {
-		return err
+		return errors.New("error creating put request to node")
 	}
 	req.Header.Set("Content-Type", "application/octet-stream")
 	resp, err = client2.Do(req)
@@ -83,7 +83,7 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 		if err != nil {
 			return err
 		}
-		return errors.New(string(bodyText))
+		return errors.New("node upload body: " + string(bodyText))
 	}
 	url = "http://" + masterHost + ":" + masterPort + "/api/v1/filecommit/" + fileName
 	client3 := &http.Client{
@@ -101,9 +101,9 @@ func UploadFile(masterHost, masterPort, sourcePath string) error {
 	if resp.StatusCode != 200 {
 		bodyText, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return err
+			return errors.New("error reading body")
 		}
-		return errors.New(string(bodyText))
+		return errors.New("filecommit body: " + string(bodyText))
 	}
 	return nil
 }
