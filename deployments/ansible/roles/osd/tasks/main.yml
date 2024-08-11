@@ -3,6 +3,6 @@
   ansible.builtin.apt:
     name: ceph
     state: present
-#- name: add osd to the ceph cluster
-#  ansible.builtin.shell: |
-#    ceph orch apply osd --all-available-devices
+- name: add osd to the ceph cluster
+  ansible.builtin.shell: |
+    ceph orch apply osd --all-available-devices
