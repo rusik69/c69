@@ -7,5 +7,4 @@
     group: root
     mode: 0600
 - include_tasks: docker.yml
-- include_tasks: flannel.yml
 - include_tasks: nodeexporter.yml
