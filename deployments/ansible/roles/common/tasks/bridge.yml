@@ -4,8 +4,7 @@
     state: present
 
 - name: Get enp* interface name
-  ansible.builtin.command: 
-    command: "ip -o link show | awk -F': ' '/enp/{print $2}' | head -n 1"
+  ansible.builtin.shell: "ip -o link show | awk -F': ' '/enp/{print $2}' | head -n 1"
   register: enp_interface
 
 - name: Check if bridge interface exists
