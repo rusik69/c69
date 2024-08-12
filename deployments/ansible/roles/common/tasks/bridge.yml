@@ -22,7 +22,7 @@
   ignore_errors: yes
 
 - name: Add enp* interface to bridge if not already a member
-  ansible.builtin.command: ip link set {{ enp_interface.stdout }} master br0
+  ansible.builtin.shell: ip link set "{{ enp_interface.stdout }}" master br0
   when: "'{{ enp_interface.stdout }}' not in bridge_members.stdout"
 
 - name: Bring up bridge interface
