@@ -34,6 +34,17 @@
         </target>
       </pool>
 
+- name: Create default network
+  community.libvirt.virt_network:
+    name: default
+    state: present
+    xml: |
+      <network>
+        <name>default</name>
+        <bridge name='br0'/>
+        <forward mode='bridge'/>
+      <network>
+
 - name: install govnocloud-node service
   ansible.builtin.template:
     src: govnocloud-node.service.j2
