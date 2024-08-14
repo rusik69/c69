@@ -35,7 +35,7 @@
       </pool>
 
 - name: Create default network
-  community.libvirt.virt_network:
+  community.libvirt.virt_net:
     name: default
     state: present
     xml: |
