@@ -4,9 +4,9 @@ Description=govnocloud node
 [Service]
 Restart=always
 ExecStart=/usr/local/bin/govnocloud-node
-Environment="NODE_LISTEN_HOST={{ ansible_enp0s25.ipv4.address }}"
+Environment="NODE_LISTEN_HOST={{ ansible_br0.ipv4.address }}"
 Environment="NODE_NAME={{ ansible_hostname }}"
-Environment="NODE_IP={{ ansible_enp0s25.ipv4.address }}"
+Environment="NODE_IP={{ ansible_br0.ipv4.address }}"
 
 [Install]
 WantedBy=default.target
