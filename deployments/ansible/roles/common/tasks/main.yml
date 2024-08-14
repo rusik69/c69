@@ -8,4 +8,3 @@
     mode: 0600
 - include_tasks: docker.yml
 - include_tasks: nodeexporter.yml
-- include_tasks: bridge.yml
