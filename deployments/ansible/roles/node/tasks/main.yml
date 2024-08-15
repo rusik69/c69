@@ -34,7 +34,7 @@
         </target>
       </pool>
 
-- name: Create default network
+- name: Create kvm default bridge network
   community.libvirt.virt_net:
     name: default
     state: present
@@ -44,6 +44,14 @@
         <bridge name='br0'/>
         <forward mode='bridge'/>
       <network>
+
+- name: Create bridge docker network
+  community.docker.docker_network:
+    name: br0
+    state: present
+    driver: bridge
+    driver_options:
+      com.docker.network.bridge.name: br0
 
 - name: install govnocloud-node service
   ansible.builtin.template:
