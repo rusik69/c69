@@ -166,6 +166,7 @@ func CreateContainer(c types.Container) (types.Container, error) {
 			Memory:    int64(memLimit),
 			CPUShares: int64(cpuShares),
 		},
+		NetworkMode: "br0",
 	}
 	resp, err := DockerConnection.ContainerCreate(ctx, &dockerContainer, &hostConfig, nil, nil, c.Name)
 	if err != nil {
